@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Software Engineering — L.O Project</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="color-scheme" content="dark light" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+
+  <style>
+    :root{
+      --bg-base-1: #071025;
+      --bg-base-2: #0a0f1a;
+      --stroke: rgba(255,255,255,0.12);
+      --text: #e6eaf2;
+      --muted: #9aa3b2;
+      --accent-1: #6ee7ff;
+      --accent-2: #a78bfa;
+      --accent-3: #22d3ee;
+      --shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+      --radius: 22px;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: 'Lexend', sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg-base-1) 0%, var(--bg-base-2) 100%);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* animated colorful background layers */
+    .animated-bg,
+    .animated-bg.reverse{
+      position: fixed;
+      inset: -30vmax;
+      filter: blur(120px);
+      opacity: .22;
+      z-index: -3;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      transform-origin: 50% 50%;
+    }
+    .animated-bg{ background: conic-gradient(from 120deg at 40% 30%, rgba(34,211,238,.18), rgba(167,139,250,.16), rgba(255,180,120,.12)); animation: spin 36s linear infinite; }
+    .animated-bg.reverse{ background: conic-gradient(from 320deg at 70% 65%, rgba(255,120,140,.12), rgba(100,180,255,.12), rgba(180,100,255,.12)); animation: spin-rev 48s linear infinite; }
+    @keyframes spin{ from{ transform: rotate(0deg) scale(1);} to{ transform: rotate(360deg) scale(1);} }
+    @keyframes spin-rev{ from{ transform: rotate(0deg) scale(1);} to{ transform: rotate(-360deg) scale(1);} }
+
+    .bg-grid::before{
+      content: "";
+      position: fixed;
+      inset: -200vmax;
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px) 0 0/32px 32px,
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px) 0 0/32px 32px,
+        linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.6));
+      animation: pan 60s linear infinite;
+      z-index: -2;
+    }
+    @keyframes pan{ from{transform:translate3d(0,0,0);} to{transform:translate3d(50px,20px,0);} }
+
+    .blob{
+      position: fixed;
+      filter: blur(60px);
+      opacity: .25;
+      z-index: -1;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .blob.cyan{ width: 40vmax; height: 40vmax; background: radial-gradient(circle at 30% 30%, #22d3ee, transparent 60%); top: -10vmax; left: -10vmax; animation: float 18s ease-in-out infinite; }
+    .blob.violet{ width: 45vmax; height: 45vmax; background: radial-gradient(circle at 70% 60%, #a78bfa, transparent 60%); bottom: -15vmax; right: -15vmax; animation: float 22s ease-in-out infinite reverse; }
+    @keyframes float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-20px);} }
+
+    .wrap{ max-width: 1200px; margin: 0 auto; padding: clamp(16px, 2.5vw, 28px); }
+
+    header{
+      padding-top: clamp(16px, 2vh, 24px);
+      margin-bottom: 20px;
+    }
+    h1{
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      margin: 0;
+      font-size: clamp(34px, 6vw, 64px);
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 6px 20px rgba(102,232,255,.15));
+    }
+    .subtitle{ color: var(--muted); font-size: clamp(14px, 2.2vw, 18px); margin-top: 6px; }
+    .badge{ display:inline-flex; gap:10px; margin-top:14px; font-size:14px; color:var(--muted); }
+    .badge i{ color: var(--accent-3); }
+
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    /* phone: full width cards */
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: repeat(1, 1fr); }
+      .card { grid-column: span 1; }
+    }
+
+    /* tablet: 2 cols */
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(6, 1fr); }
+      .card { grid-column: span 3; }
+    }
+
+    /* desktop: 3 cols */
+    @media (min-width: 1025px) {
+      .grid { grid-template-columns: repeat(12, 1fr); }
+      .card { grid-column: span 4; }
+      /* make any card with .fullwidth span entire row */
+      .card.fullwidth { grid-column: 1 / -1; }
+    }
+
+    .card{
+      border-radius: var(--radius);
+      padding: 22px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 16px 45px rgba(0,0,0,0.6);
+    }
+
+    .card h3{
+      margin: 0 0 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card p{ margin: 0; color: var(--muted); line-height: 1.6; }
+
+    .list{ display:flex; flex-wrap:wrap; gap:8px 10px; margin-top:8px; }
+    .chip{
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 13px;
+      color: #dfe6f3;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    }
+
+    pre{ margin: 0; border-radius: 14px; overflow: auto; border: 1px solid var(--stroke); }
+    .hljs{ background: rgba(0,0,0,.35)!important; padding: 14px!important; border-radius: 14px; font-size: 14px; }
+
+    /* New member-centric styles */
+    .member-grid{
+      display:flex;
+      gap: 18px;
+      flex-wrap:wrap;
+      justify-content: space-between;
+      align-items: stretch;
+      margin-top: 8px;
+    }
+    .member{
+      flex: 1 1 220px;
+      min-width: 180px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+      position: relative;
+      overflow: hidden;
+    }
+    .member:hover{ transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 60px rgba(2,6,23,0.7); }
+
+    .member .avatar{
+      width:72px; height:72px; border-radius:50%; margin: 0 auto 10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:26px; color: #061220;
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    }
+
+    .member .name{
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      margin-bottom: 6px;
+      background: linear-gradient(90deg, #6ee7ff, #a78bfa, #ffd38a);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 6px 20px rgba(103, 200, 255, 0.06);
+    }
+    .member .role{ font-size: 13px; color: var(--muted); }
+
+    /* per-member accents */
+    .member.saajid{ background-image: linear-gradient(180deg, rgba(34,211,238,0.03), rgba(167,139,250,0.02)); }
+    .member.west{ background-image: linear-gradient(180deg, rgba(255,200,120,0.03), rgba(255,150,120,0.02)); }
+    .member.hamza{ background-image: linear-gradient(180deg, rgba(160,220,140,0.03), rgba(120,200,180,0.02)); }
+    .member.papri{ background-image: linear-gradient(180deg, rgba(240,160,240,0.03), rgba(200,140,240,0.02)); }
+
+    /* subtle floating highlight */
+    .member::after{
+      content: '';
+      position: absolute;
+      inset: -40% -20% auto -20%;
+      height: 120%;
+      background: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.02), transparent 12%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.02), transparent 10%);
+      transform: rotate(-12deg);
+      pointer-events: none;
+    }
+
+    /* accessible focus state */
+    .member:focus-within, .member:focus{ outline: 3px solid rgba(110,231,255,0.12); }
+
+    .note{ margin-top: 12px; color: var(--muted); font-size: 13px; display:flex; gap:12px; align-items:center; }
+    .note i{ color: var(--accent-1); }
+
+    /* small helper for the project name clickable look */
+    #projectName{ text-decoration: underline dotted rgba(255,255,255,0.06); }
+
+    /* subtle entry animation for header */
+    header{ animation: fadeInUp .7s ease both; }
+    @keyframes fadeInUp{ from{ opacity: 0; transform: translateY(8px);} to{ opacity: 1; transform: translateY(0);} }
+
+  </style>
+</head>
+<body class="bg-grid">
+  <div class="animated-bg"></div>
+  <div class="animated-bg reverse"></div>
+  <div class="blob cyan"></div>
+  <div class="blob violet"></div>
+
+  <div class="wrap">
+    <header>
+      <h1>Software Engineering</h1>
+      <div class="subtitle">Design, build & maintain software — apps, games, cloud, AI.</div>
+      <div class="badge"><i class="fas fa-bolt"></i> L.O Project: <strong id="projectName">Software Engineering</strong></div>
+    </header>
+
+    <section class="grid" id="cards">
+      <!-- members: big, colorful, animated name cards -->
+      <article class="card fullwidth">
+        <h3><i class="fas fa-terminal"></i> Group members</h3>
+        <div class="member-grid" role="list">
+          <div class="member saajid" role="listitem" tabindex="0">
+            <div class="avatar">S</div>
+            <div class="name">Saajid</div>
+            <div class="role">Lead Developer</div>
+          </div>
+
+          <div class="member west" role="listitem" tabindex="0">
+            <div class="avatar">W</div>
+            <div class="name">West</div>
+            <div class="role">Operations</div>
+          </div>
+
+          <div class="member hamza" role="listitem" tabindex="0">
+            <div class="avatar">H</div>
+            <div class="name">Hamza</div>
+            <div class="role">Frontend</div>
+          </div>
+
+          <div class="member papri" role="listitem" tabindex="0">
+            <div class="avatar">P</div>
+            <div class="name">Papri</div>
+            <div class="role">Design</div>
+          </div>
+        </div>
+        <div class="note"><i class="fas fa-info-circle"></i> Names are now visually dominant — large gradient text, avatars, hover & focus interactions for polish and accessibility.</div>
+      </article>
+
+      <article class="card">
+        <h3><i class="fas fa-project-diagram"></i> Indication of the specific career field</h3>
+        <p><strong>Software Engineering</strong> — designing, coding, testing and deploying software solutions for many industries.</p>
+      </article>
+
+      <article class="card">
+        <h3><i class="fas fa-sitemap"></i> Different careers within the field</h3>
+        <div class="list">
+          <span class="chip">Frontend</span>
+          <span class="chip">Backend</span>
+          <span class="chip">Full-stack</span>
+          <span class="chip">Mobile</span>
+          <span class="chip">DevOps / Cloud</span>
+          <span class="chip">QA</span>
+          <span class="chip">Data & AI</span>
+          <span class="chip">Security Eng</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3><i class="fas fa-city"></i> Work settings</h3>
+        <p>Startups, big tech, banks, hospitals, government, freelance/remote or product & consultancy teams.</p>
+      </article>
+
+      <article class="card">
+        <h3><i class="fas fa-clipboard-check"></i> Examples of activities</h3>
+        <p>Design features, write code, debug, write tests, do code reviews, deploy releases and monitor systems.</p>
+      </article>
+
+      <article class="card">
+        <h3><i class="fas fa-trophy"></i> Potential benefits</h3>
+        <p>High demand, strong pay potential, remote work, freelance options, global opportunities and growth.</p>
+      </article>
+
+      <article class="card">
+        <h3><i class="fas fa-route"></i> Growth within the career</h3>
+        <p>Junior → Mid → Senior → Tech Lead/Architect → Manager, or move into product/research/entrepreneurship.</p>
+      </article>
+
+      <article class="card">
+        <h3><i class="fas fa-ruler-combined"></i> Possibilities of changing careers</h3>
+        <p>Skills transfer: move into product design, data science, cybersecurity, devops, or start a business.</p>
+      </article>
+
+      <!-- also fullwidth on desktop -->
+      <article class="card fullwidth">
+        <h3><i class="fas fa-tools"></i> Skills / values / interests required</h3>
+        <div class="list">
+          <span class="chip">Problem solving</span>
+          <span class="chip">Logical thinking</span>
+          <span class="chip">Persistence</span>
+          <span class="chip">Teamwork</span>
+          <span class="chip">Communication</span>
+          <span class="chip">Willingness to learn</span>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+    // Intersection animations for cards
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.animate([
+            { opacity: 0, transform: 'translateY(14px) scale(.98)' },
+            { opacity: 1, transform: 'translateY(0) scale(1)' }
+          ], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' });
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: .08 });
+    document.querySelectorAll('.card').forEach(c=>io.observe(c));
+
+    // Rename project on click
+    const project = document.getElementById('projectName');
+    project.style.cursor = 'pointer';
+    project.title = 'Click to rename';
+    project.addEventListener('click', ()=>{
+      const name = prompt('Set project name:', project.textContent.trim());
+      if(name && name.trim().length){ project.textContent = name.trim(); }
+    });
+  </script>
+</body>
+</html>

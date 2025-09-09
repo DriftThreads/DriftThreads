@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>DriftThreads -- Drops & Drive</title>
+  <meta name="description" content="Streetwear meets horsepower. Limited hoodies, crisp graphics, and Joburg-made drops.">
+  <meta name="image" content="assets/logo.png">
+
+  <link rel="icon" href="assets/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+
+.hidden {
+    opacity: 0;
+    transform: translateY(-5vw);
+    filter: blur(1px);
+
+    transition: all .5s;
+}
+
+.show {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+}
+
+
+
+    :root {
+      --bg-1: #071025;
+      --bg-2: #0a0f1a;
+      --stroke: rgba(255,255,255,0.12);
+      --text: #e6eaf2;
+      --muted: #9aa3b2;
+      --accent-1: #6ee7ff;
+      --accent-2: #a78bfa;
+      --accent-3: #22d3ee;
+      --radius: 18px;
+      --shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+      --max: 1200px;
+    }
+    *{box-sizing:border-box;}
+    html,body{
+      margin:0;
+      font-family:'Lexend', sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 100%);
+      overflow-x:hidden;
+      scroll-behavior:smooth;
+    }
+
+    #scrollToTopBtn i { font-size:20px; }
+    #scrollToTopBtn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #061220;
+      bottom: 30px;
+      right: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 22px;
+      z-index: 9;
+      border: 1px solid var(--stroke);
+      -webkit-tap-highlight-color: transparent;
+      transition: all .2s ease;
+      transform: translateY(8px) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #scrollToTopBtn.visible { pointer-events:auto; opacity:1; transform:translateY(0) scale(1); }
+    #scrollToTopBtn.visible:hover { transform:translateY(-3px) scale(1.03); box-shadow:0 3px 12px rgba(34,211,238,0.45),0 0 14px rgba(167,139,250,0.35); }
+    #scrollToTopBtn.visible:active { transform:translateY(1px) scale(.93); }
+    @media(max-width:600px){#scrollToTopBtn{height:40px;width:40px;font-size:18px;right:calc(50vw - 20px);bottom:18px;}}
+
+    a{color:inherit;text-decoration:none;transition:all .25s ease;}
+
+    .animated-bg,.animated-bg.reverse{position:fixed;inset:-30vmax;filter:blur(120px);opacity:.22;z-index:-3;mix-blend-mode:screen;pointer-events:none;}
+    .animated-bg{background:conic-gradient(from 120deg at 40% 30%, rgba(34,211,238,.18), rgba(167,139,250,.16), rgba(255,180,120,.12));animation:spin 36s linear infinite;}
+    .animated-bg.reverse{background:conic-gradient(from 320deg at 70% 65%, rgba(255,120,140,.12), rgba(100,180,255,.12), rgba(180,100,255,.12));animation:spin-rev 48s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes spin-rev{to{transform:rotate(-360deg);}}
+    .bg-grid::before{content:"";position:fixed;inset:-200vmax;
+      background:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px) 0 0/32px 32px,
+        linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px) 0 0/32px 32px,
+        linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.6));
+      animation:pan 60s linear infinite;
+      z-index:-2;}
+    @keyframes pan{to{transform:translate3d(50px,20px,0);}}
+
+    .blob{position:fixed;filter:blur(60px);opacity:.25;z-index:-1;mix-blend-mode:screen;}
+    .blob.cyan{width:40vmax;height:40vmax;background:radial-gradient(circle at 30% 30%,#22d3ee,transparent 60%);top:-10vmax;left:-10vmax;animation:float 18s ease-in-out infinite;}
+    .blob.violet{width:45vmax;height:45vmax;background:radial-gradient(circle at 70% 60%,#a78bfa,transparent 60%);bottom:-15vmax;right:-15vmax;animation:float 22s ease-in-out infinite reverse;}
+    @keyframes float{50%{transform:translateY(-20px);} }
+
+    .wrap{max-width:var(--max);margin:0 auto;padding: clamp(16px, 3vw, 32px);}
+
+    .topbar{
+      position:fixed;
+      min-width: 95vw;
+      top:0;left:0;right:0; 
+      margin:10px;max-width:var(--max);
+      display:flex;justify-content:space-between;align-items:center;gap:16px;
+      background:rgba(10,15,26,0.8);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:10px 16px;
+      backdrop-filter:blur(12px);
+      box-shadow: var(--shadow);
+      z-index:100;
+    }
+    body{padding-top:90px;}
+
+    .brand{display:flex;align-items:center;gap:12px;}
+    .brand img{width:44px;height:44px;border-radius:10px;background:black;padding:6px;}
+    .brand h1{margin:0;font-size:clamp(20px,5vw,28px);font-family:'Orbitron',sans-serif;font-weight:900;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;}
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+    .pill,.primary{cursor:pointer;transition:transform .25s, box-shadow .25s, background .3s;}
+    .pill{padding:8px 14px;border-radius:999px;font-weight:600;font-size:14px;color:var(--text);
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--stroke);}
+    .pill:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.4);}
+    .pill:active{transform:translateY(1px) scale(.98);}
+    .primary{padding:9px 16px;border-radius:999px;font-weight:800;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220;border:0;}
+    .primary:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 2px 10px rgba(0,0,0,.55);}
+    .primary:active{transform:translateY(1px) scale(.97);}
+    .hamburger{display:none;font-size:24px;color:var(--text);cursor:pointer;z-index:110;}
+    @media(max-width:720px){.nav-actions{display:none;}.hamburger{display:block;}}
+    .nav-menu{position:fixed;top:80px;left:50%;transform:translateX(-50%);width:90%;
+      background:rgba(10,15,26,0.95);border:1px solid var(--stroke);border-radius:var(--radius);
+      backdrop-filter:blur(12px);display:none;flex-direction:column;padding:12px;gap:10px;
+      box-shadow: var(--shadow);z-index:99;}
+    .nav-menu.show{display:flex;animation:fadeIn .3s ease;}
+    @keyframes fadeIn{from{opacity:0;transform:translate(-50%,-10px);}to{opacity:1;transform:translate(-50%,0);}}
+
+    .hero{display:grid;gap:28px;margin-top:36px;align-items:center;}
+    @media(min-width:900px){.hero{grid-template-columns:1fr 420px;}}
+    .hero-card{border:1px solid var(--stroke);border-radius:var(--radius);padding:28px;
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow: var(--shadow);}
+    .kicker{display:inline-block;padding:8px 12px;font-size:13px;border-radius:999px;background:rgba(255,255,255,0.05);color:var(--muted);font-weight:700;}
+    .hero-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.6rem);
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:16px 0;}
+    .lead{color:var(--muted);margin-bottom:18px;line-height:1.6;}
+    .actions{display:flex;gap:12px;margin-top:10px;}
+    section h3{font-family:'Orbitron',sans-serif;font-size:clamp(22px,2.5vw,28px);
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;
+      margin-top:40px;margin-bottom:14px;}
+    .strip{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px;}
+    .product{min-width:280px;scroll-snap-align:center;border-radius:var(--radius);border:1px solid var(--stroke);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));padding:14px;box-shadow: var(--shadow);transition:transform .25s;}
+    .product:hover{transform:translateY(-4px) scale(1.015);}
+    .product .thumb{aspect-ratio:1/1;overflow:hidden;border-radius:12px;margin-bottom:10px;}
+    .product img{width:100%;height:100%;object-fit:cover;}
+    .product .meta{font-weight:700;}
+    .product .price{color:var(--accent-1);margin-top:4px;}
+    .split{display:grid;gap:24px;}
+    @media(min-width:800px){.split{grid-template-columns:1fr 1fr;}}
+    .person{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--stroke);border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));}
+    .person img{width:68px;height:68px;border-radius:12px;object-fit:cover;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+    .tests{display:grid;gap:12px;}
+    @media(min-width:600px){.tests{grid-template-columns:1fr 1fr;}}
+    .test{padding:16px;margin:0 10px 0 10px; border-radius:var(--radius);border:1px solid var(--stroke);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));}
+    .test-name {color: var(--accent-3);}
+    .contact{margin:32px 10px 0 10px;padding:18px;border-radius:var(--radius);border:1px solid var(--stroke);
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+    footer{margin:40px 20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;}
+
+
+
+
+    /* Price key (drop into your main stylesheet) */
+.price-key{
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin: 14px 16px;
+  color: #eaf4ff;
+  box-shadow: 0 6px 20px rgba(2,6,12,0.6);
+  font-family: inherit;
+}
+
+/* Title */
+.price-key-title{
+  font-weight:700;
+  font-size:24px;
+  margin-bottom:16px;
+  color: var(--accent-2);
+  letter-spacing: 0.2px;
+}
+
+/* List */
+.price-key-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+
+/* Row */
+.pk-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  padding:8px;
+  border-radius:8px;
+  transition: background .12s ease;
+}
+.pk-row:hover{ background: rgba(255,255,255,0.01); }
+
+/* Left column (type + small description) */
+.pk-left{ flex:1; min-width:0; }
+.pk-type{ display:block; font-size:13px; color:#ffffff; }
+.pk-desc{ font-size:12px; color:#9fb6d1; margin:4px 0 8px 0; line-height:1.2; }
+
+/* Right column (price) */
+.pk-right{
+  white-space:nowrap;
+  font-weight:800;
+  font-size:13px;
+  color:#000;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  padding:6px 10px;
+  border-radius:8px;
+  min-width:82px;
+  text-align:center;
+}
+
+/* Responsive: compact on small screens */
+@media (max-width:520px){
+  .price-key{ margin:10px 12px; padding:10px; }
+  .pk-row{ flex-direction:column; align-items:flex-start; gap:6px; }
+  .pk-right{ align-self:flex-end; min-width:60px; padding:5px 8px; }
+}
+
+  </style>
+</head>
+<body class="bg-grid">
+  <div class="animated-bg"></div>
+  <div class="animated-bg reverse"></div>
+  <div class="blob cyan"></div>
+  <div class="blob violet"></div>
+
+  <!-- Scroll to Top Button -->
+  <a id="scrollToTopBtn" href="#" role="button" aria-label="Scroll to top"><i class="fas fa-angle-up"></i></a>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="DriftThreads logo">
+      <div>
+        <h1>DriftThreads</h1>
+        <div class="muted" style="font-size:12px">Streetwear • Cars • Joburg</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a class="pill" href="#products">Products</a>
+      <a class="pill" href="#about">About</a>
+      <a class="pill" href="#contact">Contact</a>
+      <a class="primary" href="./home/">Shop</a>
+    </div>
+    <div class="hamburger" id="hamburger" aria-controls="navMenu" aria-expanded="false" role="button" tabindex="0">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      <span class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Toggle menu</span>
+    </div>
+    <div class="nav-menu" id="navMenu" role="menu" aria-hidden="true">
+      <a class="pill" href="#products" role="menuitem">Products</a>
+      <a class="pill" href="#about" role="menuitem">About</a>
+      <a class="pill" href="#contact" role="menuitem">Contact</a>
+      <a class="primary" href="./home/" role="menuitem">Shop</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- Hero -->
+    <section class="hero hidden">
+      <div class="hero-card">
+        <div class="kicker">Limited Drop</div>
+        <h2 class="hero-title">Drift hard. Drip hard.</h2>
+        <p class="lead">Car-themed hoodies, crisp DTG graphics, and whatever hits. Made in Joburg with proper care.</p>
+        <div class="actions">
+          <a class="primary" href="./home/">Shop the drop</a>
+          <a class="pill" href="#products">See bestsellers</a>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!-- Products -->
+    <section id="products">
+      <h3>Featured -- Drop Highlights</h3>
+      <div class="strip">
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/driftthreads_hoodie.jpeg" alt="Drift Threads™ Hoodie">
+    </div>
+    <div class="meta">Drift Threads™ Hoodie</div>
+    <div class="price">R700.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/tokyo_revengers.jpeg" alt="Tokyo Revengers Hoodie">
+    </div>
+    <div class="meta">Tokyo Revengers Hoodie</div>
+    <div class="price">R650.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/911_gt3_rs.jpeg" alt="911 GT3 RS Hoodie">
+    </div>
+    <div class="meta">911 GT3 RS Hoodie</div>
+    <div class="price">R650.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/cr7_rm.jpeg" alt="Ronaldo Real Madrid Hoodie">
+    </div>
+    <div class="meta">Ronaldo Real Madrid Hoodie</div>
+    <div class="price">R700.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/mugs/driftthreads_mug.jpeg" alt="Drift Threads™ Mug">
+    </div>
+    <div class="meta">Drift Threads™ Mug</div>
+    <div class="price">R150.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/supplements/honey_1kg.jpeg" alt="Liquid Gold™ Honey (1kg)">
+    </div>
+    <div class="meta">Liquid Gold™ Honey (1kg)</div>
+    <div class="price">R220.00</div>
+  </div>
+</div>
+
+    </section>
+
+
+    <!-- Printing Price Guide -->
+     <br>
+     <br>
+
+<div class="price-key hidden" role="region" aria-label="Printing price guide">
+  <div class="price-key-title">Hoodie Price Guide (Subject to Change)</div>
+
+  <ul class="price-key-list">
+    <li class="pk-row">
+      <div class="pk-left">
+        <strong class="pk-type">Back print only</strong>
+        <div class="pk-desc">Large design on the back — great for full artwork or text.</div>
+      </div>
+      <div class="pk-right">R650</div>
+    </li>
+
+    <li class="pk-row">
+      <div class="pk-left">
+        <strong class="pk-type">Back + chest emblem</strong>
+        <div class="pk-desc">Back artwork plus a small logo/emblem on the front chest.</div>
+      </div>
+      <div class="pk-right">R700</div>
+    </li>
+
+    <li class="pk-row">
+      <div class="pk-left">
+        <strong class="pk-type">Back + sleeves</strong>
+        <div class="pk-desc">Back print with additional sleeve prints — price depends on sleeve coverage & complexity.</div>
+      </div>
+      <div class="pk-right">R750–R850</div>
+    </li>
+  </ul>
+</div>
+
+
+
+    <!-- About -->
+    <section id="about" class="split hidden">
+      <div>
+        <h3>Who runs this?</h3>
+        <div class="person" style="margin-bottom: 10px;"><img src="assets/placeholder.png" alt="Zaynul"><div><strong>Zaynul</strong><div class="muted">Runs the grind -- handles the moves</div></div></div>
+        <div class="person"><img src="assets/placeholder.png" alt="Saajid"><div><strong>Saajid</strong><div class="muted">Brains behind the look, design & web.</div></div></div>
+      </div>
+      <div>
+        <h3>Word on the street</h3>
+        <div class="tests hidden">
+          <div class="test">"Fits mad. Got 3 hoodies and it still hits."<br><strong class="test-name">-- Anonymous</strong></div>
+          <div class="test">"Local brand that actually cares about quality."<br><strong class="test-name">-- Anonymous</strong></div>
+          <div class="test">"Honey's solid. Hoodies tougher than my ex."<br><strong class="test-name">-- Anonymous</strong></div>
+          <div class="test">"Fast shipping and proper packaging, for once."<br><strong class="test-name">-- Anonymous</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact hidden">
+      <div>
+        <strong>Order via WhatsApp</strong>
+        <div class="muted" style="margin-top:6px">No bots. No stress. Screenshot your cart and hit us up -- we move fast.</div>
+      </div>
+      <a class="primary" href="https://wa.me/+27713468567" target="_blank" rel="noopener">Message us</a>
+    </section>
+
+    <footer>
+      <div>© DriftThreads<br>Streetwear built to drift -- Only in Joburg.</div>
+      <div class="muted">Follow: @driftthreads</div>
+    </footer>
+  </div>
+
+  <script>
+    // Elements
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerIcon = hamburger.querySelector('i');
+
+    // Accessibility helpers
+    function setMenuState(open) {
+      if (open) {
+        navMenu.classList.add('show');
+        navMenu.setAttribute('aria-hidden', 'false');
+        hamburger.setAttribute('aria-expanded', 'true');
+      } else {
+        navMenu.classList.remove('show');
+        navMenu.setAttribute('aria-hidden', 'true');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function closeMenu(){
+      setMenuState(false);
+      hamburgerIcon.classList.remove('fa-xmark');
+      hamburgerIcon.classList.add('fa-bars');
+    }
+    function openMenu(){
+      setMenuState(true);
+      hamburgerIcon.classList.remove('fa-bars');
+      hamburgerIcon.classList.add('fa-xmark');
+      // Optionally move focus into first item for keyboard users
+      const firstLink = navMenu.querySelector('a');
+      if(firstLink) firstLink.focus();
+    }
+    function toggleMenu(){
+      if(navMenu.classList.contains('show')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    // Toggle on click & keyboard activation
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation(); // prevent immediate document click listener from acting on this click
+      toggleMenu();
+    });
+    // support Enter/Space to toggle
+    hamburger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    // Close when clicking any link inside menu (existing behavior)
+    document.querySelectorAll('.nav-menu a').forEach(link=>{
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Also close when clicking anywhere outside the menu while it's open
+    document.addEventListener('click', (e) => {
+      // If menu isn't open, nothing to do
+      if(!navMenu.classList.contains('show')) return;
+      // If the click target is inside the menu or on the hamburger, ignore
+      if (navMenu.contains(e.target) || hamburger.contains(e.target)) return;
+      // Otherwise close
+      closeMenu();
+    }, { passive: true });
+
+    // Close with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMenu.classList.contains('show')) {
+        closeMenu();
+        // Return focus to hamburger for keyboard users
+        hamburger.focus();
+      }
+    });
+
+    // If you want to close on touchstart outside (more responsive on mobile), handle touchstart similarly:
+    document.addEventListener('touchstart', (e) => {
+      if(!navMenu.classList.contains('show')) return;
+      if (navMenu.contains(e.target) || hamburger.contains(e.target)) return;
+      closeMenu();
+    }, { passive: true });
+
+    // Animate cards on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.animate([
+            {opacity:0, transform:'translateY(14px) scale(.98)'},
+            {opacity:1, transform:'translateY(0) scale(1)'}
+          ], {duration:520,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:.08});
+    document.querySelectorAll('.product,.person,.test,.hero-card').forEach(el=>io.observe(el));
+
+    // Scroll-to-top
+    (function(){
+      const btn=document.getElementById('scrollToTopBtn');
+      if(!btn)return;
+      function updateVisibility(){
+        if(window.scrollY>240){btn.classList.add('visible');}
+        else{btn.classList.remove('visible');}
+      }
+      updateVisibility();
+      window.addEventListener('scroll',updateVisibility,{passive:true});
+      function scrollTopHandler(e){
+        e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});btn.blur();
+      }
+      btn.addEventListener('click',scrollTopHandler);
+      btn.addEventListener('keydown',(e)=>{
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();scrollTopHandler(e);}
+      });
+    })();
+
+// Stagger
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      console.log(entry)
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      } else {
+        entry.target.classList.remove("show");
+      }
+    });
+  })
+  
+const hiddenElements = document.querySelectorAll(".hidden");
+hiddenElements.forEach((el) => observer.observe(el));
+
+
+  </script>
+</body>
+</html>

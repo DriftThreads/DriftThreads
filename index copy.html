@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DriftThreads — Home</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="assets/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  <link rel="stylesheet" href="css/scrollToTop.css">
+
+  <style>
+    :root{
+      --bg:#0f0f0f; --card-bg:#1a1a1a; --text:#fff; --accent:#0af; --muted:#9aa0a6;
+      --transition:240ms; --ease:cubic-bezier(.22,.9,.27,1); --card-radius:12px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Lexend',sans-serif}
+    a{color:inherit}
+
+    /* animations */
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeOutDown{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(18px)}}
+    @keyframes popBadge{0%{transform:scale(1)}30%{transform:scale(1.35)}100%{transform:scale(1)}}
+
+    /* header / controls */
+    header{position:sticky;top:0;z-index:50;background:#161616;padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02)}
+    .top-row{display:flex;gap:12px;align-items:center}
+    .logo img{height:40px;display:block}
+    .search-wrap{flex:1;display:flex;gap:6px}
+    .search-box{position:relative;flex:1;min-width:0}
+    .search-box input{
+      width:100%;padding:10px 36px 10px 12px;border-radius:25px 5px 5px 25px;background:#222;border:0;color:#fff;font-size:14px;
+      transition:box-shadow var(--transition) var(--ease); outline:none;
+    }
+    .search-box input:focus{box-shadow:none;transform:none}
+    #clearBtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:#888;cursor:pointer;display:none;padding:6px;border-radius:6px}
+    #searchBtn{background:#0066ff;border:0;color:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;box-shadow:0 8px 18px rgba(0,102,255,0.12)}
+    #searchBtn:hover{transform:translateY(-3px)}
+    #cartBtn{width:44px;height:44px;border-radius:50%;background:#222;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+    #cartCount{position:absolute;right:6px;bottom:6px;background:#0066ff;color:#fff;border-radius:50%;min-width:16px;height:16px;line-height:16px;text-align:center;font-size:11px;padding:0 4px}
+    #cartCount.pop{animation:popBadge 420ms var(--ease)}
+
+    /* categories */
+    .cat-bar{display:flex;gap:8px;padding-top:10px;flex-wrap:wrap}
+    .cat-btn{background:#222;color:#aaa;padding:6px 12px;border-radius:10px;border:0;cursor:pointer}
+    .cat-btn.active{background:#0066ff;color:#fff}
+
+    /* grid */
+    main{padding:20px 12px;flex:1}
+    #grid{display:grid;grid-template-columns:repeat(auto-fill,220px);gap:20px;justify-content:center;max-width:calc(220px*5 + 20px*4);margin:0 auto;padding:0 18px}
+    @media(max-width:900px){#grid{grid-template-columns:repeat(auto-fill,200px)}}
+    @media(max-width:600px){#grid{grid-template-columns:repeat(2,1fr);max-width:100%}}
+
+    /* CARD FLIP - robust 3D setup with z-index & pointer-events swap */
+    .card{perspective:1200px;max-width:220px;cursor:pointer;border-radius:var(--card-radius);transition:box-shadow var(--transition) var(--ease),transform var(--transition) var(--ease);will-change:transform;opacity:0}
+    .card.pop-in{animation:fadeInUp .36s var(--ease) forwards}
+    .card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.6)}
+
+    .card-inner{
+      position:relative;width:100%;height:320px;border-radius:var(--card-radius);
+      transform-style:preserve-3d;-webkit-transform-style:preserve-3d;
+      transition:transform .5s var(--ease);
+      -webkit-transform-style:preserve-3d;
+    }
+
+    /* front & back faces */
+    .card-front,.card-back{
+      position:absolute;inset:0;border-radius:var(--card-radius);display:flex;flex-direction:column;overflow:hidden;
+      -webkit-backface-visibility:hidden;backface-visibility:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      transition:opacity .18s linear;
+      pointer-events:none; /* default to none - we'll enable the visible face */
+    }
+
+    /* front initially visible */
+    .card-front{
+      transform:rotateY(0deg) translateZ(0.1px);-webkit-transform:rotateY(0deg) translateZ(0.1px);
+      z-index:2; pointer-events:auto;
+    }
+
+    /* back initially hidden, rotated away */
+    .card-back{
+      transform:rotateY(180deg) translateZ(0.1px);-webkit-transform:rotateY(180deg) translateZ(0.1px);
+      z-index:1; color:#e6f7ff; padding:14px; font-size:.95rem; gap:8px; justify-content:flex-start;
+      /* pointer-events:none by default (so front can be interactive) */
+    }
+
+    /* when flipped: rotate inner, swap pointer-events and z-index so back is interactable */
+    .card.flipped .card-inner{transform:rotateY(180deg);-webkit-transform:rotateY(180deg)}
+    .card.flipped .card-front{z-index:1; pointer-events:none}
+    .card.flipped .card-back{z-index:2; pointer-events:auto}
+
+    .img-wrap{height:62%;background:#fff;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 420ms var(--ease)}
+    .img-wrap img:hover{transform:scale(1.05)}
+
+    .front-body{padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1}
+    .product-title-front{font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .price-row{display:flex;justify-content:space-between;align-items:center}
+    .price{font-weight:800;font-size:1.05rem;color:#e8f8ff}
+
+    .add-btn{background:linear-gradient(180deg,#0088ff,#0056cc);border:0;padding:8px;border-radius:10px;color:#fff;font-weight:700;cursor:pointer}
+    .add-btn:hover{transform:translateY(-3px)}
+
+    .view-img-btn{background:#94f3a2;color:#012;border:0;padding:6px 10px;border-radius:8px;cursor:pointer}
+
+    .empty-state{grid-column:1/-1;padding:28px;border-radius:10px;background:rgba(255,255,255,0.03);text-align:center;color:#aaa}
+
+    /* toast, tooltip, modal */
+    .add-notif{position:fixed;bottom:20px;left:20px;background:linear-gradient(180deg,rgba(26,26,26,.98),rgba(18,18,18,.98));padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;border:1px solid rgba(10,170,255,.12);box-shadow:0 12px 36px rgba(0,0,0,.6);z-index:1200;opacity:0;pointer-events:none;transform:translateY(18px)}
+    .add-notif.visible{animation:fadeInUp .28s var(--ease) forwards;pointer-events:auto}
+    .add-notif.hiding{animation:fadeOutDown .28s var(--ease) forwards;pointer-events:none}
+    .add-notif .product-thumb{width:48px;height:48px;object-fit:cover;border-radius:8px;background:#fff;padding:3px}
+    .add-notif .msg{color:#e6f7ff;flex:1}
+    .undo-btn,.close-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:8px;color:#fff;cursor:pointer}
+
+    .cart-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100}
+    .cart-modal.active{display:flex}
+    .cart-content{background:#1a1a1a;border-radius:12px;padding:18px;width:90%;max-width:560px;max-height:80vh;overflow:auto;box-shadow:0 40px 120px rgba(0,0,0,.7)}
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:200}
+    .lightbox.active{display:flex}
+
+    #loadingSpinner{text-align:center;padding:18px 0;color:#99bfe8}
+    :focus-visible{outline:3px solid rgba(0,102,255,0.12);outline-offset:3px;border-radius:8px}
+  
+/* Preloader container */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #111; /* or any bg */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  transition: opacity 0.6s ease; /* fade effect */
+}
+
+/* Spinner */
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #555;
+  border-top: 5px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Hidden state */
+#preloader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+  
+  
+  </style>
+</head>
+<body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const preloader = document.getElementById("preloader");
+
+  // Always stay at least 2s
+  const minTime = 1000;
+  const start = Date.now();
+
+  window.addEventListener("load", () => {
+    const elapsed = Date.now() - start;
+    const remaining = Math.max(0, minTime - elapsed);
+
+    setTimeout(() => {
+      preloader.classList.add("hidden");
+      setTimeout(() => preloader.remove(), 600); // remove after fade
+    }, remaining);
+  });
+});
+
+</script>
+
+
+  <div id="preloader">
+  <div class="loader"></div>
+</div>
+
+
+
+  <!-- toast -->
+  <div id="addNotif" class="add-notif" role="status" aria-live="polite" aria-atomic="true">
+    <img id="addNotifThumb" class="product-thumb" src="" alt="">
+    <div id="addNotifMsg" class="msg">Product added to cart</div>
+    <button id="undoAddBtn" class="undo-btn" aria-label="Undo add">Undo</button>
+    <button id="closeAddNotif" class="close-btn" aria-label="Dismiss"><i class="fas fa-times"></i></button>
+  </div>
+
+  <!-- tooltip -->
+  <div class="hint-tooltip" id="hintTooltip" role="note" style="display:none;position:fixed;bottom:20px;left:20px;max-width:320px;z-index:1100;background:linear-gradient(180deg,rgba(26,26,26,.98),rgba(20,20,20,.98));padding:14px;border-radius:10px;border:1px solid rgba(10,170,255,.06);box-shadow:0 8px 22px rgba(0,0,0,.6)">
+    <div style="display:flex;align-items:center;gap:8px">
+      <i class="fas fa-info-circle" style="color:var(--accent)"></i>
+      <div>Click a product to flip the card and view details.</div>
+    </div>
+    <div style="text-align:right;margin-top:10px"><button id="hideTooltipBtn" style="background:var(--accent);border-radius:8px;padding:6px 10px;border:0;color:#012;font-weight:700">Do not show again</button></div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+     <a id="scrollToTopBtn" href="#"><i class="fas fa-angle-up"></i></a>
+
+  <header>
+    <div class="top-row">
+      <div class="logo"><img src="assets/favicon.png" alt="logo"></div>
+      <div class="search-wrap">
+        <div class="search-box">
+          <input id="searchInput" type="text" placeholder="Search products..." aria-label="Search products">
+          <button id="clearBtn" type="button" aria-label="Clear search"><i class="fas fa-times"></i></button>
+        </div>
+        <button id="searchBtn" type="button" aria-label="Search" style="border-radius: 5px 25px 25px 5px;"><i class="fas fa-search"></i></button>
+      </div>
+
+      <div id="cartBtn" role="button" tabindex="0" aria-label="Shopping cart" style="position:relative">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cartCount">0</span>
+      </div>
+    </div>
+
+    <div class="cat-bar" role="tablist">
+      <button class="cat-btn active" data-cat="all" type="button">All</button>
+      <button class="cat-btn" data-cat="hoodies" type="button">Hoodies</button>
+      <button class="cat-btn" data-cat="supplements" type="button">Supplements</button>
+      <button class="cat-btn" data-cat="other" type="button">Other</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="grid" aria-live="polite" aria-busy="false"></section>
+    <div id="loadingSpinner" style="display:none"><i class="fas fa-spinner fa-pulse fa-2x"></i></div>
+  </main>
+
+  <div id="cartModal" class="cart-modal" aria-hidden="true">
+    <div class="cart-content" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <button id="closeCart" type="button" aria-label="Close cart" style="position:absolute;right:18px;top:18px;background:#0066ff;border:0;color:#fff;border-radius:50%;width:36px;height:36px"><i class="fas fa-times"></i></button>
+      <h2 id="cartTitle">Your Cart</h2>
+      <div style="color:var(--muted);margin-bottom:16px">Screenshot this cart, and <a href="https://wa.me/+27713468567" target="_blank" rel="noopener noreferrer" style="color:rgb(4,202,4)">message +27 67 534 2232</a> on WhatsApp to order.</div>
+      <div id="cartItems" class="cart-items"></div>
+      <div style="border-top:1px solid #333;padding-top:12px;display:flex;justify-content:space-between;align-items:center">
+        <button id="clearCartBtn" type="button" style="background:#ff2a2a;color:#fff;border-radius:10px;padding:8px 12px;border:0">Clear</button>
+        <div><strong>Total:</strong> <span id="cartTotal">R0.00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="imgLightbox" class="lightbox" aria-hidden="true">
+    <button id="closeLightbox" type="button" aria-label="Close image" style="position:absolute;right:18px;top:18px;background:transparent;border:0;color:#fff;font-size:22px"><i class="fas fa-times"></i></button>
+    <img id="lightboxImg" alt="" style="max-width:95%;max-height:85%;border-radius:8px">
+  </div>
+
+  <script>
+    // data + refs
+    const products = [
+      {id:1,title:'Kakashi Hoodie',price:650,cat:'hoodies',img:'products/hoodies/kakashi.jpeg',description:"Premium cotton-blend hoodie featuring Kakashi's fanart"},
+      {id:2,title:'BMW Hoodie',price:650,cat:'hoodies',img:'products/hoodies/bmw.jpeg',description:'Classic "I need Money for BMW" hoodie'},
+      {id:3,title:'911 GT3 RS Hoodie',price:650,cat:'hoodies',img:'products/hoodies/911_gt3_rs.jpeg',description:'Sleek hoodie with the Porsche 911 GT3 RS'},
+      {id:4,title:'BMW M Hoodie',price:650,cat:'hoodies',img:'products/hoodies/bmw_m.jpeg',description:'Stylish BMW M series inspired hoodie'},
+      {id:5,title:'Monkey D. Luffy Hoodie',price:650,cat:'hoodies',img:'products/hoodies/monkey_d_luffy.jpeg',description:'One Piece fan favorite hoodie with Luffy print'},
+      {id:6,title:'Tokyo Ghoul Hoodie',price:650,cat:'hoodies',img:'products/hoodies/tokyo_ghoul.jpeg',description:'Dark and edgy Tokyo Ghoul themed hoodie'},
+      {id:7,title:'Akatsuki Hoodie',price:650,cat:'hoodies',img:'products/hoodies/akatsuki.jpeg',description:'Iconic Akatsuki cloud design hoodie from Naruto'},
+      {id:8,title:'COD Hoodie',price:650,cat:'hoodies',img:'products/hoodies/cod.jpeg',description:'Call of Duty inspired gaming hoodie'},
+      {id:9,title:'One Piece Bros Hoodie',price:650,cat:'hoodies',img:'products/hoodies/one_piece_bros.jpeg',description:'Luffy, Ace & Sabo hoodie for all One Piece fans'},
+      {id:10,title:'Tokyo Revengers Hoodie',price:650,cat:'hoodies',img:'products/hoodies/tokyo_revengers.jpeg',description:'Tokyo Revengers themed hoodie'},
+      {id:11,title:'Batman Hoodie',price:650,cat:'hoodies',img:'products/hoodies/batman.jpeg',description:'Dark knight inspired Batman hoodie'},
+      {id:12,title:'Gojo Hoodie',price:650,cat:'hoodies',img:'products/hoodies/gojo.jpeg',description:'Jujutsu Kaisen fan favorite hoodie with Gojo design'},
+      {id:13,title:'Satoru Gojo Hoodie',price:650,cat:'hoodies',img:'products/hoodies/satoru_gojo.jpeg',description:'Another Gojo styled hoodie for the true fans'},
+      {id:14,title:'Straw Hats Hoodie',price:650,cat:'hoodies',img:'products/hoodies/straw_hats.jpeg',description:'One Piece Straw Hats logo crew hoodie'},
+      {id:15,title:'Protein Powder',price:1200,cat:'supplements',img:'products/supplements/protein_powder.jpeg',description:'No Pain, No Gain.'},
+      {id:16,title:'Honey (1kg)',price:200,cat:'supplements',img:'products/supplements/honey_1kg.jpeg',description:'The food of Prophets'},
+      {id:17,title:'Vita-C Powder',price:350,cat:'supplements',img:'products/supplements/vitc_powder.jpeg',description:'Who even needs Oranges?'}
+    ];
+
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const cartBtn = document.getElementById('cartBtn');
+    const cartCount = document.getElementById('cartCount');
+    const cartModal = document.getElementById('cartModal');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const closeCart = document.getElementById('closeCart');
+    const clearCartBtn = document.getElementById('clearCartBtn');
+    const imgLightbox = document.getElementById('imgLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeLightbox = document.getElementById('closeLightbox');
+
+    const addNotif = document.getElementById('addNotif');
+    const addNotifMsg = document.getElementById('addNotifMsg');
+    const addNotifThumb = document.getElementById('addNotifThumb');
+    const undoAddBtn = document.getElementById('undoAddBtn');
+    const closeAddNotifBtn = document.getElementById('closeAddNotif');
+
+    const hideTooltipBtn = document.getElementById('hideTooltipBtn');
+    const hintTooltip = document.getElementById('hintTooltip');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const batchSize = 6;
+    let filteredProducts = products.slice();
+    let currentIndex = 0;
+    let loading = false;
+    let lastAdded = null;
+    let notifTimer = null;
+
+    // Intersection observer for lazy load
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !loading) {
+          observer.unobserve(entry.target);
+          renderNextBatch();
+        }
+      });
+    }, { root: null, rootMargin: '300px', threshold: 0.1 });
+
+    // utils
+    function money(n){return `R${n.toFixed(2)}`;}
+    function saveCart(){localStorage.setItem('cart', JSON.stringify(cart));}
+
+    function updateCartDisplay(){
+      const totalQty = cart.reduce((a,c)=>a+c.qty,0);
+      cartCount.textContent = totalQty;
+      cartItems.innerHTML = '';
+      if(!cart.length){
+        cartItems.innerHTML = '<p style="color:#aaa">Cart is empty</p>';
+      } else {
+        cart.forEach(item=>{
+          const row = document.createElement('div');
+          row.className = 'cart-item';
+          row.style.display='flex'; row.style.gap='12px'; row.style.alignItems='center'; row.style.background='#222'; row.style.padding='8px'; row.style.borderRadius='8px';
+          row.innerHTML = `
+            <img src="${item.img}" alt="${item.title}" style="width:60px;height:60px;object-fit:cover;border-radius:6px">
+            <div style="flex:1">
+              <div style="font-weight:700">${item.title}</div>
+              <div style="color:#aaa">${money(item.price)} × ${item.qty}</div>
+            </div>
+            <button class="remove-btn" aria-label="Remove ${item.title}" style="background:#ff2a2a;color:#fff;border:0;padding:6px 8px;border-radius:8px;cursor:pointer"><i class="fas fa-trash"></i></button>
+          `;
+          row.querySelector('.remove-btn').addEventListener('click',()=>{
+            cart = cart.filter(p=>p.id!==item.id); saveCart(); updateCartDisplay();
+          });
+          cartItems.appendChild(row);
+        });
+      }
+      cartTotal.textContent = money(cart.reduce((a,c)=>a + c.price*c.qty, 0));
+    }
+
+    // add to cart + toast
+    function addToCart(p){
+      const ex = cart.find(i=>i.id===p.id);
+      if(ex) ex.qty++; else cart.push({...p,qty:1});
+      saveCart(); updateCartDisplay();
+      showAddNotification(p);
+    }
+    function showAddNotification(p){
+      addNotifThumb.src = p.img; addNotifThumb.alt = p.title;
+      const ex = cart.find(i=>i.id===p.id); const qty = ex?ex.qty:1;
+      addNotifMsg.textContent = qty>1?`${p.title} x${qty} added to cart`:`${p.title} added to cart`;
+      addNotif.classList.remove('hiding'); addNotif.classList.add('visible');
+      cartCount.classList.remove('pop'); void cartCount.offsetWidth; cartCount.classList.add('pop');
+      lastAdded = {id:p.id,when:Date.now()};
+      if(notifTimer) clearTimeout(notifTimer);
+      notifTimer = setTimeout(()=>{
+        addNotif.classList.remove('visible'); addNotif.classList.add('hiding');
+        setTimeout(()=>addNotif.classList.remove('hiding'),320);
+        lastAdded=null; notifTimer=null;
+      },2000);
+    }
+
+    undoAddBtn.addEventListener('click', ()=>{
+      if(!lastAdded) return;
+      const idx = cart.findIndex(i=>i.id===lastAdded.id);
+      if(idx>-1){
+        if(cart[idx].qty>1) cart[idx].qty--; else cart.splice(idx,1);
+        saveCart(); updateCartDisplay();
+      }
+      if(notifTimer){clearTimeout(notifTimer); notifTimer=null;}
+      lastAdded=null; addNotif.classList.remove('visible'); addNotif.classList.add('hiding');
+      setTimeout(()=>addNotif.classList.remove('hiding'),320);
+    });
+    closeAddNotifBtn.addEventListener('click', ()=>{
+      if(notifTimer){clearTimeout(notifTimer); notifTimer=null;}
+      lastAdded=null; addNotif.classList.remove('visible'); addNotif.classList.add('hiding');
+      setTimeout(()=>addNotif.classList.remove('hiding'),320);
+    });
+
+    // create card (no JS tilt — hover lift is CSS only)
+    function createCard(p){
+      const card = document.createElement('article');
+      card.className = 'card';
+      const inner = document.createElement('div'); inner.className='card-inner';
+      const front = document.createElement('div'); front.className='card-front';
+      front.innerHTML = `
+        <div class="img-wrap"><img loading="lazy" src="${p.img}" alt="${p.title}"></div>
+        <div class="front-body">
+          <div class="product-title-front">${p.title}</div>
+          <div class="price-row">
+            <div class="price">${money(p.price)}</div>
+            <button class="add-btn" type="button" aria-label="Add ${p.title}"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      `;
+      const back = document.createElement('div'); back.className='card-back';
+      back.innerHTML = `
+        <h3 style="margin:0">${p.title}</h3>
+        <p style="margin:0;color:#bcd9f2">${p.description}</p>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="view-img-btn" type="button" data-img="${p.img}"><i class="fas fa-image"></i> View</button>
+          <button class="add-btn" type="button" aria-label="Add ${p.title} (back)"><i class="fas fa-plus"></i> Add</button>
+        </div>
+      `;
+      inner.appendChild(front); inner.appendChild(back); card.appendChild(inner);
+
+      // click-to-flip (ignore clicks on buttons)
+      card.addEventListener('click', e=>{
+        if(e.target.closest('.add-btn') || e.target.closest('.view-img-btn')) return;
+        const other = document.querySelector('.card.flipped');
+        if(other && other!==card) other.classList.remove('flipped');
+        card.classList.toggle('flipped');
+      });
+
+      // front add
+      front.querySelector('.add-btn').addEventListener('click', e=>{ e.stopPropagation(); addToCart(p); console.log('front add clicked', p.id); });
+
+      // back add(s)
+      back.querySelectorAll('.add-btn').forEach(b=>{
+        b.addEventListener('click', e=>{ e.stopPropagation(); addToCart(p); console.log('back add clicked', p.id); });
+      });
+
+      // view image
+      back.querySelector('.view-img-btn').addEventListener('click', e=>{
+        e.stopPropagation();
+        lightboxImg.src = p.img;
+        imgLightbox.classList.add('active');
+        imgLightbox.setAttribute('aria-hidden','false');
+        console.log('view clicked', p.id);
+      });
+
+      // keyboard support
+      card.tabIndex = 0;
+      card.addEventListener('keydown', e=>{
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); const other = document.querySelector('.card.flipped'); if(other && other!==card) other.classList.remove('flipped'); card.classList.toggle('flipped'); }
+      });
+
+      return card;
+    }
+
+    function showSpinner(){ loadingSpinner.style.display='block' }
+    function hideSpinner(){ loadingSpinner.style.display='none' }
+
+    function observeLastCard(){
+      const cards = grid.querySelectorAll('.card');
+      const last = cards[cards.length-1];
+      if(last) observer.observe(last);
+    }
+
+    function renderNextBatch(){
+      if(loading) return;
+      if(currentIndex >= filteredProducts.length){ observer.disconnect(); return; }
+      loading=true; showSpinner();
+      setTimeout(()=>{
+        const slice = filteredProducts.slice(currentIndex, currentIndex + batchSize);
+        slice.forEach((p,i)=>{
+          const c = createCard(p);
+          c.classList.add('pop-in');
+          c.style.animationDelay = `${i*60}ms`;
+          c.style.opacity='1';
+          grid.appendChild(c);
+        });
+        currentIndex += slice.length; loading=false; hideSpinner();
+        if(currentIndex >= filteredProducts.length) observer.disconnect(); else observeLastCard();
+      }, 220);
+    }
+
+    function filterAndRender(){
+      const q = (searchInput.value||'').trim().toLowerCase();
+      const cat = document.querySelector('.cat-btn.active').dataset.cat;
+      filteredProducts = products.filter(p=>{
+        const matchCat = (cat === 'all') || p.cat === cat;
+        const matchQ = !q || p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
+        return matchCat && matchQ;
+      });
+      currentIndex = 0; grid.innerHTML='';
+      if(!filteredProducts.length){ grid.innerHTML = '<div class="empty-state">No products found</div>'; hideSpinner(); observer.disconnect(); return; }
+      renderNextBatch();
+    }
+
+    // init / events
+    window.addEventListener('DOMContentLoaded', ()=>{
+      if(!localStorage.getItem('hideHint')) hintTooltip.style.display='block';
+      filterAndRender(); updateCartDisplay();
+    });
+
+    hideTooltipBtn && hideTooltipBtn.addEventListener && hideTooltipBtn.addEventListener('click', ()=>{
+      localStorage.setItem('hideHint','1'); hintTooltip.style.display='none';
+    });
+
+    searchInput.addEventListener('input', ()=>{ filterAndRender(); clearBtn.style.display = searchInput.value ? 'flex' : 'none'; });
+    searchBtn.addEventListener('click', ()=>{ filterAndRender(); searchInput.focus(); });
+    clearBtn.addEventListener('click', ()=>{ searchInput.value=''; filterAndRender(); clearBtn.style.display='none'; searchInput.focus(); });
+
+    document.querySelectorAll('.cat-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{ document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); filterAndRender() });
+      btn.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); btn.click(); }});
+    });
+
+    cartBtn.addEventListener('click', ()=>{ cartModal.classList.add('active'); cartModal.setAttribute('aria-hidden','false'); setTimeout(()=>closeCart.focus(),50) });
+    closeCart.addEventListener('click', ()=>{ cartModal.classList.remove('active'); cartModal.setAttribute('aria-hidden','true'); cartBtn.focus() });
+    cartModal.addEventListener('click', e=>{ if(e.target === cartModal) closeCart.click() });
+    clearCartBtn.addEventListener('click', ()=>{ if(cart.length && confirm('Clear cart?')){ cart=[]; saveCart(); updateCartDisplay(); } });
+
+    imgLightbox.addEventListener('click', e=>{ if(e.target === imgLightbox){ imgLightbox.classList.remove('active'); imgLightbox.setAttribute('aria-hidden','true') }});
+    closeLightbox.addEventListener('click', ()=>{ imgLightbox.classList.remove('active'); imgLightbox.setAttribute('aria-hidden','true') });
+
+    window.addEventListener('keydown', e=>{
+      if(e.key === 'Escape'){ if(cartModal.classList.contains('active')) closeCart.click(); if(imgLightbox.classList.contains('active')) imgLightbox.classList.remove('active'); }
+    });
+
+    // window.addEventListener('scroll', ()=>{ const btn = document.getElementById('scrollToTopBtn'); if(window.scrollY>420) btn && btn.classList && btn.classList.add('visible'); else btn && btn.classList && btn.classList.remove('visible') });
+
+    // touch press feedback
+    document.addEventListener('mousedown', e=>{ const b = e.target.closest('button'); if(b) b.classList.add('btn-press') });
+    document.addEventListener('mouseup', ()=> document.querySelectorAll('.btn-press').forEach(b=>b.classList.remove('btn-press')));
+    document.addEventListener('touchstart', e=>{ const b = e.target.closest('button'); if(b) b.classList.add('btn-press'); }, {passive:true});
+    document.addEventListener('touchend', ()=> document.querySelectorAll('.btn-press').forEach(b=>b.classList.remove('btn-press')));
+
+    // small aria helper
+    const observerForAria = new MutationObserver(()=>{ grid.setAttribute('aria-busy', grid.querySelector('.card') ? 'false' : 'false') });
+    observerForAria.observe(grid, {childList:true});
+
+    // expose filter for debugging
+    window.filterAndRender = filterAndRender;
+  </script>
+</body>
+</html>

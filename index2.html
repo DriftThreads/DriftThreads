@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DriftThreads - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --card-bg: #1a1a1a;
+      --text: #fff;
+      --accent: #0af;
+      --danger: #e33;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Lexend', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 16px;
+      background: #161616;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    input {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: #fff;
+      font-family: 'Lexend', sans-serif;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--accent);
+      color: #000;
+      font-weight: bold;
+      font-family: 'Lexend', sans-serif;
+    }
+
+    .cat-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cat-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: #222;
+      cursor: pointer;
+      font-size: 14px;
+      color: #aaa;
+      font-family: 'Lexend', sans-serif;
+    }
+
+    .cat-btn.active {
+      /* background: var(--accent); */
+      background: yellow;
+      color: #000;
+    }
+
+    #cartBtn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 350px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      background: var(--card-bg);
+      backface-visibility: hidden;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-front img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      margin-top: auto;
+    }
+
+    .price {
+      font-weight: 600;
+      font-size: 1.1rem;
+      /* color: var(--accent); */
+      color: white;
+
+    }
+
+    .add-btn {
+      background: var(--accent);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: #000;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      padding: 1rem;
+      text-align: left;
+      align-items: flex-start;
+      justify-content: flex-start;
+      font-size: 0.95rem;
+    }
+
+    .card-back h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .card-back p {
+      line-height: 1.4;
+      opacity: 0.85;
+    }
+
+    .empty-state {
+      grid-column: 1/-1;
+      padding: 28px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      text-align: center;
+      color: #aaa;
+      font-size: 15px;
+    }
+
+    .cart-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .cart-modal.active { display: flex; }
+
+    .cart-content {
+      background: #1a1a1a;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow: auto;
+      padding: 20px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-items {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #222;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-weight: 600; }
+
+    .cart-actions { display: flex; align-items: center; gap: 6px; }
+    .cart-actions button { padding: 4px 8px; font-size: 14px; }
+    .remove-btn { background: var(--danger); color:#fff; border-radius:0.5rem; }
+    .cart-footer {
+      border-top: 1px solid #333;
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search products...">
+      <button id="searchBtn">Search</button>
+      <button id="clearBtn">Clear</button>
+    </div>
+    <div class="cat-bar">
+      <div class="cat-btn active" data-cat="all">All</div>
+      <div class="cat-btn" data-cat="hoodies">Hoodies</div>
+      <div class="cat-btn" data-cat="home">Home</div>
+      <div class="cat-btn" data-cat="fashion">Fashion</div>
+    </div>
+    <div id="cartBtn" role="button" tabindex="0">🛒 Cart (<span id="cartCount">0</span>)</div>
+  </header>
+
+  <main>
+    <section id="grid"></section>
+  </main>
+
+  <div class="cart-modal" id="cartModal" aria-hidden="true" role="dialog" aria-label="Shopping cart">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button id="closeCart">✖</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer">
+        <strong>Total:</strong> <span id="cartTotal">R0.00</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="products.js"></script>
+
+  <script>
+
+    const products = [
+  {id:1,title:'Kakashi Hoodie',price:650,cat:'hoodies',img:'products/01.jpeg',description:'Premium cotton-blend hoodie featuring Kakashi\'s iconic Sharingan eye design'},
+  {id:2,title:'BMW Hoodie',price:650,cat:'hoodies',img:'products/02.jpeg',description:'Classic BMW motorsport-inspired hoodie with embroidered M division emblem'},
+  {id:3,title:'911 GT3 RS Hoodie',price:650,cat:'hoodies',img:'products/08.jpeg',description:'Racing-style hoodie celebrating Porsche\'s legendary GT3 RS performance heritage'},
+  {id:4,title:'Gojo Hoodie',price:650,cat:'hoodies',img:'products/05.jpeg',description:'Street-style hoodie featuring Gojo Satoru\'s signature design elements'},
+  {id:5,title:'Tokyo Revengers Hoodie',price:650,cat:'hoodies',img:'products/07.jpeg',description:'Soft fleece hoodie, oversized fit, street-ready'}
+]
+
+
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const cartBtn = document.getElementById('cartBtn');
+    const cartCount = document.getElementById('cartCount');
+    const cartModal = document.getElementById('cartModal');
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+    const closeCart = document.getElementById('closeCart');
+
+    let cart = JSON.parse(localStorage.getItem('cart')||'[]');
+
+    function money(n) { return new Intl.NumberFormat('en-ZA',{style:'currency',currency:'ZAR'}).format(n); }
+
+    function updateCartDisplay() {
+      cartCount.textContent = cart.reduce((a,c)=>a+c.qty,0);
+      cartItems.innerHTML = '';
+      if(!cart.length){ cartItems.innerHTML='<p style="color:#aaa">Cart is empty</p>'; }
+      else {
+        cart.forEach(item=>{
+          const row = document.createElement('div'); row.className='cart-item';
+          row.innerHTML=`
+            <img src="${item.img}" alt="${item.title}">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.title}</div>
+              <div>${money(item.price)} × ${item.qty}</div>
+            </div>
+            <div class="cart-actions">
+              <button class="remove-btn">X</button>
+            </div>
+          `;
+          row.querySelector('.remove-btn').addEventListener('click',()=>{
+            cart = cart.filter(p=>p.id!==item.id); updateCartDisplay(); localStorage.setItem('cart',JSON.stringify(cart));
+          });
+          cartItems.appendChild(row);
+        });
+      }
+      cartTotal.textContent = money(cart.reduce((a,c)=>a+c.price*c.qty,0));
+      localStorage.setItem('cart',JSON.stringify(cart));
+    }
+
+    function addToCart(product){
+      const exist = cart.find(p=>p.id===product.id);
+      if(exist) exist.qty++;
+      else cart.push({...product,qty:1});
+      updateCartDisplay();
+    }
+
+    function render(list){
+      grid.innerHTML='';
+      if(!list.length){ grid.innerHTML='<div class="empty-state">No products found</div>'; return; }
+      list.forEach(p=>{
+        const card = document.createElement('article'); card.className='card';
+        const inner = document.createElement('div'); inner.className='card-inner';
+
+        const front = document.createElement('div'); front.className='card-front';
+        front.innerHTML=`
+          <img src="${p.img}" alt="${p.title}" loading="lazy">
+          <div class="price-row">
+            <span class="price">${money(p.price)}</span>
+            <button class="add-btn">+</button>
+          </div>
+        `;
+
+        const back = document.createElement('div'); back.className='card-back';
+        back.innerHTML=`<h3>${p.title}</h3><p>${p.description}</p>`;
+
+        inner.append(front,back); card.appendChild(inner); grid.appendChild(card);
+
+        card.addEventListener('click',e=>{ if(e.target.classList.contains('add-btn')) return; card.classList.toggle('flipped'); });
+        front.querySelector('.add-btn').addEventListener('click',e=>{ e.stopPropagation(); addToCart(p); });
+      });
+    }
+
+    function filterAndRender(){
+      const q = searchInput.value.trim().toLowerCase();
+      const activeBtn = document.querySelector('.cat-btn.active');
+      const cat = activeBtn? activeBtn.dataset.cat : 'all';
+      const filtered = products.filter(p=>{
+        const matchCat=(cat==='all')||(p.cat===cat);
+        const matchQ = !q || p.title.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)||p.description.toLowerCase().includes(q)||(`sku-${p.id}`).includes(q);
+        return matchCat&&matchQ;
+      });
+      render(filtered);
+    }
+
+    filterAndRender(); updateCartDisplay();
+
+    searchInput.addEventListener('input',filterAndRender);
+    searchBtn.addEventListener('click',filterAndRender);
+    clearBtn.addEventListener('click',()=>{ searchInput.value=''; filterAndRender(); searchInput.focus(); });
+
+    document.querySelectorAll('.cat-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{ document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); filterAndRender(); });
+    });
+
+    cartBtn.addEventListener('click',()=>{ cartModal.classList.add('active'); cartModal.setAttribute('aria-hidden','false'); closeCart.focus(); });
+    closeCart.addEventListener('click',()=>{ cartModal.classList.remove('active'); cartModal.setAttribute('aria-hidden','true'); cartBtn.focus(); });
+    window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&cartModal.classList.contains('active')) closeCart.click(); });
+  </script>
+</body>
+</html>
+
+<!-- 
+
+Make it that the flipped card does not become bigger, coz it does rn, and it looks weird
+Fix up the grid system, its messed up, make it two cards a row on mobile, and a max of 5 cards on pc, and the remaining space to have some padding on both sides
+Make it that when your one the lighbox modal of the cart, clicking off the  box (baclground) will exit, not only the x button, and add a clear all button to the cart too
+Add the categories on a seperate line, add the 1:1 logo (assets/favicon.png) next to (left of) the serch bar, followed by the cart
+Replace all icons with font awesome ones (obv import it on <head>), replace the + buttons with a font awesome one, the x button to remove an item from cart with a bin icon, and all xions with font awesomes, and Search with a magiifing glass icon, the cart also. Make sure to not mess up padding/margins, otherwise  buttons and stuff will look weird, it often happens with FOnt Awesome icons, idk y
+Makethe name of the product also on the front under the iage, and above the price, not only when the card is flipped
+On the top of the cart, add this "Screenshot this cart, and [message +27 67 534 2232] (link in light green: which opens whatsapp and goes to a chat with that no.) to place your order."
+
+A problem is that when you search for an item, and theres only one, it stretches its width to the whole sceen and looks fcked, fix this 
+While you at it, at the back of the cards, an an 'View Image button', which when lcicked, opens a lightbox(click x or bg to escape) showing that image
+
+use this forfont awesome import
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+-->/
