@@ -1,0 +1,106 @@
+<!-- save as contact/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — DriftThreads</title>
+  <meta name="description" content="Contact DriftThreads — orders, collabs or general enquiries." />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#071025; --bg2:#0a0f1a;
+      --accent1:#6ee7ff; --accent2:#a78bfa;
+      --text:#e6eaf2; --muted:#9aa3b2;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Lexend',sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:900px;margin:6vh auto;padding:24px}
+    .card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);padding:28px;border-radius:14px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand img{width:56px;height:56px;border-radius:10px;background:#000;padding:6px}
+    h1{margin:6px 0 0;font-size:20px;letter-spacing:0.6px}
+    p.lead{color:var(--muted);margin:8px 0 18px}
+    .links{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:520px){.links{grid-template-columns:1fr}}
+    a.btn{display:inline-flex;gap:10px;align-items:center;justify-content:center;padding:12px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#061220}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text)}
+    .muted{color:var(--muted);font-size:13px;margin-top:12px}
+    .small{font-size:13px;color:var(--muted)}
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.02)}
+    .label{font-weight:700}
+    .value{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="region" aria-label="Contact DriftThreads">
+      <div class="brand">
+        <img src="/assets/logo.png" alt="DriftThreads logo">
+        <div>
+          <h1>DriftThreads</h1>
+          <p class="lead">Orders • Collabs • General — WhatsApp is fastest.</p>
+        </div>
+      </div>
+
+      <!-- clean contact items -->
+      <div style="margin-top:18px">
+        <div class="row">
+          <div>
+            <div class="label">Website</div>
+            <div class="value small">driftthreads.store</div>
+          </div>
+          <div>
+            <a class="btn ghost" href="https://driftthreads.store" target="_blank" rel="noopener">Open</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">Support Email</div>
+            <div class="value small">help@driftthreads.store</div>
+          </div>
+          <div>
+            <a class="btn ghost" href="mailto:help@driftthreads.store">Email</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">WhatsApp — Zaynul (Founder)</div>
+            <div class="value small">071 346 8567</div>
+          </div>
+          <div>
+            <a class="btn primary" href="https://wa.me/27713468567" target="_blank" rel="noopener">Message</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">WhatsApp — Saajid (Dev)</div>
+            <div class="value small">061 305 4664</div>
+          </div>
+          <div>
+            <a class="btn primary" href="https://wa.me/27613054664" target="_blank" rel="noopener">Message</a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <div class="label">Instagram</div>
+            <div class="value small">@driftthreads_official</div>
+          </div>
+          <div>
+            <a class="btn ghost" href="https://instagram.com/driftthreads_official" target="_blank" rel="noopener">Open</a>
+          </div>
+        </div>
+      </div>
+
+      <p class="muted">Tip: for orders screenshot your cart and WhatsApp us — quicker than emailing.</p>
+      <footer>© DriftThreads · Streetwear built to drift — Only in Joburg.</footer>
+    </div>
+  </div>
+</body>
+</html>

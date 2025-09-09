@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>DriftThreads -- All Blogs</title>
+  <meta name="description" content="All DriftThreads articles. Switch between grid and list views.">
+  <link rel="icon" href="../assets/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#071025;--bg-2:#0a0f1a;--stroke: rgba(255,255,255,0.09);
+      --text:#e6eaf2;--muted:#9aa3b2;--accent-1:#6ee7ff;--accent-2:#a78bfa;
+      --radius:14px;--max:1200px;--shadow: 0 12px 40px rgba(0,0,0,0.45);
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;margin:0;font-family:'Lexend',sans-serif;color:var(--text);
+      background: linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 100%);
+      -webkit-font-smoothing:antialiased;overflow-x:hidden
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .wrap{max-width:var(--max);margin:0 auto;padding:clamp(14px,3vw,28px);padding-top:0}
+
+    /* ---------- NAVBAR (Desktop + Mobile) ---------- */
+    .topbar{
+      position:sticky;top:0;z-index:50;
+      background:linear-gradient(180deg,rgba(7,16,37,0.92),rgba(7,16,37,0.92));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .nav-inner{
+      max-width:var(--max);margin:0 auto;
+      display:flex;align-items:center;gap:12px;
+      padding:10px clamp(14px,3vw,28px);
+    }
+
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .brand img{width:44px;height:44px;border-radius:10px;background:#000;padding:6px;object-fit:cover}
+    .brand h1{margin:0;font-family:'Orbitron',sans-serif;font-size:18px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;color:transparent}
+
+    /* Desktop controls */
+    .controls{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .search{padding:10px 12px;border-radius:10px;border:1px solid var(--stroke);background:rgba(255,255,255,0.02);color:var(--text);min-width:220px}
+    .toggle{display:inline-flex;border-radius:999px;overflow:hidden;border:1px solid var(--stroke);background:rgba(255,255,255,0.02)}
+    .toggle button{background:transparent;border:0;padding:8px 12px;cursor:pointer;color:var(--muted);font-weight:800;font-size:14px}
+    .toggle button.active{color:#061220;background:linear-gradient(90deg,var(--accent-1),var(--accent-2))}
+    .btn{cursor:pointer;padding:8px 12px;border-radius:10px;border:1px solid var(--stroke);background:rgba(255,255,255,0.02);font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220;border:0}
+
+    /* Hamburger button (mobile) */
+    .hamburger{
+      display:none; margin-left:auto;
+      border:1px solid var(--stroke); background:rgba(255,255,255,0.04);
+      color:var(--text); border-radius:10px; padding:10px 12px; cursor:pointer
+    }
+    .hamburger:focus-visible{outline:2px solid var(--accent-1)}
+
+    /* Mobile drawer */
+    .drawer{
+      display:none;
+      border-top:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(9,18,35,0.96), rgba(7,16,37,0.96));
+      backdrop-filter: blur(6px);
+    }
+    .drawer-inner{
+      max-width:var(--max);margin:0 auto;
+      padding:12px clamp(14px,3vw,28px);
+      display:grid;gap:10px;
+      grid-template-columns: 1fr;
+    }
+    .drawer .search{width:100%;min-width:0}
+    .drawer .row-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .sr-only{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+    /* Show drawer when open */
+    .drawer.open{display:block;animation:slideDown .18s ease-out}
+    @keyframes slideDown{
+      from{opacity:0;transform:translateY(-6px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    /* Hide desktop controls on small screens, show hamburger */
+    @media (max-width: 768px){
+      .controls{display:none}
+      .hamburger{display:inline-flex;align-items:center;gap:8px}
+      .brand img{width:40px;height:40px}
+      .brand h1{font-size:16px}
+    }
+
+    /* ---------- PAGE CONTENT ---------- */
+    .intro{margin:18px auto 8px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;max-width:var(--max);padding:0 clamp(14px,3vw,28px)}
+    .intro .title{font-family:'Orbitron',sans-serif;font-size:22px;margin:0}
+    .intro .muted{color:var(--muted);font-size:14px}
+
+    .list-area{border-radius:12px;padding:10px;border:1px solid var(--stroke);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:var(--shadow);min-height:320px;max-width:var(--max);margin:0 auto;padding:10px clamp(14px,3vw,28px)}
+    .list-area[aria-busy="true"]{opacity:.6;pointer-events:none}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:720px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media(min-width:1100px){ .grid{grid-template-columns:repeat(3,1fr)} }
+
+    .card{display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));transition:transform .16s, box-shadow .16s}
+    .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.6)}
+    .card .media{height:160px;background-size:cover;background-position:center;background-color:#091423}
+    .card .body{padding:12px;display:flex;flex-direction:column;gap:8px}
+    .card .title{font-weight:800;font-family:'Orbitron',sans-serif;font-size:16px}
+    .card .meta{color:var(--muted);font-size:13px}
+    .card .excerpt{color:var(--muted);font-size:14px;line-height:1.45}
+
+    /* LIST VIEW */
+    .list{display:flex;flex-direction:column;gap:12px}
+    .row{
+      display:grid;
+      grid-template-columns: 120px 1fr;
+      gap:12px;align-items:center;
+      padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);
+      background:rgba(255,255,255,0.02);transition:transform .12s
+    }
+    .row:hover{transform:translateY(-4px)}
+    .row .thumb{
+      width:100%;height:0;padding-top:56%; /* 16:9 ratio responsive box */
+      border-radius:8px;background-size:cover;background-position:center;flex-shrink:0;background-color:#091423
+    }
+    .row .r-body{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+    .row .r-title{font-weight:800;display:flex;align-items:center;gap:10px;min-width:0}
+    .row .r-title .text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .tags{display:flex;gap:6px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.02);color:var(--muted)}
+
+    .muted{color:var(--muted)}
+    .hidden{opacity:0;transform:translateY(6px);transition:all .42s}
+    .show{opacity:1;transform:translateY(0)}
+    .footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center;max-width:var(--max);margin-left:auto;margin-right:auto;padding:0 clamp(14px,3vw,28px) 18px}
+
+    .meta-right{margin-left:auto;color:var(--muted);font-size:13px;white-space:nowrap}
+    .actions{display:flex;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap}
+    .small-btn{padding:6px 10px;border-radius:8px;border:1px solid var(--stroke);background:rgba(255,255,255,0.02);font-weight:700}
+    .share-btn {color: white;}
+    .share-btn:hover {cursor: pointer;}
+
+    /* Make list rows stack nicely on very small screens */
+    @media (max-width: 480px){
+      .row{
+        grid-template-columns: 1fr;
+      }
+      .row .r-title .text{
+        white-space:normal; /* allow wrapping on tiny screens */
+      }
+      .meta-right{margin-left:0}
+    }
+
+    /* iOS safe areas */
+    @supports(padding:max(0px)){
+      .nav-inner{
+        padding-left:max(clamp(14px,3vw,28px), env(safe-area-inset-left));
+        padding-right:max(clamp(14px,3vw,28px), env(safe-area-inset-right));
+      }
+      .drawer-inner{
+        padding-left:max(clamp(14px,3vw,28px), env(safe-area-inset-left));
+        padding-right:max(clamp(14px,3vw,28px), env(safe-area-inset-right));
+      }
+    }
+
+    /* Touch comfort */
+    .card, .row, .small-btn, .btn, .toggle button, .hamburger{
+      -webkit-tap-highlight-color: rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <div class="topbar" role="navigation" aria-label="main navigation">
+    <div class="nav-inner">
+      <a class="brand" href="../" aria-label="Home">
+        <img src="../assets/logo.png" alt="DriftThreads logo">
+        <h1>DriftThreads -- Blogs</h1>
+      </a>
+
+      <!-- Desktop controls -->
+      <div class="controls" role="toolbar" aria-label="list controls">
+        <label for="searchInput" class="sr-only">Search posts</label>
+        <input id="searchInput" class="search" placeholder="Search posts or tags…" aria-label="Search posts">
+        <div class="toggle" role="group" aria-label="view mode">
+          <button id="gridBtn" title="Grid view" aria-pressed="false"><i class="fa-solid fa-table-cells"></i></button>
+          <button id="listBtn" title="List view" aria-pressed="false"><i class="fa-solid fa-list"></i></button>
+        </div>
+        <a class="btn" href="../"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a class="btn primary" href="/home/"><i class="fa-solid fa-bag-shopping"></i> Shop</a>
+      </div>
+
+      <!-- Hamburger (mobile) -->
+      <button id="hamburgerBtn" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileDrawer">
+        <i class="fa-solid fa-bars"></i>
+        <span>Menu</span>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileDrawer" class="drawer" role="region" aria-label="Mobile menu">
+      <div class="drawer-inner">
+        <label for="mSearch" class="sr-only">Search posts</label>
+        <input id="mSearch" class="search" placeholder="Search posts or tags…" aria-label="Search posts mobile">
+        <div class="row-actions">
+          <div class="toggle" role="group" aria-label="view mode">
+            <button id="mGridBtn" title="Grid view" aria-pressed="false"><i class="fa-solid fa-table-cells"></i></button>
+            <button id="mListBtn" title="List view" aria-pressed="false"><i class="fa-solid fa-list"></i></button>
+          </div>
+          <a class="btn" href="../"><i class="fa-solid fa-arrow-left"></i> Back</a>
+          <a class="btn primary" href="/home/"><i class="fa-solid fa-bag-shopping"></i> Shop</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="wrap" role="main">
+    <div class="intro">
+      <h2 class="title">All Posts</h2>
+      <div class="muted" id="resultsInfo">--</div>
+    </div>
+
+    <div class="list-area hidden" id="listArea" aria-live="polite">
+      <div id="postsContainer" class="grid" data-view="grid" aria-live="polite"></div>
+    </div>
+
+    <div class="footer">Made in Joburg • DriftThreads</div>
+  </div>
+
+  <script>
+    /* ========= POSTS JSON - edit here =========
+      Keep objects with: id, title, slug, date, author, excerpt, tags:[], image
+    =========================================== */
+    const DEFAULT_POSTS = [
+      {
+        "id": "p1",
+        "title": "Why Our Hoodie Is the Only One You Actually Need Right Now",
+        "slug": "08-09-25",
+        "date": "2025-08-08",
+        "author": "Saajid",
+        "excerpt": "Want a hoodie that actually looks fire, lasts, and won’t bankrupt you? Our DriftThreads hoodie checks all the boxes.",
+        "tags": ["hoodies","drop","local"],
+        "image": "08-09-25/hero.png"
+      },
+      {
+        "id": "p2",
+        "title": "Behind the Prints: How We Make a Hoodie Graphic",
+        "slug": "21-09-25",
+        "date": "2025-09-21",
+        "author": "Zaynul",
+        "excerpt": "A look at DTG vs screen, prepress, and the little details that make a print pop -- no smoke, just facts.",
+        "tags": ["printing","process","design"],
+        "image": "21-09-25/hero.png"
+      },
+      {
+        "id": "p3",
+        "title": "Street Fits -- 3 Ways to Rock a DriftThreads Hoodie",
+        "slug": "3-ways-to-rock",
+        "date": "2024-12-15",
+        "author": "Saajid",
+        "excerpt": "Quick fits for day-to-day: stealth, layer king, and lounger. Keep it simple, keep it clean.",
+        "tags": ["style","fits"],
+        "image": "../assets/fits-3ways.jpg"
+      },
+      {
+        "id": "p4",
+        "title": "Local Collabs: Why We Work With Joburg Printers",
+        "slug": "local-collabs-joburg",
+        "date": "2024-09-21",
+        "author": "Zaynul",
+        "excerpt": "Short reasons we choose local print partners -- speed, quality, and keeping the plug close.",
+        "tags": ["local","collab","business"],
+        "image": "../assets/printer-collab.jpg"
+      }
+    ];
+
+    /* ========= app state ========= */
+    let POSTS = JSON.parse(JSON.stringify(DEFAULT_POSTS)); // proper copy
+    let VIEW = localStorage.getItem('drift_view') || 'grid'; // 'grid' or 'list'
+
+    /* ========= element refs (guarded) ========= */
+    const postsContainer = document.getElementById('postsContainer');
+    const resultsInfo = document.getElementById('resultsInfo');
+    const listArea = document.getElementById('listArea');
+    const searchInput = document.getElementById('searchInput'); // desktop search
+    const gridBtn = document.getElementById('gridBtn');
+    const listBtn = document.getElementById('listBtn');
+
+    // Mobile nav refs
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mSearch = document.getElementById('mSearch');
+    const mGridBtn = document.getElementById('mGridBtn');
+    const mListBtn = document.getElementById('mListBtn');
+
+    /* ========= helpers ========= */
+    function formatDate(d){
+      // Normalize various date formats (dd-mm-yy, yyyy-mm-dd, etc.)
+      if (!d) return '';
+      // If already ISO-ish, Date can parse. Otherwise, try custom parsing.
+      let dt = new Date(d);
+      if (isNaN(dt)) {
+        // Try dd-mm-yy or dd-mm-yyyy
+        const m = String(d).match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})$/);
+        if (m) {
+          let [_, dd, mm, yy] = m;
+          dd = parseInt(dd,10);
+          mm = parseInt(mm,10)-1;
+          yy = parseInt(yy,10);
+          if (yy < 100) yy += 2000;
+          dt = new Date(yy, mm, dd);
+        }
+      }
+      if(isNaN(dt)) return d;
+      return dt.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+    }
+    function parseDateForSort(d){
+      const parsed = new Date(formatDate(d)); // formatDate normalizes first
+      return isNaN(parsed) ? 0 : parsed.getTime();
+    }
+    function safeSlug(slug){ return slug ? String(slug).replace(/[^a-z0-9\-]/gi, '-').toLowerCase() : 'post' }
+    function escapeHtml(s=''){ return String(s).replace(/[&<>'"]/g, (c)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+    function debounce(fn, t=140){ let id; return (...a)=>{ clearTimeout(id); id=setTimeout(()=> fn.apply(null,a), t); } }
+
+    function syncSearchToBoth(value){
+      if(document.activeElement !== searchInput && searchInput) searchInput.value = value;
+      if(document.activeElement !== mSearch && mSearch) mSearch.value = value;
+    }
+
+    /* safe preload for background images with fallback */
+    function preloadBg(url, cb){
+      const img = new Image();
+      img.onload = ()=> cb(url);
+      img.onerror = ()=> cb('../assets/placeholder.png');
+      img.src = url;
+    }
+
+    /* ========= render ========= */
+    function getQuery(){
+      // Always read from whichever input the user is interacting with. If both empty, return ''.
+      const d = (searchInput && document.activeElement === searchInput) ? searchInput.value : '';
+      const m = (mSearch && document.activeElement === mSearch) ? mSearch.value : '';
+      const joined = (d || m || (searchInput?.value ?? '') || (mSearch?.value ?? '') || '');
+      return joined.toLowerCase().trim();
+    }
+
+    function renderPosts(posts){
+      listArea.setAttribute('aria-busy','true');
+      postsContainer.innerHTML = '';
+
+      const q = getQuery();
+
+      const filtered = posts.filter(p=>{
+        if(!q) return true;
+        const hay = [
+          p.title||'',
+          p.excerpt||'',
+          (p.tags||[]).join(' '),
+          p.author||'',
+          p.slug||''
+        ].join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+
+      // newest first (robust sort)
+      filtered.sort((a,b)=> parseDateForSort(b.date) - parseDateForSort(a.date));
+
+      resultsInfo.textContent = `${filtered.length} ${filtered.length===1?'post':'posts'} • view: ${VIEW}`;
+
+      if(VIEW === 'grid'){
+        postsContainer.classList.remove('list');
+        postsContainer.classList.add('grid');
+        postsContainer.setAttribute('data-view','grid');
+        filtered.forEach(p => postsContainer.appendChild(cardEl(p)));
+      } else {
+        postsContainer.classList.remove('grid');
+        postsContainer.classList.add('list');
+        postsContainer.setAttribute('data-view','list');
+        filtered.forEach(p => postsContainer.appendChild(rowEl(p)));
+      }
+
+      // reveal container
+      setTimeout(()=> { listArea.classList.add('show'); listArea.removeAttribute('aria-busy'); }, 40);
+    }
+
+    function cardEl(p){
+      const a = document.createElement('article');
+      a.className = 'card';
+      a.tabIndex = 0;
+
+      // default placeholder as we preload
+      const mediaDiv = document.createElement('div');
+      mediaDiv.className = 'media';
+      mediaDiv.setAttribute('aria-hidden','true');
+      mediaDiv.style.backgroundImage = `url('../assets/placeholder.png')`;
+
+      const body = document.createElement('div');
+      body.className = 'body';
+      body.innerHTML = `
+        <div class="title">${escapeHtml(p.title)}</div>
+        <div class="meta">${formatDate(p.date)} · ${escapeHtml(p.author)}</div>
+        <div class="excerpt">${escapeHtml(p.excerpt)}</div>
+        <div class="actions">
+          <a class="small-btn" href="../blogs/${safeSlug(p.slug)}/" role="button">Read</a>
+          <div style="margin-left:auto" class="muted tags">${(p.tags||[]).map(t=>`<span class="tag">${escapeHtml(t)}</span>`).join(' ')}</div>
+        </div>
+      `;
+
+      a.appendChild(mediaDiv);
+      a.appendChild(body);
+
+      // preload and set background or fallback
+      preloadBg(p.image || '../assets/placeholder.png', (finalUrl)=>{
+        mediaDiv.style.backgroundImage = `url('${finalUrl}')`;
+      });
+
+      a.addEventListener('click', ()=> location.href = `../blogs/${safeSlug(p.slug)}/`);
+      a.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') location.href = `../blogs/${safeSlug(p.slug)}/`; });
+      return a;
+    }
+
+    function rowEl(p){
+      const a = document.createElement('article');
+      a.className = 'row';
+      a.tabIndex = 0;
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      thumb.style.backgroundImage = `url('../assets/placeholder.png')`;
+
+      const rbody = document.createElement('div');
+      rbody.className = 'r-body';
+      rbody.innerHTML = `
+        <div class="r-title">
+          <div class="text">${escapeHtml(p.title)}</div>
+          <div class="meta-right muted">${formatDate(p.date)}</div>
+        </div>
+        <div class="meta muted">${escapeHtml(p.author)} · ${(p.tags||[]).map(escapeHtml).join(', ')}</div>
+        <div class="excerpt">${escapeHtml(p.excerpt)}</div>
+        <div class="actions">
+          <a class="small-btn" href="../blogs/${safeSlug(p.slug)}/">Read</a>
+          <button class="small-btn share-btn" type="button">Share</button>
+        </div>
+      `;
+
+      a.appendChild(thumb);
+      a.appendChild(rbody);
+
+      // preload image then set
+      preloadBg(p.image || '../assets/placeholder.png', (finalUrl)=>{
+        thumb.style.backgroundImage = `url('${finalUrl}')`;
+      });
+
+      const shareBtn = rbody.querySelector('.share-btn');
+      shareBtn.addEventListener('click', async (ev)=>{
+        ev.stopPropagation();
+        const link = location.origin + `/blogs/${safeSlug(p.slug)}/`;
+        try{
+          if (navigator.share) {
+            await navigator.share({ title: p.title, text: p.excerpt, url: link });
+          } else if(navigator.clipboard) {
+            await navigator.clipboard.writeText(link);
+            toast('Link copied');
+          } else {
+            prompt('Copy link', link);
+          }
+        }catch(_e){}
+      });
+
+      a.addEventListener('click', ()=> location.href = `../blogs/${safeSlug(p.slug)}/`);
+      a.addEventListener('keydown', (e)=> { if(e.key==='Enter' || e.key===' ') location.href = `../blogs/${safeSlug(p.slug)}/`; });
+      return a;
+    }
+
+    /* tiny toast */
+    function toast(msg=''){
+      let t = document.getElementById('__toast');
+      if(!t){
+        t = document.createElement('div');
+        t.id='__toast';
+        t.style.position='fixed';
+        t.style.left='50%';
+        t.style.bottom='20px';
+        t.style.transform='translateX(-50%)';
+        t.style.background='rgba(0,0,0,0.7)';
+        t.style.border='1px solid rgba(255,255,255,0.2)';
+        t.style.padding='10px 14px';
+        t.style.borderRadius='10px';
+        t.style.color='#fff';
+        t.style.fontWeight='700';
+        t.style.zIndex='1000';
+        t.style.pointerEvents='none';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.style.opacity='1';
+      clearTimeout(t.__id);
+      t.__id = setTimeout(()=> t.style.opacity='0', 1200);
+    }
+
+    /* ========= view toggle ========= */
+    function updateToggleUI(){
+      const setPressed = (btn, on) => { btn?.classList.toggle('active', on); btn?.setAttribute('aria-pressed', on); };
+      setPressed(gridBtn, VIEW === 'grid');
+      setPressed(listBtn, VIEW === 'list');
+      setPressed(mGridBtn, VIEW === 'grid');
+      setPressed(mListBtn, VIEW === 'list');
+      localStorage.setItem('drift_view', VIEW);
+    }
+    gridBtn?.addEventListener('click', ()=> { VIEW = 'grid'; updateToggleUI(); renderPosts(POSTS); });
+    listBtn?.addEventListener('click', ()=> { VIEW = 'list'; updateToggleUI(); renderPosts(POSTS); });
+    mGridBtn?.addEventListener('click', ()=> { VIEW = 'grid'; updateToggleUI(); renderPosts(POSTS); closeDrawer(); });
+    mListBtn?.addEventListener('click', ()=> { VIEW = 'list'; updateToggleUI(); renderPosts(POSTS); closeDrawer(); });
+
+    /* ========= search ========= */
+    const onSearch = debounce(()=>{
+      // Keep both inputs in sync with the latest value
+      const activeVal = (document.activeElement === searchInput) ? searchInput.value
+                        : (document.activeElement === mSearch) ? mSearch.value
+                        : (searchInput?.value || mSearch?.value || '');
+      syncSearchToBoth(activeVal);
+      renderPosts(POSTS);
+    }, 180);
+    searchInput?.addEventListener('input', onSearch);
+    mSearch?.addEventListener('input', onSearch);
+
+    // keyboard shortcuts
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'g'){ VIEW='grid'; updateToggleUI(); renderPosts(POSTS); }
+      if(e.key === 'l'){ VIEW='list'; updateToggleUI(); renderPosts(POSTS); }
+      if(e.key === '/') {
+        e.preventDefault();
+        // focus whichever search is visible
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        (isMobile ? mSearch : searchInput)?.focus();
+      }
+      if(e.key === 'Escape'){ closeDrawer(); }
+    });
+
+    /* ========= Mobile drawer logic ========= */
+    function openDrawer(){
+      mobileDrawer.classList.add('open');
+      hamburgerBtn.setAttribute('aria-expanded','true');
+      syncSearchToBoth(searchInput?.value || mSearch?.value || '');
+      document.documentElement.style.overflow='hidden';
+      document.body.style.overflow='hidden';
+      setTimeout(()=> mSearch?.focus(), 10);
+    }
+    function closeDrawer(){
+      mobileDrawer.classList.remove('open');
+      hamburgerBtn.setAttribute('aria-expanded','false');
+      document.documentElement.style.overflow='';
+      document.body.style.overflow='';
+    }
+    function toggleDrawer(){
+      if(mobileDrawer.classList.contains('open')) closeDrawer(); else openDrawer();
+    }
+
+    hamburgerBtn?.addEventListener('click', toggleDrawer);
+    // Close when clicking outside drawer content
+    mobileDrawer?.addEventListener('click', (e)=>{
+      const inner = e.target.closest('.drawer-inner');
+      if(!inner) closeDrawer();
+    });
+
+    // Close drawer on resize to desktop
+    const mq = window.matchMedia('(min-width: 769px)');
+    mq.addEventListener?.('change', (e)=>{ if(e.matches) closeDrawer(); });
+
+    /* ========= init ========= */
+    (function init(){
+      // Normalize dates upfront to avoid NaN sorts and weird display
+      POSTS = POSTS.map(p => {
+        return { ...p, date: formatDate(p.date) };
+      });
+      if(!['grid','list'].includes(VIEW)) VIEW = 'grid';
+      updateToggleUI();
+      renderPosts(POSTS);
+      setTimeout(()=> listArea.classList.add('show'), 60);
+    })();
+  </script>
+</body>
+</html>

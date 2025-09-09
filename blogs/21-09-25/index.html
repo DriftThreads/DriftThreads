@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Behind the Prints: How We Make a Hoodie Graphic — DriftThreads</title>
+
+  <!-- Meta / SEO -->
+  <meta name="description" content="A look at DTG vs screen, prepress, and the little details that make a print pop — no smoke, just facts.">
+  <link rel="canonical" href="https://driftthreads.store/blog/behind-the-prints" />
+  <meta property="og:title" content="Behind the Prints: How We Make a Hoodie Graphic">
+  <meta property="og:description" content="A look at DTG vs screen, prepress, and the little details that make a print pop — no smoke, just facts.">
+  <meta property="og:image" content="../assets/21-09-25/hero.png">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- favicon & fonts -->
+  <link rel="icon" href="../../assets/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* =======================
+       Theme variables (shared)
+       ======================= */
+    :root{
+      --bg-1:#071025;
+      --bg-2:#0a0f1a;
+      --stroke: rgba(255,255,255,0.10);
+      --text:#e6eaf2;
+      --muted:#9aa3b2;
+      --accent-1:#6ee7ff;
+      --accent-2:#a78bfa;
+      --accent-3:#22d3ee;
+      --radius:16px;
+      --shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.03);
+      --max:1200px;
+      --glass: rgba(10,15,26,0.82);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:'Lexend',sans-serif;color:var(--text);
+      background: linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 100%);
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      scroll-behavior:smooth;overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    /* --------------------
+       Subtle animated BG
+       -------------------- */
+    .bg-grid::before{content:"";position:fixed;inset:-200vmax;
+      background:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px) 0 0/28px 28px,
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px) 0 0/28px 28px,
+        linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.6));
+      opacity:.18;
+      z-index:-3;pointer-events:none;
+      animation:pan 120s linear infinite;
+    }
+    @keyframes pan{to{transform:translate3d(40px,20px,0)}}
+
+    .blob{position:fixed;filter:blur(60px);opacity:.14;z-index:-2;mix-blend-mode:screen;pointer-events:none}
+    .blob.cyan{width:40vmax;height:40vmax;background:radial-gradient(circle at 30% 30%,#22d3ee,transparent 60%);top:-12vmax;left:-12vmax}
+    .blob.violet{width:45vmax;height:45vmax;background:radial-gradient(circle at 70% 60%,#a78bfa,transparent 60%);bottom:-18vmax;right:-18vmax}
+
+    /* ======================
+       Layout / shared utils
+       ====================== */
+    .wrap{max-width:var(--max);margin:0 auto;padding:clamp(16px,3vw,32px)}
+    .topbar{
+      position:fixed;top:10px;left:0;right:0;margin:0 auto;max-width:95%;
+      display:flex;justify-content:space-between;align-items:center;gap:16px;
+      background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);
+      padding:10px 16px;backdrop-filter:blur(10px);box-shadow:var(--shadow);z-index:100;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:44px;height:44px;border-radius:10px;background:black;padding:6px;object-fit:cover}
+    .brand h1{margin:0;font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(18px,3.6vw,26px);
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;color:transparent}
+    .nav-actions{display:flex;gap:10px;align-items:center}
+    .hamburger{display:none;font-size:24px;color:var(--text);cursor:pointer}
+
+    /* buttons (consistent from landing) */
+    .pill{padding:8px 14px;border-radius:999px;font-weight:700;background:rgba(255,255,255,0.03);border:1px solid var(--stroke);cursor:pointer}
+    .primary{padding:9px 16px;border-radius:999px;font-weight:800;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220;border:0;cursor:pointer}
+    .pill:hover,.primary:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,0.45)}
+
+    @media(max-width:1000px){
+      .nav-actions{display:none}
+      .hamburger{display:block}
+    }
+
+    body{padding-top:92px}
+
+    /* =====================
+       Page layout (article)
+       ===================== */
+    .page{display:grid;gap:28px;grid-template-columns:1fr 360px;align-items:start}
+    @media (max-width:1000px){.page{grid-template-columns:1fr}}
+
+    .article{border-radius:14px;padding:22px;border:1px solid var(--stroke);
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:var(--shadow)
+    }
+
+    .post-hero{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+    /* hero media is now CSS-driven */
+    .post-media{
+      flex:0 0 320px;max-width:320px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04);
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+      display:block;
+      aspect-ratio: 4 / 3;
+      background-position:center;background-size:cover;background-repeat:no-repeat;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    /* default hero image — change url here or use inline style on the element */
+    /* .post-media { background-image: url('../assets/driftthreads-hoodie-hero.jpg'); } */
+
+    .post-body{flex:1 1 420px;min-width:220px;display:flex;flex-direction:column;gap:12px}
+    .kicker{display:inline-block;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:999px;font-weight:800;color:var(--muted);font-size:13px}
+    .title{font-family:'Orbitron',sans-serif;font-size:clamp(22px,4vw,34px);margin:8px 0;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;color:transparent}
+    .meta{color:var(--muted);font-size:13px}
+    .lead{color:var(--muted);margin-bottom:6px;line-height:1.6}
+    .content{color:var(--text);line-height:1.7}
+    .content h3{margin-top:18px;font-family:'Orbitron',sans-serif;font-size:22px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;color:transparent;padding-top:6px}
+
+    .cta-row{display:flex;gap:12px;align-items:center;margin-top:12px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220;font-weight:800;cursor:pointer}
+
+    /* =====================
+       Sidebar / Price guide
+       ===================== */
+    .sidebar{border-radius:14px;padding:18px;border:1px solid var(--stroke);
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:var(--shadow);height:fit-content}
+    .author{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+    .author img{width:48px;height:48px;border-radius:10px;object-fit:cover}
+
+    .price-key{margin-top:8px;background: rgba(255,255,255,0.02);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,0.03)}
+    .price-key-title{font-weight:700;font-size:18px;margin-bottom:12px;color:var(--accent-2)}
+    .price-key-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+    .pk-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:8px;border-radius:8px;transition:background .12s}
+    .pk-row:hover{background:rgba(255,255,255,0.01)}
+    .pk-left{flex:1;min-width:0}
+    .pk-type{display:block;font-size:13px;color:#ffffff}
+    .pk-desc{font-size:12px;color:#9fb6d1;margin:4px 0 8px 0;line-height:1.2}
+    .pk-right{white-space:nowrap;font-weight:800;font-size:13px;color:#061220;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));padding:6px 10px;border-radius:8px;min-width:82px;text-align:center}
+
+    /* fix buttons in sidebar (full width friendly) */
+    .sidebar .pill{display:inline-block;margin-top:8px}
+    .sidebar .primary{display:block;margin-top:12px;width:100%;text-align:center}
+
+    @media (max-width:520px){
+      .price-key{margin:10px 12px;padding:10px}
+      .pk-row{flex-direction:column;align-items:flex-start;gap:6px}
+      .pk-right{align-self:flex-end;min-width:60px;padding:5px 8px}
+    }
+
+    /* small reveal effect */
+    .hidden{opacity:0;transform:translateY(10px);transition:all .48s cubic-bezier(.2,.9,.2,1)}
+    .show{opacity:1;transform:translateY(0)}
+
+    .hero-img {
+  width: 90%;
+  border-radius: 20px;
+  /* margin: 15px; */
+  display: block;
+  margin: 0 auto;
+}
+
+
+    /* scroll-to-top */
+    #scrollToTopBtn { position: fixed; width:50px;height:50px;background:linear-gradient(135deg,var(--accent-1),var(--accent-2)); color:#061220; bottom:30px;right:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;z-index:120;border:1px solid var(--stroke); transform:translateY(8px) scale(.95); opacity:0; pointer-events:none; transition:all .18s }
+    #scrollToTopBtn.visible{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+    #scrollToTopBtn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 6px 18px rgba(0,0,0,0.45)}
+    @media(max-width:600px){#scrollToTopBtn{right:calc(50vw - 20px);bottom:18px;width:40px;height:40px;font-size:18px}}
+
+    footer{margin-top:22px;color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px}
+  </style>
+</head>
+<body class="bg-grid">
+  <!-- background blobs (subtle) -->
+  <div class="blob cyan"></div>
+  <div class="blob violet"></div>
+
+  <div class="wrap">
+    <!-- Topbar: pulled/adapted from your landing page -->
+    <div class="topbar" role="navigation" aria-label="Main navigation">
+      <div class="brand">
+        <img src="../../assets/logo.png" alt="DriftThreads logo">
+        <div>
+          <h1>DriftThreads</h1>
+          <div class="muted" style="font-size:12px">Streetwear • Cars • Joburg</div>
+        </div>
+      </div>
+
+      <div class="nav-actions" aria-hidden="false">
+        <a class="pill" href="/home/">Shop</a>
+        <a class="pill" href="/#products" target="_blank" rel="noopener noreferrer">Products</a>
+        <a class="primary" href="/contact/">Contact</a>
+      </div>
+
+      <div class="hamburger" id="hamburger" aria-controls="navMenu" aria-expanded="false" role="button" tabindex="0">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        <span class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Toggle menu</span>
+      </div>
+    </div>
+
+    <!-- Mobile menu (keeps accessibility) -->
+    <nav id="navMenu" class="nav-menu" role="menu" aria-hidden="true" style="display:none;position:fixed;top:80px;left:50%;transform:translateX(-50%);width:90%;background:var(--glass);border:1px solid var(--stroke);border-radius:var(--radius);padding:12px;gap:10px;z-index:99;">
+      <a class="pill" href="/home/" role="menuitem">Shop</a>
+      <a class="pill" href="/#products" role="menuitem">Products</a>
+      <a class="primary" href="mailto:hello@driftthreads.store" role="menuitem">Contact</a>
+    </nav>
+
+
+
+    <a class="pill" href="..">
+  <i class="fas fa-angle-left" aria-hidden="true"></i> Back
+</a>
+
+<br>
+<br>
+
+    <!-- Main grid -->
+    <main style="margin-top:8px">
+      <div class="page">
+
+        <!-- Article -->
+        <article class="article hidden" id="post" role="article" aria-labelledby="postTitle">
+          <div class="post-hero">
+            <!-- Hero media is CSS-driven (no inline img tag). To change hero, edit CSS .post-media background-image or add style attr -->
+            <!-- <figure class="post-media" aria-hidden="false" role="img" aria-label="DriftThreads hoodie hero"></figure> -->
+
+            <!-- Right text -->
+            <div class="post-body">
+              <h1 id="postTitle" class="title">Behind the Prints: How We Make a Hoodie Graphic</h1>
+
+              <div class="meta">
+                <span style="font-weight:700">By Zaynul</span> ·                                                                                                                                                                                                                                                                                                                                                                                                                    
+                <time datetime="2021-09-25" class="meta">September 25, 2021</time> ·
+                <span class="meta">Printing · Process · Design</span>
+              </div>
+
+              <br>
+
+            <img src="hero.png" alt="behind the prints hero" class="hero-img">
+
+              <p class="lead"><strong>TLDR:</strong> DTG vs screen, prepress, curing, and the small steps we never skip — this is how we keep prints lasting and not acting sus after a wash.</p>
+
+              <div class="content">
+                <h3>Intro — straight up</h3>
+                <p>Not all prints are made equal. Some crack, some fade, some peel after a couple washes. We sweat the tiny stuff — file setup, pretreat, curing temp — because those bits decide whether a design becomes a favourite or gym rag. Here’s how we do it, no fluff.</p>
+
+                <h3>DTG vs Screen — quick compare</h3>
+                <ul>
+                  <li><strong>DTG (Direct-to-Garment):</strong> Best for photoreal and small runs. Fast setup, but white ink maintenance and fabric choice matter. Cotton is king.</li>
+                  <li><strong>Screen Printing:</strong> Best for big runs, punchy solids and long-lasting feel. Upfront setup (screens & separations) but cheaper per unit at scale.</li>
+                </ul>
+
+                <h3>Prepress — don’t skip this</h3>
+                <p>We always ask for proper files. Vector when possible, PSDs at 300 DPI, and PNG proofs for DTG. Keep layers, name your colours, and include final size & placement — saves everyone time and money.</p>
+
+                <h3>DTG essentials</h3>
+                <ul>
+                  <li><strong>Pretreat:</strong> For dark hoodies we pretreat so white ink doesn’t sink into fabric. Non-negotiable.</li>
+                  <li><strong>Printer care:</strong> White ink clogs — we purge and run test swatches before each batch.</li>
+                  <li><strong>Fabric:</strong> Pure cotton gives the best results. Blends need testing.</li>
+                </ul>
+
+                <h3>Screen printing essentials</h3>
+                <ul>
+                  <li><strong>Underbase:</strong> White underbase on dark garments, flash-cure, then print colors.</li>
+                  <li><strong>Mesh count:</strong> Lower mesh for thick ink deposits (bold solids), higher mesh for detail.</li>
+                  <li><strong>Curing:</strong> Hit the right temp — under-cure = washout, over-cure = crunchy cracked prints.</li>
+                </ul>
+
+                <h3>File checklist we need</h3>
+                <ul>
+                  <li>AI / EPS / PDF (vector) with outlined type</li>
+                  <li>PSD @ 300 DPI (actual size) with layers</li>
+                  <li>PNG (transparent) for DTG proofs</li>
+                  <li>Color notes (Pantone if exact)</li>
+                </ul>
+
+                <h3>Testing & QC</h3>
+                <p>We always run a swatch sample and a quick wash test (3 cold washes, line dry). If it passes: green light. If not: tweak pretreat, ink deposit, or cure time.</p>
+
+                <h3>Costs & turnaround — keepin’ it real</h3>
+                <p>Ballpark rules:</p>
+                <ul>
+                  <li><strong>DTG:</strong> 1–50 pcs, 2–7 business days.</li>
+                  <li><strong>Screen:</strong> 50+ pcs, 5–14 business days (setup time included).</li>
+                </ul>
+
+                <div class="cta-row">
+                  <a class="btn" href="https://driftthreads.store/home/">Order a sample</a>
+                  <a class="pill" href="mailto:hello@driftthreads.store">Get a quote</a>
+                </div>
+
+                <h3>Care tips</h3>
+                <ul>
+                  <li>Turn inside out before washing.</li>
+                  <li>Cold wash, gentle spin.</li>
+                  <li>Line dry or low tumble. Heat is the enemy.</li>
+                </ul>
+
+                <h3>Final word — why it matters</h3>
+                <p>Slapping art onto fabric is easy. Doing it right takes patience and process. We pick the process so your hoodie stays your favourite, not the one you hide in the back of the wardrobe.</p>
+
+                <p><strong>Shop us →</strong> <a href="https://driftthreads.store" style="color:greenyellow">driftthreads.store</a><br>
+                <strong>Email →</strong> <a href="mailto:hello@driftthreads.store" style="color:greenyellow">hello@driftthreads.store</a></p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="sidebar hidden" aria-labelledby="sideTitle">
+          <h4 id="sideTitle">Quick Hits</h4>
+
+
+
+          <div class="author">
+            <img src="../../assets/placeholder.png" alt="Zaynul avatar">
+            <div>
+              <div style="font-weight:800">Zaynul</div>
+              <div class="muted">Founder · Operations</div>
+            </div>
+          </div>
+
+          <div class="author">
+            <img src="../../assets/placeholder.png" alt="Saajid avatar">
+            <div>
+              <div style="font-weight:800">Saajid</div>
+              <div class="muted">Website · Designs</div>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="price-key" role="region" aria-label="Hoodie price guide">
+            <div class="price-key-title">Hoodie Price Guide</div>
+
+            <ul class="price-key-list" aria-hidden="false">
+              <li class="pk-row">
+                <div class="pk-left">
+                  <strong class="pk-type">Back print only</strong>
+                  <div class="pk-desc">Large design on the back — great for full artwork or text.</div>
+                </div>
+                <div class="pk-right">R650</div>
+              </li>
+
+              <li class="pk-row">
+                <div class="pk-left">
+                  <strong class="pk-type">Back + chest emblem</strong>
+                  <div class="pk-desc">Back artwork plus a small logo/emblem on the front chest.</div>
+                </div>
+                <div class="pk-right">R700</div>
+              </li>
+
+              <li class="pk-row">
+                <div class="pk-left">
+                  <strong class="pk-type">Back + sleeves</strong>
+                  <div class="pk-desc">Back print with sleeve prints — price depends on coverage & complexity.</div>
+                </div>
+                <div class="pk-right">R750–R850</div>
+              </li>
+            </ul>
+
+            <!-- Buttons fixed: pill + primary behave and fit nicely in sidebar -->
+            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+              <!-- <a class="pill" href="#products" role="button">See Products</a> -->
+              <a class="primary" href="/home/" target="_blank" rel="noopener">Shop Now</a>
+              <br>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <footer style="margin-top:22px">
+        <div>© DriftThreads — Streetwear built to drift.</div>
+        <div class="muted">Follow: @driftthreads</div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Scroll to Top Button (brought from landing) -->
+  <a id="scrollToTopBtn" href="#" role="button" aria-label="Scroll to top"><i class="fas fa-angle-up"></i></a>
+
+  <script>
+    /* --------------------------
+       Mobile nav (hamburger)
+       -------------------------- */
+    (function(){
+      const hamburger = document.getElementById('hamburger');
+      const navMenu = document.getElementById('navMenu');
+      const hamburgerIcon = hamburger && hamburger.querySelector('i');
+
+      function setMenuState(open){
+        if(!navMenu || !hamburger) return;
+        if(open){
+          navMenu.style.display='flex';
+          navMenu.setAttribute('aria-hidden','false');
+          hamburger.setAttribute('aria-expanded','true');
+          hamburgerIcon && hamburgerIcon.classList.replace('fa-bars','fa-xmark');
+        } else {
+          navMenu.style.display='none';
+          navMenu.setAttribute('aria-hidden','true');
+          hamburger.setAttribute('aria-expanded','false');
+          hamburgerIcon && hamburgerIcon.classList.replace('fa-xmark','fa-bars');
+        }
+      }
+
+      function toggleMenu(){ setMenuState(navMenu.style.display !== 'flex'); }
+
+      if(hamburger){
+        hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+        hamburger.addEventListener('keydown', (e) => {
+          if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleMenu(); }
+        });
+      }
+
+      // close if click outside
+      document.addEventListener('click', (e) => {
+        if(!navMenu || navMenu.style.display!=='flex') return;
+        const inside = navMenu.contains(e.target) || (hamburger && hamburger.contains(e.target));
+        if(!inside) setMenuState(false);
+      }, {passive:true});
+
+      document.addEventListener('keydown',(e)=>{
+        if(e.key === 'Escape' && navMenu && navMenu.style.display==='flex'){ setMenuState(false); if(hamburger) hamburger.focus(); }
+      });
+    })();
+
+
+    /* --------------------------
+       Reveal on scroll (IntersectionObserver)
+       -------------------------- */
+    (function(){
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if(e.isIntersecting){
+            e.target.classList.add('show');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.06 });
+
+      document.querySelectorAll('.hidden').forEach(el => io.observe(el));
+    })();
+
+
+    /* --------------------------
+       Scroll-to-top behaviour
+       -------------------------- */
+    (function(){
+      const btn = document.getElementById('scrollToTopBtn');
+      if(!btn) return;
+
+      function updateVisibility(){
+        if(window.scrollY > 240) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+      }
+      updateVisibility();
+      window.addEventListener('scroll', updateVisibility, { passive:true });
+
+      function scrollTopHandler(e){
+        e && e.preventDefault();
+        window.scrollTo({ top:0, behavior:'smooth' });
+        btn.blur();
+      }
+
+      btn.addEventListener('click', scrollTopHandler);
+      btn.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); scrollTopHandler(e); }
+      });
+    })();
+
+    /* --------------------------
+       Friendly: allow hero override via data-attr
+       e.g. <figure class="post-media" data-image="path.png"></figure>
+       -------------------------- */
+    (function(){
+      document.querySelectorAll('.post-media').forEach(el=>{
+        const src = el.getAttribute('data-image');
+        if(src) el.style.backgroundImage = `url('${src}')`;
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -16,7 +16,6 @@
     opacity: 0;
     transform: translateY(-5vw);
     filter: blur(1px);
-
     transition: all .5s;
 }
 
@@ -149,6 +148,31 @@
       background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:16px 0;}
     .lead{color:var(--muted);margin-bottom:18px;line-height:1.6;}
     .actions{display:flex;gap:12px;margin-top:10px;}
+
+    /* NEW: hero-aside (blog teaser) */
+    .hero-aside{
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:20px;
+      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .blog-kicker{display:inline-block;padding:6px 10px;font-size:12px;border-radius:999px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:700;}
+    .blog-title{font-family:'Orbitron',sans-serif;font-weight:800;font-size:clamp(18px,3vw,22px);margin:0;}
+    .blog-excerpt{color:var(--muted);font-size:14px;line-height:1.4;}
+    .blog-graphic{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));color:#061220;font-size:22px;margin-left:auto;}
+    .blog-meta{display:flex;gap:10px;align-items:center;width:100%;}
+    .blog-cta{margin-top:4px;padding:10px 12px;border-radius:12px;font-weight:800;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220;border:0;text-align:center;display:inline-block;}
+    @media(max-width:900px){
+      .hero-aside{order:99;} /* stack after hero-card on small screens */
+      .blog-graphic{margin-left:auto;}
+    }
+
     section h3{font-family:'Orbitron',sans-serif;font-size:clamp(22px,2.5vw,28px);
       background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;
       margin-top:40px;margin-bottom:14px;}
@@ -259,7 +283,7 @@
     <div class="nav-actions">
       <a class="pill" href="#products">Products</a>
       <a class="pill" href="#about">About</a>
-      <a class="pill" href="#contact">Contact</a>
+      <a class="pill" href="./contact">Contact</a>
       <a class="primary" href="./home/">Shop</a>
     </div>
     <div class="hamburger" id="hamburger" aria-controls="navMenu" aria-expanded="false" role="button" tabindex="0">
@@ -286,9 +310,19 @@
           <a class="pill" href="#products">See bestsellers</a>
         </div>
       </div>
-    </section>
 
-    
+      <!-- NEW: blog teaser aside (keeps layout tidy on mobile) -->
+      <aside class="hero-aside hidden" aria-labelledby="blog-teaser-title">
+        <span class="blog-kicker">Latest — Blog</span>
+        <h3 id="blog-teaser-title" class="blog-title">Drive & Drop — Fresh Threads, Garage Stories</h3>
+        <p class="blog-excerpt">Short reads about drops, behind-the-scenes prints, and the Joburg car culture that inspires the designs. Quick, gritty, and snackable.</p>
+
+        <div class="blog-meta" aria-hidden="false">
+          <a class="blog-cta" href="./blogs" role="button" aria-label="Visit DriftThreads blog">Read the blog</a>
+          <div class="blog-graphic" aria-hidden="true"><i class="fa-regular fa-newspaper"></i></div>
+        </div>
+      </aside>
+    </section>
 
     <!-- Products -->
     <section id="products">
@@ -511,7 +545,8 @@
         }
       });
     },{threshold:.08});
-    document.querySelectorAll('.product,.person,.test,.hero-card').forEach(el=>io.observe(el));
+    // include hero-aside so it animates too
+    document.querySelectorAll('.product,.person,.test,.hero-card,.hero-aside').forEach(el=>io.observe(el));
 
     // Scroll-to-top
     (function(){
@@ -532,10 +567,10 @@
       });
     })();
 
-// Stagger
+// Stagger reveal for "hidden" elements
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      console.log(entry)
+      // add "show" class when in view, remove when out
       if (entry.isIntersecting) {
         entry.target.classList.add("show");
       } else {
