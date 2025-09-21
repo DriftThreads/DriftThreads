@@ -639,15 +639,54 @@
 }
 
 .sponsor-card-front {
-    outline: 3px red solid;
-    outline-offset: 3px;
-    border-radius: 10px;
-    overflow: hidden;
-    height: 100%;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
+  outline: 3px solid red;
+  outline-offset: 2px;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  animation: rainbowJitter 5s steps(1) infinite;
 }
+
+@keyframes rainbowJitter {
+  0%   { outline-color: red; }
+  16%  { outline-color: orange; }
+  33%  { outline-color: yellow; }
+  50%  { outline-color: lime; }
+  66%  { outline-color: blue; }
+  83%  { outline-color: rgb(133, 11, 221); }
+  100% { outline-color: violet; }
+}
+
+
+
+/* 
+.sponsor-card-front {
+  position: relative; 
+    border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sponsor-card-front::before {
+  content: '';
+  position: absolute;
+  top: -3px; left: -3px; right: -3px; bottom: -3px; 
+  border-radius: 13px; 
+  background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+  z-index: 1;
+}
+
+.sponsor-card-front > * {
+  position: relative;
+  z-index: 2; 
+} */
+
 
 
 /* @keyframes rainbowBG {
@@ -1233,11 +1272,13 @@
       <section id=grid aria-live=polite aria-busy=false></section>
       <div id=loadingSpinner style=display:none><i class="fas fa-spinner fa-pulse fa-2x" aria-hidden=true></i></div>
       <div id=disclaimerWrapper>
-        <div id=disclaimerBanner>
-          ⚠️ Disclaimer: Product images may appear slightly different from real life.
-          Some visuals are digitally enhanced or AI-assisted for presentation,
-          but all hoodies are printed with high-definition graphics only.
-        </div>
+        <div id="disclaimerBanner">
+          ⚠️ <b>Disclaimer:</b> Product images may appear slightly different from real life.<br>
+          Some visuals are digitally enhanced or AI-assisted for presentation purposes.<br>
+          All hoodies are printed with high-definition graphics only.<br>
+          Actual products may vary in appearance due to distortion or scaling during digital processes.
+      </div>
+
       </div>
     </main>
     <div id=cartModal class=cart-modal aria-hidden=true>
@@ -1264,8 +1305,8 @@
     <script>
       /* ---------- Data: products and sponsors  ---------- */
   const sponsors = [
-    {id:'spon-1',title:'Monster Energy',img:'sponsors/monster.jpeg',url:'https://www.monsterenergy.com',description:'Unleash the beast — fuel your drift',badge:'Sponsored'},
-    {id:'spon-2',title:'Autostyle Motorsport',img:'sponsors/autostyle.jpeg',url:'https://www.autostyle.co.za/',description:'Built for speed — engineered for victory',badge:'Sponsored'},
+    {id:'spon-1',title:'Autostyle Motorsport',img:'sponsors/autostyle.jpeg',url:'https://www.autostyle.co.za/',description:'Built for speed — engineered for victory',badge:'Sponsored'},
+    {id:'spon-2',title:'Monster Energy',img:'sponsors/monster.jpeg',url:'https://www.monsterenergy.com',description:'Unleash the beast — fuel your drift',badge:'Sponsored'},
     {id:'spon-3',title:'Studio 88',img:'sponsors/studio88.jpeg',url:'https://studio-88.co.za',description:'Style on the move - the way you want it',badge:'Sponsored'}
 ];
 
