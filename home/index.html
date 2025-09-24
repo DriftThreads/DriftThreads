@@ -2,41 +2,317 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>DriftThreads — Home (multi-image products)</title>
+<title>DriftThreads -- Home (multi-image products)</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" href="assets/favicon.png" />
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <style>
-:root{--bg:radial-gradient(circle at center,#2a3a44,#161616 75%);--card-bg:radial-gradient(circle at center,#383838,#161616 85%);--text:#fff;--accent:#0af;--accent-strong:#00c2ff;--muted:#9aa0a6;--transition:240ms;--ease:cubic-bezier(0.22,0.9,0.27,1);--card-radius:12px;--badge-font:600 .78rem/1 "Lexend",sans-serif}
-*{box-sizing:border-box}html{scroll-behavior:smooth}html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:"Lexend",sans-serif}a{color:inherit}::selection{background:rgba(10,170,255,0.14)}::-webkit-scrollbar{width:0;background:transparent}
-#scrollToTopBtn i{text-decoration:none;line-height:1;font-size:20px;display:inline-block}
-#scrollToTopBtn{position:fixed;width:50px;height:50px;background:#fff;color:#111;bottom:30px;right:30px;border-radius:50%;text-decoration:none;display:flex;align-items:center;justify-content:center;line-height:45px;cursor:pointer;font-size:25px;z-index:9;border:0;-webkit-tap-highlight-color:transparent;transition:transform 220ms cubic-bezier(0.22,0.9,0.27,1),background 180ms ease,box-shadow 180ms ease,opacity 180ms ease;will-change:transform,opacity,box-shadow;transform:translateY(8px) scale(0.98);opacity:0;pointer-events:none;box-shadow:0 12px 30px rgba(0,0,0,0.12)}
-#scrollToTopBtn.visible{pointer-events:auto;opacity:.98;transform:translateY(0) scale(1)}#scrollToTopBtn.visible:hover,#scrollToTopBtn.visible:focus,#scrollToTopBtn.visible.focused{background:var(--accent);transform:translateY(0) scale(1.1);box-shadow:0 5px 5px rgba(10,170,255,0.16);outline:0}#scrollToTopBtn.visible:active,#scrollToTopBtn.visible.pressed{border-radius:50%;transform:translateY(0) scale(0.96);transition:transform 120ms cubic-bezier(0.2,0.8,0.2,1)}@keyframes clickPop{0%{transform:scale(1) translateY(0)}40%{transform:scale(0.86) translateY(2px)}100%{transform:scale(1.08) translateY(-2px)}}#scrollToTopBtn:active{transform:scale(0.96)!important}#scrollToTopBtn:focus,#scrollToTopBtn.focused{outline:3px solid rgba(0,102,255,0.18);outline-offset:4px;border-radius:8px}@media(max-width:600px){#scrollToTopBtn{height:38px;width:38px;font-size:20px;right:calc(50vw - 19px);bottom:20px}}header{position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px}.top-row{display:flex;gap:12px;align-items:center}.logo img{height:40px;display:block;background:#fff;padding:6px;border-radius:8px}.search-wrap{flex:1;display:flex;gap:6px}.search-box{position:relative;flex:1;min-width:0}.search-box input{width:100%;padding:10px 36px 10px 12px;border-radius:25px 5px 5px 25px;background:#2b2b2b;border:0;color:#fff;font-size:14px;outline:0;box-shadow:0 4px 18px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.02)}#clearBtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:#888;cursor:pointer;display:none;padding:6px;border-radius:6px}#searchBtn{background:#06f;border:0;color:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;box-shadow:0 8px 18px rgba(0,102,255,0.12)}#cartBtn{width:44px;height:44px;border-radius:50%;background:#222;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;position:relative}#cartCount{position:absolute;right:6px;bottom:6px;background:#06f;color:#fff;border-radius:50%;min-width:16px;height:16px;line-height:16px;text-align:center;font-size:11px;padding:0 4px;display:inline-block}#cartCount.pop{animation:popBadge 420ms var(--ease)}@keyframes popBadge{0%{transform:scale(1)}30%{transform:scale(1.35)}100%{transform:scale(1)}}.cat-bar{display:flex;padding-top:10px;overflow-x:auto;white-space:nowrap;margin-left:30px;position:relative;padding-bottom:10px}.cat-bar::after{content:"";position:absolute;right:0;top:0;height:100%;width:56px;pointer-events:none;background:linear-gradient(to left,rgba(10,10,10,0.6),rgba(10,10,10,0));transition:opacity 200ms var(--ease)}.cat-bar.scrolled-end::after{opacity:0}.cat-btn{background:#fff;color:#222;padding:6px 12px;border-radius:10px;border:0;cursor:pointer;flex-shrink:0;margin-right:5px}@media(max-width:768px){.cat-bar{scrollbar-width:none}.cat-bar::-webkit-scrollbar{display:none;width:0;height:0;background:transparent}.cat-bar{-ms-overflow-style:none}}.cat-btn.active{background:#06f;color:#fff}main{padding:20px 12px;flex:1}#grid{display:grid;grid-template-columns:repeat(auto-fill,220px);gap:20px;justify-content:center;max-width:calc(220px*5 20px*4);margin:0 auto;padding:0 18px}@media(max-width:900px){#grid{grid-template-columns:repeat(auto-fill,200px)}}@media(max-width:600px){#grid{grid-template-columns:repeat(2,1fr);max-width:100%}}.card{perspective:1200px;max-width:220px;cursor:pointer;border-radius:var(--card-radius);transition:all .5s ease;will-change:transform;opacity:0}.card.pop-in{animation:fadeInUp .36s var(--ease) forwards}@keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}.card:hover{transform:translateY(-8px);box-shadow:0 4px 10px rgba(0,0,0,0.6)}.card-inner{position:relative;width:100%;height:320px;border-radius:var(--card-radius);transform-style:preserve-3d;transition:transform .5s var(--ease)}.card-front,.card-back{position:absolute;inset:0;border-radius:var(--card-radius);display:flex;flex-direction:column;overflow:hidden;backface-visibility:hidden;background:radial-gradient(circle at top left,#2c2c2c,#161616 80%);transition:opacity .18s linear;pointer-events:none}.card-front{transform:rotateY(0deg) translateZ(0.1px);z-index:2;pointer-events:auto}.card-back{transform:rotateY(180deg) translateZ(0.1px);z-index:1;color:#e6f7ff;padding:14px;font-size:.95rem;gap:8px;justify-content:flex-start}.card.flipped .card-inner{transform:rotateY(180deg)}.card.flipped .card-front{z-index:1;pointer-events:none}.card.flipped .card-back{z-index:2;pointer-events:auto}.img-wrap{height:62%;background:#fff;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 420ms var(--ease)}.img-wrap img:hover{transform:scale(1.05)}.front-body{padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1}.product-title-front{font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.price-row{display:flex;justify-content:space-between;align-items:center}.price{font-weight:800;font-size:1.05rem;color:#e8f8ff}.add-btn{transition:all .3s ease;background:linear-gradient(180deg,#f9a8d4,#c084fc);border:0;padding:8px 10px 8px 10px;border-radius:10px;color:#000;font-weight:700;cursor:pointer}.add-btn:hover{transform:translateY(-3px)}.view-img-btn{transition:all .3s ease;background:linear-gradient(90deg,#6ee7ff,#a78bfa);color:#000;border:0;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700}.view-img-btn:hover{transform:translateY(-2px)}.share-btn{transition:all .18s var(--ease);background:rgba(255,255,255,0.06);border:0;padding:8px 10px;border-radius:8px;color:var(--text);cursor:pointer;font-weight:700}.share-btn i{width:18px;display:inline-block;text-align:center}.share-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,0.4)}.card-badge{position:absolute;right:8px;bottom:8px;z-index:6;pointer-events:none;padding:6px 10px;border-radius:999px;font:var(--badge-font);color:#021019;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 20px rgba(2,16,25,0.5);transform-origin:100% 100%;transform:translateY(6px) scale(0.98);opacity:0;transition:transform 260ms var(--ease),opacity 220ms var(--ease);white-space:nowrap}.card.pop-in .card-badge{transform:translateY(0) scale(1);opacity:1}.card-badge .badge-dot{width:8px;height:8px;border-radius:50%;flex:0 0 8px;box-shadow:0 2px 4px rgba(0,0,0,0.25)}.card-badge.sale{background:linear-gradient(90deg,#d1fae5,#10b981);color:#012}.card-badge.sale .badge-dot{background:#036b4a}.card-badge.limited{background:linear-gradient(90deg,#ffebb7,#f59e0b);color:#081214}.card-badge.limited .badge-dot{background:#ac5d03}.card-badge.neutral{background:linear-gradient(90deg,#e6eef8,#9fb7d8);color:#021019}.card-badge.neutral .badge-dot{background:black}@media(max-width:500px){.card-badge{padding:5px 8px;font-size:.72rem}}.empty-state{grid-column:1/-1;padding:28px;border-radius:10px;background:rgba(255,255,255,0.03);text-align:center;color:#aaa}.sponsor-card{position:relative}.sponsor-label{position:absolute;bottom:8px;right:8px;background-color:var(--accent);color:black;font-size:.85rem;font-weight:600;padding:6px;border-radius:10px;pointer-events:none;z-index:5}.sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite}@keyframes rainbowJitter{0%{outline-color:red}16%{outline-color:orange}33%{outline-color:yellow}50%{outline-color:lime}66%{outline-color:blue}83%{outline-color:#850bdd}100%{outline-color:violet}}.add-notif{position:fixed;bottom:20px;left:20px;background:linear-gradient(180deg,rgba(26,26,26,0.98),rgba(18,18,18,0.98));padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;border:1px solid rgba(10,170,255,0.12);box-shadow:0 12px 36px rgba(0,0,0,0.6);z-index:1200;opacity:0;pointer-events:none;transform:translateY(18px)}.add-notif.visible{animation:fadeInUp .28s var(--ease) forwards;pointer-events:auto}.add-notif.hiding{animation:fadeOutDown .28s var(--ease) forwards;pointer-events:none}.add-notif .product-thumb{width:48px;height:48px;object-fit:cover;border-radius:8px;background:#fff;padding:3px}.add-notif .msg{color:#e6f7ff;flex:1}.undo-btn,.close-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:8px;color:#fff;cursor:pointer}.share-notif{position:fixed;bottom:20px;right:20px;background:linear-gradient(180deg,rgba(40,10,80,0.98),rgba(70,20,140,0.96));color:#fff;padding:10px 12px;border-radius:10px;z-index:1300;box-shadow:0 12px 36px rgba(0,0,0,0.6);opacity:0;transform:translateY(14px);transition:opacity 220ms var(--ease),transform 220ms var(--ease);pointer-events:none;display:flex;gap:10px;align-items:center}.share-notif.visible{opacity:1;transform:translateY(0);pointer-events:auto}.cart-modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:100}.cart-modal.active{display:flex}.cart-content{background:#1a1a1a;border-radius:12px;padding:18px;width:90%;max-width:560px;max-height:80vh;overflow:auto;box-shadow:0 40px 120px rgba(0,0,0,0.7);position:relative}#closeCart{position:absolute;right:25px;top:30px;background:#06f;border:0;color:#fff;border-radius:50%;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 30px rgba(0,102,255,0.12)}.cart-footer{position:sticky;bottom:0;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px;outline:1px solid white;border-top:1px solid #333;border-radius:10px;background:linear-gradient(180deg,rgba(18,18,18),rgba(18,18,18));backdrop-filter:blur(6px);z-index:30}.cart-footer .left{display:flex;gap:8px;align-items:center}.cart-footer .subtotal{font-weight:800;font-size:1.05rem}.wa-btn{background:#25d366;color:#012;border:0;padding:10px 12px;border-radius:10px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px}.wa-btn i{font-size:18px}.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:200;touch-action:none;transition:background 280ms ease}.lightbox.active{display:flex}.lightbox.closing{background:rgba(0,0,0,0)!important}.lightbox img{max-width:95%;max-height:85%;border-radius:8px;touch-action:manipulation;transform-origin:center center;transition:transform 200ms cubic-bezier(0.22,0.9,0.27,1);will-change:transform}#loadingSpinner{text-align:center;padding:18px 0;color:#99bfe8}:focus-visible{outline:3px solid rgba(0,102,255,0.12);outline-offset:3px;border-radius:8px}#preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center;z-index:999999;transition:opacity .6s ease}.loader{width:50px;height:50px;border:5px solid #555;border-top:5px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}#disclaimerWrapper{width:100%;display:flex;justify-content:center}#disclaimerBanner{width:95vw;max-width:900px;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));border-bottom:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;border-radius:10px;color:#e6f7ff;font-family:'Lexend',sans-serif;font-weight:600;font-size:.95rem;margin:20px;padding:14px 20px;text-align:center;letter-spacing:.3px;pointer-events:auto;-webkit-tap-highlight-color:transparent}#hintTooltip{display:none;position:fixed;bottom:28px;left:28px;z-index:1200;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));border-radius:12px;padding:12px 14px;border:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;color:#e6f7ff;font-weight:700;font-size:1rem;display:flex;gap:12px;align-items:center;min-width:260px;max-width:360px;transform-origin:center bottom;will-change:transform,opacity,box-shadow;pointer-events:auto;-webkit-tap-highlight-color:transparent;opacity:0;transition:opacity 220ms var(--ease),transform 220ms var(--ease)}#hintTooltip .icon{width:44px;height:44px;flex:0 0 44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--accent-strong),var(--accent));box-shadow:0 6px 18px rgba(0,194,255,0.12);color:#012;font-size:18px}#hintTooltip::after{content:"";position:absolute;left:22px;bottom:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid rgba(3,21,30,0.98);filter:drop-shadow(0 -4px 6px rgba(0,0,0,0.25))}@keyframes subtlePulse{0%{box-shadow:0 6px 18px rgba(0,194,255,0.12),0 0 0 0 rgba(0,194,255,0)}60%{box-shadow:0 10px 26px rgba(0,194,255,0.16),0 0 14px 6px rgba(0,194,255,0.06)}100%{box-shadow:0 6px 18px rgba(0,194,255,0.12),0 0 0 0 rgba(0,194,255,0)}}#hintTooltip.visible{display:flex;opacity:1;transform:translateY(0)}#hintTooltip .icon.pulse{animation:subtlePulse 1700ms ease-in-out infinite}#hintTooltip.glowy{animation:hintGlow 2200ms ease-in-out 1}#hintTooltip .text{line-height:1.1;font-size:.98rem}@media(max-width:420px){.card-inner{height:300px}.card .front-body{padding:6px}.add-notif{left:12px;right:12px;bottom:18px}}.card.sponsor{box-shadow:0 6px 22px rgba(0,0,0,0.45);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))}.card.sponsor .img-wrap{height:62%;background:#fff}.card.sponsor .front-body{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}.card.sponsor{color:var(--accent-strong);font-weight:700;font-size:.92rem;padding:0;margin:0}.card.sponsor .sponsor-title{font-weight:800;font-size:.95rem;margin-top:4px}.card.sponsor .sponsor-desc{color:#cbd9ea;margin-top:6px;font-size:.88rem;opacity:.95}.card.sponsor .img-wrap img{object-fit:cover}.card.sponsor:focus{outline:3px solid rgba(0,194,255,0.12);outline-offset:4px}
+:root{
+  --bg:radial-gradient(circle at center,#2a3a44,#161616 75%);
+  --card-bg:radial-gradient(circle at center,#383838,#161616 85%);
+  --text:#fff;
+  --accent:#0af;
+  --accent-strong:#00c2ff;
+  --muted:#9aa0a6;
+  --transition:240ms;
+  --ease:cubic-bezier(0.22,0.9,0.27,1);
+  --card-radius:12px;
+  --badge-font:600 .78rem/1 "Lexend",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:"Lexend",sans-serif}
+a{color:inherit}
+::selection{background:rgba(10,170,255,0.14)}
+::-webkit-scrollbar{width:0;background:transparent}
 
-/* --- Carousel specific styles --- */
+/* Global button affordances (hover/active/focus for mouse + keyboard) */
+button,[role="button"]{
+  transition:
+    transform 160ms var(--ease),
+    box-shadow 180ms var(--ease),
+    background-color 160ms ease,
+    opacity 160ms ease,
+    filter 160ms ease,
+    outline-color 120ms ease;
+  outline:0;
+}
+button:hover,[role="button"]:hover{transform:translateY(-1px)}
+button:active,[role="button"].pressed{transform:translateY(1px) scale(0.98);filter:brightness(0.96)}
+button:focus-visible,[role="button"]:focus-visible{
+  outline:3px solid rgba(0,102,255,0.35);
+  outline-offset:3px;
+  border-radius:8px;
+}
+
+/* Lock body scroll whenever a modal is open (cart or lightbox) */
+body.modal-open{overflow:hidden; overscroll-behavior:contain}
+@supports (position: fixed){
+  body.modal-open{position:fixed; width:100%}
+}
+
+/* Scroll to top */
+#scrollToTopBtn i{text-decoration:none;line-height:1;font-size:20px;display:inline-block}
+#scrollToTopBtn{
+  position:fixed;width:50px;height:50px;background:#fff;color:#111;bottom:30px;right:30px;border-radius:50%;
+  text-decoration:none;display:flex;align-items:center;justify-content:center;line-height:45px;cursor:pointer;font-size:25px;z-index:9;border:0;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform 220ms cubic-bezier(0.22,0.9,0.27,1),background 180ms ease,box-shadow 180ms ease,opacity 180ms ease;
+  will-change:transform,opacity,box-shadow;transform:translateY(8px) scale(0.98);opacity:0;pointer-events:none;box-shadow:0 12px 30px rgba(0,0,0,0.12)
+}
+#scrollToTopBtn.visible{pointer-events:auto;opacity:.98;transform:translateY(0) scale(1)}
+#scrollToTopBtn.visible:hover,#scrollToTopBtn.visible:focus,#scrollToTopBtn.visible.focused{background:var(--accent);transform:translateY(0) scale(1.1);box-shadow:0 5px 5px rgba(10,170,255,0.16);outline:0}
+#scrollToTopBtn.visible:active,#scrollToTopBtn.visible.pressed{border-radius:50%;transform:translateY(0) scale(0.96);transition:transform 120ms cubic-bezier(0.2,0.8,0.2,1)}
+@keyframes clickPop{0%{transform:scale(1) translateY(0)}40%{transform:scale(0.86) translateY(2px)}100%{transform:scale(1.08) translateY(-2px)}}
+#scrollToTopBtn:active{transform:scale(0.96)!important}
+#scrollToTopBtn:focus,#scrollToTopBtn.focused{outline:3px solid rgba(0,102,255,0.18);outline-offset:4px;border-radius:8px}
+@media(max-width:600px){
+  #scrollToTopBtn{height:38px;width:38px;font-size:20px;right:calc(50vw - 19px);bottom:20px}
+}
+
+/* Header */
+header{position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px}
+.top-row{display:flex;gap:12px;align-items:center}
+.logo img{height:40px;display:block;background:#fff;padding:6px;border-radius:8px}
+.search-wrap{flex:1;display:flex;gap:6px}
+.search-box{position:relative;flex:1;min-width:0}
+.search-box input{width:100%;padding:10px 36px 10px 12px;border-radius:25px 5px 5px 25px;background:#2b2b2b;border:0;color:#fff;font-size:14px;outline:0;box-shadow:0 4px 18px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.02)}
+#clearBtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:#888;cursor:pointer;display:none;padding:6px;border-radius:6px}
+#searchBtn{background:#06f;border:0;color:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;box-shadow:0 8px 18px rgba(0,102,255,0.12)}
+#cartBtn{width:44px;height:44px;border-radius:50%;background:#222;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+#cartCount{position:absolute;right:6px;bottom:6px;background:#06f;color:#fff;border-radius:50%;min-width:16px;height:16px;line-height:16px;text-align:center;font-size:11px;padding:0 4px;display:inline-block}
+#cartCount.pop{animation:popBadge 420ms var(--ease)}
+@keyframes popBadge{0%{transform:scale(1)}30%{transform:scale(1.35)}100%{transform:scale(1)}}
+
+/* Categories bar */
+.cat-bar{display:flex;padding-top:10px;overflow-x:auto;white-space:nowrap;margin-left:30px;position:relative;padding-bottom:10px}
+.cat-bar::after{content:"";position:absolute;right:0;top:0;height:100%;width:56px;pointer-events:none;background:linear-gradient(to left,rgba(10,10,10,0.6),rgba(10,10,10,0));transition:opacity 200ms var(--ease)}
+.cat-bar.scrolled-end::after{opacity:0}
+.cat-btn{background:#fff;color:#222;padding:6px 12px;border-radius:10px;border:0;cursor:pointer;flex-shrink:0;margin-right:5px;transition:filter 160ms ease, background 160ms ease, transform 160ms var(--ease)}
+.cat-btn:hover{filter:brightness(0.92);transform:translateY(-1px)}
+.cat-btn:active,.cat-btn.pressed{transform:translateY(1px) scale(0.98)}
+.cat-btn.active{background:#06f;color:#fff}
+.cat-btn.active:hover{filter:brightness(0.92)}
+
+/* Grid */
+main{padding:20px 12px;flex:1}
+#grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 220px);
+  gap: 20px;
+  justify-content: center;
+  max-width: calc(220px*5 + 20px*);
+  margin: 0 auto;
+  padding: 0 18px;
+}
+@media (max-width: 900px) {
+  #grid {
+    grid-template-columns: repeat(auto-fill, 200px);
+  }
+}
+@media (max-width: 600px) {
+  #grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+  }
+}
+
+/* Cards */
+.card{perspective:1200px;max-width:220px;cursor:pointer;border-radius:var(--card-radius);transition:all .5s ease;will-change:transform;opacity:0}
+.card.pop-in{animation:fadeInUp .36s var(--ease) forwards}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.card:hover{transform:translateY(-8px);box-shadow:0 4px 10px rgba(0,0,0,0.6)}
+.card-inner{position:relative;width:100%;height:320px;border-radius:var(--card-radius);transform-style:preserve-3d;transition:transform .5s var(--ease)}
+.card-front,.card-back{
+  position:absolute;inset:0;border-radius:var(--card-radius);display:flex;flex-direction:column;overflow:hidden;backface-visibility:hidden;
+  background:radial-gradient(circle at top left,#2c2c2c,#161616 80%);transition:opacity .18s linear;pointer-events:none
+}
+.card-front{transform:rotateY(0deg) translateZ(0.1px);z-index:2;pointer-events:auto}
+.card-back{transform:rotateY(180deg) translateZ(0.1px);z-index:1;color:#e6f7ff;padding:14px;font-size:.95rem;gap:8px;justify-content:flex-start}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.card.flipped .card-front{z-index:1;pointer-events:none}
+.card.flipped .card-back{z-index:2;pointer-events:auto}
+
+.img-wrap{height:62%;background:#111;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 420ms var(--ease)}
+.img-wrap img:hover{transform:scale(1.05)}
+.front-body{padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1}
+.product-title-front{font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.price-row{display:flex;justify-content:space-between;align-items:center}
+.price{font-weight:800;font-size:1.05rem;color:#e8f8ff}
+.add-btn{
+  transition:all .3s ease;background:linear-gradient(180deg,#f9a8d4,#c084fc);border:0;padding:8px 10px 8px 10px;border-radius:10px;color:#000;font-weight:700;cursor:pointer
+}
+.add-btn:hover{transform:translateY(-3px)}
+.add-btn:active,.add-btn.pressed{transform:translateY(1px) scale(0.98)}
+.view-img-btn{
+  transition:all .3s ease;background:linear-gradient(90deg,#6ee7ff,#a78bfa);color:#000;border:0;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700
+}
+.view-img-btn:hover{transform:translateY(-2px)}
+.view-img-btn:active,.view-img-btn.pressed{transform:translateY(1px) scale(0.98)}
+.share-btn{
+  transition:all .18s var(--ease);background:rgba(255,255,255,0.06);border:0;padding:8px 10px;border-radius:8px;color:var(--text);cursor:pointer;font-weight:700
+}
+.share-btn i{width:18px;display:inline-block;text-align:center}
+.share-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,0.4)}
+.share-btn:active,.share-btn.pressed{transform:translateY(1px) scale(0.98)}
+
+.card-badge{position:absolute;right:8px;bottom:8px;z-index:6;pointer-events:none;padding:6px 10px;border-radius:999px;font:var(--badge-font);color:#021019;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 20px rgba(2,16,25,0.5);transform-origin:100% 100%;transform:translateY(6px) scale(0.98);opacity:0;transition:transform 260ms var(--ease),opacity 220ms var(--ease);white-space:nowrap}
+.card.pop-in .card-badge{transform:translateY(0) scale(1);opacity:1}
+.card-badge .badge-dot{width:8px;height:8px;border-radius:50%;flex:0 0 8px;box-shadow:0 2px 4px rgba(0,0,0,0.25)}
+.card-badge.sale{background:linear-gradient(90deg,#d1fae5,#10b981);color:#012}
+.card-badge.sale .badge-dot{background:#036b4a}
+.card-badge.limited{background:linear-gradient(90deg,#ffebb7,#f59e0b);color:#081214}
+.card-badge.limited .badge-dot{background:#ac5d03}
+.card-badge.neutral{background:linear-gradient(90deg,#e6eef8,#9fb7d8);color:#021019}
+.card-badge.neutral .badge-dot{background:black}
+@media(max-width:500px){.card-badge{padding:5px 8px;font-size:.72rem}}
+
+.empty-state{grid-column:1/-1;padding:28px;border-radius:10px;background:rgba(255,255,255,0.03);text-align:center;color:#aaa}
+
+/* Sponsor card */
+.sponsor-card{position:relative}
+.sponsor-label{position:absolute;bottom:8px;right:8px;background-color:var(--accent);color:black;font-size:.85rem;font-weight:600;padding:6px;border-radius:10px;pointer-events:none;z-index:5}
+.sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite}
+@keyframes rainbowJitter{0%{outline-color:red}16%{outline-color:orange}33%{outline-color:yellow}50%{outline-color:lime}66%{outline-color:blue}83%{outline-color:#850bdd}100%{outline-color:violet}}
+.card.sponsor{box-shadow:0 6px 22px rgba(0,0,0,0.45);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))}
+.card.sponsor .img-wrap{height:62%;background:#fff}
+.card.sponsor .front-body{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card.sponsor{color:var(--accent-strong);font-weight:700;font-size:.92rem;padding:0;margin:0}
+.card.sponsor .sponsor-title{font-weight:800;font-size:.95rem;margin-top:4px}
+.card.sponsor .sponsor-desc{color:#cbd9ea;margin-top:6px;font-size:.88rem;opacity:.95}
+.card.sponsor .img-wrap img{object-fit:cover}
+.card.sponsor:focus{outline:3px solid rgba(0,194,255,0.12);outline-offset:4px}
+
+/* --- Carousel specific styles (cards and lightbox share) --- */
 .carousel{position:relative;width:100%;height:100%;overflow:hidden;background:#111}
 .carousel-track{display:flex;height:100%;transition:transform 320ms cubic-bezier(0.22,0.9,0.27,1);will-change:transform}
-.carousel-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.carousel-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;background:#111}
 .carousel-slide img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Controls */
 .carousel-controls{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 8px;pointer-events:none}
-.carousel-btn{pointer-events:auto;background:rgba(0,0,0,0.45);border:0;color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer;backdrop-filter:blur(2px)}
+.carousel-btn{pointer-events:auto;background:rgba(0,0,0,0.45);border:0;color:#fff;padding:8px 10px;border-radius:8px;cursor:pointer;backdrop-filter:blur(2px);transition:background 140ms ease, opacity 200ms var(--ease), transform 160ms var(--ease)}
+.carousel-btn:hover{background:rgba(0,0,0,0.62)}
+.carousel-btn:active,.carousel-btn.pressed{transform:scale(0.96)}
+
 .carousel-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;display:flex;gap:6px;pointer-events:auto}
-.carousel-dot{width:8px;height:8px;border-radius:25%;background:rgba(255,255,255,0.2);border:1px solid rgba(0,0,0,0.25);cursor:pointer}
+.carousel-dot{width:8px;height:8px;border-radius:25%;background:rgba(255,255,255,0.2);border:1px solid rgba(0,0,0,0.25);cursor:pointer;transition:transform 160ms var(--ease)}
+.carousel-dot:hover{transform:scale(1.2)}
 .carousel-dot.active{background:#06f}
 .carousel-counter{position:absolute;right:8px;top:8px;background:rgba(0,0,0,0.5);padding:6px 8px;border-radius:8px;font-weight:700;font-size:0.8rem}
+
 @media (max-width:480px){
   .carousel-btn{padding:6px 8px}
+}
+
+/* Notifications */
+.add-notif{position:fixed;bottom:20px;left:20px;background:linear-gradient(180deg,rgba(26,26,26,0.98),rgba(18,18,18,0.98));padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;border:1px solid rgba(10,170,255,0.12);box-shadow:0 12px 36px rgba(0,0,0,0.6);z-index:1200;opacity:0;pointer-events:none;transform:translateY(18px)}
+.add-notif.visible{animation:fadeInUp .28s var(--ease) forwards;pointer-events:auto}
+.add-notif.hiding{animation:fadeOutDown .28s var(--ease) forwards;pointer-events:none}
+.add-notif .product-thumb{width:48px;height:48px;object-fit:cover;border-radius:8px;background:#fff;padding:3px}
+.add-notif .msg{color:#e6f7ff;flex:1}
+.undo-btn,.close-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:8px;color:#fff;cursor:pointer}
+.undo-btn:hover,.close-btn:hover{transform:translateY(-1px)}
+.undo-btn:active,.close-btn:active,.undo-btn.pressed,.close-btn.pressed{transform:translateY(1px) scale(0.98)}
+.share-notif{position:fixed;bottom:20px;right:20px;background:linear-gradient(180deg,rgba(40,10,80,0.98),rgba(70,20,140,0.96));color:#fff;padding:10px 12px;border-radius:10px;z-index:1300;box-shadow:0 12px 36px rgba(0,0,0,0.6);opacity:0;transform:translateY(14px);transition:opacity 220ms var(--ease),transform 220ms var(--ease);pointer-events:none;display:flex;gap:10px;align-items:center}
+.share-notif.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+
+/* Cart modal */
+.cart-modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:100}
+.cart-modal.active{display:flex}
+.cart-content{background:#1a1a1a;border-radius:12px;padding:18px;width:90%;max-width:560px;max-height:80vh;overflow:auto;box-shadow:0 40px 120px rgba(0,0,0,0.7);position:relative}
+#closeCart{position:absolute;right:25px;top:30px;background:#06f;border:0;color:#fff;border-radius:50%;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 10px 30px rgba(0,102,255,0.12)}
+#closeCart:hover{transform:translateY(-1px)}
+#closeCart:active,#closeCart.pressed{transform:translateY(1px) scale(0.98)}
+.cart-footer{position:sticky;bottom:0;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px;outline:1px solid white;border-top:1px solid #333;border-radius:10px;background:linear-gradient(180deg,rgba(18,18,18),rgba(18,18,18));backdrop-filter:blur(6px);z-index:30}
+.cart-footer .left{display:flex;gap:8px;align-items:center}
+.cart-footer .subtotal{font-weight:800;font-size:1.05rem}
+.wa-btn{background:#25d366;color:#012;border:0;padding:10px 12px;border-radius:10px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.wa-btn i{font-size:18px}
+.wa-btn:hover{transform:translateY(-1px)}
+.wa-btn:active,.wa-btn.pressed{transform:translateY(1px) scale(0.98)}
+
+/* Lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:200;touch-action:none;transition:background 280ms ease}
+.lightbox.active{display:flex}
+.lightbox.opened{background:rgba(0,0,0,0.85)}
+.lightbox.closing{background:rgba(0,0,0,0)!important}
+.lightbox .lb-frame{width:95vw;max-width:1100px;height:82vh;max-height:90vh;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.96);transition:transform 220ms var(--ease),opacity 220ms var(--ease)}
+.lightbox.opened .lb-frame{opacity:1;transform:scale(1)}
+.lightbox.closing .lb-frame{opacity:0;transform:translateY(24px) scale(0.96)}
+.lightbox .carousel{width:100%;height:100%;background:#000;border-radius:10px;overflow:hidden}
+.lightbox .carousel-slide{background:#000}
+.lightbox .carousel-btn{background:rgba(0,0,0,0.45)}
+.lightbox .carousel-btn:hover{background:rgba(0,0,0,0.62)}
+.lightbox .carousel-dots{bottom:12px}
+.lightbox .carousel-counter{top:10px;right:10px}
+
+/* Zoom container and image: keep original ratio in lightbox */
+.zoom-wrap{width:100%;height:100%;overflow:hidden;touch-action:none;display:flex;align-items:center;justify-content:center;background:#000}
+.zoom-img{
+  max-width:100%;
+  max-height:100%;
+  will-change:transform;
+  transform-origin:center center;
+  transition:transform 80ms ease-out;
+}
+.lightbox .carousel-slide img.zoom-img{
+  width:auto !important; height:auto !important;
+  max-width:96vw; max-height:88vh;
+  object-fit:contain !important;
+}
+/* mobile-specific lightbox layout */
+@media(max-width:720px){
+  .lightbox .lb-frame{width:100vw;height:100vh;border-radius:0}
+  .lightbox .carousel{border-radius:0}
+  .lightbox .carousel-slide img.zoom-img{max-width:100vw;max-height:100vh}
+  .lightbox .carousel-controls{transition:opacity 200ms var(--ease)}
+  .lightbox.hide-controls .carousel-controls{opacity:0;pointer-events:none}
+}
+
+/* Loading indicator */
+#loadingSpinner{text-align:center;padding:18px 0;color:#99bfe8}
+
+/* Focus outlines everywhere */
+:focus-visible{outline:3px solid rgba(0,102,255,0.12);outline-offset:3px;border-radius:8px}
+
+/* Preloader overlay */
+#preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#111;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;z-index:999999;transition:opacity .6s ease}
+.loader{width:50px;height:50px;border:5px solid #555;border-top:5px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#preloaderText{color:#cfe8ff;font-weight:700;letter-spacing:.4px}
+#preloaderBar{width:68%;max-width:560px;height:8px;border-radius:999px;background:#222;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06)}
+#preloaderBar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#00b4ff,#6ee7ff);transition:width 180ms var(--ease)}
+
+/* Disclaimer + hint */
+#disclaimerWrapper{width:100%;display:flex;justify-content:center}
+#disclaimerBanner{
+  width:95vw;max-width:900px;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));
+  border-bottom:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;border-radius:10px;
+  color:#e6f7ff;font-family:'Lexend',sans-serif;font-weight:600;font-size:.95rem;margin:20px;padding:14px 20px;text-align:center;letter-spacing:.3px;pointer-events:auto;-webkit-tap-highlight-color:transparent
+}
+#hintTooltip{display:none;position:fixed;bottom:28px;left:28px;z-index:1200;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));border-radius:12px;padding:12px 14px;border:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;color:#e6f7ff;font-weight:700;font-size:1rem;display:flex;gap:12px;align-items:center;min-width:260px;max-width:360px;transform-origin:center bottom;will-change:transform,opacity,box-shadow;pointer-events:auto;-webkit-tap-highlight-color:transparent;opacity:0;transition:opacity 220ms var(--ease),transform 220ms var(--ease)}
+#hintTooltip .icon{width:44px;height:44px;flex:0 0 44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--accent-strong),var(--accent));box-shadow:0 6px 18px rgba(0,194,255,0.12);color:#012;font-size:18px}
+#hintTooltip::after{content:"";position:absolute;left:22px;bottom:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid rgba(3,21,30,0.98);filter:drop-shadow(0 -4px 6px rgba(0,0,0,0.25))}
+@keyframes subtlePulse{0%{box-shadow:0 6px 18px rgba(0,194,255,0.12),0 0 0 0 rgba(0,194,255,0)}60%{box-shadow:0 10px 26px rgba(0,194,255,0.16),0 0 14px 6px rgba(0,194,255,0.06)}100%{box-shadow:0 6px 18px rgba(0,194,255,0.12),0 0 0 0 rgba(0,194,255,0)}}
+#hintTooltip.visible{display:flex;opacity:1;transform:translateY(0)}
+#hintTooltip .icon.pulse{animation:subtlePulse 1700ms ease-in-out infinite}
+#hintTooltip.glowy{animation:hintGlow 2200ms ease-in-out 1}
+#hintTooltip .text{line-height:1.1;font-size:.98rem}
+@media(max-width:420px){
+  .card-inner{height:300px}
+  .card .front-body{padding:6px}
+  .add-notif{left:12px;right:12px;bottom:18px}
 }
 </style>
 <script>
 /* Utility: safely ensure an array of images (>=1) per product */
 function ensureImagesArray(p){
-  // Accept either p.img (string or array) or p.images (preferred)
   let imgs = p.images || p.img || [];
   if (typeof imgs === 'string') imgs = [imgs];
   if (!Array.isArray(imgs)) imgs = [];
-  // filter out falsy values
   imgs = imgs.filter(Boolean);
   if (!imgs.length) imgs = ['assets/placeholder.png'];
   return imgs;
@@ -50,226 +326,459 @@ function attachImageFallback(imgEl){
       imgEl.dataset.fallback = "1";
       imgEl.src = 'assets/placeholder.png';
     }
-  });
+  }, { once: false });
 }
 
-/* Lightbox API (keeps your existing lightbox behavior but exposed) */
+/* Lightbox global state (updated by open/close) */
 let lightboxState = {
-  active: false
+  active: false,
+  api: null, // carousel api for lightbox
+  idleTimer: null
 };
-function lightboxOpen(url){
-  if(!url) return;
-  const lb = document.getElementById('imgLightbox');
-  const lbImg = document.getElementById('lightboxImg');
-  lbImg.src = url;
-  lbImg.alt = 'Product image';
-  attachImageFallback(lbImg);
-  lb.classList.add('active');
-  lb.setAttribute('aria-hidden','false');
-  // disable background interactions
-  disableBackgroundInteraction([lb, lbImg]);
-  lightboxState.active = true;
-  // focus the close button so keyboard users can close
-  setTimeout(()=>{document.getElementById('closeLightbox').focus();},50);
-}
-function lightboxClose(){
-  const lb = document.getElementById('imgLightbox');
-  lb.classList.remove('active');
-  lb.setAttribute('aria-hidden','true');
-  const lbImg = document.getElementById('lightboxImg');
-  lbImg.src = '';
-  enableBackgroundInteraction();
-  lightboxState.active = false;
-}
 
-/* small helper to build whatsapp message (kept from original) */
+/* little helper */
 function money(n){return `R${Number(n).toFixed(2)}`;}
 
 /* Debounce utility */
 function debounce(fn, wait = 300){ let t; return (...args) => { clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), wait); }}
 
-/* Carousel creation helper
+/* Preload helper with decode for smoother first paint */
+function preloadImage(src){
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = async () => {
+      try { if (img.decode) await img.decode(); } catch(e){}
+      resolve({src, ok:true});
+    };
+    img.onerror = () => resolve({src, ok:false});
+    img.src = src;
+  });
+}
+
+/* CAROUSEL helper (cards and lightbox)
    containerEl: where carousel will be appended (image area)
    images: array of image URLs
-   opts: {onImageClick(index, url), preserveClickPropagation}
-   returns object {setIndex, getIndex, destroy}
+   opts: {
+     onImageClick(index, url),
+     startIndex: 0,
+     loop: true,
+     showDots: true,
+     showButtons: true,
+     showCounter: true,
+     className: 'carousel',
+     enableZoom: false, // only used in lightbox
+   }
+   returns object {setIndex, getIndex, destroy, prev, next}
 */
 function createCarousel(containerEl, images, opts = {}){
-  const onImageClick = opts.onImageClick || function(){};
-  const preserveClickPropagation = !!opts.preserveClickPropagation;
-  containerEl.innerHTML = ''; // clear
-  containerEl.classList.add('carousel');
+  const {
+    onImageClick = function(){},
+    startIndex = 0,
+    loop = true,
+    showDots = true,
+    showButtons = true,
+    showCounter = true,
+    className = 'carousel',
+    enableZoom = false
+  } = opts;
 
-  // track & slides
+  const total = images.length || 1;
+  containerEl.innerHTML = '';
+  containerEl.classList.add(...className.split(' ').filter(Boolean));
+
   const track = document.createElement('div');
   track.className = 'carousel-track';
-  images.forEach((src, i) => {
+
+  // Build slides with optional clones for looping
+  let slides = [];
+  const makeSlide = (src, i, isClone=false) => {
     const slide = document.createElement('div');
     slide.className = 'carousel-slide';
-    const img = document.createElement('img');
-    img.loading = 'lazy';
-    img.src = src || 'assets/placeholder.png';
-    img.alt = `Product image ${i+1}`;
-    attachImageFallback(img);
-    // image click -> open lightbox at current index (and stop flip)
-    img.addEventListener('click', (e) => {
-      e.stopPropagation();
-      onImageClick(currentIndex, img.src);
-    });
-    slide.appendChild(img);
-    track.appendChild(slide);
-  });
+    if(enableZoom){
+      // Lightbox zoomable slide
+      const zoomWrap = document.createElement('div');
+      zoomWrap.className = 'zoom-wrap';
+      const img = document.createElement('img');
+      img.className = 'zoom-img';
+      img.draggable = false;
+      img.loading = 'eager';
+      img.src = src || 'assets/placeholder.png';
+      img.alt = `Image ${i+1}`;
+      attachImageFallback(img);
+      zoomWrap.appendChild(img);
+      slide.appendChild(zoomWrap);
+      // Zoom handlers attached after DOM ready (see setupZoomHandlers)
+    } else {
+      // Card slide
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.src = src || 'assets/placeholder.png';
+      img.alt = `Product image ${i+1}`;
+      attachImageFallback(img);
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        onImageClick(realIndex, images[realIndex]);
+      });
+      slide.appendChild(img);
+    }
+    if(isClone) slide.dataset.clone = '1';
+    return slide;
+  };
+
+  const useLoop = loop && total > 1;
+  if(useLoop){
+    slides.push(makeSlide(images[total-1], total-1, true));
+  }
+  images.forEach((src, i) => slides.push(makeSlide(src, i, false)));
+  if(useLoop){
+    slides.push(makeSlide(images[0], 0, true));
+  }
+  slides.forEach(s => track.appendChild(s));
   containerEl.appendChild(track);
 
-  // controls only if more than 1 image
-  let dots = null, prevBtn = null, nextBtn = null, counter = null;
-  const total = images.length;
+  // controls
+  let dots = null, prevBtn = null, nextBtn = null, counter = null, ctrlWrap = null;
   if(total > 1){
-    // controls container
-    const ctrlWrap = document.createElement('div');
-    ctrlWrap.className = 'carousel-controls';
-    // prev
-    prevBtn = document.createElement('button');
-    prevBtn.className = 'carousel-btn';
-    prevBtn.type = 'button';
-    prevBtn.setAttribute('aria-label','Previous image');
-    prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-    prevBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(currentIndex - 1); });
-    // next
-    nextBtn = document.createElement('button');
-    nextBtn.className = 'carousel-btn';
-    nextBtn.type = 'button';
-    nextBtn.setAttribute('aria-label','Next image');
-    nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-    nextBtn.addEventListener('click', (e) => { e.stopPropagation(); goTo(currentIndex + 1); });
-    ctrlWrap.appendChild(prevBtn);
-    ctrlWrap.appendChild(nextBtn);
-    containerEl.appendChild(ctrlWrap);
-
-    // dots
-    dots = document.createElement('div');
-    dots.className = 'carousel-dots';
-    for(let i=0;i<total;i++){
-      const d = document.createElement('button');
-      d.className = 'carousel-dot';
-      d.type = 'button';
-      d.setAttribute('aria-label', `Show image ${i+1}`);
-      d.addEventListener('click', (e) => { e.stopPropagation(); goTo(i); });
-      dots.appendChild(d);
+    if(showButtons){
+      ctrlWrap = document.createElement('div');
+      ctrlWrap.className = 'carousel-controls';
+      prevBtn = document.createElement('button');
+      prevBtn.className = 'carousel-btn';
+      prevBtn.type = 'button';
+      prevBtn.setAttribute('aria-label','Previous image');
+      prevBtn.innerHTML = '<i class="fas fa-angle-left"></i>';
+      nextBtn = document.createElement('button');
+      nextBtn.className = 'carousel-btn';
+      nextBtn.type = 'button';
+      nextBtn.setAttribute('aria-label','Next image');
+      nextBtn.innerHTML = '<i class="fas fa-angle-right"></i>';
+      ctrlWrap.appendChild(prevBtn);
+      ctrlWrap.appendChild(nextBtn);
+      containerEl.appendChild(ctrlWrap);
     }
-    containerEl.appendChild(dots);
 
-    // counter
-    counter = document.createElement('div');
-    counter.className = 'carousel-counter';
-    counter.setAttribute('aria-hidden','false');
-    containerEl.appendChild(counter);
+    if(showDots){
+      dots = document.createElement('div');
+      dots.className = 'carousel-dots';
+      for(let i=0;i<total;i++){
+        const d = document.createElement('button');
+        d.className = 'carousel-dot';
+        d.type = 'button';
+        d.setAttribute('aria-label', `Show image ${i+1}`);
+        d.addEventListener('click', (e) => { e.stopPropagation(); goTo(i, true); });
+        dots.appendChild(d);
+      }
+      containerEl.appendChild(dots);
+    }
+
+    if(showCounter){
+      counter = document.createElement('div');
+      counter.className = 'carousel-counter';
+      counter.setAttribute('aria-hidden','false');
+      containerEl.appendChild(counter);
+    }
   } else {
-    // single image: make track non-interactive besides img click
-    track.style.cursor = 'pointer';
+    if(!enableZoom){
+      track.style.cursor = 'pointer';
+    }
   }
 
+  // State
+  let realIndex = Math.min(Math.max(0, startIndex|0), total-1);
+  let trackIndex = useLoop ? realIndex + 1 : realIndex;
+  let isTransitioning = false;
+
+  function updateUI(noAnim=false){
+    const width = containerEl.clientWidth || 1;
+    if(noAnim){ track.style.transition = 'none'; }
+    const offset = -trackIndex * width;
+    track.style.transform = `translateX(${offset}px)`;
+    if(dots){
+      const dotButtons = dots.querySelectorAll('.carousel-dot');
+      dotButtons.forEach((d, i) => d.classList.toggle('active', i === realIndex));
+    }
+    if(counter){
+      counter.textContent = `${realIndex + 1}/${total}`;
+    }
+    if(noAnim){
+      void track.offsetWidth;
+      track.style.transition = '';
+    }
+  }
+
+  track.addEventListener('transitionend', () => {
+    if(!useLoop) return;
+    if(trackIndex === 0){
+      isTransitioning = true;
+      track.style.transition = 'none';
+      trackIndex = total;
+      realIndex = total - 1;
+      updateUI();
+      void track.offsetWidth;
+      track.style.transition = '';
+      isTransitioning = false;
+    } else if(trackIndex === total + 1){
+      isTransitioning = true;
+      track.style.transition = 'none';
+      trackIndex = 1;
+      realIndex = 0;
+      updateUI();
+      void track.offsetWidth;
+      track.style.transition = '';
+      isTransitioning = false;
+    }
+  });
+
+  function prev(){
+    if(isTransitioning) return;
+    isTransitioning = true;
+    trackIndex -= 1;
+    if(!useLoop){
+      if(trackIndex < 0){ trackIndex = 0; }
+      realIndex = trackIndex;
+      updateUI();
+      setTimeout(()=> isTransitioning=false, 320);
+    } else {
+      realIndex = (realIndex - 1 + total) % total;
+      updateUI();
+      setTimeout(()=> isTransitioning=false, 320);
+    }
+  }
+  function next(){
+    if(isTransitioning) return;
+    isTransitioning = true;
+    trackIndex += 1;
+    if(!useLoop){
+      if(trackIndex > total - 1){ trackIndex = total - 1; }
+      realIndex = trackIndex;
+      updateUI();
+      setTimeout(()=> isTransitioning=false, 320);
+    } else {
+      realIndex = (realIndex + 1) % total;
+      updateUI();
+      setTimeout(()=> isTransitioning=false, 320);
+    }
+  }
+  function goTo(idx, animate=true){
+    idx = Math.min(Math.max(0, idx|0), total-1);
+    realIndex = idx;
+    trackIndex = useLoop ? realIndex + 1 : realIndex;
+    if(!animate){ updateUI(true); } else { updateUI(); }
+  }
+
+  // init
+  updateUI(true);
+
+  // controls events
+  if(prevBtn) prevBtn.addEventListener('click', (e)=> { e.stopPropagation(); prev(); });
+  if(nextBtn) nextBtn.addEventListener('click', (e)=> { e.stopPropagation(); next(); });
+
   // swipe support
-  let startX = 0, startY = 0, isDragging = false, moved = false;
+  let startX = 0, startY = 0, isDragging = false, moved = false, dragDX = 0;
+  const touchStart = (x, y) => {
+    isDragging = true; moved = false; dragDX = 0;
+    startX = x; startY = y;
+    track.style.transition = 'none';
+  };
+  const touchMove = (x, y, e) => {
+    if(!isDragging) return;
+    const dx = x - startX;
+    const dy = y - startY;
+    if(Math.abs(dy) > Math.abs(dx)) { return; } // vertical -> let parent/lightbox handle
+    moved = true;
+    dragDX = dx;
+    const width = containerEl.clientWidth || 1;
+    const offset = -trackIndex * width + dx;
+    track.style.transform = `translateX(${offset}px)`;
+    if(e) e.preventDefault();
+  };
+  const touchEnd = () => {
+    if(!isDragging) return;
+    isDragging = false;
+    track.style.transition = '';
+    if(!moved){ updateUI(); return; }
+    const width = containerEl.clientWidth || 1;
+    const threshold = Math.max(40, width * 0.18);
+    if(dragDX > threshold) prev();
+    else if(dragDX < -threshold) next();
+    else updateUI();
+  };
+
   track.addEventListener('touchstart', (e) => {
     if(e.touches.length !== 1) return;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    isDragging = true;
-    moved = false;
-    track.style.transition = 'none';
+    touchStart(e.touches[0].clientX, e.touches[0].clientY);
   }, {passive:true});
   track.addEventListener('touchmove', (e) => {
     if(!isDragging) return;
-    const dx = e.touches[0].clientX - startX;
-    const dy = e.touches[0].clientY - startY;
-    if(Math.abs(dy) > Math.abs(dx)) { return; } // vertical scroll
-    moved = true;
-    const width = containerEl.clientWidth;
-    const offset = -currentIndex * width + dx;
-    track.style.transform = `translateX(${offset}px)`;
-    e.preventDefault();
+    touchMove(e.touches[0].clientX, e.touches[0].clientY, e);
   }, {passive:false});
-  track.addEventListener('touchend', (e) => {
-    if(!isDragging) return;
-    track.style.transition = '';
-    isDragging = false;
-    if(!moved) return;
-    const dx = (e.changedTouches[0].clientX - startX);
-    const threshold = Math.max(40, containerEl.clientWidth * 0.18);
-    if(dx > threshold) goTo(currentIndex - 1);
-    else if(dx < -threshold) goTo(currentIndex + 1);
-    else goTo(currentIndex);
-  });
+  track.addEventListener('touchend', () => touchEnd());
 
-  // mouse drag support for desktop
-  let mouseDown = false, mouseStartX = 0;
+  // mouse drag support (desktop)
+  let mouseDown = false, mouseStartX = 0, mouseStartY = 0;
   track.addEventListener('mousedown', (e) => {
-    mouseDown = true; mouseStartX = e.clientX; track.style.transition = 'none'; e.preventDefault();
+    mouseDown = true; mouseStartX = e.clientX; mouseStartY = e.clientY; track.style.transition = 'none'; e.preventDefault();
   });
   window.addEventListener('mousemove', (e) => {
     if(!mouseDown) return;
     const dx = e.clientX - mouseStartX;
-    const width = containerEl.clientWidth;
-    const offset = -currentIndex * width + dx;
+    const dy = e.clientY - mouseStartY;
+    if(Math.abs(dy) > Math.abs(dx)) return;
+    moved = true; dragDX = dx;
+    const width = containerEl.clientWidth || 1;
+    const offset = -trackIndex * width + dx;
     track.style.transform = `translateX(${offset}px)`;
   });
   window.addEventListener('mouseup', (e) => {
     if(!mouseDown) return;
     mouseDown = false; track.style.transition = '';
     const dx = e.clientX - mouseStartX;
-    const threshold = Math.max(40, containerEl.clientWidth * 0.18);
-    if(dx > threshold) goTo(currentIndex - 1);
-    else if(dx < -threshold) goTo(currentIndex + 1);
-    else goTo(currentIndex);
+    const width = containerEl.clientWidth || 1;
+    const threshold = Math.max(40, width * 0.18);
+    if(dx > threshold) prev();
+    else if(dx < -threshold) next();
+    else updateUI();
   });
 
-  // keyboard navigation while container in focus
+  // keyboard navigation
   containerEl.tabIndex = 0;
   containerEl.addEventListener('keydown', (e) => {
-    if(e.key === 'ArrowLeft') { e.preventDefault(); goTo(currentIndex - 1); }
-    if(e.key === 'ArrowRight') { e.preventDefault(); goTo(currentIndex + 1); }
+    if(e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if(e.key === 'ArrowRight') { e.preventDefault(); next(); }
   });
 
-  let currentIndex = 0;
-  function updateUI(){
-    const width = containerEl.clientWidth;
-    const offset = -currentIndex * width;
-    track.style.transform = `translateX(${offset}px)`;
-    if(dots){
-      const dotButtons = dots.querySelectorAll('.carousel-dot');
-      dotButtons.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-    }
-    if(counter){
-      counter.textContent = `${currentIndex + 1}/${total}`;
-    }
-  }
-  function goTo(idx){
-    if(idx < 0) idx = 0;
-    if(idx > total - 1) idx = total - 1;
-    currentIndex = idx;
-    updateUI();
-  }
-  // React to resize to maintain transform
-  const ro = new ResizeObserver(()=> updateUI());
+  // resize observer -> keep correct offset
+  const ro = new ResizeObserver(()=> updateUI(true));
   ro.observe(containerEl);
 
-  // initialize
-  setTimeout(()=> updateUI(), 30);
+  // If zoom enabled, set it up per slide
+  function setupZoomHandlers(){
+    if(!enableZoom) return;
+    slides.forEach((sl, idx) => {
+      const wrap = sl.querySelector('.zoom-wrap');
+      const img = sl.querySelector('.zoom-img');
+      if(!wrap || !img) return;
+      let scale = 1;
+      let minScale = 1;
+      let maxScale = 4;
+      let tx = 0, ty = 0;
+      let panning = false;
+      let lastX = 0, lastY = 0;
+
+      function applyTransform(){
+        img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+        if(scale > 1){ wrap.dataset.zoomed = '1'; } else { delete wrap.dataset.zoomed; }
+      }
+      function clampPan(){
+        const rect = wrap.getBoundingClientRect();
+        const imgW = rect.width * scale;
+        const imgH = rect.height * scale;
+        const maxX = Math.max(0, (imgW - rect.width)/2);
+        const maxY = Math.max(0, (imgH - rect.height)/2);
+        tx = Math.min(maxX, Math.max(-maxX, tx));
+        ty = Math.min(maxY, Math.max(-maxY, ty));
+      }
+      function zoomAt(pointX, pointY, deltaScale){
+        const rect = wrap.getBoundingClientRect();
+        const prevScale = scale;
+        scale = Math.min(maxScale, Math.max(minScale, scale * deltaScale));
+        const cx = pointX - rect.left - rect.width/2;
+        const cy = pointY - rect.top - rect.height/2;
+        tx = (tx - cx) * (scale/prevScale) + cx;
+        ty = (ty - cy) * (scale/prevScale) + cy;
+        clampPan(); applyTransform();
+      }
+
+      // Wheel zoom (desktop)
+      wrap.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 1.12 : 0.9;
+        zoomAt(e.clientX, e.clientY, delta);
+      }, { passive:false });
+
+      // Double click to toggle zoom
+      let lastClick = 0;
+      wrap.addEventListener('click', (e) => {
+        const now = Date.now();
+        if(now - lastClick < 280){
+          e.stopPropagation();
+          if(scale > 1){
+            scale = 1; tx = 0; ty = 0; applyTransform();
+          } else {
+            zoomAt(e.clientX, e.clientY, 2);
+          }
+        }
+        lastClick = now;
+      });
+
+      // Pan when zoomed
+      wrap.addEventListener('pointerdown', (e) => {
+        if(scale === 1) return;
+        panning = true; wrap.setPointerCapture(e.pointerId);
+        lastX = e.clientX; lastY = e.clientY;
+      });
+      wrap.addEventListener('pointermove', (e) => {
+        if(!panning) return;
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        lastX = e.clientX; lastY = e.clientY;
+        tx += dx; ty += dy; clampPan(); applyTransform();
+      });
+      wrap.addEventListener('pointerup', (e) => { panning = false; try{wrap.releasePointerCapture(e.pointerId);}catch(_e){} });
+      wrap.addEventListener('pointercancel', () => { panning = false; });
+
+      // Pinch-to-zoom (touch)
+      let pinch = { active:false, startDist:0, startScale:1, centerX:0, centerY:0 };
+      wrap.addEventListener('touchstart', (e) => {
+        if(e.touches.length === 2){
+          pinch.active = true;
+          const [t0,t1] = e.touches;
+          pinch.startDist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+          pinch.startScale = scale;
+          pinch.centerX = (t0.clientX + t1.clientX)/2;
+          pinch.centerY = (t0.clientY + t1.clientY)/2;
+        }
+      }, {passive:true});
+      wrap.addEventListener('touchmove', (e) => {
+        if(pinch.active && e.touches.length === 2){
+          e.preventDefault();
+          const [t0,t1] = e.touches;
+          const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+          const delta = dist / (pinch.startDist || 1);
+          scale = Math.min(maxScale, Math.max(minScale, pinch.startScale * delta));
+          zoomAt(pinch.centerX, pinch.centerY, 1);
+        }
+      }, {passive:false});
+      wrap.addEventListener('touchend', () => { pinch.active = false; }, {passive:true});
+
+      // Reset zoom when slide becomes inactive
+      const resetZoom = () => { scale = 1; tx = 0; ty = 0; applyTransform(); };
+      sl._resetZoom = resetZoom;
+    });
+  }
+  setupZoomHandlers();
+
+  function resetAllZooms(){
+    slides.forEach(sl => { if(typeof sl._resetZoom === 'function') sl._resetZoom(); });
+  }
 
   return {
-    setIndex: goTo,
-    getIndex: () => currentIndex,
-    destroy: () => {
-      ro.disconnect();
-      containerEl.innerHTML = '';
-    }
+    setIndex: (i) => { goTo(i); resetAllZooms(); },
+    getIndex: () => realIndex,
+    prev: () => { prev(); },
+    next: () => { next(); },
+    destroy: () => { try{ ro.disconnect(); }catch(e){} containerEl.innerHTML = ''; }
   };
 }
 </script>
 </head>
 <body>
-<div id="preloader"><div class="loader"></div></div>
+<div id="preloader">
+  <div class="loader" aria-hidden="true"></div>
+  <div id="preloaderText" role="status" aria-live="polite">Loading 0%</div>
+  <div id="preloaderBar" aria-hidden="true"><span></span></div>
+</div>
 
 <div id="addNotif" class="add-notif" role="status" aria-live="polite" aria-atomic="true">
   <img id="addNotifThumb" class="product-thumb" src alt>
@@ -287,7 +796,7 @@ function createCarousel(containerEl, images, opts = {}){
 
 <div id="hintTooltip" role="note" aria-hidden="true">
   <div class="icon" aria-hidden="true"><i class="fas fa-hand-pointer"></i></div>
-  <div class="text">Cards flip — click to see more!</div>
+  <div class="text">Cards flip -- click to see more!</div>
 </div>
 
 <a id="scrollToTopBtn" href="#" role="button" aria-label="Scroll to top" tabindex="0"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
@@ -349,16 +858,16 @@ function createCarousel(containerEl, images, opts = {}){
 </div>
 
 <div id="imgLightbox" class="lightbox" aria-hidden="true" tabindex="-1">
-  <button id="closeLightbox" type="button" aria-label="Close image" style="position:absolute;right:18px;top:18px;background:transparent;border:0;color:#fff;font-size:22px;cursor:pointer"><i class="fas fa-times" aria-hidden="true"></i></button>
-  <img id="lightboxImg" alt style="max-width:95%;max-height:85%;border-radius:8px;touch-action:manipulation">
+  <button id="closeLightbox" type="button" aria-label="Close image" style="position:absolute;right:18px;top:18px;background:transparent;border:0;color:#fff;font-size:22px;cursor:pointer;z-index:2"><i class="fas fa-times" aria-hidden="true"></i></button>
+  <div class="lb-frame" id="lbFrame" aria-live="polite"></div>
 </div>
 
 <script>
 /* --- Data: products now use arrays of images (one or more) --- */
 const sponsors = [
-    {id:'spon-1',title:'DriftThreads',img:'assets/logo.png',url:'',description:'Ready to buy yet?',badge:'Sponsored'},
-    // {id:'spon-1',title:'Autostyle Motorsport',img:'sponsors/autostyle.jpeg',url:'https://www.autostyle.co.za/',description:'Built for speed — engineered for victory',badge:'Sponsored'},
-    // {id:'spon-2',title:'Monster Energy',img:'sponsors/monster.jpeg',url:'https://www.monsterenergy.com',description:'Unleash the beast — fuel your drift',badge:'Sponsored'},
+    {id:'spon-1',title:'DriftThreads',img:'assets/logo.png',url:'/blogs',description:'Ready to buy yet?',badge:'Sponsored'},
+    // {id:'spon-1',title:'Autostyle Motorsport',img:'sponsors/autostyle.jpeg',url:'https://www.autostyle.co.za/',description:'Built for speed -- engineered for victory',badge:'Sponsored'},
+    // {id:'spon-2',title:'Monster Energy',img:'sponsors/monster.jpeg',url:'https://www.monsterenergy.com',description:'Unleash the beast -- fuel your drift',badge:'Sponsored'},
     // {id:'spon-3',title:'Studio 88',img:'sponsors/studio88.jpeg',url:'https://studio-88.co.za',description:'Style on the move - the way you want it',badge:'Sponsored'}
 ];
 
@@ -371,27 +880,27 @@ const products = [
       'products/hoodies/driftthreads_hoodie.jpeg',
       'products/hoodies/driftthreads_hoodie(2).jpeg'
     ],
-    description: "Soft inside, tough outside — the hoodie that rides with you anywhere",
+    description: "Soft inside, tough outside -- the hoodie that rides with you anywhere",
     badge: 'Official'
   },
-    {
-  title: 'Gua Sha + Face Roller (Jade)',
-  price: 150,
-  cat: 'other',
-  img: [
-    'products/other/gua_sha.jpeg',
-    'products/other/gua_sha(2).jpeg',
-    'products/other/gua_sha(3).jpeg',
-    'products/other/gua_sha(4).jpeg',
-    'products/other/gua_sha(5).jpeg',
-    'products/other/gua_sha(6).jpeg',
-    'products/other/gua_sha(7).jpeg',
-    'products/other/gua_sha(8).jpeg',
-    'products/other/gua_sha(9).jpeg',
-  ],
-  description: "Traditional Chinese scraping tool — made from pure Jade Stone",
-  badge: 'Popular'
-},
+  {
+    title: 'Gua Sha + Face Roller (Jade)',
+    price: 150,
+    cat: 'other',
+    img: [
+      'products/other/gua_sha.jpeg',
+      'products/other/gua_sha(2).jpeg',
+      'products/other/gua_sha(3).jpeg',
+      'products/other/gua_sha(4).jpeg',
+      'products/other/gua_sha(5).jpeg',
+      'products/other/gua_sha(6).jpeg',
+      'products/other/gua_sha(7).jpeg',
+      'products/other/gua_sha(8).jpeg',
+      'products/other/gua_sha(9).jpeg',
+    ],
+    description: "Traditional Chinese scraping tool -- made from pure Jade Stone",
+    badge: 'Popular'
+  },
   {
     title: '"Boss" Couples Hoodie (2)',
     price: 1200,
@@ -401,15 +910,15 @@ const products = [
       'products/couples/boss_couples_hoodie(1).jpeg',
       'products/couples/boss_couples_hoodie(2).jpeg',
     ],
-    description: 'Power couple energy — twin hoodies for maximum flex and matching vibes',
+    description: 'Power couple energy -- twin hoodies for maximum flex and matching vibes',
     badge: 'Hot'
   },
-    {
+  {
     title: 'Tokyo Revengers Hoodie',
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/tokyo_revengers.jpeg'],
-    description: "Rep the gang, rep the streets — Tokyo Revengers style",
+    description: "Rep the gang, rep the streets -- Tokyo Revengers style",
     badge: ''
   },
   {
@@ -417,7 +926,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/911_gt3_rs.jpeg'],
-    description: "Porsche vibes, street-ready fit — feel the speed in every stitch",
+    description: "Porsche vibes, street-ready fit -- feel the speed in every stitch",
     badge: ''
   },
   {
@@ -425,7 +934,7 @@ const products = [
     price: 750,
     cat: 'hoodies',
     img: ['products/hoodies/akatsuki.jpeg'],
-    description:"Naruto’s legendary Akatsuki clouds, now on a hoodie — menace approved",
+    description:"Naruto’s legendary Akatsuki clouds, now on a hoodie -- menace approved",
     badge:''
   },
   {
@@ -433,7 +942,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/bmw.jpeg'],
-    description:"Roll in style — 'I need money for BMW' never looked this clean",
+    description:"Roll in style -- 'I need money for BMW' never looked this clean",
     badge:''
   },
   {
@@ -441,7 +950,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/kakashi.jpeg'],
-    description:"Stealthy, iconic, and stylish — Kakashi fanart hoodie for true anime heads",
+    description:"Stealthy, iconic, and stylish -- Kakashi fanart hoodie for true anime heads",
     badge:''
   },
   {
@@ -449,7 +958,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/monkey_d_luffy.jpeg'],
-    description:"Set sail with Luffy — One Piece vibes, maximum hype",
+    description:"Set sail with Luffy -- One Piece vibes, maximum hype",
     badge:''
   },
   {
@@ -457,7 +966,7 @@ const products = [
     price: 520,
     cat: 'hoodies',
     img: ['products/hoodies/tokyo_ghoul.jpeg'],
-    description:"Dark, edgy, and savage — Tokyo Ghoul energy for your streetwear",
+    description:"Dark, edgy, and savage -- Tokyo Ghoul energy for your streetwear",
     badge:'20% Off'
   },
   {
@@ -465,7 +974,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/bmw_m.jpeg'],
-    description:"BMW M series inspired hoodie — engineered for flexing",
+    description:"BMW M series inspired hoodie -- engineered for flexing",
     badge:''
   },
   {
@@ -473,7 +982,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/one_piece_bros.jpeg'],
-    description:"Luffy, Ace & Sabo — the ultimate brotherhood, ultimate flex",
+    description:"Luffy, Ace & Sabo -- the ultimate brotherhood, ultimate flex",
     badge:''
   },
   {
@@ -481,7 +990,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/batman.jpeg'],
-    description:"Own the night — Dark Knight vibes in hoodie form",
+    description:"Own the night -- Dark Knight vibes in hoodie form",
     badge:''
   },
   {
@@ -489,7 +998,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/retrowave_m3_e46.jpeg'],
-    description:"Retro neon meets Bavarian muscle — E46 M3 reimagined in retrowave drip",
+    description:"Retro neon meets Bavarian muscle -- E46 M3 reimagined in retrowave drip",
     badge:''
   },
   {
@@ -497,7 +1006,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/gojo.jpeg'],
-    description:"Gojo style, endless charm — Jujutsu Kaisen energy unlocked",
+    description:"Gojo style, endless charm -- Jujutsu Kaisen energy unlocked",
     badge:''
   },
   {
@@ -505,7 +1014,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/satoru_gojo.jpeg'],
-    description:"For the real Gojo stans — keep your style untouchable",
+    description:"For the real Gojo stans -- keep your style untouchable",
     badge:''
   },
   {
@@ -513,7 +1022,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/hellcat_hoodie.jpeg'],
-    description:'Supercharged swagger — Hellcat muscle meets streetwear drip',
+    description:'Supercharged swagger -- Hellcat muscle meets streetwear drip',
     badge:''
   },
   {
@@ -521,7 +1030,7 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/prmtv_hellcat_hoodie.jpeg'],
-    description:'Aggressive style, street-ready edge — Hellcat vibes turned hoodie perfection',
+    description:'Aggressive style, street-ready edge -- Hellcat vibes turned hoodie perfection',
     badge:''
   },
   {
@@ -529,31 +1038,15 @@ const products = [
     price: 650,
     cat: 'hoodies',
     img: ['products/hoodies/straw_hats.jpeg'],
-    description:"One Piece Straw Hats logo hoodie — ride the Grand Line in style",
+    description:"One Piece Straw Hats logo hoodie -- ride the Grand Line in style",
     badge:''
   },
-  // {
-  //   title: 'Cristiano Ronaldo CR7 Hoodie',
-  //   price: 650,
-  //   cat: 'hoodies',
-  //   img: ['products/hoodies/cr_rm.jpeg', 'products/hoodies/ronaldo_cr7.jpeg'],
-  //   description:"CR7 vibes — football legend meets hoodie drip",
-  //   badge:'New'
-  // },
-  // {
-  //   title: 'Lionel Messi Hoodie',
-  //   price: 650,
-  //   cat: 'hoodies',
-  //   img: ['products/hoodies/messi.jpeg'],
-  //   description:"Messi style — carry the football king energy on your streetwear",
-  //   badge:'New'
-  // },
   {
     title: 'Drift Threads™ Mug',
     price: 150,
     cat: 'mugs',
     img: ['products/mugs/driftthreads_mug.jpeg'],
-    description:"Morning coffee, leveled up — Drift Threads™ approved",
+    description:"Morning coffee, leveled up -- Drift Threads™ approved",
     badge:'Official'
   },
   {
@@ -561,7 +1054,7 @@ const products = [
     price: 150,
     cat: 'mugs',
     img: ['products/mugs/driftthreads_mug_white.jpeg'],
-    description:"Sleek, clean, and fully Drift Threads™ certified — sip in style",
+    description:"Sleek, clean, and fully Drift Threads™ certified -- sip in style",
     badge:'Official'
   },
   {
@@ -569,21 +1062,19 @@ const products = [
     price: 220,
     cat: 'supplements',
     img: ['products/supplements/honey_1kg.jpeg'],
-    description:"Pure, golden, unstoppable — Liquid Gold™ by Drift Threads™",
+    description:"Pure, golden, unstoppable -- Liquid Gold™ by Drift Threads™",
     badge:'Limited'
   },
-
 ];
-
 
 /* Guarantee each product has an images array and a stable id */
 products.forEach((p, i) => {
-  p.images = ensureImagesArray(p); // normalize to p.images
+  p.images = ensureImagesArray(p);
   if(!p.id) p.id = `prod-${i}`;
 });
 sponsors.forEach((s, i) => { if(!s.id) s.id = `spon-${i}`; });
 
-/* Re-usable functions (cart, UI, etc.) - based on your original code but adapted */
+/* Re-usable functions (cart, UI, etc.) */
 const grid = document.getElementById('grid');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
@@ -597,7 +1088,7 @@ const closeCart = document.getElementById('closeCart');
 const clearCartBtn = document.getElementById('clearCartBtn');
 const waOrderBtn = document.getElementById('waOrderBtn');
 const imgLightbox = document.getElementById('imgLightbox');
-const lightboxImg = document.getElementById('lightboxImg');
+const lbFrame = document.getElementById('lbFrame');
 const closeLightboxBtn = document.getElementById('closeLightbox');
 
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -607,6 +1098,8 @@ let currentIndex = 0;
 let loading = false;
 let lastAdded = null;
 let notifTimer = null;
+
+/* Infinite scroll observer */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if(entry.isIntersecting && !loading){
@@ -731,18 +1224,18 @@ function productShareUrl(p){ const base = `${window.location.origin}${window.loc
 function showShareNotification(msg='Link copied!'){ try { document.getElementById('shareNotifMsg').textContent = msg; document.getElementById('shareNotif').classList.add('visible'); setTimeout(()=> document.getElementById('shareNotif').classList.remove('visible'), 2000); } catch(e){} }
 async function shareProduct(p){
   const url = productShareUrl(p);
-  const shareData = { title: p.title, text: `${p.title} — ${money(p.price)}\n\n${(p.description||'').replace(/<[^>]*>?/gm,'')}`, url };
+  const shareData = { title: p.title, text: `${p.title} -- ${money(p.price)}\n\n${(p.description||'').replace(/<[^>]*>?/gm,'')}`, url };
   if(navigator.share){
     try{ await navigator.share(shareData); showShareNotification('Shared!'); return; } catch(err){}
   }
   if(navigator.clipboard && navigator.clipboard.writeText){
     try{ await navigator.clipboard.writeText(url); showShareNotification('Link copied to clipboard!'); return; } catch(err){}
   }
-  try { window.prompt('Copy this link:', url); showShareNotification('Link ready — copied?'); } catch(err){ showShareNotification('Could not copy link'); }
+  try { window.prompt('Copy this link:', url); showShareNotification('Link ready -- copied?'); } catch(err){ showShareNotification('Could not copy link'); }
 }
 
 /* Create regular product card with carousel support */
-function createCard(p){
+function createCard(p, {eager=false} = {}){
   const card = document.createElement('article');
   card.className = 'card';
   card.tabIndex = 0;
@@ -757,21 +1250,38 @@ function createCard(p){
   // image-area (carousel or single image)
   const imgWrap = document.createElement('div');
   imgWrap.className = 'img-wrap';
-  // Build carousel into imgWrap using createCarousel helper
+
   const images = p.images || ensureImagesArray(p);
-  let carouselAPI = null;
   const carouselContainer = document.createElement('div');
   carouselContainer.style.width = '100%';
   carouselContainer.style.height = '100%';
 
-  // if there is only 1 image we still use createCarousel (it will not add controls), so logic is uniform
-  carouselAPI = createCarousel(carouselContainer, images, {
+  const carouselAPI = createCarousel(carouselContainer, images, {
     onImageClick: (index, url) => {
-      // open lightbox on clicked image
-      lightboxOpen(url);
+      openLightbox(p.images, index);
     },
-    preserveClickPropagation: false
+    startIndex: 0,
+    loop: true,
+    showDots: true,
+    showButtons: true,
+    showCounter: true,
+    className: 'carousel',
+    enableZoom: false
   });
+
+  // Boost priority for first visible batch first image
+  try{
+    const firstSlideImg = carouselContainer.querySelector('.carousel-slide img');
+    if(firstSlideImg){
+      if(eager){
+        firstSlideImg.loading = 'eager';
+        firstSlideImg.fetchPriority = 'high';
+      } else {
+        firstSlideImg.loading = 'lazy';
+        firstSlideImg.fetchPriority = 'auto';
+      }
+    }
+  }catch(e){}
 
   imgWrap.appendChild(carouselContainer);
 
@@ -800,7 +1310,7 @@ function createCard(p){
   inner.appendChild(back);
   card.appendChild(inner);
 
-  // badge injection (same logic as your original file)
+  // badge injection
   try {
     const imgWrapForBadge = front.querySelector('.img-wrap');
     if(imgWrapForBadge && p.badge && String(p.badge).trim()){
@@ -848,11 +1358,9 @@ function createCard(p){
   if(viewBtn){
     viewBtn.addEventListener('click', e => {
       e.stopPropagation();
-      // get current index from carouselAPI if available
       let idx = 0;
       try { idx = carouselAPI.getIndex(); } catch(err){}
-      const url = (p.images && p.images[idx]) || (p.img && (Array.isArray(p.img) ? p.img[idx] : p.img)) || 'assets/placeholder.png';
-      lightboxOpen(url);
+      openLightbox(p.images, idx);
     });
   }
 
@@ -870,7 +1378,7 @@ function createCard(p){
   return card;
 }
 
-/* Sponsor card creation (kept minimal) */
+/* Sponsor card creation */
 function createSponsorCard(s){
   const card = document.createElement('article');
   card.className = 'card sponsor';
@@ -879,7 +1387,7 @@ function createSponsorCard(s){
   const front = document.createElement('div');
   front.className = 'sponsor-card-front';
   front.innerHTML = `<div class="img-wrap sponsor-card"><img loading="lazy" src="${s.img}" alt="${s.title}"><div class="sponsor-label">Sponsored</div></div>
-    <div class="front-body" role="link" aria-label="${s.title} — Sponsored" tabindex="-1"><div class="sponsor-title">${s.title}</div><div class="sponsor-desc">${s.description || ''}</div></div>`;
+    <div class="front-body" role="link" aria-label="${s.title} -- Sponsored" tabindex="-1"><div class="sponsor-title">${s.title}</div><div class="sponsor-desc">${s.description || ''}</div></div>`;
   inner.appendChild(front); card.appendChild(inner);
   const imgEl = front.querySelector('img'); attachImageFallback(imgEl);
   card.addEventListener('click', () => { const url = s.url || '#'; if(url && url !== '#') window.open(url, '_blank', 'noopener'); });
@@ -888,11 +1396,14 @@ function createSponsorCard(s){
   return card;
 }
 
-/* Rendering + infinite scroll logic (kept close to original) */
+/* Spinner helpers */
 function showSpinner(){ document.getElementById('loadingSpinner').style.display = 'block'; }
 function hideSpinner(){ document.getElementById('loadingSpinner').style.display = 'none'; }
+
+/* Intersection observer helper */
 function observeLastCard(){ const cards = grid.querySelectorAll('.card'); const last = cards[cards.length - 1]; if(last) observer.observe(last); }
 
+/* Rendering + infinite scroll logic */
 function renderNextBatch(){
   return new Promise((resolve) => {
     if(loading){ resolve(); return; }
@@ -901,7 +1412,8 @@ function renderNextBatch(){
     setTimeout(() => {
       const slice = filteredProducts.slice(currentIndex, currentIndex + batchSize);
       slice.forEach((p, i) => {
-        const c = createCard(p);
+        const eager = (currentIndex === 0); // first visible batch: eager first image
+        const c = createCard(p, {eager});
         c.classList.add('pop-in');
         c.style.animationDelay = `${i * 60}ms`;
         c.style.opacity = '1';
@@ -919,7 +1431,7 @@ function renderNextBatch(){
       if(currentIndex >= filteredProducts.length) observer.disconnect();
       else observeLastCard();
       setTimeout(()=> resolve(), 180);
-    }, 220);
+    }, 120);
   });
 }
 
@@ -969,7 +1481,7 @@ function applyStateToUI(state){
 }
 function applyStateFromURL(){ const st = readStateFromURL(); applyStateToUI(st); }
 
-/* Modal interaction helpers (copied from original and used by lightbox & cart) */
+/* Modal interaction helpers (for lightbox & cart) */
 (function(){
   function isInsideAny(target, list){ return list.some(el => el && (el === target || el.contains(target))); }
   function modalKeyHandler(e){
@@ -983,7 +1495,12 @@ function applyStateFromURL(){ const st = readStateFromURL(); applyStateToUI(st);
     else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
   }
   window.disableBackgroundInteraction = function(allowedElements = []){
+    // lock scroll position
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    document.body.dataset.scrollY = String(scrollY);
     document.body.classList.add('modal-open');
+    document.body.style.top = `-${scrollY}px`;
+
     document.querySelectorAll('header, main').forEach(el => {
       el.setAttribute('aria-hidden','true');
       try{ el.inert = true; }catch(e){}
@@ -996,7 +1513,11 @@ function applyStateFromURL(){ const st = readStateFromURL(); applyStateToUI(st);
     document.addEventListener('keydown', modalKeyHandler, true);
   };
   window.enableBackgroundInteraction = function(){
+    const savedY = parseInt(document.body.dataset.scrollY || '0', 10);
     document.body.classList.remove('modal-open');
+    document.body.style.top = '';
+    window.scrollTo(0, savedY);
+
     document.querySelectorAll('header, main').forEach(el => {
       el.removeAttribute('aria-hidden');
       try{ el.inert = false; }catch(e){}
@@ -1019,7 +1540,7 @@ closeCart.addEventListener('click', ()=>{ cartModal.classList.remove('active'); 
 cartModal.addEventListener('click', e => { if(e.target === cartModal) closeCart.click(); });
 clearCartBtn.addEventListener('click', ()=> { if(cart.length && confirm('Clear cart?')){ cart = []; saveCart(); updateCartDisplay(); } });
 
-/* WhatsApp integration kept same (simple) */
+/* WhatsApp integration */
 const WA_NUMBER = '27713468567';
 function buildWhatsAppMessage(){
   if(!cart || !cart.length) return encodeURIComponent("🛒 Hey -- ordering from the site:%0A%0ANo items in cart. (bruh)");
@@ -1038,54 +1559,248 @@ function buildWhatsAppMessage(){
   return encodeURIComponent(lines.join("\n"));
 }
 function getWhatsAppLink(){ const base = `https://wa.me/${WA_NUMBER}`; const msg = buildWhatsAppMessage(); return `${base}?text=${msg}`; }
-waOrderBtn.addEventListener('click', (e) => { const link = getWhatsAppLink(); window.open(link, '_blank', 'noopener'); });
+waOrderBtn.addEventListener('click', () => { const link = getWhatsAppLink(); window.open(link, '_blank', 'noopener'); });
 
-/* Lightbox close */
-document.getElementById('closeLightbox').addEventListener('click', ()=> lightboxClose());
-imgLightbox.addEventListener('click', function(e){ if(e.target === imgLightbox){ lightboxClose(); }});
+/* LIGHTBOX with looping carousel + pinch/wheel zoom + swipe down/up to close
+   Mobile: up/down => close, left/right => navigate, arrow controls auto-hide */
+function openLightbox(imgs, startIndex = 0){
+  if(!Array.isArray(imgs) || !imgs.length) imgs = ['assets/placeholder.png'];
+  lbFrame.innerHTML = ''; // clear previous
+  const carouselHolder = document.createElement('div');
+  carouselHolder.style.width = '100%';
+  carouselHolder.style.height = '100%';
+
+  const api = createCarousel(carouselHolder, imgs, {
+    onImageClick: () => {},
+    startIndex: startIndex,
+    loop: true,
+    showDots: true,
+    showButtons: true,
+    showCounter: true,
+    className: 'carousel',
+    enableZoom: true
+  });
+  lightboxState.api = api;
+
+  lbFrame.appendChild(carouselHolder);
+
+  // Show lightbox with animation
+  imgLightbox.classList.add('active');
+  imgLightbox.setAttribute('aria-hidden','false');
+  requestAnimationFrame(()=> imgLightbox.classList.add('opened'));
+  disableBackgroundInteraction([imgLightbox, lbFrame]);
+  lightboxState.active = true;
+
+  // focus close button for a11y
+  setTimeout(()=>{ try{ closeLightboxBtn.focus(); }catch(e){} }, 50);
+
+  // Mobile-specific control auto-hide after 1s idle
+  const isMobile = window.matchMedia('(max-width: 720px)').matches;
+  if(isMobile){
+    const resetIdle = () => {
+      imgLightbox.classList.remove('hide-controls');
+      if(lightboxState.idleTimer) clearTimeout(lightboxState.idleTimer);
+      lightboxState.idleTimer = setTimeout(() => {
+        imgLightbox.classList.add('hide-controls');
+      }, 1000);
+    };
+    ['touchstart','pointermove','mousemove','keydown'].forEach(ev => imgLightbox.addEventListener(ev, resetIdle, {passive:true}));
+    resetIdle(); // start timer
+  }
+}
+function lightboxClose(withAnim=true){
+  if(lightboxState.idleTimer){ clearTimeout(lightboxState.idleTimer); lightboxState.idleTimer = null; }
+  if(withAnim){
+    imgLightbox.classList.add('closing');
+    setTimeout(()=>{
+      imgLightbox.classList.remove('active','opened','closing','hide-controls');
+      imgLightbox.setAttribute('aria-hidden','true');
+      lbFrame.innerHTML = '';
+      enableBackgroundInteraction();
+      lightboxState.active = false;
+      lightboxState.api = null;
+    }, 220);
+  } else {
+    imgLightbox.classList.remove('active','opened','closing','hide-controls');
+    imgLightbox.setAttribute('aria-hidden','true');
+    lbFrame.innerHTML = '';
+    enableBackgroundInteraction();
+    lightboxState.active = false;
+    lightboxState.api = null;
+  }
+}
+document.getElementById('closeLightbox').addEventListener('click', ()=> lightboxClose(true));
+imgLightbox.addEventListener('click', function(e){ if(e.target === imgLightbox){ lightboxClose(true); }});
+
+/* Swipe up/down to close on touch (when not zooming) */
+(function(){
+  let startY = 0, startX = 0, dragging = false, moved = false;
+  imgLightbox.addEventListener('touchstart', (e) => {
+    if(e.touches.length !== 1) return; // only single finger
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    dragging = true; moved = false;
+  }, { passive:true });
+  imgLightbox.addEventListener('touchmove', (e) => {
+    if(!dragging) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if(Math.abs(dy) <= Math.abs(dx)) return; // mostly horizontal -> carousel handles
+    // Do not close if current slide is zoomed in
+    const zoomed = !!imgLightbox.querySelector('.zoom-wrap[data-zoomed="1"]');
+    if(zoomed) return;
+
+    moved = true;
+    const factor = Math.min(1, Math.abs(dy)/200);
+    lbFrame.style.transform = `translateY(${dy}px) scale(${1 - factor*0.05})`;
+    imgLightbox.style.background = `rgba(0,0,0,${0.85 - factor*0.5})`;
+    e.preventDefault();
+  }, { passive:false });
+  imgLightbox.addEventListener('touchend', () => {
+    if(!dragging) return;
+    dragging = false;
+    if(!moved){
+      lbFrame.style.transform = '';
+      imgLightbox.style.background = '';
+      return;
+    }
+    const current = lbFrame.style.transform || '';
+    const match = current.match(/translateY\(([-0-9.]+)px\)/);
+    let dy = 0;
+    if(match) dy = parseFloat(match[1] || '0');
+    if(Math.abs(dy) > 80){
+      lightboxClose(true);
+    } else {
+      // restore
+      lbFrame.style.transition = 'transform 200ms var(--ease)';
+      imgLightbox.style.transition = 'background 200ms var(--ease)';
+      lbFrame.style.transform = '';
+      imgLightbox.style.background = 'rgba(0,0,0,0.85)';
+      setTimeout(()=> { lbFrame.style.transition = ''; imgLightbox.style.transition = ''; }, 220);
+    }
+  });
+})();
+
+/* ESC closes both modals if open */
 window.addEventListener('keydown', (e) => {
   if(e.key === 'Escape'){
     if(cartModal.classList.contains('active')){ closeCart.click(); }
-    if(imgLightbox.classList.contains('active')){ lightboxClose(); }
+    if(imgLightbox.classList.contains('active')){ lightboxClose(true); }
   }
 });
 
-/* Init UI on load */
-window.addEventListener('DOMContentLoaded', () => {
-  // hide preloader if present
+/* Better preloader: preload critical images (first 2 batches × first 2 images each) + fonts; background-preload the rest */
+async function preloadCriticalAssets(){
   const pre = document.getElementById('preloader');
-  if(pre){ setTimeout(()=> { try{ pre.remove(); }catch(e){} }, 600); }
+  const txt = document.getElementById('preloaderText');
+  const bar = document.querySelector('#preloaderBar>span');
 
-  updateCartDisplay();
-  applyStateFromURL();
-  filterAndRender();
+  // Respect current state (q, cat) for critical set
+  const st = readStateFromURL();
+  const cat = (st.cat && st.cat.trim()) ? st.cat.trim() : 'all';
+  const q = (st.q || '').trim().toLowerCase();
+  const list = products.filter(p => {
+    const matchCat = (cat === 'all') || p.cat === cat;
+    const matchQ = !q || p.title.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
 
-  // show hint tooltip briefly
+  const criticalProducts = list.slice(0, batchSize * 2); // two batches
+  const criticalImgs = [];
+  criticalProducts.forEach(p => {
+    const arr = ensureImagesArray(p);
+    // first two images per product
+    if(arr[0]) criticalImgs.push(arr[0]);
+    if(arr[1]) criticalImgs.push(arr[1]);
+  });
+
+  // Always include favicon/logo
+  criticalImgs.push('assets/favicon.png','assets/logo.png');
+  // Deduplicate
+  const uniqCritical = Array.from(new Set(criticalImgs));
+
+  // Secondary (background) preloads: first image of remaining products
+  const secondaryImgs = [];
+  products.forEach(p => {
+    const arr = ensureImagesArray(p);
+    if(arr[0]) secondaryImgs.push(arr[0]);
+  });
+  const uniqSecondary = Array.from(new Set(secondaryImgs.filter(src => !uniqCritical.includes(src))));
+
+  let loaded = 0;
+  const totalUnits = uniqCritical.length + 1; // +1 for fonts
+  const update = () => {
+    const pct = Math.round((loaded/totalUnits)*100);
+    txt.textContent = `Loading ${pct}%`;
+    bar.style.width = `${pct}%`;
+  };
+
+  // Wait fonts as a unit
+  try { await document.fonts.ready; } catch(e){}
+  loaded++; update();
+
+  // Preload critical images serially in small batches to avoid clogging
+  const chunk = async (arr, size=6) => {
+    for(let i=0;i<arr.length;i+=size){
+      const batch = arr.slice(i, i+size).map(preloadImage);
+      const results = await Promise.allSettled(batch);
+      loaded += results.length;
+      update();
+    }
+  };
+
+  // Safety timeout: ensure we don't hang forever (6s)
+  const safety = new Promise(res => setTimeout(res, 6000));
+
+  await Promise.race([chunk(uniqCritical, 6), safety]);
+
+  // Hide preloader
+  setTimeout(()=> {
+    pre.style.opacity = '0';
+    setTimeout(()=> { try{ pre.remove(); }catch(e){} }, 600);
+  }, 150);
+
+  // Background preload remaining
+  const bgLoad = async () => {
+    for(let i=0;i<uniqSecondary.length;i+=8){
+      const slice = uniqSecondary.slice(i,i+8);
+      await Promise.all(slice.map(preloadImage));
+      await new Promise(r => setTimeout(r, 50));
+    }
+  };
+  if('requestIdleCallback' in window){
+    requestIdleCallback(bgLoad, { timeout: 3000 });
+  } else {
+    setTimeout(bgLoad, 500);
+  }
+}
+
+/* Initial hint tooltip */
+function showHintTooltip(){
   try {
     const tip = document.getElementById('hintTooltip');
-    if(tip){
-      const icon = tip.querySelector('.icon');
-      tip.style.display = '';
-      requestAnimationFrame(()=> {
-        tip.classList.add('visible','glowy');
-        tip.setAttribute('aria-hidden', 'false');
-        if(icon) icon.classList.add('pulse');
-      });
-      setTimeout(()=> {
-        tip.classList.remove('glowy');
-        tip.style.transition = 'opacity 220ms var(--ease), transform 220ms var(--ease)';
-        tip.style.opacity = '0';
-        tip.setAttribute('aria-hidden', 'true');
-        if(icon) icon.classList.remove('pulse');
-        setTimeout(()=> { tip.classList.remove('visible'); tip.style.display = 'none'; tip.style.transition = ''; tip.style.opacity = ''; }, 260);
-      }, 3000);
-    }
+    if(!tip) return;
+    const icon = tip.querySelector('.icon');
+    tip.style.display = '';
+    requestAnimationFrame(()=> {
+      tip.classList.add('visible','glowy');
+      tip.setAttribute('aria-hidden', 'false');
+      if(icon) icon.classList.add('pulse');
+    });
+    setTimeout(()=> {
+      tip.classList.remove('glowy');
+      tip.style.transition = 'opacity 220ms var(--ease), transform 220ms var(--ease)';
+      tip.style.opacity = '0';
+      tip.setAttribute('aria-hidden', 'true');
+      if(icon) icon.classList.remove('pulse');
+      setTimeout(()=> { tip.classList.remove('visible'); tip.style.display = 'none'; tip.style.transition = ''; tip.style.opacity = ''; }, 260);
+    }, 3000);
   } catch(e){}
-});
+}
 
 /* Search + categories binding */
-searchInput.addEventListener('input', ()=> { clearBtn.style.display = searchInput.value ? 'flex' : 'none'; debouncedSearch(); });
 const debouncedSearch = debounce(()=> { const cat = document.querySelector('.cat-btn.active').dataset.cat; updateURL({ q: searchInput.value.trim(), cat }, { replace:false }); filterAndRender(); }, 320);
+searchInput.addEventListener('input', ()=> { clearBtn.style.display = searchInput.value ? 'flex' : 'none'; debouncedSearch(); });
 searchBtn.addEventListener('click', ()=> { filterAndRender(); searchInput.focus(); });
 clearBtn.addEventListener('click', ()=> { searchInput.value = ''; filterAndRender(); clearBtn.style.display = 'none'; searchInput.focus(); });
 document.querySelectorAll('.cat-btn').forEach(btn => {
@@ -1124,6 +1839,41 @@ if(catBar){
   btn.addEventListener('focus', ()=> btn.classList.add('focused'));
   btn.addEventListener('blur', ()=> btn.classList.remove('focused'));
 })();
+
+/* Keyboard "pressed" class for all buttons/role=button to show active animation when tabbing */
+(function(){
+  function isButtonLike(el){
+    return el && (el.tagName === 'BUTTON' || el.getAttribute('role') === 'button');
+  }
+  document.addEventListener('keydown', (e) => {
+    const target = e.target;
+    if(!isButtonLike(target)) return;
+    const key = e.key || e.code;
+    if(key === 'Enter' || key === ' ' || key === 'Spacebar'){
+      target.classList.add('pressed');
+    }
+  });
+  document.addEventListener('keyup', (e) => {
+    const target = e.target;
+    if(!isButtonLike(target)) return;
+    target.classList.remove('pressed');
+  });
+  document.addEventListener('blur', (e) => {
+    const target = e.target;
+    if(isButtonLike(target)) target.classList.remove('pressed');
+  }, true);
+})();
+
+/* Initialize on DOMContentLoaded with improved preloading */
+window.addEventListener('DOMContentLoaded', async () => {
+  updateCartDisplay();
+  applyStateFromURL();
+  updateCatBarFade();
+  showHintTooltip();
+
+  await preloadCriticalAssets(); // preload critical assets (first 2 batches × 2 images + fonts)
+  await filterAndRender();       // render after initial images are ready
+});
 </script>
 </body>
 </html>
