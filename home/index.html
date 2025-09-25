@@ -5,6 +5,24 @@
 <title>DriftThreads -- Home</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" href="assets/favicon.png" />
+
+<meta name="description" content="Discover Drift Threads, the ultimate destination for premium streetwear inspired by car culture. Shop our exclusive collection now!">
+<link rel="canonical" href="https://driftthreads.store/">
+
+<meta property="og:title" content="Drift Threads | Premium Streetwear for Car Enthusiasts">
+<meta property="og:description" content="Explore our exclusive collection of streetwear inspired by car culture. Shop now at Drift Threads.">
+<meta property="og:image" content="https://driftthreads.store/assets/logo.png">
+<meta property="og:url" content="https://driftthreads.store/">
+<meta property="og:type" content="website">
+
+<meta name="twitter:title" content="Drift Threads | Premium Streetwear for Car Enthusiasts">
+<meta name="twitter:description" content="Shop the latest streetwear inspired by car culture at Drift Threads.">
+<meta name="twitter:image" content="https://driftthreads.store/assets/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <style>
@@ -22,7 +40,12 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:"Lexend",sans-serif}
+html,body{
+  margin:0;padding:0;width:100%;height:100%;
+  background:var(--bg);
+  background-color:#161616; /* fallback + fixes rare hairline seams */
+  color:var(--text);font-family:"Lexend",sans-serif
+}
 a{color:inherit}
 ::selection{background:rgba(10,170,255,0.14)}
 ::-webkit-scrollbar{width:0;background:transparent}
@@ -72,7 +95,10 @@ body.modal-open{overflow:hidden; overscroll-behavior:contain}
 }
 
 /* Header */
-header{position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px}
+header{
+  position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px;
+  backface-visibility:hidden;transform:translateZ(0);will-change:transform;contain:paint; /* mitigate rare hairline at top on GPU compositing */
+}
 .top-row{display:flex;gap:12px;align-items:center}
 .logo img{height:40px;display:block;background:#fff;padding:6px;border-radius:8px}
 .search-wrap{flex:1;display:flex;gap:6px}
@@ -86,14 +112,38 @@ header{position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);paddin
 @keyframes popBadge{0%{transform:scale(1)}30%{transform:scale(1.35)}100%{transform:scale(1)}}
 
 /* Categories bar */
-.cat-bar{display:flex;padding-top:10px;overflow-x:auto;white-space:nowrap;margin-left:30px;position:relative;padding-bottom:10px}
-.cat-bar::after{content:"";position:absolute;right:0;top:0;height:100%;width:56px;pointer-events:none;background:linear-gradient(to left,rgba(10,10,10,0.6),rgba(10,10,10,0));transition:opacity 200ms var(--ease)}
-.cat-bar.scrolled-end::after{opacity:0}
-.cat-btn{background:#fff;color:#222;padding:6px 12px;border-radius:10px;border:0;cursor:pointer;flex-shrink:0;margin-right:5px;transition:filter 160ms ease, background 160ms ease, transform 160ms var(--ease)}
+.cat-bar{
+  display:flex;padding-top:10px;overflow-x:auto;white-space:nowrap;margin-left:30px;position:relative;padding-bottom:10px;gap:6px;
+}
+.cat-bar::after{content:none !important} /* remove end shadow */
+.cat-bar.show-all{
+  flex-wrap:wrap;white-space:normal;overflow:visible;padding-bottom:8px;gap:8px;
+}
+.cat-btn{background:#fff;color:#222;padding:6px 12px;border-radius:10px;border:0;cursor:pointer;flex-shrink:0;margin-right:0;transition:filter 160ms ease, background 160ms ease, transform 160ms var(--ease)}
 .cat-btn:hover{filter:brightness(0.92);transform:translateY(-1px)}
 .cat-btn:active,.cat-btn.pressed{transform:translateY(1px) scale(0.98)}
 .cat-btn.active{background:#06f;color:#fff}
 .cat-btn.active:hover{filter:brightness(0.92)}
+
+/* Scroll hint for categories (mobile only) */
+.cat-scroll-hint{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  background:linear-gradient(90deg, rgba(0,194,255,0.15), rgba(0,194,255,0.35));
+  color:#e6f7ff;border:1px solid rgba(0,194,255,0.4);border-radius:999px;padding:6px 10px;font-weight:700;font-size:.78rem;
+  display:none;align-items:center;gap:6px;pointer-events:none;box-shadow:0 6px 18px rgba(0,194,255,0.15)
+}
+.cat-scroll-hint.visible{display:flex}
+.cat-scroll-hint i{color:#00c2ff}
+
+/* Show All button (desktop only) */
+#showAllCatsBtn{
+  display:none;margin:6px 30px 0 auto;background:#0a84ff;color:#fff;border:0;border-radius:999px;padding:6px 12px;font-weight:800;cursor:pointer;
+}
+#showAllCatsBtn:hover{transform:translateY(-1px)}
+#showAllCatsBtn:active,#showAllCatsBtn.pressed{transform:translateY(1px) scale(0.98)}
+@media (max-width: 900px){
+  #showAllCatsBtn{display:none !important}
+}
 
 /* Grid */
 main{padding:20px 12px;flex:1}
@@ -107,15 +157,10 @@ main{padding:20px 12px;flex:1}
   padding: 0 18px;
 }
 @media (max-width: 900px) {
-  #grid {
-    grid-template-columns: repeat(auto-fill, 200px);
-  }
+  #grid { grid-template-columns: repeat(auto-fill, 200px); }
 }
 @media (max-width: 600px) {
-  #grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 100%;
-  }
+  #grid { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
 }
 
 /* Cards */
@@ -158,6 +203,19 @@ main{padding:20px 12px;flex:1}
 .share-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,0.4)}
 .share-btn:active,.share-btn.pressed{transform:translateY(1px) scale(0.98)}
 
+/* On mobile, make back-of-card buttons icon-only (hide labels and make them round) */
+@media (max-width: 600px){
+  .card-back .btn-label{display:none}
+  .card-back .view-img-btn,
+  .card-back .share-btn,
+  .card-back .add-btn{
+    padding:8px;width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center
+  }
+  .card-back .view-img-btn i,
+  .card-back .share-btn i,
+  .card-back .add-btn i{ padding:0 !important; }
+}
+
 .card-badge{position:absolute;right:8px;bottom:8px;z-index:6;pointer-events:none;padding:6px 10px;border-radius:999px;font:var(--badge-font);color:#021019;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 20px rgba(2,16,25,0.5);transform-origin:100% 100%;transform:translateY(6px) scale(0.98);opacity:0;transition:transform 260ms var(--ease),opacity 220ms var(--ease);white-space:nowrap}
 .card.pop-in .card-badge{transform:translateY(0) scale(1);opacity:1}
 .card-badge .badge-dot{width:8px;height:8px;border-radius:50%;flex:0 0 8px;box-shadow:0 2px 4px rgba(0,0,0,0.25)}
@@ -198,10 +256,35 @@ main{padding:20px 12px;flex:1}
 .carousel-btn:active,.carousel-btn.pressed{transform:scale(0.96)}
 
 .carousel-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;display:flex;gap:6px;pointer-events:auto}
-.carousel-dot{width:8px;height:8px;border-radius:25%;background:rgba(255,255,255,0.2);border:1px solid rgba(0,0,0,0.25);cursor:pointer;transition:transform 160ms var(--ease)}
+.carousel-dot{
+  width:8px;height:8px;border-radius:25%;
+  background:rgba(255,255,255,0.2);border:1px solid rgba(0,0,0,0.25);cursor:pointer;transition:transform 160ms var(--ease)
+}
 .carousel-dot:hover{transform:scale(1.2)}
 .carousel-dot.active{background:#06f}
 .carousel-counter{position:absolute;right:8px;top:8px;background:rgba(0,0,0,0.5);padding:6px 8px;border-radius:8px;font-weight:700;font-size:0.8rem}
+
+/* Ensure the counter is fixed top-right in lightbox on all devices */
+.lightbox .carousel-counter{
+  position:fixed;
+  right:12px;
+  top:12px;
+  z-index:1001;
+  pointer-events:none;
+}
+
+/* Lightbox-specific dot styling: perfect circles, higher contrast, gray inactive, blue active */
+.lightbox .carousel-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:#b4bcc4; /* gray inactive */
+  border:1px solid rgba(0,0,0,0.7);
+  box-shadow:0 1px 2px rgba(0,0,0,0.4);
+}
+.lightbox .carousel-dot.active{
+  background:#06f; /* blue active */
+  border-color:#001a33;
+  box-shadow:0 0 0 2px rgba(0,102,255,0.25);
+}
 
 @media (max-width:480px){
   .carousel-btn{padding:6px 8px}
@@ -233,6 +316,33 @@ main{padding:20px 12px;flex:1}
 .wa-btn i{font-size:18px}
 .wa-btn:hover{transform:translateY(-1px)}
 .wa-btn:active,.wa-btn.pressed{transform:translateY(1px) scale(0.98)}
+#clearCartBtn{background:#ff2a2a;color:#fff;border-radius:10px;padding:8px 12px;border:0;cursor:pointer}
+
+/* Info/Disclaimer tooltip button in cart footer */
+.info-btn{
+  background:linear-gradient(180deg,#fff176,#ffd54f);
+  color:#1b1300;border:0;border-radius:10px;padding:8px 10px;font-weight:900;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(0,0,0,0.06);
+}
+.info-btn .icon{font-size:14px}
+.info-btn:hover{transform:translateY(-1px)}
+.info-btn:active,.info-btn.pressed{transform:translateY(1px) scale(0.98)}
+.tooltip{
+  position:absolute;right:12px;bottom:54px;max-width:320px;min-width:240px;
+  background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));
+  color:#e6f7ff;border:2px solid rgba(0,194,255,0.15);border-radius:12px;padding:12px 14px;z-index:60;
+  box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;display:none;
+}
+.tooltip.visible{display:block;animation:fadeInUp .22s var(--ease)}
+.tooltip .tt-title{font-weight:900;margin-bottom:6px;color:#9bd4ff}
+.tooltip .tt-body{font-size:.92rem;line-height:1.25;opacity:.95}
+.tooltip .tt-body b{color:#cfe8ff}
+.tooltip::after{
+  content:"";position:absolute;right:18px;bottom:-10px;width:0;height:0;
+  border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid rgba(3,21,30,0.98);
+  filter:drop-shadow(0 -4px 6px rgba(0,0,0,0.25))
+}
 
 /* Lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:200;touch-action:none;transition:background 280ms ease}
@@ -247,7 +357,22 @@ main{padding:20px 12px;flex:1}
 .lightbox .carousel-btn{background:rgba(0,0,0,0.45)}
 .lightbox .carousel-btn:hover{background:rgba(0,0,0,0.62)}
 .lightbox .carousel-dots{bottom:12px}
+/* keep counter visible but fixed (overridden above) */
 .lightbox .carousel-counter{top:10px;right:10px}
+
+/* Desktop-only: remove inner black backgrounds so overlay is clickable, and keep constant image height */
+@media (min-width:721px){
+  .lightbox .carousel{background:transparent !important}
+  .lightbox .carousel-slide{background:transparent !important}
+  .lightbox .zoom-wrap{background:transparent !important}
+  .lightbox .carousel-slide img.zoom-img{
+    width:auto !important;
+    height:82vh !important;
+    max-height:82vh;
+    max-width:96vw;
+    object-fit:contain !important;
+  }
+}
 
 /* Zoom container and image: keep original ratio in lightbox */
 .zoom-wrap{width:100%;height:100%;overflow:hidden;touch-action:none;display:flex;align-items:center;justify-content:center;background:#000}
@@ -263,10 +388,10 @@ main{padding:20px 12px;flex:1}
   max-width:96vw; max-height:88vh;
   object-fit:contain !important;
 }
-/* mobile-specific lightbox layout */
+/* mobile-specific lightbox layout; fix carousel to viewport for stable reopen positioning */
 @media(max-width:720px){
   .lightbox .lb-frame{width:100vw;height:100vh;border-radius:0}
-  .lightbox .carousel{border-radius:0}
+  .lightbox .carousel{border-radius:0; position:fixed; inset:0; width:100vw; height:100vh}
   .lightbox .carousel-slide img.zoom-img{max-width:100vw;max-height:100vh}
   .lightbox .carousel-controls{transition:opacity 200ms var(--ease)}
   .lightbox.hide-controls .carousel-controls{opacity:0;pointer-events:none}
@@ -286,13 +411,7 @@ main{padding:20px 12px;flex:1}
 #preloaderBar{width:68%;max-width:560px;height:8px;border-radius:999px;background:#222;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06)}
 #preloaderBar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#00b4ff,#6ee7ff);transition:width 180ms var(--ease)}
 
-/* Disclaimer + hint */
-#disclaimerWrapper{width:100%;display:flex;justify-content:center}
-#disclaimerBanner{
-  width:95vw;max-width:900px;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));
-  border-bottom:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;border-radius:10px;
-  color:#e6f7ff;font-family:'Lexend',sans-serif;font-weight:600;font-size:.95rem;margin:20px;padding:14px 20px;text-align:center;letter-spacing:.3px;pointer-events:auto;-webkit-tap-highlight-color:transparent
-}
+/* Hint tooltip (flip cards) */
 #hintTooltip{display:none;position:fixed;bottom:28px;left:28px;z-index:1200;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));border-radius:12px;padding:12px 14px;border:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;color:#e6f7ff;font-weight:700;font-size:1rem;display:flex;gap:12px;align-items:center;min-width:260px;max-width:360px;transform-origin:center bottom;will-change:transform,opacity,box-shadow;pointer-events:auto;-webkit-tap-highlight-color:transparent;opacity:0;transition:opacity 220ms var(--ease),transform 220ms var(--ease)}
 #hintTooltip .icon{width:44px;height:44px;flex:0 0 44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--accent-strong),var(--accent));box-shadow:0 6px 18px rgba(0,194,255,0.12);color:#012;font-size:18px}
 #hintTooltip::after{content:"";position:absolute;left:22px;bottom:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid rgba(3,21,30,0.98);filter:drop-shadow(0 -4px 6px rgba(0,0,0,0.25))}
@@ -306,6 +425,9 @@ main{padding:20px 12px;flex:1}
   .card .front-body{padding:6px}
   .add-notif{left:12px;right:12px;bottom:18px}
 }
+
+/* Simple fade-out for add-notif */
+@keyframes fadeOutDown{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(18px)}}
 </style>
 <script>
 /* Utility: safely ensure an array of images (>=1) per product */
@@ -356,20 +478,11 @@ function preloadImage(src){
   });
 }
 
-/* CAROUSEL helper (cards and lightbox)
+/* CAROUSEL helper (cards and lightbox share)
    containerEl: where carousel will be appended (image area)
    images: array of image URLs
-   opts: {
-     onImageClick(index, url),
-     startIndex: 0,
-     loop: true,
-     showDots: true,
-     showButtons: true,
-     showCounter: true,
-     className: 'carousel',
-     enableZoom: false, // only used in lightbox
-   }
-   returns object {setIndex, getIndex, destroy, prev, next}
+   opts: { ... }
+   returns object {setIndex, getIndex, destroy, prev, next, refresh}
 */
 function createCarousel(containerEl, images, opts = {}){
   const {
@@ -408,7 +521,6 @@ function createCarousel(containerEl, images, opts = {}){
       attachImageFallback(img);
       zoomWrap.appendChild(img);
       slide.appendChild(zoomWrap);
-      // Zoom handlers attached after DOM ready (see setupZoomHandlers)
     } else {
       // Card slide
       const img = document.createElement('img');
@@ -490,9 +602,9 @@ function createCarousel(containerEl, images, opts = {}){
   let isTransitioning = false;
 
   function updateUI(noAnim=false){
-    const width = containerEl.clientWidth || 1;
+    const width = containerEl.getBoundingClientRect().width || 1;
     if(noAnim){ track.style.transition = 'none'; }
-    const offset = -trackIndex * width;
+    const offset = -trackIndex * Math.round(width); /* round width to avoid subpixel offsets */
     track.style.transform = `translateX(${offset}px)`;
     if(dots){
       const dotButtons = dots.querySelectorAll('.carousel-dot');
@@ -507,6 +619,21 @@ function createCarousel(containerEl, images, opts = {}){
     }
   }
 
+  // Guard: if we land on a clone (edge), instantly wrap
+  function instantWrapIfOnClone(){
+    if(!useLoop) return;
+    if(trackIndex === 0){
+      trackIndex = total;
+      realIndex = total - 1;
+      updateUI(true);
+    } else if(trackIndex === total + 1){
+      trackIndex = 1;
+      realIndex = 0;
+      updateUI(true);
+    }
+  }
+
+  // Keep legacy safety too
   track.addEventListener('transitionend', () => {
     if(!useLoop) return;
     if(trackIndex === 0){
@@ -532,6 +659,7 @@ function createCarousel(containerEl, images, opts = {}){
 
   function prev(){
     if(isTransitioning) return;
+    instantWrapIfOnClone();
     isTransitioning = true;
     trackIndex -= 1;
     if(!useLoop){
@@ -542,11 +670,12 @@ function createCarousel(containerEl, images, opts = {}){
     } else {
       realIndex = (realIndex - 1 + total) % total;
       updateUI();
-      setTimeout(()=> isTransitioning=false, 320);
+      setTimeout(()=> { isTransitioning=false; instantWrapIfOnClone(); }, 320);
     }
   }
   function next(){
     if(isTransitioning) return;
+    instantWrapIfOnClone();
     isTransitioning = true;
     trackIndex += 1;
     if(!useLoop){
@@ -557,7 +686,7 @@ function createCarousel(containerEl, images, opts = {}){
     } else {
       realIndex = (realIndex + 1) % total;
       updateUI();
-      setTimeout(()=> isTransitioning=false, 320);
+      setTimeout(()=> { isTransitioning=false; instantWrapIfOnClone(); }, 320);
     }
   }
   function goTo(idx, animate=true){
@@ -588,7 +717,7 @@ function createCarousel(containerEl, images, opts = {}){
     if(Math.abs(dy) > Math.abs(dx)) { return; } // vertical -> let parent/lightbox handle
     moved = true;
     dragDX = dx;
-    const width = containerEl.clientWidth || 1;
+    const width = containerEl.getBoundingClientRect().width || 1;
     const offset = -trackIndex * width + dx;
     track.style.transform = `translateX(${offset}px)`;
     if(e) e.preventDefault();
@@ -598,7 +727,7 @@ function createCarousel(containerEl, images, opts = {}){
     isDragging = false;
     track.style.transition = '';
     if(!moved){ updateUI(); return; }
-    const width = containerEl.clientWidth || 1;
+    const width = containerEl.getBoundingClientRect().width || 1;
     const threshold = Math.max(40, width * 0.18);
     if(dragDX > threshold) prev();
     else if(dragDX < -threshold) next();
@@ -626,7 +755,7 @@ function createCarousel(containerEl, images, opts = {}){
     const dy = e.clientY - mouseStartY;
     if(Math.abs(dy) > Math.abs(dx)) return;
     moved = true; dragDX = dx;
-    const width = containerEl.clientWidth || 1;
+    const width = containerEl.getBoundingClientRect().width || 1;
     const offset = -trackIndex * width + dx;
     track.style.transform = `translateX(${offset}px)`;
   });
@@ -634,7 +763,7 @@ function createCarousel(containerEl, images, opts = {}){
     if(!mouseDown) return;
     mouseDown = false; track.style.transition = '';
     const dx = e.clientX - mouseStartX;
-    const width = containerEl.clientWidth || 1;
+    const width = containerEl.getBoundingClientRect().width || 1;
     const threshold = Math.max(40, width * 0.18);
     if(dx > threshold) prev();
     else if(dx < -threshold) next();
@@ -763,11 +892,13 @@ function createCarousel(containerEl, images, opts = {}){
     slides.forEach(sl => { if(typeof sl._resetZoom === 'function') sl._resetZoom(); });
   }
 
+  // Public API
   return {
-    setIndex: (i) => { goTo(i); resetAllZooms(); },
+    setIndex: (i) => { goTo(i, false); resetAllZooms(); },
     getIndex: () => realIndex,
     prev: () => { prev(); },
     next: () => { next(); },
+    refresh: () => { updateUI(true); }, // force realign
     destroy: () => { try{ ro.disconnect(); }catch(e){} containerEl.innerHTML = ''; }
   };
 }
@@ -818,26 +949,21 @@ function createCarousel(containerEl, images, opts = {}){
   </div>
 </header>
 
-<div class="cat-bar" role="tablist" aria-label="Product categories">
+<div class="cat-bar" role="tablist" aria-label="Product categories" id="catBar">
   <button class="cat-btn active" data-cat="all" type="button">All</button>
   <button class="cat-btn" data-cat="hoodies" type="button">Hoodies</button>
   <button class="cat-btn" data-cat="mugs" type="button">Mugs</button>
   <button class="cat-btn" data-cat="supplements" type="button">Supplements</button>
   <button class="cat-btn" data-cat="couples" type="button">Couples</button>
   <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <div class="cat-scroll-hint" id="catScrollHint" aria-hidden="true"><i class="fas fa-hand-point-left"></i> Swipe categories →</div>
 </div>
+<button id="showAllCatsBtn" type="button" aria-label="Show all categories">Show all</button>
 
 <main>
   <section id="grid" aria-live="polite" aria-busy="false"></section>
   <div id="loadingSpinner" style="display:none"><i class="fas fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
-  <div id="disclaimerWrapper">
-    <div id="disclaimerBanner">
-      ⚠️ <b>Disclaimer:</b> Product images may appear slightly different from real life.<br>
-      Some visuals are digitally enhanced or AI-assisted for presentation purposes.<br>
-      All hoodies are printed with high-definition graphics only.<br>
-      Actual products may vary in appearance due to distortion or scaling during digital processes.
-    </div>
-  </div>
+  <!-- Disclaimer banner removed in favor of info tooltip near cart actions -->
 </main>
 
 <div id="cartModal" class="cart-modal" aria-hidden="true">
@@ -849,9 +975,21 @@ function createCarousel(containerEl, images, opts = {}){
       <div class="left">
         <div style="color:var(--muted)"><strong class="subtotal-label">Subtotal:</strong> <span id="cartTotal" class="subtotal">R0.00</span></div>
       </div>
-      <div class="right" style="display:flex;gap:8px;align-items:center">
-        <button id="clearCartBtn" type="button" style="background:#ff2a2a;color:#fff;border-radius:10px;padding:8px 12px;border:0;cursor:pointer">Clear</button>
+      <div class="right" style="display:flex;gap:8px;align-items:center;position:relative">
+        <button id="clearCartBtn" type="button">Clear</button>
         <button id="waOrderBtn" class="wa-btn" type="button" aria-label="Order now via WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i> Order</button>
+        <button id="cartInfoBtn" class="info-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="cartInfoTooltip" title="Important info">
+          <span class="icon"></span><span class="label" style="font-weight:800">⚠️</span>
+        </button>
+        <div id="cartInfoTooltip" class="tooltip" role="tooltip" aria-live="polite" aria-hidden="true">
+          <div class="tt-title">Heads up!</div>
+          <div class="tt-body">
+            <b>Images</b> may appear slightly different from real life.<br>
+            Some visuals are digitally enhanced or AI-assisted for presentation.<br>
+            Hoodies are printed with high-definition graphics only.<br>
+            Actual products may vary due to distortion or scaling during digital processes.
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -899,7 +1037,7 @@ const products = [
       'products/other/gua_sha(9).jpeg',
     ],
     description: "Traditional Chinese scraping tool -- made from pure Jade Stone",
-    badge: 'Popular'
+    badge: 'Hot 🔥'
   },
   {
     title: '"Boss" Couples Hoodie (2)',
@@ -1090,6 +1228,11 @@ const waOrderBtn = document.getElementById('waOrderBtn');
 const imgLightbox = document.getElementById('imgLightbox');
 const lbFrame = document.getElementById('lbFrame');
 const closeLightboxBtn = document.getElementById('closeLightbox');
+const catBar = document.getElementById('catBar');
+const catScrollHint = document.getElementById('catScrollHint');
+const showAllCatsBtn = document.getElementById('showAllCatsBtn');
+const cartInfoBtn = document.getElementById('cartInfoBtn');
+const cartInfoTooltip = document.getElementById('cartInfoTooltip');
 
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 const batchSize = 6;
@@ -1262,7 +1405,7 @@ function createCard(p, {eager=false} = {}){
     },
     startIndex: 0,
     loop: true,
-    showDots: true,
+    showDots: false,            // UI cleanup: no dots on product cards
     showButtons: true,
     showCounter: true,
     className: 'carousel',
@@ -1301,9 +1444,9 @@ function createCard(p, {eager=false} = {}){
   back.innerHTML = `<h3 style="margin:0;">${p.title}</h3>
     <p style="margin:0;color:#bcd9f2">${p.description}</p>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="view-img-btn" type="button"><i class="fas fa-image" style="padding-right:3px;"></i>View</button>
-      <button class="share-btn" type="button" aria-label="Share ${p.title} (back)"><i class="fas fa-share-alt" style="padding-right:3px;"></i>Share</button>
-      <button class="add-btn" type="button" aria-label="Add ${p.title} (back)"><i class="fas fa-plus" style="padding-right:3px;"></i>Add</button>
+      <button class="view-img-btn" type="button" aria-label="View ${p.title} images"><i class="fas fa-image" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">View</span></button>
+      <button class="share-btn" type="button" aria-label="Share ${p.title}"><i class="fas fa-share-alt" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Share</span></button>
+      <button class="add-btn" type="button" aria-label="Add ${p.title}"><i class="fas fa-plus" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Add</span></button>
     </div>`;
 
   inner.appendChild(front);
@@ -1561,8 +1704,7 @@ function buildWhatsAppMessage(){
 function getWhatsAppLink(){ const base = `https://wa.me/${WA_NUMBER}`; const msg = buildWhatsAppMessage(); return `${base}?text=${msg}`; }
 waOrderBtn.addEventListener('click', () => { const link = getWhatsAppLink(); window.open(link, '_blank', 'noopener'); });
 
-/* LIGHTBOX with looping carousel + pinch/wheel zoom + swipe down/up to close
-   Mobile: up/down => close, left/right => navigate, arrow controls auto-hide */
+/* LIGHTBOX with looping carousel + pinch/wheel zoom + swipe down/up to close */
 function openLightbox(imgs, startIndex = 0){
   if(!Array.isArray(imgs) || !imgs.length) imgs = ['assets/placeholder.png'];
   lbFrame.innerHTML = ''; // clear previous
@@ -1587,7 +1729,20 @@ function openLightbox(imgs, startIndex = 0){
   // Show lightbox with animation
   imgLightbox.classList.add('active');
   imgLightbox.setAttribute('aria-hidden','false');
-  requestAnimationFrame(()=> imgLightbox.classList.add('opened'));
+
+  // Ensure proper sizing and index after lightbox is visible (fix rare offset)
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      try {
+        api.setIndex(startIndex);
+        if(api.refresh) api.refresh();
+      } catch(e){}
+      imgLightbox.classList.add('opened');
+      // Double-refresh shortly after open to avoid subpixel rounding glitches
+      setTimeout(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 60);
+    });
+  });
+
   disableBackgroundInteraction([imgLightbox, lbFrame]);
   lightboxState.active = true;
 
@@ -1607,30 +1762,56 @@ function openLightbox(imgs, startIndex = 0){
     ['touchstart','pointermove','mousemove','keydown'].forEach(ev => imgLightbox.addEventListener(ev, resetIdle, {passive:true}));
     resetIdle(); // start timer
   }
+
+  // Keep alignment correct on resize/orientation changes
+  const onWinResize = debounce(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 80);
+  window.addEventListener('resize', onWinResize);
+  imgLightbox._onResize = onWinResize;
 }
 function lightboxClose(withAnim=true){
   if(lightboxState.idleTimer){ clearTimeout(lightboxState.idleTimer); lightboxState.idleTimer = null; }
   if(withAnim){
     imgLightbox.classList.add('closing');
     setTimeout(()=>{
+      try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
+      lightboxState.api = null;
+      // remove resize handler if any
+      if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
+
       imgLightbox.classList.remove('active','opened','closing','hide-controls');
       imgLightbox.setAttribute('aria-hidden','true');
       lbFrame.innerHTML = '';
       enableBackgroundInteraction();
       lightboxState.active = false;
-      lightboxState.api = null;
     }, 220);
   } else {
+    try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
+    lightboxState.api = null;
+    if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
+
     imgLightbox.classList.remove('active','opened','closing','hide-controls');
     imgLightbox.setAttribute('aria-hidden','true');
     lbFrame.innerHTML = '';
     enableBackgroundInteraction();
     lightboxState.active = false;
-    lightboxState.api = null;
   }
 }
 document.getElementById('closeLightbox').addEventListener('click', ()=> lightboxClose(true));
-imgLightbox.addEventListener('click', function(e){ if(e.target === imgLightbox){ lightboxClose(true); }});
+
+// Close when clicking outside image area (desktop), or on overlay itself
+imgLightbox.addEventListener('click', function(e){
+  const isMobile = window.matchMedia('(max-width: 720px)').matches;
+  if(e.target === imgLightbox){ lightboxClose(true); return; }
+  if(!isMobile){
+    const insideImage = e.target.closest('.zoom-wrap');
+    const insideControls = e.target.closest('.carousel-controls');
+    const insideDots = e.target.closest('.carousel-dots');
+    const isCloseBtn = e.target.closest('#closeLightbox');
+    if(!insideImage && !insideControls && !insideDots && !isCloseBtn){
+      lightboxClose(true);
+    }
+  }
+});
 
 /* Swipe up/down to close on touch (when not zooming) */
 (function(){
@@ -1689,7 +1870,7 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-/* Better preloader: preload critical images (first 2 batches × first 2 images each) + fonts; background-preload the rest */
+/* Better preloader: preload critical images + fonts; background-preload the rest */
 async function preloadCriticalAssets(){
   const pre = document.getElementById('preloader');
   const txt = document.getElementById('preloaderText');
@@ -1809,22 +1990,43 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.classList.add('active');
     const cat = btn.dataset.cat;
     updateURL({ q: searchInput.value.trim(), cat }, { replace:false });
-    filterAndRender(); setTimeout(()=> updateCatBarFade(), 90);
+    filterAndRender(); setTimeout(()=> updateCatBarUI(), 90);
   });
   btn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); btn.click(); }});
 });
 
-/* Cat bar fade */
-const catBar = document.querySelector('.cat-bar');
-function updateCatBarFade(){
+/* Categories bar UI: show hint on mobile if overflow; show Show All on desktop if overflow */
+function updateCatBarUI(){
   if(!catBar) return;
-  const isEnd = Math.abs(catBar.scrollWidth - (catBar.scrollLeft + catBar.clientWidth)) < 2;
-  if(isEnd) catBar.classList.add('scrolled-end'); else catBar.classList.remove('scrolled-end');
+  const canScroll = catBar.scrollWidth > catBar.clientWidth + 2;
+  const isDesktop = window.matchMedia('(min-width: 901px)').matches;
+
+  // Mobile scroll hint
+  if(!isDesktop && canScroll){
+    catScrollHint.classList.add('visible');
+  } else {
+    catScrollHint.classList.remove('visible');
+  }
+
+  // Desktop Show All button
+  if(isDesktop && canScroll){
+    showAllCatsBtn.style.display = 'inline-flex';
+  } else {
+    showAllCatsBtn.style.display = 'none';
+    catBar.classList.remove('show-all');
+    showAllCatsBtn.textContent = 'Show all';
+  }
 }
-if(catBar){
-  catBar.addEventListener('scroll', debounce(updateCatBarFade, 60), { passive:true });
-  window.addEventListener('resize', debounce(updateCatBarFade, 140));
-}
+catBar && catBar.addEventListener('scroll', debounce(()=> {
+  if(catScrollHint.classList.contains('visible')){
+    catScrollHint.classList.remove('visible'); // hide hint after user scrolls
+  }
+}, 60), { passive:true });
+window.addEventListener('resize', debounce(updateCatBarUI, 150));
+showAllCatsBtn.addEventListener('click', () => {
+  const on = catBar.classList.toggle('show-all');
+  showAllCatsBtn.textContent = on ? 'Collapse' : 'Show all';
+});
 
 /* Scroll to top button */
 (function(){
@@ -1864,11 +2066,34 @@ if(catBar){
   }, true);
 })();
 
+/* Cart info tooltip handlers */
+(function(){
+  function hideTooltip(){
+    cartInfoTooltip.classList.remove('visible');
+    cartInfoTooltip.setAttribute('aria-hidden','true');
+    cartInfoBtn.setAttribute('aria-expanded','false');
+  }
+  function toggleTooltip(){
+    const showing = cartInfoTooltip.classList.toggle('visible');
+    cartInfoTooltip.setAttribute('aria-hidden', showing ? 'false' : 'true');
+    cartInfoBtn.setAttribute('aria-expanded', showing ? 'true' : 'false');
+  }
+  cartInfoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTooltip(); });
+  cartInfoBtn.addEventListener('mouseenter', () => { if(!/Mobi|Android/i.test(navigator.userAgent)){ cartInfoTooltip.classList.add('visible'); cartInfoTooltip.setAttribute('aria-hidden','false'); cartInfoBtn.setAttribute('aria-expanded','true'); }});
+  cartInfoBtn.addEventListener('mouseleave', () => { if(!/Mobi|Android/i.test(navigator.userAgent)){ hideTooltip(); }});
+  document.addEventListener('click', (e) => {
+    if(e.target === cartInfoBtn || cartInfoTooltip.contains(e.target)) return;
+    hideTooltip();
+  });
+  // Hide tooltip when cart closes
+  closeCart.addEventListener('click', hideTooltip);
+})();
+
 /* Initialize on DOMContentLoaded with improved preloading */
 window.addEventListener('DOMContentLoaded', async () => {
   updateCartDisplay();
   applyStateFromURL();
-  updateCatBarFade();
+  updateCatBarUI();
   showHintTooltip();
 
   await preloadCriticalAssets(); // preload critical assets (first 2 batches × 2 images + fonts)

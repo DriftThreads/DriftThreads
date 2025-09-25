@@ -16,7 +16,20 @@
 <meta property="og:url" content="https://driftthreads.store/">
 <meta property="og:type" content="website">
 
-  
+<meta name="twitter:title" content="Drift Threads | Premium Streetwear for Car Enthusiasts">
+<meta name="twitter:description" content="Shop the latest streetwear inspired by car culture at Drift Threads.">
+<meta name="twitter:image" content="https://driftthreads.store/assets/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#111111" />
+
+<!-- Apple fallback icons -->
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+
+
+
   <link rel="icon" href="assets/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -580,6 +593,40 @@ const observer = new IntersectionObserver((entries) => {
   
 const hiddenElements = document.querySelectorAll(".hidden");
 hiddenElements.forEach((el) => observer.observe(el));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => {
+        console.log('SW registered:', reg);
+      })
+      .catch(err => {
+        console.error('SW registration failed:', err);
+      });
+  });
+}
+
+
 
 
   </script>
