@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>DriftThreads -- Home</title>
-<!-- <meta name="viewport" content="width=device-width,initial-scale=1" /> -->
-<meta name="viewport" content="width=device-width, initial-scale=0.9" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" href="assets/favicon.png" />
 
 <meta name="description" content="Discover Drift Threads, the ultimate destination for premium streetwear inspired by car culture. Shop our exclusive collection now!">
@@ -72,6 +71,12 @@ html,body{
   color:var(--text);font-family:"Lexend",sans-serif;
   font-weight:400; /* lighter default weight everywhere */
 }
+@media (max-width: 768px) { 
+.add-btn, .share-btn, .view-img-btn {
+  transform:scale(0.9)
+} 
+}
+
 a{color:inherit}
 ::selection{background:rgba(10,170,255,0.14)}
 ::-webkit-scrollbar{width:0;background:transparent}
@@ -248,14 +253,23 @@ main{padding:20px 12px;flex:1}
 /* On mobile, make back-of-card buttons icon-only (hide labels and make them round) */
 @media (max-width: 600px){
   .card-back .btn-label{display:none}
+  .card-back {
+    padding:10px; /* Reduced to fit buttons without overflow */
+  }
+  .card-back > div:last-child {
+    gap:5px !important; /* Reduced gap + force no wrap */
+    flex-wrap:nowrap !important;
+    justify-content:center; /* Centers them nicely in one line */
+  }
   .card-back .view-img-btn,
   .card-back .share-btn,
   .card-back .add-btn{
-    padding:8px;width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center
+    padding:7px;width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center; 
   }
   .card-back .view-img-btn i,
   .card-back .share-btn i,
-  .card-back .add-btn i{ padding:0 !important; }
+  .card-back .add-btn i{ padding:0 !important; font-size:14px; /* Smaller icons to fit scaled buttons */ }
+  .card-back .share-btn i { width:16px; /* 90% of original 18px */ }
 }
 
 .card-badge{position:absolute;right:8px;bottom:8px;z-index:6;pointer-events:none;padding:6px 10px;border-radius:999px;font:var(--badge-font);color:#021019;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 20px rgba(2,16,25,0.5);transform-origin:100% 100%;transform:translateY(6px) scale(0.98);opacity:0;transition:transform 260ms var(--ease),opacity 220ms var(--ease);white-space:nowrap}
@@ -1598,7 +1612,7 @@ function createCard(p, {eager=false} = {}){
   const back = document.createElement('div');
   back.className = 'card-back';
   back.innerHTML = `<h3 style="margin:0;font-weight:600">${p.title}</h3>
-    <p style="margin:0;color:#bcd9f2">${p.description}</p>
+    <p style="margin:0;color:#bcd9f2;">${p.description}</p>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="view-img-btn" type="button" aria-label="View ${p.title} images"><i class="fas fa-image" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">View</span></button>
       <button class="share-btn" type="button" aria-label="Share ${p.title}"><i class="fas fa-share-alt" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Share</span></button>
@@ -1843,7 +1857,7 @@ clearCartBtn.addEventListener('click', ()=> { if(cart.length && confirm('Clear c
 /* WhatsApp integration */
 const WA_NUMBER = '27713468567';
 function buildWhatsAppMessage(){
-  if(!cart || !cart.length) return encodeURIComponent("🛒 Hey -- ordering from the site:%0A%0ANo items in cart. (bruh)");
+  if(!cart || !cart.length) return encodeURIComponent("🛒 Hey -- ordering from the site:\n\nNo items in cart. (bruh)");
   let lines = [];
   lines.push("🛒 Hey -- ordering from the site:");
   lines.push("");
