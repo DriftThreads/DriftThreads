@@ -20,8 +20,7 @@
 <meta name="twitter:image" content="https://driftthreads.store/assets/logo.png">
 <meta name="twitter:card" content="summary_large_image">
 
-
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <style>
 :root{
@@ -38,10 +37,20 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-html,body{margin:0;padding:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:"Lexend",sans-serif}
+html,body{
+  margin:0;padding:0;width:100%;height:100%;
+  background:var(--bg);
+  background-color:#161616; /* fallback + fixes rare hairline seams */
+  color:var(--text);font-family:"Lexend",sans-serif
+}
 a{color:inherit}
 ::selection{background:rgba(10,170,255,0.14)}
 ::-webkit-scrollbar{width:0;background:transparent}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important}
+}
 
 /* Global button affordances (hover/active/focus for mouse + keyboard) */
 button,[role="button"]{
@@ -53,6 +62,7 @@ button,[role="button"]{
     filter 160ms ease,
     outline-color 120ms ease;
   outline:0;
+  -webkit-tap-highlight-color: transparent;
 }
 button:hover,[role="button"]:hover{transform:translateY(-1px)}
 button:active,[role="button"].pressed{transform:translateY(1px) scale(0.98);filter:brightness(0.96)}
@@ -88,7 +98,10 @@ body.modal-open{overflow:hidden; overscroll-behavior:contain}
 }
 
 /* Header */
-header{position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px}
+header{
+  position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px;
+  backface-visibility:hidden;transform:translateZ(0);will-change:transform;contain:paint;
+}
 .top-row{display:flex;gap:12px;align-items:center}
 .logo img{height:40px;display:block;background:#fff;padding:6px;border-radius:8px}
 .search-wrap{flex:1;display:flex;gap:6px}
@@ -102,14 +115,38 @@ header{position:sticky;top:10px;z-index:50;background:rgba(22,22,22,0.95);paddin
 @keyframes popBadge{0%{transform:scale(1)}30%{transform:scale(1.35)}100%{transform:scale(1)}}
 
 /* Categories bar */
-.cat-bar{display:flex;padding-top:10px;overflow-x:auto;white-space:nowrap;margin-left:30px;position:relative;padding-bottom:10px}
-.cat-bar::after{content:"";position:absolute;right:0;top:0;height:100%;width:56px;pointer-events:none;background:linear-gradient(to left,rgba(10,10,10,0.6),rgba(10,10,10,0));transition:opacity 200ms var(--ease)}
-.cat-bar.scrolled-end::after{opacity:0}
-.cat-btn{background:#fff;color:#222;padding:6px 12px;border-radius:10px;border:0;cursor:pointer;flex-shrink:0;margin-right:5px;transition:filter 160ms ease, background 160ms ease, transform 160ms var(--ease)}
+.cat-bar{
+  display:flex;padding-top:10px;overflow-x:auto;white-space:nowrap;margin-left:30px;position:relative;padding-bottom:10px;gap:6px;
+}
+.cat-bar::after{content:none !important}
+.cat-bar.show-all{
+  flex-wrap:wrap;white-space:normal;overflow:visible;padding-bottom:8px;gap:8px;
+}
+.cat-btn{background:#fff;color:#222;padding:6px 12px;border-radius:10px;border:0;cursor:pointer;flex-shrink:0;margin-right:0;transition:filter 160ms ease, background 160ms ease, transform 160ms var(--ease)}
 .cat-btn:hover{filter:brightness(0.92);transform:translateY(-1px)}
 .cat-btn:active,.cat-btn.pressed{transform:translateY(1px) scale(0.98)}
 .cat-btn.active{background:#06f;color:#fff}
 .cat-btn.active:hover{filter:brightness(0.92)}
+
+/* Scroll hint for categories (mobile only) */
+.cat-scroll-hint{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  background:linear-gradient(90deg, rgba(0,194,255,1), rgba(0,194,255,1));
+  color:#e6f7ff;border:1px solid rgba(0,194,255,0.4);border-radius:999px;padding:6px 10px;font-weight:700;font-size:.78rem;
+  display:none;align-items:center;gap:6px;pointer-events:none;box-shadow:0 6px 18px rgba(0,194,255,0.15)
+}
+.cat-scroll-hint.visible{display:flex}
+.cat-scroll-hint i{color:#00c2ff}
+
+/* Show All button (desktop only) */
+#showAllCatsBtn{
+  display:none;margin:6px 30px 0 auto;background:#0a84ff;color:#fff;border:0;border-radius:999px;padding:6px 12px;font-weight:800;cursor:pointer;
+}
+#showAllCatsBtn:hover{transform:translateY(-1px)}
+#showAllCatsBtn:active,#showAllCatsBtn.pressed{transform:translateY(1px) scale(0.98)}
+@media (max-width: 900px){
+  #showAllCatsBtn{display:none !important}
+}
 
 /* Grid */
 main{padding:20px 12px;flex:1}
@@ -123,15 +160,10 @@ main{padding:20px 12px;flex:1}
   padding: 0 18px;
 }
 @media (max-width: 900px) {
-  #grid {
-    grid-template-columns: repeat(auto-fill, 200px);
-  }
+  #grid { grid-template-columns: repeat(auto-fill, 200px); }
 }
 @media (max-width: 600px) {
-  #grid {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 100%;
-  }
+  #grid { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
 }
 
 /* Cards */
@@ -174,6 +206,19 @@ main{padding:20px 12px;flex:1}
 .share-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,0.4)}
 .share-btn:active,.share-btn.pressed{transform:translateY(1px) scale(0.98)}
 
+/* On mobile, make back-of-card buttons icon-only (hide labels and make them round) */
+@media (max-width: 600px){
+  .card-back .btn-label{display:none}
+  .card-back .view-img-btn,
+  .card-back .share-btn,
+  .card-back .add-btn{
+    padding:8px;width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center
+  }
+  .card-back .view-img-btn i,
+  .card-back .share-btn i,
+  .card-back .add-btn i{ padding:0 !important; }
+}
+
 .card-badge{position:absolute;right:8px;bottom:8px;z-index:6;pointer-events:none;padding:6px 10px;border-radius:999px;font:var(--badge-font);color:#021019;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 20px rgba(2,16,25,0.5);transform-origin:100% 100%;transform:translateY(6px) scale(0.98);opacity:0;transition:transform 260ms var(--ease),opacity 220ms var(--ease);white-space:nowrap}
 .card.pop-in .card-badge{transform:translateY(0) scale(1);opacity:1}
 .card-badge .badge-dot{width:8px;height:8px;border-radius:50%;flex:0 0 8px;box-shadow:0 2px 4px rgba(0,0,0,0.25)}
@@ -214,18 +259,35 @@ main{padding:20px 12px;flex:1}
 .carousel-btn:active,.carousel-btn.pressed{transform:scale(0.96)}
 
 .carousel-dots{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;display:flex;gap:6px;pointer-events:auto}
-.carousel-dot{width:8px;height:8px;border-radius:25%;background:rgba(255,255,255,0.2);border:1px solid rgba(0,0,0,0.25);cursor:pointer;transition:transform 160ms var(--ease)}
+.carousel-dot{
+  width:8px;height:8px;border-radius:25%;
+  background:rgba(255,255,255,0.2);border:1px solid rgba(0,0,0,0.25);cursor:pointer;transition:transform 160ms var(--ease)
+}
 .carousel-dot:hover{transform:scale(1.2)}
 .carousel-dot.active{background:#06f}
 .carousel-counter{position:absolute;right:8px;top:8px;background:rgba(0,0,0,0.5);padding:6px 8px;border-radius:8px;font-weight:700;font-size:0.8rem}
 
-/* Ensure the counter is fixed top-right in lightbox on all devices */
+/* Ensure the counter is fixed in the lightbox, now top-left */
 .lightbox .carousel-counter{
   position:fixed;
-  right:12px;
+  left:12px;
+  right:auto;
   top:12px;
   z-index:1001;
   pointer-events:none;
+}
+
+/* Lightbox-specific dot styling: perfect circles, higher contrast, gray inactive, blue active */
+.lightbox .carousel-dot{
+  width:10px;height:10px;border-radius:50%;
+  background:#b4bcc4; /* gray inactive */
+  border:1px solid rgba(0,0,0,0.7);
+  box-shadow:0 1px 2px rgba(0,0,0,0.4);
+}
+.lightbox .carousel-dot.active{
+  background:#06f; /* blue active */
+  border-color:#001a33;
+  box-shadow:0 0 0 2px rgba(0,102,255,0.25);
 }
 
 @media (max-width:480px){
@@ -258,11 +320,43 @@ main{padding:20px 12px;flex:1}
 .wa-btn i{font-size:18px}
 .wa-btn:hover{transform:translateY(-1px)}
 .wa-btn:active,.wa-btn.pressed{transform:translateY(1px) scale(0.98)}
+#clearCartBtn{background:#ff2a2a;color:#fff;border-radius:10px;padding:8px 12px;border:0;cursor:pointer}
+
+/* Info/Disclaimer tooltip button in cart footer */
+.info-btn{
+  background:linear-gradient(180deg,var(--accent),var(--accent-strong));
+  color:#1b1300;border:0;border-radius:10px;padding:8px 10px;font-weight:900;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(0,0,0,0.06);
+}
+.info-btn .icon{font-size:14px}
+.info-btn:hover{transform:translateY(-1px)}
+.info-btn:active,.info-btn.pressed{transform:translateY(1px) scale(0.98)}
+.tooltip{
+  position:absolute;right:12px;bottom:54px;max-width:320px;min-width:240px;
+  background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));
+  color:#e6f7ff;border:2px solid rgba(0,194,255,0.15);border-radius:12px;padding:12px 14px;z-index:60;
+  box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;display:none;
+}
+.tooltip.visible{display:block;animation:fadeInUp .22s var(--ease)}
+.tooltip .tt-title{font-weight:900;margin-bottom:6px;color:#9bd4ff}
+.tooltip .tt-body{font-size:.92rem;line-height:1.25;opacity:.95}
+.tooltip .tt-body b{color:#cfe8ff}
+.tooltip::after{
+  content:"";position:absolute;right:18px;bottom:-10px;width:0;height:0;
+  border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid rgba(3,21,30,0.98);
+  filter:drop-shadow(0 -4px 6px rgba(0,0,0,0.25))
+}
 
 /* Lightbox */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:200;touch-action:none;transition:background 280ms ease}
+.lightbox{
+  position:fixed;inset:0;
+  background:#000; /* fully black at rest */
+  display:none;align-items:center;justify-content:center;
+  z-index:200;touch-action:none;transition:background 200ms ease;
+}
 .lightbox.active{display:flex}
-.lightbox.opened{background:rgba(0,0,0,0.85)}
+.lightbox.opened{background:#000}
 .lightbox.closing{background:rgba(0,0,0,0)!important}
 .lightbox .lb-frame{width:95vw;max-width:1100px;height:82vh;max-height:90vh;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.96);transition:transform 220ms var(--ease),opacity 220ms var(--ease)}
 .lightbox.opened .lb-frame{opacity:1;transform:scale(1)}
@@ -272,14 +366,9 @@ main{padding:20px 12px;flex:1}
 .lightbox .carousel-btn{background:rgba(0,0,0,0.45)}
 .lightbox .carousel-btn:hover{background:rgba(0,0,0,0.62)}
 .lightbox .carousel-dots{bottom:12px}
-/* keep counter visible but fixed (overridden above) */
-.lightbox .carousel-counter{top:10px;right:10px}
 
-/* Desktop-only: remove inner black backgrounds so overlay is clickable, and keep constant image height */
+/* Desktop: keep constant image height while preserving fully-black background */
 @media (min-width:721px){
-  .lightbox .carousel{background:transparent !important}
-  .lightbox .carousel-slide{background:transparent !important}
-  .lightbox .zoom-wrap{background:transparent !important}
   .lightbox .carousel-slide img.zoom-img{
     width:auto !important;
     height:82vh !important;
@@ -312,27 +401,51 @@ main{padding:20px 12px;flex:1}
   .lightbox.hide-controls .carousel-controls{opacity:0;pointer-events:none}
 }
 
-/* Loading indicator */
+/* Loading indicator (used for infinite scroll) */
 #loadingSpinner{text-align:center;padding:18px 0;color:#99bfe8}
 
 /* Focus outlines everywhere */
 :focus-visible{outline:3px solid rgba(0,102,255,0.12);outline-offset:3px;border-radius:8px}
 
-/* Preloader overlay */
-#preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#111;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;z-index:999999;transition:opacity .6s ease}
-.loader{width:50px;height:50px;border:5px solid #555;border-top:5px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-#preloaderText{color:#cfe8ff;font-weight:700;letter-spacing:.4px}
-#preloaderBar{width:68%;max-width:560px;height:8px;border-radius:999px;background:#222;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06)}
-#preloaderBar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#00b4ff,#6ee7ff);transition:width 180ms var(--ease)}
-
-/* Disclaimer + hint */
-#disclaimerWrapper{width:100%;display:flex;justify-content:center}
-#disclaimerBanner{
-  width:95vw;max-width:900px;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));
-  border-bottom:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;border-radius:10px;
-  color:#e6f7ff;font-family:'Lexend',sans-serif;font-weight:600;font-size:.95rem;margin:20px;padding:14px 20px;text-align:center;letter-spacing:.3px;pointer-events:auto;-webkit-tap-highlight-color:transparent
+/* Modern Preloader overlay */
+#preloader{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#0b0b0b; display:flex; align-items:center; justify-content:center;
+  z-index:999999; transition:opacity .45s ease
 }
+.preloader-card{
+  width:min(420px,86vw); background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.06); border-radius:16px; padding:22px 20px; text-align:center;
+  box-shadow:0 30px 100px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+.preloader-head{display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px}
+.preloader-logo{
+  width:42px;height:42px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.preloader-logo img{width:100%;height:100%;object-fit:contain}
+.preloader-title{font-weight:800; letter-spacing:0.4px}
+.loader{
+  width:64px;height:64px;margin:2px auto 14px auto; border-radius:50%;
+  background:
+    conic-gradient(from 0deg, #00c2ff, #6ee7ff, #a78bfa, #f9a8d4, #00c2ff) border-box;
+  -webkit-mask:
+    radial-gradient(farthest-side, transparent calc(100% - 8px), #000 0) content-box,
+    linear-gradient(#000 0 0) padding-box;
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation:spin 1.1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+#preloaderText{color:#cfe8ff;font-weight:700;letter-spacing:.4px;margin-bottom:8px}
+#preloaderBar{width:100%;height:10px;border-radius:999px;background:#202020;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06); margin:0 auto}
+#preloaderBar>span{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,#00b4ff,#6ee7ff,#a78bfa);
+  background-size:200% 100%; animation:barShift 1.2s ease-in-out infinite;
+  border-radius:999px;
+}
+@keyframes barShift{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+
+/* Hint tooltip (flip cards) */
 #hintTooltip{display:none;position:fixed;bottom:28px;left:28px;z-index:1200;background:linear-gradient(180deg,rgba(3,21,30,0.98),rgba(5,40,60,0.96));border-radius:12px;padding:12px 14px;border:2px solid rgba(0,194,255,0.15);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;color:#e6f7ff;font-weight:700;font-size:1rem;display:flex;gap:12px;align-items:center;min-width:260px;max-width:360px;transform-origin:center bottom;will-change:transform,opacity,box-shadow;pointer-events:auto;-webkit-tap-highlight-color:transparent;opacity:0;transition:opacity 220ms var(--ease),transform 220ms var(--ease)}
 #hintTooltip .icon{width:44px;height:44px;flex:0 0 44px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--accent-strong),var(--accent));box-shadow:0 6px 18px rgba(0,194,255,0.12);color:#012;font-size:18px}
 #hintTooltip::after{content:"";position:absolute;left:22px;bottom:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid rgba(3,21,30,0.98);filter:drop-shadow(0 -4px 6px rgba(0,0,0,0.25))}
@@ -399,20 +512,11 @@ function preloadImage(src){
   });
 }
 
-/* CAROUSEL helper (cards and lightbox share)
+/* CAROUSEL helper with smart lazy-loading per slide (cards and lightbox share)
    containerEl: where carousel will be appended (image area)
    images: array of image URLs
-   opts: {
-     onImageClick(index, url),
-     startIndex: 0,
-     loop: true,
-     showDots: true,
-     showButtons: true,
-     showCounter: true,
-     className: 'carousel',
-     enableZoom: false, // only used in lightbox
-   }
-   returns object {setIndex, getIndex, destroy, prev, next}
+   opts: { onImageClick, startIndex, loop, showDots, showButtons, showCounter, className, enableZoom, eagerFirst }
+   returns object {setIndex, getIndex, destroy, prev, next, refresh}
 */
 function createCarousel(containerEl, images, opts = {}){
   const {
@@ -423,7 +527,8 @@ function createCarousel(containerEl, images, opts = {}){
     showButtons = true,
     showCounter = true,
     className = 'carousel',
-    enableZoom = false
+    enableZoom = false,
+    eagerFirst = false
   } = opts;
 
   const total = images.length || 1;
@@ -435,33 +540,35 @@ function createCarousel(containerEl, images, opts = {}){
 
   // Build slides with optional clones for looping
   let slides = [];
-  const makeSlide = (src, i, isClone=false) => {
+  const makeSlide = (src, realIdx, isClone=false) => {
     const slide = document.createElement('div');
     slide.className = 'carousel-slide';
+    slide.dataset.realIndex = String(realIdx);
     if(enableZoom){
-      // Lightbox zoomable slide
       const zoomWrap = document.createElement('div');
       zoomWrap.className = 'zoom-wrap';
       const img = document.createElement('img');
       img.className = 'zoom-img';
       img.draggable = false;
       img.loading = 'eager';
-      img.src = src || 'assets/placeholder.png';
-      img.alt = `Image ${i+1}`;
+      img.decoding = 'async';
+      img.alt = `Image ${realIdx+1}`;
+      img.dataset.src = src || 'assets/placeholder.png';
+      // src not set yet: lazy on demand
       attachImageFallback(img);
       zoomWrap.appendChild(img);
       slide.appendChild(zoomWrap);
-      // Zoom handlers attached after DOM ready (see setupZoomHandlers)
     } else {
-      // Card slide
       const img = document.createElement('img');
       img.loading = 'lazy';
-      img.src = src || 'assets/placeholder.png';
-      img.alt = `Product image ${i+1}`;
+      img.decoding = 'async';
+      img.alt = `Product image ${realIdx+1}`;
+      img.dataset.src = src || 'assets/placeholder.png';
+      // src not set yet: lazy on demand
       attachImageFallback(img);
       img.addEventListener('click', (e) => {
         e.stopPropagation();
-        onImageClick(realIndex, images[realIndex]);
+        onImageClick(realIdx, images[realIdx]);
       });
       slide.appendChild(img);
     }
@@ -532,10 +639,37 @@ function createCarousel(containerEl, images, opts = {}){
   let trackIndex = useLoop ? realIndex + 1 : realIndex;
   let isTransitioning = false;
 
+  // Lazy-load helpers: load current and neighbors
+  function imagesForRealIndex(idx){
+    const arr = [];
+    slides.forEach(sl => {
+      if(Number(sl.dataset.realIndex) === idx){
+        const img = enableZoom ? sl.querySelector('img.zoom-img') : sl.querySelector('img');
+        if(img) arr.push(img);
+      }
+    });
+    return arr;
+  }
+  function ensureLoaded(idx, priority='auto'){
+    const imgs = imagesForRealIndex(idx);
+    imgs.forEach(img => {
+      if(img.dataset.loaded === '1') return;
+      const src = img.dataset.src || 'assets/placeholder.png';
+      if(!img.src || img.src.endsWith('placeholder.png')) img.src = src;
+      img.dataset.loaded = '1';
+      if(priority === 'high'){ try{ img.fetchPriority = 'high'; }catch(e){} }
+    });
+  }
+  function ensureLoadedAround(idx, priorityCenter='auto'){
+    ensureLoaded(idx, priorityCenter);
+    ensureLoaded((idx - 1 + total) % total);
+    ensureLoaded((idx + 1) % total);
+  }
+
   function updateUI(noAnim=false){
     const width = containerEl.getBoundingClientRect().width || 1;
     if(noAnim){ track.style.transition = 'none'; }
-    const offset = -trackIndex * width;
+    const offset = -trackIndex * Math.round(width);
     track.style.transform = `translateX(${offset}px)`;
     if(dots){
       const dotButtons = dots.querySelectorAll('.carousel-dot');
@@ -548,6 +682,8 @@ function createCarousel(containerEl, images, opts = {}){
       void track.offsetWidth;
       track.style.transition = '';
     }
+    // Make sure the current and neighbor images are loaded
+    ensureLoadedAround(realIndex);
   }
 
   // Guard: if we land on a clone (edge), instantly wrap
@@ -564,7 +700,6 @@ function createCarousel(containerEl, images, opts = {}){
     }
   }
 
-  // Keep legacy safety too
   track.addEventListener('transitionend', () => {
     if(!useLoop) return;
     if(trackIndex === 0){
@@ -627,7 +762,8 @@ function createCarousel(containerEl, images, opts = {}){
     if(!animate){ updateUI(true); } else { updateUI(); }
   }
 
-  // init
+  // Init: ensure first images available (prioritize if requested)
+  ensureLoadedAround(realIndex, eagerFirst ? 'high' : 'auto');
   updateUI(true);
 
   // controls events
@@ -645,7 +781,7 @@ function createCarousel(containerEl, images, opts = {}){
     if(!isDragging) return;
     const dx = x - startX;
     const dy = y - startY;
-    if(Math.abs(dy) > Math.abs(dx)) { return; } // vertical -> let parent/lightbox handle
+    if(Math.abs(dy) > Math.abs(dx)) { return; }
     moved = true;
     dragDX = dx;
     const width = containerEl.getBoundingClientRect().width || 1;
@@ -712,10 +848,15 @@ function createCarousel(containerEl, images, opts = {}){
   const ro = new ResizeObserver(()=> updateUI(true));
   ro.observe(containerEl);
 
-  // If zoom enabled, set it up per slide
-  function setupZoomHandlers(){
+  function resetAllZooms(){
     if(!enableZoom) return;
-    slides.forEach((sl, idx) => {
+    slides.forEach(sl => { if(typeof sl._resetZoom === 'function') sl._resetZoom(); });
+  }
+
+  // If zoom enabled, set it up per slide
+  (function setupZoomHandlers(){
+    if(!enableZoom) return;
+    slides.forEach((sl) => {
       const wrap = sl.querySelector('.zoom-wrap');
       const img = sl.querySelector('.zoom-img');
       if(!wrap || !img) return;
@@ -816,18 +957,15 @@ function createCarousel(containerEl, images, opts = {}){
       const resetZoom = () => { scale = 1; tx = 0; ty = 0; applyTransform(); };
       sl._resetZoom = resetZoom;
     });
-  }
-  setupZoomHandlers();
+  })();
 
-  function resetAllZooms(){
-    slides.forEach(sl => { if(typeof sl._resetZoom === 'function') sl._resetZoom(); });
-  }
-
+  // Public API
   return {
     setIndex: (i) => { goTo(i, false); resetAllZooms(); },
     getIndex: () => realIndex,
     prev: () => { prev(); },
     next: () => { next(); },
+    refresh: () => { updateUI(true); }, // force realign
     destroy: () => { try{ ro.disconnect(); }catch(e){} containerEl.innerHTML = ''; }
   };
 }
@@ -835,9 +973,15 @@ function createCarousel(containerEl, images, opts = {}){
 </head>
 <body>
 <div id="preloader">
-  <div class="loader" aria-hidden="true"></div>
-  <div id="preloaderText" role="status" aria-live="polite">Loading 0%</div>
-  <div id="preloaderBar" aria-hidden="true"><span></span></div>
+  <div class="preloader-card" aria-live="polite" aria-busy="true">
+    <div class="preloader-head">
+      <!-- <div class="preloader-logo" aria-hidden="true"><img src="assets/favicon.png" alt=""></div> -->
+      <!-- <div class="preloader-title">DriftThreads</div> -->
+    </div>
+    <div class="loader" aria-hidden="true"></div>
+    <div id="preloaderText">Loading…</div>
+    <div id="preloaderBar" aria-hidden="true"><span></span></div>
+  </div>
 </div>
 
 <div id="addNotif" class="add-notif" role="status" aria-live="polite" aria-atomic="true">
@@ -866,7 +1010,7 @@ function createCarousel(containerEl, images, opts = {}){
     <div class="logo"><a href="./"><img src="assets/favicon.png" alt="logo"></a></div>
     <div class="search-wrap">
       <div class="search-box">
-        <input id="searchInput" type="text" placeholder="Search products..." aria-label="Search products">
+        <input id="searchInput" type="text" placeholder="Search products..." aria-label="Search products" inputmode="search">
         <button id="clearBtn" type="button" aria-label="Clear search"><i class="fas fa-times"></i></button>
       </div>
       <button id="searchBtn" type="button" aria-label="Search" style="border-radius:5px 25px 25px 5px"><i class="fas fa-search"></i></button>
@@ -878,26 +1022,36 @@ function createCarousel(containerEl, images, opts = {}){
   </div>
 </header>
 
-<div class="cat-bar" role="tablist" aria-label="Product categories">
+<div class="cat-bar" role="tablist" aria-label="Product categories" id="catBar">
   <button class="cat-btn active" data-cat="all" type="button">All</button>
   <button class="cat-btn" data-cat="hoodies" type="button">Hoodies</button>
   <button class="cat-btn" data-cat="mugs" type="button">Mugs</button>
   <button class="cat-btn" data-cat="supplements" type="button">Supplements</button>
   <button class="cat-btn" data-cat="couples" type="button">Couples</button>
   <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <button class="cat-btn" data-cat="other" type="button">Other</button>
+  <div class="cat-scroll-hint" id="catScrollHint" aria-hidden="true"><i class="fas fa-hand-point-left"></i> Swipe categories →</div>
 </div>
+<button id="showAllCatsBtn" type="button" aria-label="Show all categories">Show all</button>
 
 <main>
   <section id="grid" aria-live="polite" aria-busy="false"></section>
   <div id="loadingSpinner" style="display:none"><i class="fas fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
-  <div id="disclaimerWrapper">
-    <div id="disclaimerBanner">
-      ⚠️ <b>Disclaimer:</b> Product images may appear slightly different from real life.<br>
-      Some visuals are digitally enhanced or AI-assisted for presentation purposes.<br>
-      All hoodies are printed with high-definition graphics only.<br>
-      Actual products may vary in appearance due to distortion or scaling during digital processes.
-    </div>
-  </div>
 </main>
 
 <div id="cartModal" class="cart-modal" aria-hidden="true">
@@ -909,9 +1063,21 @@ function createCarousel(containerEl, images, opts = {}){
       <div class="left">
         <div style="color:var(--muted)"><strong class="subtotal-label">Subtotal:</strong> <span id="cartTotal" class="subtotal">R0.00</span></div>
       </div>
-      <div class="right" style="display:flex;gap:8px;align-items:center">
-        <button id="clearCartBtn" type="button" style="background:#ff2a2a;color:#fff;border-radius:10px;padding:8px 12px;border:0;cursor:pointer">Clear</button>
+      <div class="right" style="display:flex;gap:8px;align-items:center;position:relative">
+        <button id="clearCartBtn" type="button">Clear</button>
         <button id="waOrderBtn" class="wa-btn" type="button" aria-label="Order now via WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i> Order</button>
+        <button id="cartInfoBtn" class="info-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="cartInfoTooltip" title="Important info">
+          <span class="label" style="font-weight:800">⚠️</span>
+        </button>
+        <div id="cartInfoTooltip" class="tooltip" role="tooltip" aria-live="polite" aria-hidden="true">
+          <div class="tt-title">Heads up!</div>
+          <div class="tt-body">
+            <b>Images</b> may appear slightly different from real life.<br>
+            Some visuals are digitally enhanced or AI-assisted for presentation.<br>
+            Hoodies are printed with high-definition graphics only.<br>
+            Actual products may vary due to distortion or scaling during digital processes.
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -925,10 +1091,7 @@ function createCarousel(containerEl, images, opts = {}){
 <script>
 /* --- Data: products now use arrays of images (one or more) --- */
 const sponsors = [
-    {id:'spon-1',title:'DriftThreads',img:'assets/logo.png',url:'/blogs',description:'Ready to buy yet?',badge:'Sponsored'},
-    // {id:'spon-1',title:'Autostyle Motorsport',img:'sponsors/autostyle.jpeg',url:'https://www.autostyle.co.za/',description:'Built for speed -- engineered for victory',badge:'Sponsored'},
-    // {id:'spon-2',title:'Monster Energy',img:'sponsors/monster.jpeg',url:'https://www.monsterenergy.com',description:'Unleash the beast -- fuel your drift',badge:'Sponsored'},
-    // {id:'spon-3',title:'Studio 88',img:'sponsors/studio88.jpeg',url:'https://studio-88.co.za',description:'Style on the move - the way you want it',badge:'Sponsored'}
+    {id:'spon-1',title:'DriftThreads',img:'assets/logo.png',url:'/blogs',description:'Ready to buy yet?',badge:'Sponsored'}
 ];
 
 const products = [
@@ -1150,6 +1313,11 @@ const waOrderBtn = document.getElementById('waOrderBtn');
 const imgLightbox = document.getElementById('imgLightbox');
 const lbFrame = document.getElementById('lbFrame');
 const closeLightboxBtn = document.getElementById('closeLightbox');
+const catBar = document.getElementById('catBar');
+const catScrollHint = document.getElementById('catScrollHint');
+const showAllCatsBtn = document.getElementById('showAllCatsBtn');
+const cartInfoBtn = document.getElementById('cartInfoBtn');
+const cartInfoTooltip = document.getElementById('cartInfoTooltip');
 
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 const batchSize = 6;
@@ -1322,26 +1490,13 @@ function createCard(p, {eager=false} = {}){
     },
     startIndex: 0,
     loop: true,
-    showDots: false,            // UI cleanup: no dots on product cards
+    showDots: false,
     showButtons: true,
     showCounter: true,
     className: 'carousel',
-    enableZoom: false
+    enableZoom: false,
+    eagerFirst: eager // boost initial
   });
-
-  // Boost priority for first visible batch first image
-  try{
-    const firstSlideImg = carouselContainer.querySelector('.carousel-slide img');
-    if(firstSlideImg){
-      if(eager){
-        firstSlideImg.loading = 'eager';
-        firstSlideImg.fetchPriority = 'high';
-      } else {
-        firstSlideImg.loading = 'lazy';
-        firstSlideImg.fetchPriority = 'auto';
-      }
-    }
-  }catch(e){}
 
   imgWrap.appendChild(carouselContainer);
 
@@ -1361,9 +1516,9 @@ function createCard(p, {eager=false} = {}){
   back.innerHTML = `<h3 style="margin:0;">${p.title}</h3>
     <p style="margin:0;color:#bcd9f2">${p.description}</p>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="view-img-btn" type="button"><i class="fas fa-image" style="padding-right:3px;"></i>View</button>
-      <button class="share-btn" type="button" aria-label="Share ${p.title} (back)"><i class="fas fa-share-alt" style="padding-right:3px;"></i>Share</button>
-      <button class="add-btn" type="button" aria-label="Add ${p.title} (back)"><i class="fas fa-plus" style="padding-right:3px;"></i>Add</button>
+      <button class="view-img-btn" type="button" aria-label="View ${p.title} images"><i class="fas fa-image" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">View</span></button>
+      <button class="share-btn" type="button" aria-label="Share ${p.title}"><i class="fas fa-share-alt" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Share</span></button>
+      <button class="add-btn" type="button" aria-label="Add ${p.title}"><i class="fas fa-plus" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Add</span></button>
     </div>`;
 
   inner.appendChild(front);
@@ -1446,7 +1601,7 @@ function createSponsorCard(s){
   inner.className = 'card-inner';
   const front = document.createElement('div');
   front.className = 'sponsor-card-front';
-  front.innerHTML = `<div class="img-wrap sponsor-card"><img loading="lazy" src="${s.img}" alt="${s.title}"><div class="sponsor-label">Sponsored</div></div>
+  front.innerHTML = `<div class="img-wrap sponsor-card"><img loading="lazy" decoding="async" src="${s.img}" alt="${s.title}"><div class="sponsor-label">Sponsored</div></div>
     <div class="front-body" role="link" aria-label="${s.title} -- Sponsored" tabindex="-1"><div class="sponsor-title">${s.title}</div><div class="sponsor-desc">${s.description || ''}</div></div>`;
   inner.appendChild(front); card.appendChild(inner);
   const imgEl = front.querySelector('img'); attachImageFallback(imgEl);
@@ -1472,7 +1627,7 @@ function renderNextBatch(){
     setTimeout(() => {
       const slice = filteredProducts.slice(currentIndex, currentIndex + batchSize);
       slice.forEach((p, i) => {
-        const eager = (currentIndex === 0); // first visible batch: eager first image
+        const eager = (currentIndex === 0); // prioritize images in first batch
         const c = createCard(p, {eager});
         c.classList.add('pop-in');
         c.style.animationDelay = `${i * 60}ms`;
@@ -1490,8 +1645,8 @@ function renderNextBatch(){
       loading = false; hideSpinner();
       if(currentIndex >= filteredProducts.length) observer.disconnect();
       else observeLastCard();
-      setTimeout(()=> resolve(), 180);
-    }, 120);
+      setTimeout(()=> resolve(), 120);
+    }, 60);
   });
 }
 
@@ -1608,7 +1763,7 @@ function buildWhatsAppMessage(){
   lines.push("🛒 Hey -- ordering from the site:");
   lines.push("");
   cart.forEach(item => {
-    const line = `-${item.title} (${money(item.price)}) x${item.qty}`;
+    const line = `- ${item.title} (${money(item.price)}) x${item.qty}`;
     lines.push(line);
   });
   lines.push("");
@@ -1621,8 +1776,7 @@ function buildWhatsAppMessage(){
 function getWhatsAppLink(){ const base = `https://wa.me/${WA_NUMBER}`; const msg = buildWhatsAppMessage(); return `${base}?text=${msg}`; }
 waOrderBtn.addEventListener('click', () => { const link = getWhatsAppLink(); window.open(link, '_blank', 'noopener'); });
 
-/* LIGHTBOX with looping carousel + pinch/wheel zoom + swipe down/up to close
-   Mobile: up/down => close, left/right => navigate, arrow controls auto-hide */
+/* LIGHTBOX with looping carousel + pinch/wheel zoom + swipe down/up to close (full black background) */
 function openLightbox(imgs, startIndex = 0){
   if(!Array.isArray(imgs) || !imgs.length) imgs = ['assets/placeholder.png'];
   lbFrame.innerHTML = ''; // clear previous
@@ -1638,7 +1792,8 @@ function openLightbox(imgs, startIndex = 0){
     showButtons: true,
     showCounter: true,
     className: 'carousel',
-    enableZoom: true
+    enableZoom: true,
+    eagerFirst: true
   });
   lightboxState.api = api;
 
@@ -1648,11 +1803,15 @@ function openLightbox(imgs, startIndex = 0){
   imgLightbox.classList.add('active');
   imgLightbox.setAttribute('aria-hidden','false');
 
-  // Ensure proper sizing and index after lightbox is visible (fix mobile reopen glitch)
+  // Ensure proper sizing and index after lightbox is visible (fix rare offset)
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      try { api.setIndex(startIndex); } catch(e){}
+      try {
+        api.setIndex(startIndex);
+        if(api.refresh) api.refresh();
+      } catch(e){}
       imgLightbox.classList.add('opened');
+      setTimeout(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 60);
     });
   });
 
@@ -1675,25 +1834,32 @@ function openLightbox(imgs, startIndex = 0){
     ['touchstart','pointermove','mousemove','keydown'].forEach(ev => imgLightbox.addEventListener(ev, resetIdle, {passive:true}));
     resetIdle(); // start timer
   }
+
+  // Keep alignment correct on resize/orientation changes
+  const onWinResize = debounce(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 80);
+  window.addEventListener('resize', onWinResize);
+  imgLightbox._onResize = onWinResize;
 }
 function lightboxClose(withAnim=true){
   if(lightboxState.idleTimer){ clearTimeout(lightboxState.idleTimer); lightboxState.idleTimer = null; }
   if(withAnim){
     imgLightbox.classList.add('closing');
     setTimeout(()=>{
-      // Properly destroy carousel API (disconnect observers) before clearing DOM
       try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
       lightboxState.api = null;
+
+      if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
 
       imgLightbox.classList.remove('active','opened','closing','hide-controls');
       imgLightbox.setAttribute('aria-hidden','true');
       lbFrame.innerHTML = '';
       enableBackgroundInteraction();
       lightboxState.active = false;
-    }, 220);
+    }, 200);
   } else {
     try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
     lightboxState.api = null;
+    if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
 
     imgLightbox.classList.remove('active','opened','closing','hide-controls');
     imgLightbox.setAttribute('aria-hidden','true');
@@ -1719,7 +1885,7 @@ imgLightbox.addEventListener('click', function(e){
   }
 });
 
-/* Swipe up/down to close on touch (when not zooming) */
+/* Swipe up/down to close on touch (when not zooming). Keep background fully black. */
 (function(){
   let startY = 0, startX = 0, dragging = false, moved = false;
   imgLightbox.addEventListener('touchstart', (e) => {
@@ -1740,7 +1906,6 @@ imgLightbox.addEventListener('click', function(e){
     moved = true;
     const factor = Math.min(1, Math.abs(dy)/200);
     lbFrame.style.transform = `translateY(${dy}px) scale(${1 - factor*0.05})`;
-    imgLightbox.style.background = `rgba(0,0,0,${0.85 - factor*0.5})`;
     e.preventDefault();
   }, { passive:false });
   imgLightbox.addEventListener('touchend', () => {
@@ -1748,7 +1913,6 @@ imgLightbox.addEventListener('click', function(e){
     dragging = false;
     if(!moved){
       lbFrame.style.transform = '';
-      imgLightbox.style.background = '';
       return;
     }
     const current = lbFrame.style.transform || '';
@@ -1760,10 +1924,8 @@ imgLightbox.addEventListener('click', function(e){
     } else {
       // restore
       lbFrame.style.transition = 'transform 200ms var(--ease)';
-      imgLightbox.style.transition = 'background 200ms var(--ease)';
       lbFrame.style.transform = '';
-      imgLightbox.style.background = 'rgba(0,0,0,0.85)';
-      setTimeout(()=> { lbFrame.style.transition = ''; imgLightbox.style.transition = ''; }, 220);
+      setTimeout(()=> { lbFrame.style.transition = ''; }, 200);
     }
   });
 })();
@@ -1776,89 +1938,76 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-/* Better preloader: preload critical images (first 2 batches × first 2 images each) + fonts; background-preload the rest */
+/* Modern, faster preloader: minimal critical preloads + hard timeout; background prefetch later */
 async function preloadCriticalAssets(){
   const pre = document.getElementById('preloader');
   const txt = document.getElementById('preloaderText');
   const bar = document.querySelector('#preloaderBar>span');
 
-  // Respect current state (q, cat) for critical set
+  let progress = 0;
+  const setProgress = (p) => {
+    progress = Math.max(progress, Math.min(100, Math.round(p)));
+    txt.textContent = `Loading ${progress}%`;
+    bar.style.width = `${progress}%`;
+  };
+  setProgress(5);
+
+  // Fonts: cap wait time to 1200ms
+  try {
+    const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+    await Promise.race([fontsReady, new Promise(r=>setTimeout(r, 1200))]);
+  } catch(e){}
+  setProgress(20);
+
+  // Determine first visible product given current state
   const st = readStateFromURL();
   const cat = (st.cat && st.cat.trim()) ? st.cat.trim() : 'all';
   const q = (st.q || '').trim().toLowerCase();
-  const list = products.filter(p => {
-    const matchCat = (cat === 'all') || p.cat === cat;
-    const matchQ = !q || p.title.toLowerCase().includes(q);
-    return matchCat && matchQ;
-  });
+  const list = products.filter(p => ((cat === 'all') || p.cat === cat) && (!q || p.title.toLowerCase().includes(q)));
 
-  const criticalProducts = list.slice(0, batchSize * 2); // two batches
-  const criticalImgs = [];
-  criticalProducts.forEach(p => {
-    const arr = ensureImagesArray(p);
-    // first two images per product
-    if(arr[0]) criticalImgs.push(arr[0]);
-    if(arr[1]) criticalImgs.push(arr[1]);
-  });
+  const first = list[0] || products[0];
+  const critImgs = [
+    'assets/favicon.png',
+    'assets/logo.png',
+    (first && first.images && first.images[0]) ? first.images[0] : null
+  ].filter(Boolean);
 
-  // Always include favicon/logo
-  criticalImgs.push('assets/favicon.png','assets/logo.png');
-  // Deduplicate
-  const uniqCritical = Array.from(new Set(criticalImgs));
-
-  // Secondary (background) preloads: first image of remaining products
-  const secondaryImgs = [];
-  products.forEach(p => {
-    const arr = ensureImagesArray(p);
-    if(arr[0]) secondaryImgs.push(arr[0]);
-  });
-  const uniqSecondary = Array.from(new Set(secondaryImgs.filter(src => !uniqCritical.includes(src))));
-
-  let loaded = 0;
-  const totalUnits = uniqCritical.length + 1; // +1 for fonts
-  const update = () => {
-    const pct = Math.round((loaded/totalUnits)*100);
-    txt.textContent = `Loading ${pct}%`;
-    bar.style.width = `${pct}%`;
-  };
-
-  // Wait fonts as a unit
-  try { await document.fonts.ready; } catch(e){}
-  loaded++; update();
-
-  // Preload critical images serially in small batches to avoid clogging
-  const chunk = async (arr, size=6) => {
-    for(let i=0;i<arr.length;i+=size){
-      const batch = arr.slice(i, i+size).map(preloadImage);
-      const results = await Promise.allSettled(batch);
-      loaded += results.length;
-      update();
+  // Preload critical in sequence to update progress smoothly
+  const step = Math.floor(70 / Math.max(1, critImgs.length)); // up to 90%
+  const safety = new Promise(r => setTimeout(r, 2500)); // 2.5s safety cap
+  const doLoad = (async () => {
+    for(const src of critImgs){
+      try { await preloadImage(src); } catch(e){}
+      setProgress(progress + step);
     }
-  };
+    setProgress(90);
+  })();
 
-  // Safety timeout: ensure we don't hang forever (6s)
-  const safety = new Promise(res => setTimeout(res, 6000));
+  await Promise.race([doLoad, safety]);
 
-  await Promise.race([chunk(uniqCritical, 6), safety]);
-
-  // Hide preloader
+  // Hide preloader quickly
+  setProgress(100);
   setTimeout(()=> {
     pre.style.opacity = '0';
-    setTimeout(()=> { try{ pre.remove(); }catch(e){} }, 600);
-  }, 150);
+    setTimeout(()=> { try{ pre.remove(); }catch(e){} }, 450);
+  }, 120);
 
-  // Background preload remaining
-  const bgLoad = async () => {
-    for(let i=0;i<uniqSecondary.length;i+=8){
-      const slice = uniqSecondary.slice(i,i+8);
-      await Promise.all(slice.map(preloadImage));
-      await new Promise(r => setTimeout(r, 50));
+  // Background prefetch: gently prefetch first image of other products if not on data-saver
+  const saveData = (navigator.connection && navigator.connection.saveData) ? true : false;
+  if(!saveData){
+    const bgImgs = Array.from(new Set(products.map(p => ensureImagesArray(p)[0]).filter(Boolean)));
+    const throttled = async () => {
+      for(let i=0;i<bgImgs.length;i+=6){
+        const chunk = bgImgs.slice(i,i+6);
+        await Promise.allSettled(chunk.map(preloadImage));
+        await new Promise(r=>setTimeout(r, 60));
+      }
+    };
+    if('requestIdleCallback' in window){
+      requestIdleCallback(throttled, { timeout: 3000 });
+    } else {
+      setTimeout(throttled, 500);
     }
-  };
-  if('requestIdleCallback' in window){
-    requestIdleCallback(bgLoad, { timeout: 3000 });
-  } else {
-    setTimeout(bgLoad, 500);
   }
 }
 
@@ -1896,22 +2045,45 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.classList.add('active');
     const cat = btn.dataset.cat;
     updateURL({ q: searchInput.value.trim(), cat }, { replace:false });
-    filterAndRender(); setTimeout(()=> updateCatBarFade(), 90);
+    filterAndRender(); setTimeout(()=> updateCatBarUI(), 90);
   });
   btn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); btn.click(); }});
 });
 
-/* Cat bar fade */
-const catBar = document.querySelector('.cat-bar');
-function updateCatBarFade(){
+/* Categories bar UI: show hint on mobile if overflow; show Show All on desktop if overflow */
+function updateCatBarUI(){
   if(!catBar) return;
-  const isEnd = Math.abs(catBar.scrollWidth - (catBar.scrollLeft + catBar.clientWidth)) < 2;
-  if(isEnd) catBar.classList.add('scrolled-end'); else catBar.classList.remove('scrolled-end');
+  const canScroll = catBar.scrollWidth > catBar.clientWidth + 2;
+  const isDesktop = window.matchMedia('(min-width: 901px)').matches;
+
+  // Mobile scroll hint
+  if(!isDesktop && canScroll){
+    catScrollHint.classList.add('visible');
+  } else {
+    catScrollHint.classList.remove('visible');
+  }
+
+  // Desktop Show All button only
+  if(isDesktop && canScroll){
+    showAllCatsBtn.style.display = 'inline-flex';
+  } else {
+    showAllCatsBtn.style.display = 'none';
+    catBar.classList.remove('show-all');
+    showAllCatsBtn.textContent = 'Show all';
+  }
 }
-if(catBar){
-  catBar.addEventListener('scroll', debounce(updateCatBarFade, 60), { passive:true });
-  window.addEventListener('resize', debounce(updateCatBarFade, 140));
-}
+catBar && catBar.addEventListener('scroll', debounce(()=> {
+  if(catScrollHint.classList.contains('visible')){
+    catScrollHint.classList.remove('visible'); // hide hint after user scrolls
+  }
+}, 60), { passive:true });
+window.addEventListener('resize', debounce(updateCatBarUI, 150));
+showAllCatsBtn.addEventListener('click', () => {
+  const isDesktop = window.matchMedia('(min-width: 901px)').matches;
+  if(!isDesktop) return; // guard: never toggle on mobile/tablet
+  const on = catBar.classList.toggle('show-all');
+  showAllCatsBtn.textContent = on ? 'Collapse' : 'Show all';
+});
 
 /* Scroll to top button */
 (function(){
@@ -1951,36 +2123,50 @@ if(catBar){
   }, true);
 })();
 
+/* Cart info tooltip handlers */
+(function(){
+  function hideTooltip(){
+    cartInfoTooltip.classList.remove('visible');
+    cartInfoTooltip.setAttribute('aria-hidden','true');
+    cartInfoBtn.setAttribute('aria-expanded','false');
+  }
+  function toggleTooltip(){
+    const showing = cartInfoTooltip.classList.toggle('visible');
+    cartInfoTooltip.setAttribute('aria-hidden', showing ? 'false' : 'true');
+    cartInfoBtn.setAttribute('aria-expanded', showing ? 'true' : 'false');
+  }
+  cartInfoBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTooltip(); });
+  cartInfoBtn.addEventListener('mouseenter', () => { if(!/Mobi|Android/i.test(navigator.userAgent)){ cartInfoTooltip.classList.add('visible'); cartInfoTooltip.setAttribute('aria-hidden','false'); cartInfoBtn.setAttribute('aria-expanded','true'); }});
+  cartInfoBtn.addEventListener('mouseleave', () => { if(!/Mobi|Android/i.test(navigator.userAgent)){ hideTooltip(); }});
+  document.addEventListener('click', (e) => {
+    if(e.target === cartInfoBtn || cartInfoTooltip.contains(e.target)) return;
+    hideTooltip();
+  });
+  // Hide tooltip when cart closes
+  closeCart.addEventListener('click', hideTooltip);
+})();
+
 /* Initialize on DOMContentLoaded with improved preloading */
 window.addEventListener('DOMContentLoaded', async () => {
   updateCartDisplay();
   applyStateFromURL();
-  updateCatBarFade();
+  updateCatBarUI();
   showHintTooltip();
 
-  await preloadCriticalAssets(); // preload critical assets (first 2 batches × 2 images + fonts)
-  await filterAndRender();       // render after initial images are ready
+  await preloadCriticalAssets(); // fast, capped preloader
+  await filterAndRender();       // then render first batch
 });
 </script>
 </body>
 </html>
 
 
-make the view, share, and add button on the back of the cards jsut be icons instead of icons+text on mobile, to save space 
-make the Disclaimer a Hover Tooltip / Info Icon
+<!-- why are all the texts around in bold? its wasting space, make sure to unbold the shits, whether its thru the import or whatever
+ remove the bg from the show all in the cat bar on desktop, instead make it just light blue text or something, basically, no bg of the button
+ and the disclaimer button in the cart is not woring propelry on mobile, firstly the icon with the order and lcear is clipped out of the cart, and so it the tooltip info if there sis leess than 2 items in cart, so find a way to fix that in mobile, my solution is take it out of the cart, and put it somewhere in the tpo of the porudcts seciton or smth 
+ the slider progress (e.g 6/9) in the lighbox, should be in line with the x button, instead of slighly under, both mobile and desktop, pay good attention to this one
+ make the sure the cards flip toast actually stays 3 secs AFTER the page loads (preloader unloads)
+ add/fix other thnigs u think are messed or needed
+ i think the swipe categories is unnecessary for mboile, so fix that up, just make it a shadow or smth, so the subconcious mind knows to swippe
 
-Tiny ⚠️ or ℹ️ icon next to the clear and order button in the cart or something, but obv make it stand out so no one says we scamming em
-
-make the lightbox carousel dots be a gray color instead, and a perfect circle
-the images in the lighbox sometimes slightly offset when u open it, so try to fix that pls
-
-remove that shadow at the end of the cat bar, and instead, somehow implent it that it is obvious that you can scroll the cat bar on mobile, for deksotp, i think its fine if add a show all button, but only if it reaches more than the width of the screen obv 
-
-make the small dots on thelightbox carousel be blue (active) & some other colour (out white with a black outline or smth) that sticks out more, not white
-
-also, very small issue, on my laptop, sometimes, towards the top i see this thin black line appear when i 
-hover, wonder why, see what u can do, otherwise its alr
-
-make sure you dont break other existing features pls lol
-
-give the full html css js with changes
+ give the full html css js in 1 file, as it is now, wihtout fupcking up currrent feauters, also give a tldr of what ur gonna do beofre the code--> 
