@@ -1,0 +1,27 @@
+name: Generate GitHub Snake
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # runs daily at midnight
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Generate Snake SVG
+        uses: platane/github-contribution-grid-snake@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          output: ./output/github-contribution-grid-snake.svg
+
+      - name: Commit and Push
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"
+          git add ./output/github-contribution-grid-snake.svg
+          git commit -m "Update snake contribution graph" || echo "No changes"
+          git push
