@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sharks From Space — Fixed Simulation</title>
+
+  <!-- Chart.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* ===============================
+       Sharks From Space -- Global Theme
+       =============================== */
+    :root{
+      --bg-0: #060b16;           /* deep ocean-night */
+      --bg-1: #0b1220;
+      --panel: rgba(13, 25, 45, 0.6);
+      --glass: rgba(10, 22, 41, 0.35);
+      --text: #e8f0ff;
+      --muted: #98a7c6;
+      --accent: #14f1ff;         /* neon aqua */
+      --accent-2: #00d1b2;       /* teal */
+      --shadow: rgba(0,0,0,0.55);
+      --card-radius: 14px;
+      --gap: 16px;
+      --glow-1: 0 0 18px rgba(20,241,255,0.40), 0 0 42px rgba(0,209,178,0.25);
+      --glow-2: 0 0 24px rgba(20,241,255,0.55), 0 0 72px rgba(0,209,178,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background:
+        radial-gradient(1200px 900px at 15% -10%, rgba(20,241,255,0.08), transparent 55%),
+        radial-gradient(1600px 1100px at 110% 20%, rgba(0,209,178,0.06), transparent 60%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-0));
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow: hidden; 
+    }
+
+    /* Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(5,12,24,0.9), rgba(5,12,24,0.6));
+      border-bottom: 1px solid rgba(20,241,255,0.12);
+      box-shadow: 0 8px 24px var(--shadow), inset 0 -1px 0 rgba(255,255,255,0.02);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px clamp(12px, 3vw, 24px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+    }
+    .brand { display:flex; align-items:center; gap:12px }
+    .logo { width:42px;height:42px;border-radius:50%; background: radial-gradient(circle at 40% 40%, rgba(20,241,255,0.28), transparent 50%); box-shadow: var(--glow-1) }
+    .brand h1 { margin:0; font-size:18px; letter-spacing:0.2px; text-shadow:0 6px 24px rgba(20,241,255,0.06) }
+    .subtitle { font-size:12px; color:var(--muted) }
+
+    /* Buttons */
+    .btn {
+      appearance:none; border:1px solid rgba(20,241,255,0.14);
+      background: linear-gradient(180deg, rgba(20,241,255,0.06), rgba(0,209,178,0.04));
+      color:var(--text); padding:8px 12px; border-radius:10px; font-weight:700; cursor:pointer;
+      transition:all .14s ease; display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn:hover { transform:translateY(-2px); box-shadow: var(--glow-2) }
+    .btn-primary{ border-color: rgba(20,241,255,0.55); background: linear-gradient(180deg, rgba(20,241,255,0.13), rgba(0,209,178,0.07)) }
+    .btn-ghost{ border-color: rgba(20,241,255,0.08); background: transparent; color:var(--muted) }
+    .btn-icon{ width:36px;height:36px;padding:0; justify-content:center; border-radius:9px; }
+
+    /* Layout: main area has a strict max height to avoid endless scroll */
+    .app-main {
+      max-width: 1400px;
+      margin: 12px auto;
+      padding: 12px clamp(12px, 3vw, 24px) 20px;
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: var(--gap);
+      height: calc(100vh - 84px); /* header ~64-84px reserved */
+      box-sizing: border-box;
+    }
+    @media (max-width: 1100px){ .app-main { grid-template-columns: 1fr; height: calc(100vh - 132px) } }
+
+    .card {
+      background: linear-gradient(180deg, var(--glass), rgba(10,22,41,0.18));
+      border: 1px solid rgba(20,241,255,0.08);
+      border-radius: var(--card-radius);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
+      overflow: hidden;
+      display:flex; flex-direction:column;
+    }
+
+    /* Panel header/body/footer inside card */
+    .panel-header { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-bottom:1px solid rgba(20,241,255,0.06); background:linear-gradient(180deg, rgba(20,241,255,0.02), transparent) }
+    .panel-title { font-weight:700; display:flex; align-items:center; gap:10px }
+    .panel-body { padding:10px; overflow:auto } /* body scrolls if too big */
+    .panel-footer { padding:10px 12px; border-top:1px solid rgba(20,241,255,0.06); display:flex; gap:8px; align-items:center; justify-content:space-between }
+
+    /* Map panel: clamp size to avoid huge map world */
+    .map-panel { min-height: 360px; max-height: calc(100vh - 200px); display:flex; flex-direction:column; }
+    @media (max-width:1100px){ .map-panel { max-height: 420px } }
+
+    .map-viewport {
+      position: relative; flex:1; overflow:hidden; background: radial-gradient(900px 500px at 40% 30%, rgba(20,241,255,0.03), transparent 40%), #041021;
+      border-radius: 10px; margin: 10px;
+      min-height: 300px;
+    }
+
+    /* Make the internal 'world' a reasonable size and responsive */
+    .map-world {
+      position:absolute; left:50%; top:50%;
+      width: 1200px; height: 700px; /* reasonable fixed "world" size */
+      transform-origin: 0 0;
+      transform: translate(-50%, -50%) scale(0.8);
+      background:
+        repeating-linear-gradient(0deg, rgba(20,241,255,0.02) 0px, rgba(20,241,255,0.02) 1px, transparent 1px, transparent 80px),
+        repeating-linear-gradient(90deg, rgba(20,241,255,0.02) 0px, rgba(20,241,255,0.02) 1px, transparent 1px, transparent 80px),
+        radial-gradient(1000px 600px at 60% 40%, rgba(0,209,178,0.05), transparent 60%),
+        radial-gradient(900px 550px at 30% 60%, rgba(20,241,255,0.05), transparent 60%),
+        linear-gradient(180deg, rgba(0,6,12,0.45), rgba(0,0,0,0.25));
+      border-radius: 12px;
+      box-shadow: inset 0 24px 120px rgba(0,0,0,0.5);
+      border: 1px solid rgba(20,241,255,0.06);
+    }
+
+    /* decorative stars inside the world */
+    .star { position:absolute; border-radius:50%; width:2px;height:2px; background: radial-gradient(circle at 40% 40%, #fff, rgba(255,255,255,0.25) 45%, rgba(255,255,255,0) 70%); filter: drop-shadow(0 0 4px rgba(255,255,255,0.6)); animation: twinkle 3.6s ease-in-out infinite }
+    @keyframes twinkle{ 0%,100%{opacity:0.35; transform:scale(0.8)} 50%{opacity:0.95; transform:scale(1.25)} }
+
+    /* Shark markers */
+    .shark {
+      --size:18px;
+      position:absolute; width:var(--size); height:var(--size); border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, var(--accent), #007a8e);
+      border: 2px solid rgba(255,255,255,0.18);
+      box-shadow: 0 0 14px rgba(20,241,255,0.85), 0 0 34px rgba(0,209,178,0.26);
+      transform: translate(-50%,-50%); transition: left 600ms cubic-bezier(.2,.7,.2,1), top 600ms cubic-bezier(.2,.7,.2,1), opacity .3s ease;
+      opacity:0;
+    }
+    .shark.visible { opacity:1 }
+    .shark.selected{ transform: translate(-50%,-50%) scale(1.14) }
+    .shark::after{
+      content:""; position:absolute; inset:-8px; border-radius:50%; border:2px solid rgba(20,241,255,0.25);
+      animation: pulse 2.8s ease-out infinite; filter: drop-shadow(0 0 12px rgba(20,241,255,0.6));
+    }
+    @keyframes pulse{ 0%{transform:scale(0.6);opacity:0.9} 70%{transform:scale(1.2);opacity:0} 100%{transform:scale(1.2);opacity:0} }
+    .shark .label{ position:absolute; top:-28px; left:50%; transform:translateX(-50%); font-size:11px; color:#cfeaff; background:rgba(8,16,30,0.78); padding:3px 6px; border-radius:7px; border:1px solid rgba(20,241,255,0.14); pointer-events:none; text-shadow:0 0 8px rgba(20,241,255,0.14) }
+
+    /* Trails layer */
+    .trail-layer { position:absolute; inset:0; pointer-events:none; }
+    .trail-layer polyline { fill:none; stroke:rgba(20,241,255,0.65); stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; filter: drop-shadow(0 0 8px rgba(20,241,255,0.25)) }
+    .trail-layer .trail-selected { stroke:#00ffd5; stroke-width:2.2 }
+
+    .map-overlay { position:absolute; inset:8px 8px auto auto; display:flex; gap:8px; z-index:5 }
+    .mini-pill { font-size:12px; padding:6px 10px; border-radius:999px; background: rgba(20,241,255,0.06); border:1px solid rgba(20,241,255,0.08); color:var(--muted) }
+
+    .map-controls { position:absolute; left:8px; top:8px; z-index:6; display:flex; gap:8px; flex-wrap:wrap }
+    .coords { position:absolute; left:8px; bottom:8px; font-size:12px; color:var(--muted); background: rgba(8,16,30,0.6); border-radius:8px; padding:6px 8px; border:1px solid rgba(20,241,255,0.06) }
+
+    /* Charts and heatmap */
+    .charts-panel { display:flex; flex-direction:column; gap:12px; min-height:360px; max-height: calc(100vh - 220px); overflow:hidden }
+    .chart-card { padding:8px; border-radius:10px; background: linear-gradient(180deg, rgba(8,16,28,0.22), rgba(8,16,28,0.12)); display:flex; flex-direction:column; gap:8px; }
+    .chart-title { color:var(--muted); font-size:13px; margin-left:6px }
+
+    canvas { width:100%; height:220px; display:block; }
+
+    .heatmap { display:grid; grid-template-columns: repeat(8,1fr); gap:8px; padding:6px; max-height:220px; overflow:auto }
+    .heat-cell { aspect-ratio:1/1; border-radius:8px; transition:transform .12s, filter .12s ease; position:relative }
+    .heat-cell:hover { transform: translateY(-3px); filter:brightness(1.06) }
+
+    /* Feed */
+    .feed-panel { display:flex; flex-direction:column; min-height:220px; max-height:calc(100vh - 220px) }
+    .feed-list { list-style:none; margin:0; padding:10px; overflow:auto; display:flex; flex-direction:column; gap:8px; scroll-behavior:smooth }
+    .feed-item { background: linear-gradient(180deg, rgba(10,22,41,0.38), rgba(10,22,41,0.18)); border-radius:10px; padding:8px; display:flex; gap:10px; border-left:3px solid var(--accent); opacity:0; transform:translateY(8px); animation:fadeIn .32s ease forwards }
+    @keyframes fadeIn { to { opacity:1; transform:none } }
+    .feed-item .icon { width:10px;height:10px;border-radius:50%; background: radial-gradient(circle at 40% 40%, var(--accent), #007a8e); box-shadow: 0 0 12px rgba(20,241,255,0.85) }
+    .feed-item .msg { font-size:13px; color:#d6eaff }
+    .feed-item .meta { font-size:11px; color:var(--muted); margin-top:4px }
+
+    /* Small helpers */
+    .row { display:flex; gap:8px; align-items:center }
+    .kbd { font-family: ui-monospace, SFMono, Menlo, Consolas, monospace; background:rgba(255,255,255,0.03); border-radius:6px; padding:2px 6px; font-size:12px }
+    .pill { background: rgba(20,241,255,0.06); color:var(--muted); padding:4px 8px; border-radius:999px; border:1px solid rgba(20,241,255,0.06) }
+    .footer-hint { color:var(--muted); font-size:12px }
+
+    /* reduce motion accessibility */
+    @media (prefers-reduced-motion: reduce){
+      .shark { transition: none }
+      .shark::after, .star { animation: none }
+      .feed-item { animation: none; opacity:1; transform:none }
+    }
+
+    /* scrollbar for internal panels */
+    .panel-body::-webkit-scrollbar, .feed-list::-webkit-scrollbar { width:10px; height:10px }
+    .panel-body::-webkit-scrollbar-thumb, .feed-list::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(20,241,255,0.45), rgba(0,209,178,0.4));
+      border-radius:8px; border:2px solid rgba(0,0,0,0.22)
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Sharks From Space 🦈🚀</h1>
+          <div class="subtitle">NASA hackathon–ready dashboard — predictive tagging prototype</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btnAddShark" class="btn btn-primary" title="Add a new simulated shark">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span> Add Random Shark
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main" role="main">
+    <!-- Left: Map Panel -->
+    <section class="card map-panel" aria-labelledby="mapTitle">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span id="mapTitle">Orbital Tracking Map</span>
+          <span class="pill" id="sharkCountPill">Sharks: 0</span>
+        </div>
+        <div class="row">
+          <div class="legend"><span style="width:12px;height:12px;border-radius:3px;background:var(--accent);display:inline-block;margin-right:6px"></span> Active Tag</div>
+          <button id="btnSimMove" class="btn btn-ghost" title="Toggle continuous simulated movement">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block"></span> Simulate Shark Movement
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-body" style="padding:8px;display:flex;flex-direction:column;gap:8px;">
+        <div id="mapViewport" class="map-viewport" aria-label="Interactive map. Drag to pan, scroll to zoom.">
+          <div id="mapWorld" class="map-world" aria-hidden="false">
+            <!-- trails svg appended by JS -->
+          </div>
+
+          <div class="map-controls" aria-label="Map controls">
+            <button id="zoomIn" class="btn btn-icon" title="Zoom In">+</button>
+            <button id="zoomOut" class="btn btn-icon" title="Zoom Out">−</button>
+            <button id="resetView" class="btn btn-icon" title="Reset View">⟲</button>
+            <button id="toggleTrails" class="btn" title="Toggle trails">Trails: ON</button>
+          </div>
+
+          <div class="map-overlay">
+            <span class="mini-pill">Drag: Pan</span>
+            <span class="mini-pill">Scroll: Zoom</span>
+            <span class="mini-pill"><span class="kbd">S</span> Sim</span>
+            <span class="mini-pill"><span class="kbd">A</span> Add</span>
+            <span class="mini-pill"><span class="kbd">U</span> Update</span>
+          </div>
+
+          <div id="coords" class="coords">x: --, y: --</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: Charts + Feed -->
+    <section class="card charts-panel" aria-labelledby="chartsTitle">
+      <div class="panel-header">
+        <div class="panel-title" id="chartsTitle">Predictions & Activity</div>
+        <div class="row">
+          <button id="btnUpdatePred" class="btn btn-primary" title="Refresh predictions and data">Update Predictions</button>
+        </div>
+      </div>
+
+      <div class="panel-body" style="display:flex;flex-direction:column;gap:12px;padding:10px;overflow:auto">
+        <div class="chart-card" style="min-height:220px">
+          <div class="chart-title">Shark Activity Over Time</div>
+          <canvas id="activityChart" aria-label="Line chart of shark activity"></canvas>
+        </div>
+
+       
+    </section>
+
+<section class="card feed-panel">
+     <div class="chart-card" style="min-height:220px">
+          <div class="chart-title">Predicted Foraging Hotspots</div>
+          <div id="heatmap" class="heatmap" aria-label="Heatmap grid"></div>
+        </div>
+
+        <div class="panel-footer">
+          <small class="footer-hint">Simulated satellite cues: SST, chlorophyll-a, altimetry (placeholder).</small>
+          <small class="footer-hint">Shortcuts: S=Sim, A=Add, U=Update, Space=Toggle feed auto</small>
+        </div>
+      </div>
+</section>
+
+    <section class="card feed-panel" aria-labelledby="feedTitle">
+      <div class="panel-header">
+        <div class="panel-title" id="feedTitle">Live Shark Feed</div>
+        <div class="row">
+          <span id="feedStatus" class="mini-pill" role="button" aria-pressed="true">Auto: ON</span>
+        </div>
+      </div>
+
+      <div class="panel-body" style="padding:0; min-height:220px">
+        <ul id="feedList" class="feed-list" aria-live="polite" aria-relevant="additions"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ===============================
+    // Helpers
+    // ===============================
+    const $ = (s, root = document) => root.querySelector(s);
+    const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
+    const rand = (a, b) => Math.random() * (b - a) + a;
+    const randInt = (a, b) => Math.floor(rand(a, b+1));
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const ts = () => new Date().toLocaleTimeString();
+
+    // ===============================
+    // SharkMap: simplified and robust
+    // ===============================
+    class SharkMap {
+      constructor(viewport, world) {
+        this.viewport = viewport;
+        this.world = world;
+
+        // dynamic size based on CSS-stated width/height
+        this.updateSize();
+
+        // transform state
+        this.scale = 0.8;
+        this.tx = (this.viewport.clientWidth - this.W * this.scale) / 2;
+        this.ty = (this.viewport.clientHeight - this.H * this.scale) / 2;
+
+        this.sharks = new Map();
+        this.trailsOn = true;
+        this.trailsSVG = document.createElementNS('http://www.w3.org/2000/svg','svg');
+        this.trailsSVG.classList.add('trail-layer');
+        this.trailsSVG.setAttribute('viewBox', `0 0 ${this.W} ${this.H}`);
+        this.trailsSVG.style.width = '100%';
+        this.trailsSVG.style.height = '100%';
+        this.world.appendChild(this.trailsSVG);
+
+        this._decorateStars(110);
+        this._attachInput();
+        this.render();
+      }
+
+      updateSize(){
+        // read computed world size (CSS)
+        const rect = this.world.getBoundingClientRect();
+        this.W = Math.max(600, rect.width || 1200);
+        this.H = Math.max(360, rect.height || 700);
+        if (this.trailsSVG) {
+          this.trailsSVG.setAttribute('viewBox', `0 0 ${this.W} ${this.H}`);
+          this.trailsSVG.setAttribute('width', this.W);
+          this.trailsSVG.setAttribute('height', this.H);
+        }
+      }
+
+      _decorateStars(count){
+        // remove old stars
+        $$('.star', this.world).forEach(n => n.remove());
+        for (let i=0;i<count;i++){
+          const s = document.createElement('div');
+          s.className = 'star';
+          const size = Math.random() < 0.85 ? rand(1,2.5) : rand(2.5,4.5);
+          s.style.width = size + 'px';
+          s.style.height = size + 'px';
+          s.style.left = rand(8, this.W-8) + 'px';
+          s.style.top = rand(8, this.H-8) + 'px';
+          s.style.animationDelay = (-rand(0,3.5)) + 's';
+          s.style.opacity = rand(0.25,0.95);
+          this.world.appendChild(s);
+        }
+      }
+
+      _attachInput(){
+        // pan: drag the viewport to change tx/ty
+        let dragging = false, sx=0, sy=0, startTx=0, startTy=0;
+        const onDown = (e) => {
+          dragging = true;
+          this.viewport.classList.add('dragging');
+          sx = (e.touches ? e.touches[0].clientX : e.clientX);
+          sy = (e.touches ? e.touches[0].clientY : e.clientY);
+          startTx = this.tx; startTy = this.ty;
+          e.preventDefault();
+        };
+        const onMove = (e) => {
+          if(!dragging) return;
+          const cx = (e.touches ? e.touches[0].clientX : e.clientX);
+          const cy = (e.touches ? e.touches[0].clientY : e.clientY);
+          this.tx = startTx + (cx - sx);
+          this.ty = startTy + (cy - sy);
+          this._clampPan();
+          this.render();
+        };
+        const onUp = () => { dragging = false; this.viewport.classList.remove('dragging'); };
+
+        this.viewport.addEventListener('mousedown', onDown, { passive:false });
+        window.addEventListener('mousemove', onMove, { passive:false });
+        window.addEventListener('mouseup', onUp);
+        this.viewport.addEventListener('touchstart', onDown, { passive:false });
+        this.viewport.addEventListener('touchmove', onMove, { passive:false });
+        this.viewport.addEventListener('touchend', onUp);
+
+        // wheel zoom
+        this.viewport.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          const rect = this.viewport.getBoundingClientRect();
+          const px = e.clientX - rect.left, py = e.clientY - rect.top;
+          const delta = Math.sign(e.deltaY);
+          const factor = Math.pow(1.1, -delta);
+          this.zoomAt(factor, px, py);
+        }, { passive:false });
+
+        // dblclick
+        this.viewport.addEventListener('dblclick', (e) => {
+          const rect = this.viewport.getBoundingClientRect();
+          this.zoomAt(1.3, e.clientX - rect.left, e.clientY - rect.top);
+        });
+
+        // coords panel
+        const coordsEl = $('#coords');
+        this.viewport.addEventListener('mousemove', (e) => {
+          const rect = this.viewport.getBoundingClientRect();
+          const vx = e.clientX - rect.left, vy = e.clientY - rect.top;
+          const wx = (vx - this.tx) / this.scale;
+          const wy = (vy - this.ty) / this.scale;
+          coordsEl.textContent = `x: ${Math.round(clamp(wx, 0, this.W))}, y: ${Math.round(clamp(wy, 0, this.H))}`;
+        });
+      }
+
+      _clampPan(){
+        const vw = this.viewport.clientWidth, vh = this.viewport.clientHeight;
+        const worldW = this.W * this.scale, worldH = this.H * this.scale;
+        const minX = Math.min(0, vw - worldW), minY = Math.min(0, vh - worldH);
+        const maxX = Math.max(0, vw - worldW) + (worldW < vw ? (vw - worldW)/2 : 0);
+        const maxY = Math.max(0, vh - worldH) + (worldH < vh ? (vh - worldH)/2 : 0);
+        this.tx = clamp(this.tx, minX, maxX);
+        this.ty = clamp(this.ty, minY, maxY);
+      }
+
+      render(){
+        // apply CSS transform
+        this.world.style.transform = `translate(${this.tx}px, ${this.ty}px) scale(${this.scale})`;
+      }
+
+      zoomAt(factor, px, py){
+        const newScale = clamp(this.scale * factor, 0.45, 2.2);
+        const scaleRatio = newScale / this.scale;
+        this.tx = px - (px - this.tx) * scaleRatio;
+        this.ty = py - (py - this.ty) * scaleRatio;
+        this.scale = newScale;
+        this._clampPan();
+        this.render();
+      }
+
+      resetView(){
+        this.scale = 0.8;
+        this.tx = (this.viewport.clientWidth - this.W * this.scale) / 2;
+        this.ty = (this.viewport.clientHeight - this.H * this.scale) / 2;
+        this.render();
+      }
+
+      randomPoint(){
+        return { x: rand(40, this.W-40), y: rand(40, this.H-40) };
+      }
+
+      addShark(id=null, point=null){
+        const sharkId = id || `Shark-${randInt(10,999)}`;
+        const { x,y } = point || this.randomPoint();
+        const el = document.createElement('div');
+        el.className = 'shark';
+        el.style.left = `${x}px`; el.style.top = `${y}px`;
+        const label = document.createElement('div'); label.className = 'label'; label.textContent = sharkId;
+        el.appendChild(label);
+
+        el.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          this.selectShark(sharkId);
+          this.centerOn(x, y);
+        });
+
+        this.world.appendChild(el);
+        // create polyline for trails
+        const poly = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+        poly.setAttribute('points', `${x},${y}`);
+        poly.setAttribute('data-id', sharkId);
+        this.trailsSVG.appendChild(poly);
+
+        // store
+        this.sharks.set(sharkId, { id: sharkId, el, x, y, trail: [{x,y}], line: poly });
+        requestAnimationFrame(() => el.classList.add('visible'));
+        $('#sharkCountPill').textContent = `Sharks: ${this.sharks.size}`;
+        return this.sharks.get(sharkId);
+      }
+
+      selectShark(id){
+        for (const s of this.sharks.values()){
+          s.el.classList.toggle('selected', s.id === id);
+          s.line.classList.toggle('trail-selected', s.id === id);
+        }
+      }
+
+      moveShark(shark, nx, ny){
+        shark.x = clamp(nx, 8, this.W - 8);
+        shark.y = clamp(ny, 8, this.H - 8);
+        shark.el.style.left = `${shark.x}px`;
+        shark.el.style.top = `${shark.y}px`;
+        shark.trail.push({x: shark.x, y: shark.y});
+        if (shark.trail.length > 40) shark.trail.shift();
+        shark.line.setAttribute('points', shark.trail.map(p => `${p.x},${p.y}`).join(' '));
+      }
+
+      simulateMovement(step = 80){
+        for (const s of this.sharks.values()){
+          const nx = s.x + rand(-step, step);
+          const ny = s.y + rand(-step, step);
+          this.moveShark(s, nx, ny);
+        }
+      }
+
+      getRandomShark(){
+        const list = [...this.sharks.values()];
+        if (!list.length) return null;
+        return list[randInt(0, list.length-1)];
+      }
+
+      setTrailsVisible(show){
+        this.trailsOn = show;
+        this.trailsSVG.style.display = show ? 'block' : 'none';
+      }
+
+      centerOn(x, y){
+        this.tx = this.viewport.clientWidth/2 - x * this.scale;
+        this.ty = this.viewport.clientHeight/2 - y * this.scale;
+        this._clampPan();
+        this.render();
+      }
+
+      resize(){
+        this.updateSize();
+        this.trailsSVG.setAttribute('viewBox', `0 0 ${this.W} ${this.H}`);
+        this.trailsSVG.setAttribute('width', this.W);
+        this.trailsSVG.setAttribute('height', this.H);
+        this._decorateStars(110);
+        this._clampPan();
+        this.render();
+      }
+    }
+
+    // ===============================
+    // Chart Manager
+    // ===============================
+    class ChartManager {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.chart = this._createChart();
+      }
+
+      _createChart(){
+        const ctx = this.canvas.getContext('2d');
+        const gradient = ctx.createLinearGradient(0,0,this.canvas.width, this.canvas.height);
+        gradient.addColorStop(0, 'rgba(20,241,255,0.35)');
+        gradient.addColorStop(1, 'rgba(0,209,178,0.05)');
+
+        const data = this._generateData();
+
+        return new Chart(ctx, {
+          type: 'line',
+          data: { labels: data.labels, datasets: [{ label:'Activity', data: data.values, borderColor: 'rgba(20,241,255,0.95)', tension:0.3, fill:true, backgroundColor: gradient }]},
+          options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ ticks:{ color:'#a7bfdd' } }, y:{ ticks:{ color:'#a7bfdd' }, suggestedMin:0, suggestedMax:100 } } }
+        });
+      }
+
+      _generateData(){
+        const labels = [], values = [];
+        let base = rand(30,60);
+        for (let i=0;i<24;i++){ base += rand(-8,8); labels.push((i<10?'0':'')+i+':00'); values.push(clamp(base + rand(-12,12), 5, 100)); }
+        return { labels, values };
+      }
+
+      update(){
+        const d = this._generateData();
+        this.chart.data.labels = d.labels;
+        this.chart.data.datasets[0].data = d.values;
+        this.chart.update();
+      }
+    }
+
+    // ===============================
+    // Heatmap
+    // ===============================
+    class Heatmap {
+      constructor(container, cols=8, rows=3){
+        this.el = container; this.cols = cols; this.rows = rows; this.cells=[];
+        this._build(); this.randomize();
+      }
+      _build(){
+        this.el.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
+        const total = this.cols * this.rows;
+        for (let i=0;i<total;i++){
+          const d = document.createElement('div'); d.className='heat-cell'; this.el.appendChild(d); this.cells.push(d);
+        }
+      }
+      static colorFor(v){
+        const h = 190 - v*120; const s = 90; const l = 32 + v*20;
+        return `radial-gradient(circle at 50% 40%, hsl(${h} ${s}% ${l}%), hsl(${h} ${s}% ${Math.min(64, l+12)}%))`;
+      }
+      randomize(){
+        for (const c of this.cells){
+          const v = Math.pow(Math.random(), 1.05);
+          c.style.background = Heatmap.colorFor(v);
+          c.title = `Hotspot intensity ${Math.round(v*100)}%`;
+          c.style.boxShadow = `inset 0 0 18px rgba(20,241,255,${0.08+v*0.28}), 0 0 ${6+v*30}px rgba(20,241,255,${0.03+v*0.2})`;
+        }
+      }
+    }
+
+    // ===============================
+    // Live Feed
+    // ===============================
+    class LiveFeed {
+      constructor(listEl, cap = 120){
+        this.list = listEl; this.cap = cap; this.auto = true; this._interval = null;
+      }
+
+      start(generator, everyMs = 3200){
+        if (this._interval) clearInterval(this._interval);
+        this._interval = setInterval(() => {
+          if (this.auto) this.push(generator());
+        }, everyMs);
+      }
+
+      push(text){
+        const li = document.createElement('li'); li.className='feed-item';
+        li.innerHTML = `<div class="icon"></div><div><div class="msg">${text}</div><div class="meta">${ts()}</div></div>`;
+        this.list.appendChild(li);
+        while (this.list.children.length > this.cap) this.list.removeChild(this.list.firstChild);
+        this.list.scrollTop = this.list.scrollHeight;
+      }
+
+      setAuto(v){
+        this.auto = !!v;
+      }
+    }
+
+    // ===============================
+    // App orchestration & simulation loop
+    // ===============================
+    const App = (() => {
+      let sharkMap, chartMgr, heatmap, feed;
+      let simTimer = null;
+      let simRunning = false;
+
+      function init(){
+        // elements
+        const vp = $('#mapViewport'), world = $('#mapWorld');
+
+        // init components
+        sharkMap = new SharkMap(vp, world);
+        // seed sharks (random count 4-7)
+        const seed = randInt(4,7);
+        for (let i=0;i<seed;i++) sharkMap.addShark();
+
+        chartMgr = new ChartManager($('#activityChart'));
+        heatmap = new Heatmap($('#heatmap'), 8, 3 + (window.innerWidth > 1200 ? 2 : 0));
+
+        feed = new LiveFeed($('#feedList'));
+        feed.start(makeRandomEvent, 3000);
+        feed.push('Dashboard booted. Simulated satellite streams online (SST, Chl-a, fronts).');
+        feed.push('Initial shark cohort seeded.');
+
+        // event bindings
+        $('#btnAddShark').addEventListener('click', onAddShark);
+        $('#btnSimMove').addEventListener('click', toggleSimulation);
+        $('#btnUpdatePred').addEventListener('click', onUpdatePredictions);
+
+        $('#zoomIn').addEventListener('click', () => {
+          const r = $('#mapViewport').getBoundingClientRect();
+          sharkMap.zoomAt(1.2, r.width/2, r.height/2);
+        });
+        $('#zoomOut').addEventListener('click', () => {
+          const r = $('#mapViewport').getBoundingClientRect();
+          sharkMap.zoomAt(1/1.2, r.width/2, r.height/2);
+        });
+        $('#resetView').addEventListener('click', () => sharkMap.resetView());
+        $('#toggleTrails').addEventListener('click', () => {
+          sharkMap.setTrailsVisible(!sharkMap.trailsOn);
+          $('#toggleTrails').textContent = `Trails: ${sharkMap.trailsOn ? 'ON' : 'OFF'}`;
+        });
+
+        $('#feedStatus').addEventListener('click', () => {
+          feed.setAuto(!feed.auto);
+          updateFeedPill();
+        });
+
+        // keyboard bindings
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 's' || e.key === 'S') { toggleSimulation(); }
+          if (e.key === 'a' || e.key === 'A') { onAddShark(); }
+          if (e.key === 'u' || e.key === 'U') { onUpdatePredictions(); }
+          if (e.code === 'Space') { e.preventDefault(); feed.setAuto(!feed.auto); updateFeedPill(); }
+        });
+
+        // responsive behavior
+        window.addEventListener('resize', () => {
+          sharkMap.resize();
+        });
+      }
+
+      function updateFeedPill(){
+        const pill = $('#feedStatus');
+        pill.textContent = `Auto: ${feed.auto ? 'ON' : 'OFF'}`;
+        pill.style.borderColor = feed.auto ? 'rgba(20,241,255,0.55)' : 'rgba(20,241,255,0.08)';
+        pill.style.boxShadow = feed.auto ? '0 0 12px rgba(20,241,255,0.18)' : 'none';
+      }
+
+      function onAddShark(){
+        const s = sharkMap.addShark();
+        feed.push(`${s.id} added at (${Math.round(s.x)}, ${Math.round(s.y)}).`);
+      }
+
+      function onUpdatePredictions(){
+        chartMgr.update();
+        heatmap.randomize();
+        feed.push('Predictions refreshed using latest composite (simulated).');
+      }
+
+      // start/stop continuous simulation
+      function startSim(){
+        if (simTimer) clearInterval(simTimer);
+        simTimer = setInterval(() => {
+          // movement step
+          sharkMap.simulateMovement(Math.max(40, 120 - Math.floor(sharkMap.sharks.size * 3)));
+          // emit a few feed events at random
+          const picks = randInt(1, Math.min(3, sharkMap.sharks.size || 1));
+          for (let i=0;i<picks;i++){
+            const s = sharkMap.getRandomShark() || sharkMap.addShark();
+            feed.push(makeRandomEventFor(s));
+          }
+          // update lightweight activity chart occasionally
+          chartMgr.update();
+        }, 1800);
+        simRunning = true;
+        $('#btnSimMove').classList.add('btn-primary');
+        $('#btnSimMove').textContent = 'Stop Simulation';
+      }
+
+      function stopSim(){
+        if (simTimer) { clearInterval(simTimer); simTimer = null; }
+        simRunning = false;
+        $('#btnSimMove').classList.remove('btn-primary');
+        $('#btnSimMove').textContent = 'Simulate Shark Movement';
+      }
+
+      function toggleSimulation(){
+        if (simRunning) stopSim();
+        else startSim();
+      }
+
+      function makeRandomEvent(){
+        const s = sharkMap.getRandomShark() || sharkMap.addShark();
+        return makeRandomEventFor(s);
+      }
+
+      function makeRandomEventFor(s){
+        const templates = [
+          () => `${s.id} spotted near (${Math.round(s.x)}, ${Math.round(s.y)}).`,
+          () => `${s.id} entered predicted foraging zone — confidence ${(rand(60,98)|0)}%.`,
+          () => `${s.id} tag telemetry: stomach temp anomaly detected; likely feeding.`,
+          () => `${s.id} crossed thermal front (ΔSST ${rand(0.8,3.5).toFixed(1)}°C).`,
+          () => `${s.id} ate a tuna. eDNA spike detected in vicinity.`,
+          () => `Satellite pass updated: Chl-a spike aligns with ${s.id} track.`,
+          () => `${s.id} nanosat sync — fix ±${rand(0.2,1.4).toFixed(1)} km.`,
+          () => `${s.id} cruising at ${rand(1.8,5.4).toFixed(1)} m/s — heading ${randInt(0,359)}°.`
+        ];
+        return templates[randInt(0, templates.length-1)]();
+      }
+
+      return { init };
+    })();
+
+    // bootstrap
+    window.addEventListener('DOMContentLoaded', () => App.init());
+  </script>
+</body>
+</html>
+
+mkae the sizing of the two bottom blocks accually accesible and proper, and  remove the whole drag/pan feature for the sim, make it a static size, obv still vieable, and the trails dont  work porperly, fix it up
+
+give the full html css js with changes pls
