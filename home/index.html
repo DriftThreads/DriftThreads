@@ -37,7 +37,9 @@
 
   <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
   <!-- Structured data for SEO -->
   <script type="application/ld+json">
@@ -180,11 +182,7 @@
      =========================================================== */
   header{
     position:sticky;top:10px;z-index:50;
-    /* background:rgba(22,22,22,0.95); */
     background:rgba(0,0,0,0.9);
-    /* background:linear-gradient(#071025, #0a0f1a);     */
-    /* background: linear-gradient(rgba(7, 16, 37, 0.9),rgba(10, 15, 26, 0.9)); */
-
     padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px;
     backface-visibility:hidden;
     transform:translateZ(0);will-change:transform;contain:paint;
@@ -266,7 +264,7 @@
     }
 
     .footer-img {
-      width: 32px;
+      /* width: 32px; */
       height: 32px;
     }
 
@@ -667,16 +665,17 @@
   .preloader-logo img{width:100%;height:100%;object-fit:contain}
   .preloader-title{font-weight:600; letter-spacing:0.4px}
   .loader{
-    width:64px;height:64px;margin:2px auto 14px auto; border-radius:50%;
-    background:
-      conic-gradient(from 0deg, #00c2ff, #6ee7ff, #a78bfa, #f9a8d4, #00c2ff) border-box;
-    -webkit-mask:
-      radial-gradient(farthest-side, transparent calc(100% - 8px), #000 0) content-box,
-      linear-gradient(#000 0 0) padding-box;
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    animation:spin 1.1s linear infinite;
+    width:64px;height:64px;margin:2px auto 14px auto;
+    background: url('assets/spinner.png') center/contain no-repeat;
+    /* Changed from spin to a subtle pulse */
+    animation:pulseLoader 1.4s ease-in-out infinite;
+    transform-origin:center;
   }
-  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pulseLoader{
+    0%{ transform:scale(0.95); opacity:0.85; filter:drop-shadow(0 0 0 rgba(0,0,0,0.2)); }
+    50%{ transform:scale(1.08); opacity:1; filter:drop-shadow(0 0 12px rgba(0,150,255,0.35)); }
+    100%{ transform:scale(0.95); opacity:0.85; filter:drop-shadow(0 0 0 rgba(0,0,0,0.2)); }
+  }
   #preloaderText{color:#cfe8ff;font-weight:600;letter-spacing:.4px;margin-bottom:8px}
   #preloaderBar{width:100%;height:10px;border-radius:999px;background:#202020;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06); margin:0 auto}
   #preloaderBar>span{
@@ -732,7 +731,7 @@
     Includes lazy loading, looping with clones, swipe/drag, zoom (lightbox),
     and accessible controls (keyboard, ARIA).
   -->
-   <script>
+  <script>
   /* Utility: safely ensure an array of images (>=1) per product */
   function ensureImagesArray(p){
     let imgs = p.images || p.img || [];
@@ -1273,7 +1272,7 @@
 
   <!-- Toast: add-to-cart feedback -->
   <div id="addNotif" class="add-notif" role="status" aria-live="polite" aria-atomic="true">
-    <img id="addNotifThumb" class="product-thumb" src alt>
+    <img id="addNotifThumb" class="product-thumb" src="" alt="">
     <div id="addNotifMsg" class="msg">Product added to cart</div>
     <button id="undoAddBtn" class="undo-btn" aria-label="Undo add">Undo</button>
     <button id="closeAddNotif" class="close-btn" aria-label="Dismiss"><i class="fas fa-times" aria-hidden="true"></i></button>
@@ -1323,11 +1322,11 @@
         <div id="headerInfoTooltip" class="tooltip" role="tooltip" aria-live="polite" aria-hidden="true">
           <div class="tt-title">Heads up!</div>
           <div class="tt-body">
-            <b>Images</b> may appear slightly different from real life.<br>
-            Some visuals are digitally enhanced or AI-assisted for presentation.<br>
-            Hoodies are printed with high-definition graphics only.<br>
-            Actual products may vary due to distortion or scaling during digital processes.
-          </div>
+  <b>Note:</b> Product images may not fully capture the real look.<br>
+  Some visuals are AI-assisted and can appear slightly off.<br>
+  Hoodies are printed in high-definition -- they look sharper in real life.<br>
+  Expect the actual product to look better than the preview images.
+</div>
         </div>
       </div>
 -->
@@ -1383,10 +1382,21 @@
       <footer>
 
       <div>
-        <img src="assets/logo.png" alt="DriftThreads Logo" class="footer-img" style="border-radius: px;"><br>
+        <img src="assets/wide_logo.png" alt="DriftThreads Logo" class="footer-img" style="border-radius: 10px;"><br>
         © DriftThreads<br>Streetwear built to drift -- Only in Joburg.
+
+        <br><br><a href="..">Main</a> •
+        <a href="../blogs">Blogs</a> •  
+        <a href="../contact">Contacts</a> 
       </div>
-      <div class="muted"><br><br>Follow: @driftthreads</div>
+      <div class="muted">
+        <br><br>
+        <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
+        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
+       
+      
+        </div>
+
 
 
     </footer>
@@ -1436,7 +1446,7 @@
   <script>
   /* --- Data: products now use arrays of images (one or more) --- */
   const sponsors = [
-    {id:'spon-1',title:'DriftThreads',img:'assets/logo.png',url:'/blogs',description:'Ready to buy yet?',badge:'Sponsored'}
+    {id:'spon-1',title:'DriftThreads Blogs',img:'assets/logo.png',url:'/blogs',description:'Bored? Read some of our blogs! 🙃',badge:'Sponsored'}
   ];
 
   const products = [
@@ -1587,21 +1597,61 @@
       badge:''
     },
     {
+  title: 'Demon Slayer Tee',
+  price: 300,
+  cat: 'tees',
+  img: ['products/tees/demon_slayer.jpeg'],
+  description: "Breath of drip -- Demon Slayer design locked onto a clean street tee",
+  badge: ''
+},
+{
+  title: 'Satoru Gojo Tee',
+  price: 300,
+  cat: 'tees',
+  img: ['products/tees/satoru_gojo.jpeg'],
+  description: "Infinity-level flex -- Gojo reimagined for casual streetwear",
+  badge: ''
+},
+{
+  title: 'Ultra Instinct Hoodie',
+  price: 650,
+  cat: 'hoodies',
+  img: ['products/hoodies/ultra_instinct.jpeg'],
+  description: "Goku’s ultimate form -- Ultra Instinct energy stitched into hoodie perfection",
+  badge: ''
+},
+{
+  title: 'Naruto Tee',
+  price: 300,
+  cat: 'tees',
+  img: ['products/tees/naruto.jpeg'],
+  description: "The legendary orange logo itself -- Naruto drip in tee form",
+  badge: ''
+},
+{
+  title: 'Sukuna Tee',
+  price: 400,
+  cat: 'tees',
+  img: ['products/tees/sukuna.jpeg'],
+  description: "The King of Curses, printed with menace -- Sukuna energy unleashed",
+  badge: ''
+},
+    {
       title: 'McLaren Brown Hoodie',
       price: 700,
       cat: 'hoodies',
       img: ['products/hoodies/mclaren_brown.jpeg', 'products/hoodies/mclaren_brown(2).jpeg'],
-      description:"Track-bred precision, street-certified flex — McLaren speed in hoodie form",
+      description:"Track-bred precision, street-certified flex -- McLaren speed in hoodie form",
       badge:''
     },
-    {
+    /* {
       title: 'McLaren Blue Hoodie',
       price: 700,
       cat: 'hoodies',
       img: ['products/hoodies/mclaren_blue.jpeg','products/hoodies/mclaren_blue(2).jpeg'],
-      description:"Exotic curves, raw performance — McLaren vibes for those who live fast",
+      description:"Exotic curves, raw performance -- McLaren vibes for those who live fast",
       badge:''
-    },
+    }, */
     {
       title: 'Gojo Hoodie',
       price: 650,
@@ -1643,10 +1693,10 @@
       badge:''
     },
     {
-  title: 'Aramco F1 Mercedes Hoodie',
+  title: 'F1 Aston Martin Hoodie',
   price: 700,
   cat: 'hoodies',
-  img: ['products/hoodies/aramco_f1_merc.jpeg'],
+  img: ['products/hoodies/f1_aston_martin.jpeg'],
   description: "Silver Arrows speed, stitched for the streets -- Mercedes AMG energy in hoodie form",
   badge: ''
 },
@@ -1859,6 +1909,9 @@
   /* LocalStorage key for "Show all" categories (desktop) */
   const CATS_SHOW_ALL_KEY = 'catsShowAll';
 
+  /* Gate for enabling infinite scroll only after two initial batches */
+  let allowInfiniteScroll = false;
+
   /* Persist cart */
   function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
 
@@ -2042,16 +2095,16 @@
     innerWrap.appendChild(back);
     card.appendChild(inner);
 
-    // Badge injection on front image if present
+    // Badge injection on front image if present (fixed duplicate variable declaration)
     try {
       const imgWrapForBadge = front.querySelector('.img-wrap');
       if(imgWrapForBadge && p.badge && String(p.badge).trim()){
         const badgeText = String(p.badge).trim();
-        const badgeEl = document.createElement('div');
         const lower = badgeText.toLowerCase();
         let styleClass = 'neutral';
         if(/\d+\s*%/.test(badgeText) || /off/i.test(badgeText) || /\d+\s*percent/.test(lower)) styleClass = 'sale';
         else if(/limited|exclusive|new|drop|hot/i.test(lower)) styleClass = 'limited';
+        const badgeEl = document.createElement('div');
         badgeEl.className = `card-badge ${styleClass}`;
         badgeEl.setAttribute('role','status');
         badgeEl.setAttribute('aria-label', badgeText);
@@ -2165,8 +2218,15 @@
         });
         currentIndex += slice.length;
         loading = false; hideSpinner();
-        if(currentIndex >= filteredProducts.length) observer.disconnect();
-        else observeLastCard();
+
+        // Only start observing for infinite scroll after initial two batches are done
+        if(allowInfiniteScroll){
+          if(currentIndex >= filteredProducts.length) observer.disconnect();
+          else observeLastCard();
+        } else {
+          observer.disconnect();
+        }
+
         setTimeout(()=> resolve(), 120);
       }, 60);
     });
@@ -2289,12 +2349,26 @@
   cartModal.addEventListener('click', e => { if(e.target === cartModal) closeCart.click(); });
   clearCartBtn.addEventListener('click', ()=> { if(cart.length && confirm('Clear cart?')){ cart = []; saveCart(); updateCartDisplay(); } });
 
-  /* WhatsApp integration */
+  /* WhatsApp integration + Google Sheets webhook */
   const WA_NUMBER = '27713468567';
-  function buildWhatsAppMessage(){
+
+  /* Fill this with your Apps Script Web App URL, e.g. 'https://script.google.com/macros/s/XXXXX/exec' */
+  const ORDER_WEBHOOK_URL = ''; // TODO: paste your Web App URL here
+
+  function genOrderId(){
+    const t = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const date = `${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}`;
+    const time = `${pad(t.getHours())}${pad(t.getMinutes())}${pad(t.getSeconds())}`;
+    const rand = Math.random().toString(36).slice(2,6).toUpperCase();
+    return `DT-${date}-${time}-${rand}`;
+  }
+
+  function buildWhatsAppMessage(orderId){
     if(!cart || !cart.length) return encodeURIComponent("🛒 Hey -- ordering from the site:\n\nNo items in cart. (bruh)");
     let lines = [];
     lines.push("🛒 Hey -- ordering from the site:");
+    if(orderId){ lines.push(`Order ID: ${orderId}`); }
     lines.push("");
     cart.forEach(item => {
       const line = `- ${item.title} (${money(item.price)}) x${item.qty}`;
@@ -2307,8 +2381,47 @@
     lines.push(`Link: ${window.location.href}`);
     return encodeURIComponent(lines.join("\n"));
   }
-  function getWhatsAppLink(){ const base = `https://wa.me/${WA_NUMBER}`; const msg = buildWhatsAppMessage(); return `${base}?text=${msg}`; }
-  waOrderBtn.addEventListener('click', () => { const link = getWhatsAppLink(); window.open(link, '_blank', 'noopener'); });
+
+  function getWhatsAppLink(orderId){
+    const base = `https://wa.me/${WA_NUMBER}`;
+    const msg = buildWhatsAppMessage(orderId);
+    return `${base}?text=${msg}`;
+  }
+
+  async function sendOrderToSheet(channel='whatsapp', orderId=null){
+    try {
+      if(!ORDER_WEBHOOK_URL) return;
+      const payload = {
+        orderId: orderId || genOrderId(),
+        channel,
+        items: cart.map(({ id, title, price, qty }) => ({ id, title, price, qty })),
+        subtotal: cart.reduce((a,c) => a + c.price * (c.qty||0), 0),
+        currency: 'ZAR',
+        pageUrl: window.location.href,
+        referrer: document.referrer || '',
+        userAgent: navigator.userAgent || ''
+      };
+      const body = JSON.stringify(payload);
+      if(navigator.sendBeacon){
+        const blob = new Blob([body], { type: 'text/plain' });
+        navigator.sendBeacon(ORDER_WEBHOOK_URL, blob);
+      } else {
+        fetch(ORDER_WEBHOOK_URL, {
+          method:'POST',
+          mode:'no-cors',
+          headers:{ 'Content-Type':'text/plain' },
+          body
+        }).catch(()=>{});
+      }
+    } catch(e){}
+  }
+
+  waOrderBtn.addEventListener('click', () => {
+    const orderId = genOrderId();
+    sendOrderToSheet('whatsapp', orderId);
+    const link = getWhatsAppLink(orderId);
+    window.open(link, '_blank', 'noopener');
+  });
 
   /* LIGHTBOX with looping carousel + pinch/wheel zoom + open/close animations */
   function openLightbox(imgs, startIndex = 0, titleText = 'Image'){
@@ -2431,7 +2544,7 @@
     }
   });
 
-  /* Modern, faster preloader: wait until preloader is actually removed before first render */
+  /* Preloader: prepare assets but do not hide until first two batches are rendered */
   async function preloadCriticalAssets(){
     const pre = document.getElementById('preloader');
     const txt = document.getElementById('preloaderText');
@@ -2440,8 +2553,8 @@
     let progress = 0;
     const setProgress = (p) => {
       progress = Math.max(progress, Math.min(100, Math.round(p)));
-      txt.textContent = `Loading ${progress}%`;
-      bar.style.width = `${progress}%`;
+      if(txt) txt.textContent = `Loading ${progress}%`;
+      if(bar) bar.style.width = `${progress}%`;
     };
     setProgress(5);
 
@@ -2478,32 +2591,20 @@
 
     await Promise.race([doLoad, safety]);
 
-    // Hide preloader quickly and resolve only after removal
-    setProgress(100);
-    await new Promise((resolve) => {
+    // Expose an API to hide the preloader when ready (after initial render)
+    const hide = () => new Promise((resolve) => {
+      setProgress(100);
       setTimeout(()=> {
-        pre.style.opacity = '0';
-        setTimeout(()=> { try{ pre.remove(); }catch(e){} resolve(); }, 450);
+        if(pre){
+          pre.style.opacity = '0';
+          setTimeout(()=> { try{ pre.remove(); }catch(e){} resolve(); }, 450);
+        } else {
+          resolve();
+        }
       }, 120);
     });
 
-    // Background prefetch: gently prefetch first image of other products if not on data-saver
-    const saveData = (navigator.connection && navigator.connection.saveData) ? true : false;
-    if(!saveData){
-      const bgImgs = Array.from(new Set(products.map(p => ensureImagesArray(p)[0]).filter(Boolean)));
-      const throttled = async () => {
-        for(let i=0;i<bgImgs.length;i+=6){
-          const chunk = bgImgs.slice(i,i+6);
-          await Promise.allSettled(chunk.map(preloadImage));
-          await new Promise(r=>setTimeout(r, 60));
-        }
-      };
-      if('requestIdleCallback' in window){
-        requestIdleCallback(throttled, { timeout: 3000 });
-      } else {
-        setTimeout(throttled, 500);
-      }
-    }
+    return { setProgress, hide };
   }
 
   /* Initial hint tooltip -- show for 3s AFTER preloader unloads */
@@ -2750,17 +2851,39 @@
   window.addEventListener('offline', () => showConnectionToast('You are offline'));
   window.addEventListener('online', () => showConnectionToast('Back online'));
 
-  /* Initialize on DOMContentLoaded with improved preloading and UI setup */
+  /* Initialize: preload assets, render two batches with preloader shown, then enable infinite scroll */
   window.addEventListener('DOMContentLoaded', async () => {
     updateCartDisplay();
     applyStateFromURL();
     updateCatBarUI();
     updateSearchPlaceholder();
 
-    await preloadCriticalAssets(); 
-    await filterAndRender();      
-    showHintTooltip();             
+    const pre = await preloadCriticalAssets(); // warm up fonts + 1-2 critical images
+
+    // First batch
+    await filterAndRender();
+    // Second batch (explicit)
+    await renderNextBatch();
+
+    // Hide preloader now that first two batches are visible
+    await pre.hide();
+
+    // Enable infinite scroll for batch 3+
+    allowInfiniteScroll = true;
+    observeLastCard();
+
+    showHintTooltip();
   });
+
+  /* Dev helper: send a dummy row to your sheet to verify webhook quickly */
+  window.__testOrderPing = () => {
+    const backup = cart.slice();
+    cart = [{ id:'test-1', title:'Test Item', price:123, qty:2 }];
+    const id = genOrderId();
+    sendOrderToSheet('test', id);
+    cart = backup;
+    console.log('Sent test order to sheet with ID:', id);
+  };
   </script>
 </body>
 </html>
