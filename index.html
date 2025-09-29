@@ -223,8 +223,32 @@
     .test-name {color: var(--accent-3);}
     .contact{margin:32px 10px 0 10px;padding:18px;border-radius:var(--radius);border:1px solid var(--stroke);
       background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
-    footer{margin:40px 20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;}
+    /* footer{margin:40px 20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;} */
+ footer{margin:20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;}
 
+ footer a {
+  text-decoration: underline;
+ }
+
+    hr {
+      background: var(--muted);
+      width: 90vw;
+      border-radius: 3px;
+    }
+
+    .footer-img {
+      /* width: 32px; */
+      height: 32px;
+    }
+
+      @media (min-width: 700px){
+
+        /* footer{margin:20px 40px 40px 40px;} */
+
+    hr {
+      width: 95vw;
+    }
+  }
 
 
 
@@ -475,7 +499,7 @@
         <strong>Order via WhatsApp</strong>
         <div class="muted" style="margin-top:6px">No bots. No stress. Screenshot your cart and hit us up -- we move fast.</div>
       </div>
-      <a class="primary" href="https://wa.me/+27713468567" target="_blank" rel="noopener">Message us</a>
+      <a class="primary" href="https://wa.me/+27713468567" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="margin-right:7px;"></i>Message us</a>
     </section>
 
 
@@ -491,9 +515,36 @@
 
       </section>
 
-    <footer>
-      <div>© DriftThreads<br>Streetwear built to drift -- Only in Joburg.</div>
-      <div class="muted">Follow: @driftthreads</div>
+      <footer>
+        <hr>
+
+      <div>
+        <img src="assets/wide_logo.png" alt="DriftThreads Logo" class="footer-img" style="border-radius: 10px;"><br>
+        © DriftThreads<br>Streetwear built to drift -- Only in Joburg.
+
+        
+        <br><br>
+         <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
+        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
+        
+        
+
+      </div>
+      <div class="muted">
+        <br><br>
+       <a href="..">Main</a> •
+        <a href="../blogs">Blogs</a> •  
+        <a href="../contact">Contacts</a>
+       
+        <br><br>
+        <a href="" id="terms-link">Terms & Conditions</a> •  
+        <a href="" id="privacy-link">Privacy Policy</a> •  
+        <a href="" id="shipping-link">Shipping Info</a>
+      
+        </div>
+
+
+
     </footer>
   </div>
   

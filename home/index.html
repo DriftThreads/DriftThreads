@@ -409,7 +409,7 @@
   .empty-state{grid-column:1/-1;padding:28px;border-radius:10px;background:rgba(255,255,255,0.03);text-align:center;color:#aaa}
 
   /* Sponsor card visuals */
-  .sponsor-card{position:relative}
+  .sponsor-card{position:relative;;}
   .sponsor-label{position:absolute;bottom:8px;right:8px;background-color:var(--accent);color:black;font-size:.85rem;font-weight:600;padding:6px;border-radius:10px;pointer-events:none;z-index:5}
   .sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite}
   @keyframes rainbowJitter{0%{outline-color:red}16%{outline-color:orange}33%{outline-color:yellow}50%{outline-color:lime}66%{outline-color:blue}83%{outline-color:#850bdd}100%{outline-color:violet}}
@@ -665,15 +665,15 @@
   .preloader-logo img{width:100%;height:100%;object-fit:contain}
   .preloader-title{font-weight:600; letter-spacing:0.4px}
   .loader{
-    width:64px;height:64px;margin:2px auto 14px auto;
-    background: url('assets/spinner.png') center/contain no-repeat;
+    height:64px;margin:2px auto 14px auto;
+    background: url('assets/wide_logo.png') center/contain no-repeat;
     /* Changed from spin to a subtle pulse */
     animation:pulseLoader 1.4s ease-in-out infinite;
     transform-origin:center;
   }
   @keyframes pulseLoader{
     0%{ transform:scale(0.95); opacity:0.85; filter:drop-shadow(0 0 0 rgba(0,0,0,0.2)); }
-    50%{ transform:scale(1.08); opacity:1; filter:drop-shadow(0 0 12px rgba(0,150,255,0.35)); }
+    50%{ transform:scale(1.05); opacity:1; filter:drop-shadow(0 0 12px rgba(0,150,255,0.35)); }
     100%{ transform:scale(0.95); opacity:0.85; filter:drop-shadow(0 0 0 rgba(0,0,0,0.2)); }
   }
   #preloaderText{color:#cfe8ff;font-weight:600;letter-spacing:.4px;margin-bottom:8px}
@@ -721,6 +721,45 @@
     pointer-events:none; transition:opacity 200ms var(--ease), transform 200ms var(--ease);
   }
   #connectionToast.visible{opacity:1; transform:translateY(0); pointer-events:auto}
+
+  /* ===========================================================
+     Footer policy links (rendered as buttons styled like links)
+     =========================================================== */
+  .footer-link{
+    background:transparent;
+    border:0;
+    padding:0;
+    color:var(--muted);
+    text-decoration:underline;
+    cursor:pointer;
+    font:inherit;
+  }
+  .footer-link:hover{ filter:brightness(1.1) }
+  .footer-link:focus-visible{ outline:3px solid rgba(0,102,255,0.35); outline-offset:3px; border-radius:6px }
+
+  /* ===========================================================
+     Policy modal (Terms, Privacy, Shipping)
+     =========================================================== */
+  .info-modal{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.6);
+    display:none; align-items:center; justify-content:center;
+    z-index:100;
+  }
+  .info-modal.active{ display:flex }
+  .info-content{
+    background:#1a1a1a; border-radius:12px; padding:18px;
+    width:90%; max-width:680px; max-height:80vh; overflow:auto;
+    box-shadow:0 40px 120px rgba(0,0,0,0.7); position:relative;
+  }
+  #closePolicy{
+    position:absolute; right:18px; top:18px;
+    background:#06f; border:0; color:#fff; border-radius:50%;
+    width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 30px rgba(0,102,255,0.12)
+  }
+  #closePolicy:hover{ transform:translateY(-1px) }
+  #closePolicy:active,#closePolicy.pressed{ transform:translateY(1px) scale(0.98) }
   </style>
  
 </head>
@@ -1203,18 +1242,23 @@
         // Pan when zoomed
         wrap.addEventListener('pointerdown', (e) => {
           if(scale === 1) return;
-          panning = true; wrap.setPointerCapture(e.pointerId);
-          lastX = e.clientX; lastY = e.clientY;
+          let panning = true; wrap.setPointerCapture(e.pointerId);
+        });
+        let panningActive = false, lastPX = 0, lastPY = 0;
+        wrap.addEventListener('pointerdown', (e) => {
+          if(scale === 1) return;
+          panningActive = true; wrap.setPointerCapture(e.pointerId);
+          lastPX = e.clientX; lastPY = e.clientY;
         });
         wrap.addEventListener('pointermove', (e) => {
-          if(!panning) return;
-          const dx = e.clientX - lastX;
-          const dy = e.clientY - lastY;
-          lastX = e.clientX; lastY = e.clientY;
+          if(!panningActive) return;
+          const dx = e.clientX - lastPX;
+          const dy = e.clientY - lastPY;
+          lastPX = e.clientX; lastPY = e.clientY;
           tx += dx; ty += dy; clampPan(); applyTransform();
         });
-        wrap.addEventListener('pointerup', (e) => { panning = false; try{wrap.releasePointerCapture(e.pointerId);}catch(_e){} });
-        wrap.addEventListener('pointercancel', () => { panning = false; });
+        wrap.addEventListener('pointerup', (e) => { panningActive = false; try{wrap.releasePointerCapture(e.pointerId);}catch(_e){} });
+        wrap.addEventListener('pointercancel', () => { panningActive = false; });
 
         // Pinch-to-zoom (touch)
         let pinch = { active:false, startDist:0, startScale:1, centerX:0, centerY:0 };
@@ -1385,15 +1429,24 @@
         <img src="assets/wide_logo.png" alt="DriftThreads Logo" class="footer-img" style="border-radius: 10px;"><br>
         © DriftThreads<br>Streetwear built to drift -- Only in Joburg.
 
-        <br><br><a href="..">Main</a> •
-        <a href="../blogs">Blogs</a> •  
-        <a href="../contact">Contacts</a> 
+        
+        <br><br>
+         <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
+        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
+        
+        
+
       </div>
       <div class="muted">
         <br><br>
-        <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
-        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
+       <a href="..">Main</a> •
+        <a href="../blogs">Blogs</a> •  
+        <a href="../contact">Contacts</a>
        
+        <br><br>
+        <button type="button" class="footer-link" id="terms-link">Terms & Conditions</button> •  
+        <button type="button" class="footer-link" id="privacy-link">Privacy Policy</button> •  
+        <button type="button" class="footer-link" id="shipping-link">Shipping Info</button>
       
         </div>
 
@@ -1433,6 +1486,15 @@
     </div>
   </div>
 
+  <!-- Policy modal (Terms, Privacy, Shipping) -->
+  <div id="policyModal" class="info-modal" aria-hidden="true">
+    <div class="info-content" role="dialog" aria-modal="true" aria-labelledby="policyTitle">
+      <button id="closePolicy" type="button" aria-label="Close policy"><i class="fas fa-times" aria-hidden="true"></i></button>
+      <h2 id="policyTitle" style="font-weight:600; margin-top:0;">Policy</h2>
+      <div id="policyBody" style="color:#cfe8ff; line-height:1.35; font-size:0.98rem"></div>
+    </div>
+  </div>
+
   <!-- Lightbox (full-screen images) -->
   <div id="imgLightbox" class="lightbox" aria-hidden="true" tabindex="-1">
     <button id="closeLightbox" type="button" aria-label="Close image" style="position:absolute;right:18px;top:18px;background:transparent;border:0;color:#fff;font-size:22px;z-index:2"><i class="fas fa-times" aria-hidden="true"></i></button>
@@ -1446,7 +1508,11 @@
   <script>
   /* --- Data: products now use arrays of images (one or more) --- */
   const sponsors = [
-    {id:'spon-1',title:'DriftThreads Blogs',img:'assets/logo.png',url:'/blogs',description:'Bored? Read some of our blogs! 🙃',badge:'Sponsored'}
+    {id:'spon-1',title:'DriftThreads Blogs',img:'assets/logo.png',url:'/blogs',description:'Bored? Read some of our blogs! 🙃',badge:'Sponsored'},
+    
+    {id:'spon-2',title:'Instagram',img:'sponsors/ig.png',url:'https://www.instagram.com/driftthreads.official/',description:'Follow us @driftthreads.official',badge:'Social'},
+    
+    {id:'spon-3',title:'TikTok',img:'sponsors/tt.png',url:'https://www.tiktok.com/@driftthreads.official/',description:'Check out our TikToks 👀',badge:'Social'}
   ];
 
   const products = [
@@ -1882,6 +1948,15 @@
   const headerInfoTooltip = document.getElementById('headerInfoTooltip');
   const connectionToast = document.getElementById('connectionToast');
 
+  /* New: Footer policy buttons + modal refs */
+  const termsLink = document.getElementById('terms-link');
+  const privacyLink = document.getElementById('privacy-link');
+  const shippingLink = document.getElementById('shipping-link');
+  const policyModal = document.getElementById('policyModal');
+  const policyTitle = document.getElementById('policyTitle');
+  const policyBody = document.getElementById('policyBody');
+  const closePolicyBtn = document.getElementById('closePolicy');
+
   /* State */
   let cart = JSON.parse(localStorage.getItem('cart') || '[]');
   const batchSize = 6;
@@ -2290,12 +2365,12 @@
   }
   function applyStateFromURL(){ const st = readStateFromURL(); applyStateToUI(st); }
 
-  /* Modal interaction helpers (for lightbox & cart) */
+  /* Modal interaction helpers (for lightbox & cart & policy) */
   (function(){
     function isInsideAny(target, list){ return list.some(el => el && (el === target || el.contains(target))); }
     function modalKeyHandler(e){
       if(e.key !== 'Tab') return;
-      const activeModal = document.querySelector('.cart-modal.active, .lightbox.active');
+      const activeModal = document.querySelector('.cart-modal.active, .lightbox.active, .info-modal.active');
       if(!activeModal) return;
       const focusables = Array.from(activeModal.querySelectorAll('a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled && el.offsetParent !== null);
       if(!focusables.length){ e.preventDefault(); return; }
@@ -2310,7 +2385,7 @@
       document.body.classList.add('modal-open');
       document.body.style.top = `-${scrollY}px`;
 
-      document.querySelectorAll('header, main, #productInfoBar').forEach(el => {
+      document.querySelectorAll('header, main, footer, #productInfoBar').forEach(el => {
         el.setAttribute('aria-hidden','true');
         try{ el.inert = true; }catch(e){}
         el.style.pointerEvents = 'none';
@@ -2327,7 +2402,7 @@
       document.body.style.top = '';
       window.scrollTo(0, savedY);
 
-      document.querySelectorAll('header, main, #productInfoBar').forEach(el => {
+      document.querySelectorAll('header, main, footer, #productInfoBar').forEach(el => {
         el.removeAttribute('aria-hidden');
         try{ el.inert = false; }catch(e){}
         el.style.pointerEvents = '';
@@ -2533,11 +2608,12 @@
     }
   });
 
-  /* ESC closes both modals if open */
+  /* ESC closes modals if open */
   window.addEventListener('keydown', (e) => {
     if(e.key === 'Escape'){
       if(cartModal.classList.contains('active')){ closeCart.click(); }
       if(imgLightbox.classList.contains('active')){ lightboxClose(true); }
+      if(policyModal.classList.contains('active')){ closePolicyModal(); }
       // Also hide any open info tooltips
       hideHeaderInfoTooltip();
       hideGlobalInfoTooltip();
@@ -2850,6 +2926,52 @@
   }
   window.addEventListener('offline', () => showConnectionToast('You are offline'));
   window.addEventListener('online', () => showConnectionToast('Back online'));
+
+  /* Policy modal content + open/close */
+  const POLICY_CONTENT = {
+    terms: {
+      title: 'Terms & Conditions',
+      html: `
+        <p>All sales are final. DriftThreads reserves the right to update prices, availability, or designs without notice. By purchasing, you agree not to resell counterfeit or altered versions of our products.</p>
+      `
+    },
+    privacy: {
+      title: 'Privacy Policy',
+      html: `
+        <p>We don’t sell your data. Info you give us (like shipping details) is used only to process orders and improve your shopping experience. Analytics may run in the background (cookies, etc.), but that’s standard.</p>
+      `
+    },
+    shipping: {
+      title: 'Shipping Info',
+      html: `
+        <p>Every item is made-to-order/custom. Standard production + shipping times are 10--20 business days, depending on location and demand. Once shipped, delivery is handled by the courier, and delays are out of our control.</p>
+      `
+    }
+  };
+  let lastPolicyTrigger = null;
+  function openPolicyModal(key){
+    const c = POLICY_CONTENT[key];
+    if(!c) return;
+    policyTitle.textContent = c.title;
+    policyBody.innerHTML = c.html;
+    policyModal.classList.add('active');
+    policyModal.setAttribute('aria-hidden','false');
+    lastPolicyTrigger = document.activeElement;
+    disableBackgroundInteraction([policyModal.querySelector('.info-content')]);
+    setTimeout(()=> { try{ closePolicyBtn.focus(); }catch(e){} }, 40);
+  }
+  function closePolicyModal(){
+    policyModal.classList.remove('active');
+    policyModal.setAttribute('aria-hidden','true');
+    enableBackgroundInteraction();
+    try { if(lastPolicyTrigger && lastPolicyTrigger.focus) lastPolicyTrigger.focus(); } catch(e){}
+    lastPolicyTrigger = null;
+  }
+  if(termsLink) termsLink.addEventListener('click', (e) => { e.preventDefault(); openPolicyModal('terms'); });
+  if(privacyLink) privacyLink.addEventListener('click', (e) => { e.preventDefault(); openPolicyModal('privacy'); });
+  if(shippingLink) shippingLink.addEventListener('click', (e) => { e.preventDefault(); openPolicyModal('shipping'); });
+  closePolicyBtn.addEventListener('click', closePolicyModal);
+  policyModal.addEventListener('click', (e) => { if(e.target === policyModal) closePolicyModal(); });
 
   /* Initialize: preload assets, render two batches with preloader shown, then enable infinite scroll */
   window.addEventListener('DOMContentLoaded', async () => {
