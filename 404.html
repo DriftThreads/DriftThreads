@@ -1,35 +1,151 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <style>
-        body {
-            background:#0a0a0a;
-            color:#fff;
-            font-family: 'Arial', sans-serif;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            flex-direction:column;
-            text-align:center;
-        }
-        a {
-            color:#ff6f61;
-            text-decoration:none;
-            margin-top:1rem;
-        }
-        a:hover {
-            text-decoration:underline;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>404 — DriftThreads</title>
+  <meta name="description" content="You drifted too far. Get back to the drop — DriftThreads.">
+  <link rel="icon" href="/assets/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-1:#071025;
+      --bg-2:#0a0f1a;
+      --text:#e6eaf2;
+      --muted:#9aa3b2;
+      --accent-1:#6ee7ff;
+      --accent-2:#a78bfa;
+      --radius:18px;
+      --stroke: rgba(255,255,255,0.10);
+      --max:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family: 'Lexend', sans-serif;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--max);margin:0 auto;padding: clamp(16px,3vw,32px);display:flex;flex-direction:column;min-height:100vh;}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(10,15,26,0.8);border:1px solid var(--stroke);padding:10px 14px;border-radius:14px;margin-top:12px;backdrop-filter:blur(6px);}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{width:44px;height:44px;border-radius:10px;padding:6px;background:#000;}
+    .brand h1{margin:0;font-family:'Orbitron',sans-serif;font-weight:900;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;color:transparent;font-size:20px;}
+    .muted{color:var(--muted);font-size:13px}
+    .hero-404{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 0}
+    .card{width:100%;max-width:980px;border-radius:20px;padding:30px;border:1px solid var(--stroke);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow: 0 14px 40px rgba(0,0,0,.45);display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:center}
+    @media(max-width:900px){.card{grid-template-columns:1fr;padding:24px}}
+    .left h1{font-family:'Orbitron',sans-serif;font-size:clamp(44px,6vw,82px);margin:0;line-height:0.9;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;color:transparent;}
+    .lead{color:var(--muted);margin-top:12px;font-size:16px}
+    .cta-row{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:999px;font-weight:800;border:0;cursor:pointer;text-decoration:none}
+    .btn-primary{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220}
+    .btn-pill{background:rgba(255,255,255,0.03);border:1px solid var(--stroke);color:var(--text)}
+    .right-panel{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+    .mini-sponsor{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.006));border:1px solid var(--stroke)}
+    .mini-sponsor img{width:52px;height:52px;border-radius:10px;object-fit:cover;background:#000;padding:6px}
+    .s-title{font-weight:800}
+    .s-desc{color:var(--muted);font-size:13px}
+    .footer{margin-top:28px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;flex-wrap:wrap}
+    .blobs{position:fixed;inset:-20vmax;filter:blur(80px);opacity:.16;z-index:-1;mix-blend-mode:screen;pointer-events:none}
+    .blob-c{position:fixed;width:38vmax;height:38vmax;background:radial-gradient(circle at 30% 30%,#22d3ee,transparent 60%);top:-12vmax;left:-10vmax;filter:blur(60px);opacity:.22;z-index:-1;mix-blend-mode:screen}
+    .blob-v{position:fixed;width:42vmax;height:42vmax;background:radial-gradient(circle at 70% 60%,#a78bfa,transparent 60%);bottom:-14vmax;right:-14vmax;filter:blur(60px);opacity:.22;z-index:-1;mix-blend-mode:screen}
+    /* small helper */
+    .center{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+    .small-muted{color:var(--muted);font-size:13px;margin-top:6px}
+  </style>
 </head>
 <body>
-    <h1>404</h1>
-    <p>Oops! Page not found.</p>
-    <p>Looks like you drifted too far off the map.</p>
-    <a href="/">Go back home</a>
+  <div class="blob-c"></div>
+  <div class="blob-v"></div>
+
+  <div class="wrap" role="main">
+    <div class="topbar" role="banner" aria-label="Top navigation">
+      <div class="brand">
+        <img src="/assets/logo.png" alt="DriftThreads logo">
+        <div>
+          <h1>DriftThreads</h1>
+          <div class="muted" style="font-size:12px">Streetwear • Cars • Joburg</div>
+        </div>
+      </div>
+
+      <!-- <nav aria-label="Primary">
+        <a class="btn btn-pill" href="/">Landing</a>
+        <a class="btn btn-pill" href="./home/">Home</a>
+        <a class="btn btn-pill" href="./blogs/">Blogs</a>
+      </nav> -->
+    </div>
+
+    <div class="hero-404">
+      <div class="card" role="region" aria-labelledby="err-title">
+        <div class="left">
+          <h1 id="err-title">404</h1>
+          <p class="lead">You drifted too far off the map. This spot's empty — but the drip is still real.</p>
+
+          <div class="cta-row" aria-label="actions">
+            <a class="btn btn-primary" href="/home">Back to Shop</a>
+            <a class="btn btn-pill" href="/">Landing</a>
+            <!-- <a class="btn btn-pill" href="./blogs/">Read the Blogs</a> -->
+          </div>
+
+          <p class="small-muted" style="margin-top:14px">Tip: If you followed a broken link, screenshot it and send it to us on WhatsApp so we can fix it. We actually care.</p>
+        </div>
+
+        <aside class="right-panel" aria-label="Suggestions">
+
+
+          <!-- <div class="mini-sponsor" role="article" aria-labelledby="spon-blog">
+            <img src="/assets/logo.png" alt="DriftThreads logo">
+            <div>
+              <div id="spon-blog" class="s-title">DriftThreads Blogs</div>
+              <div class="s-desc">Bored? Read some of our blogs — behind-the-scenes drops, prints, Joburg garage stories.</div>
+            </div>
+          </div>
+           -->
+
+          <a class="mini-sponsor" href="/blogs" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="/assets/logo.png" alt="Blogs">
+            <div>
+              <div class="s-title">DriftThreads Blogs</div>
+              <div class="s-desc">Bored? Read some of our blogs — behind-the-scenes drops, prints, Joburg garage stories.</div>
+            </div>
+          </a>
+
+          <a class="mini-sponsor" href="https://www.instagram.com/driftthreads.official/" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="/home/sponsors/ig.png" alt="Instagram">
+            <div>
+              <div class="s-title">@driftthreads.official</div>
+              <div class="s-desc">Follow our drops & behind-the-scenes.</div>
+            </div>
+          </a>
+
+          <a class="mini-sponsor" href="https://www.tiktok.com/@driftthreads.official/" target="_blank" rel="noopener" aria-label="TikTok">
+            <img src="/home/sponsors/tt.png" alt="TikTok">
+            <div>
+              <div class="s-title">@driftthreads.official</div>
+              <div class="s-desc">Short vids, fit checks, and garage vibes.</div>
+            </div>
+          </a>
+        </aside>
+      </div>
+    </div>
+
+    <footer class="footer" role="contentinfo">
+      <div>© DriftThreads<br><span class="muted">Streetwear built to drift — Only in Joburg.</span></div>
+      <div class="muted">Follow: @driftthreads.official</div>
+    </footer>
+  </div>
+
+  <!-- tiny accessibility / JS fallback: if someone lands here from Netlify/GH with a wrong path, try to redirect smart -->
+  <script>
+    // Optional: let users press Escape to go home fast
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') window.location.href = '/';
+    });
+
+    // Basic focus trap for keyboard users — focus the first CTA on load
+    window.addEventListener('load', () => {
+      const focusable = document.querySelector('.btn-primary') || document.querySelector('a.btn');
+      if (focusable) focusable.focus();
+    });
+  </script>
 </body>
 </html>
