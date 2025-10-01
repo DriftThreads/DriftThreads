@@ -5,10 +5,10 @@
     DriftThreads -- Home (Enhanced)
     - Desktop-only header Info button inserted between Search and Cart
     - Mobile keeps Info bar as-is
-    - Info button color uses --accent (no --accent-strong)
+    - Info button color uses accent gradient (replaces bright red)
     - Added small UX features: product count, keyboard shortcuts, persistent category "Show all", online/offline toast
     - Extensive comments for feature developers
-  -->
+    -->
   <meta charset="utf-8" />
   <title>DriftThreads -- Home</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -36,7 +36,7 @@
   <meta name="color-scheme" content="dark">
 
   <!-- Fonts and icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -73,13 +73,13 @@
     --bg:radial-gradient(circle at center,#2a3a44,#161616 75%);
     --card-bg:radial-gradient(circle at center,#383838,#161616 85%);
     --text:#fff;
-    --accent:#0af;            /* Primary accent (used for Info button per request) */
+    --accent:#0af;            /* Primary accent */
     --accent-strong:#00c2ff;  /* Bright accent (kept for other UI) */
     --muted:#9aa0a6;
     --transition:240ms;
     --ease:cubic-bezier(0.22,0.9,0.27,1);
     --card-radius:12px;
-    --badge-font:600 .78rem/1 "Fira+Sans",sans-serif;
+    --badge-font:600 .78rem/1 "Fira Sans",sans-serif;
   }
 
   *{box-sizing:border-box}
@@ -89,7 +89,7 @@
     margin:0;padding:0;width:100%;height:100%;
     background:var(--bg);
     background-color:#161616; /* fallback + fixes rare hairline seams */
-    color:var(--text);font-family:"Fira+Sans",sans-serif;
+    color:var(--text);font-family:"Fira Sans",sans-serif;
     font-weight:400; /* lighter default weight everywhere */
   }
 
@@ -128,7 +128,7 @@
     font-weight:600; /* lighter buttons */
     cursor:pointer;
   }
-  button:hover,[role="button"]:hover{transform:translateY(-1px)}
+  button:hover,[role="button"]{transform:translateY(-1px)}
   button:active,[role="button"].pressed{transform:translateY(1px) scale(0.98);filter:brightness(0.96)}
   button:focus-visible,[role="button"]:focus-visible{
     outline:3px solid rgba(0,102,255,0.35);
@@ -282,8 +282,8 @@
     grid-template-columns: repeat(auto-fill, 220px);
     gap: 20px;
     justify-content: center;
-    /* Fixed invalid calc: 220px cards × 5 columns + 20px gaps × 4 = cleaner max width */
-    max-width: calc(220px * 5 + 20px*);
+    /* 220px cards × 5 columns + 20px gaps × 4 between columns */
+    max-width: calc(220px * 5 + 20px * );
     margin: 0 auto;
     padding: 0 18px;
   }
@@ -307,7 +307,7 @@
     background:radial-gradient(circle at top left,#2c2c2c,#161616 80%);transition:opacity .18s linear;pointer-events:none
   }
   .card-front{transform:rotateY(0deg) translateZ(0.1px);z-index:2;pointer-events:auto}
-  .card-back{transform:rotateY(180deg) translateZ(0.1px);z-index:1;color:#e6f7ff;padding:14px;font-size:.95rem;gap:8px;justify-content:flex-start}
+  .card-back{transform:rotateY(180deg) translateZ(0.1px);z-index:1;color:#e6f7ff;padding:14px;font-size:.90rem;gap:8px;justify-content:flex-start}
   .card.flipped .card-inner{transform:rotateY(180deg)}
   .card.flipped .card-front{z-index:1;pointer-events:none}
   .card.flipped .card-back{z-index:2;pointer-events:auto}
@@ -352,9 +352,9 @@
   }
 
   .front-body{padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1}
-  .product-title-front{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .product-title-front{font-weight:600;font-size:.90rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .price-row{display:flex;justify-content:space-between;align-items:center}
-  .price{font-weight:600;font-size:1.02rem;color:#e8f8ff}
+  .price{font-weight:600;font-size:.96rem;color:#e8f8ff}
 
   /* Primary action buttons */
   .add-btn{
@@ -410,8 +410,29 @@
 
   /* Sponsor card visuals */
   .sponsor-card{position:relative;;}
-  .sponsor-label{position:absolute;bottom:8px;right:8px;background-color:var(--accent);color:black;font-size:.85rem;font-weight:600;padding:6px;border-radius:10px;pointer-events:none;z-index:5}
-  .sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite}
+  /* New sponsor overlay: full-width bottom gradient with light blue text (distinct from product badges) */
+  .sponsor-overlay{
+    position:absolute; 
+    left:0; right:0; bottom:0;
+    padding:8px 12px;
+    background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.64));
+    color:#9bd4ff; font-weight:700;
+    display:flex; align-items:center; gap:8px;
+    text-shadow:0 1px 2px rgba(0,0,0,0.6);
+    pointer-events:none; z-index:5;
+  }
+  .sponsor-overlay .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:#9bd4ff; box-shadow:0 0 8px rgba(155,212,255,0.7);
+    flex:0 0 6px;
+  }
+  /* Legacy sponsor label styles kept but unused now */
+  .sponsor-label{
+    position:absolute;bottom:8px;right:8px;
+    display:none;
+
+  }
+  .sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite; }
   @keyframes rainbowJitter{0%{outline-color:red}16%{outline-color:orange}33%{outline-color:yellow}50%{outline-color:lime}66%{outline-color:blue}83%{outline-color:#850bdd}100%{outline-color:violet}}
   .card.sponsor{box-shadow:0 6px 22px rgba(0,0,0,0.45);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))}
   .card.sponsor .img-wrap{height:62%;background:#fff}
@@ -504,22 +525,21 @@
 
   /* ===========================================================
      Info/Disclaimer buttons + tooltips
-     - .info-btn color changed to --accent (requested)
+     - Color switched to accent gradient (replaces bright red)
+     - Chevron rotates when expanded (aria-expanded=true)
      - Global bar shown on mobile; header button on desktop
      =========================================================== */
   .info-btn{
     margin-top: 4px;
-    background: #ff2a2a;    
-    color:#fff;                   /* readable contrast on bright blue */
+    background: linear-gradient(90deg, #00b4ff, #6ee7ff);
+    color:#012;
     border:0;border-radius:10px;padding:8px 10px;font-weight:700;
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
     box-shadow:0 8px 18px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.06);
   }
-  /* @media (min-width:601px){ 
-    .info-btn{ background: #222; color:#fff;} 
-  } */
-
   .info-btn .icon{font-size:14px}
+  .info-btn .label .chev{ margin-left:6px; transition: transform 180ms var(--ease); }
+  .info-btn[aria-expanded="true"] .label .chev{ transform: rotate(180deg); }
   .info-btn:hover{transform:translateY(-1px)}
   .info-btn:active,.info-btn.pressed{transform:translateY(1px) scale(0.98)}
 
@@ -546,8 +566,6 @@
     display:flex; align-items:center; gap:8px; padding:0 18px; margin:6px 0 0 0;
     position:relative; justify-content:space-between; /* left: product count, right: info button */
   }
-  /* Mobile-only: show global info bar; Desktop hides it */
-  /* @media (min-width:901px){ #productInfoBar{ display:none } } */
 
   /* Product count label (mobile bar) */
   #productCount{ color: var(--muted); 
@@ -666,16 +684,17 @@
   .preloader-title{font-weight:600; letter-spacing:0.4px}
   .loader{
     height:64px;margin:2px auto 14px auto;
-    background: url('assets/wide_logo.png') center/contain no-repeat;
+    background: url('assets/wide_logo.svg') center/contain no-repeat;
     /* Changed from spin to a subtle pulse */
     animation:pulseLoader 1.4s ease-in-out infinite;
     transform-origin:center;
   }
-  @keyframes pulseLoader{
-    0%{ transform:scale(0.95); opacity:0.85; filter:drop-shadow(0 0 0 rgba(0,0,0,0.2)); }
-    50%{ transform:scale(1.05); opacity:1; filter:drop-shadow(0 0 12px rgba(0,150,255,0.35)); }
-    100%{ transform:scale(0.95); opacity:0.85; filter:drop-shadow(0 0 0 rgba(0,0,0,0.2)); }
-  }
+   /* breathe */
+   @keyframes pulseLoader {
+  0%, 100% { transform: scale(0.96); opacity: 0.8; }
+  50%      { transform: scale(1.03); opacity: 1; }
+}
+
   #preloaderText{color:#cfe8ff;font-weight:600;letter-spacing:.4px;margin-bottom:8px}
   #preloaderBar{width:100%;height:10px;border-radius:999px;background:#202020;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06); margin:0 auto}
   #preloaderBar>span{
@@ -1357,11 +1376,11 @@
         <button id="searchBtn" type="button" aria-label="Search" style="border-radius:5px 25px 25px 5px"><i class="fas fa-search" aria-hidden="true"></i></button>
       </div>
 
-      <!-- Desktop-only Info button (requested change) 
+      <!-- Desktop-only Info button (optional)
       <div id="headerInfoWrap" class="header-info-wrap">
         <button id="headerInfoBtn" class="info-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="headerInfoTooltip" title="Important info">
           <span class="icon" aria-hidden="true">⚠️</span>
-          <span class="label" style="font-weight:600">Info <i class="fas fa-angle-down" aria-hidden="true" style="padding-left: 5px;"></i></span>
+          <span class="label" style="font-weight:600">Info <i class="fas fa-angle-down chev" aria-hidden="true"></i></span>
         </button>
         <div id="headerInfoTooltip" class="tooltip" role="tooltip" aria-live="polite" aria-hidden="true">
           <div class="tt-title">Heads up!</div>
@@ -1403,15 +1422,15 @@
   <div id="productInfoBar" aria-label="Important info">
     <div id="productCount" role="status" aria-live="polite">0 items</div>
     <button id="globalInfoBtn" class="info-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="globalInfoTooltip" title="Important info">
-      <span class="icon" aria-hidden="true">⚠️</span><span class="label" style="font-weight:600">Info <i class="fas fa-angle-down" aria-hidden="true" style="padding-left: 5px;"></i></span>
+      <span class="icon" aria-hidden="true">⚠️</span><span class="label" style="font-weight:600">Info <i class="fas fa-angle-down chev" aria-hidden="true"></i></span>
     </button>
     <div id="globalInfoTooltip" class="tooltip" role="tooltip" aria-live="polite" aria-hidden="true">
       <div class="tt-title">Heads up!</div>
       <div class="tt-body">
-        <b>Images</b> may appear slightly different from real life.<br>
-        Some visuals are digitally enhanced or AI-assisted for presentation.<br>
-        Hoodies are printed with high-definition graphics only.<br>
-        Actual products may vary due to distortion or scaling during digital processes.
+        <b>Note:</b> Product images may not fully capture the real look.<br>
+        Some visuals are AI-assisted and can appear slightly off.<br>
+        Hoodies are printed in high-definition -- they look sharper in real life.<br>
+        Expect the actual product to look better than the preview images.
       </div>
     </div>
   </div>
@@ -1431,15 +1450,7 @@
 
         
         <br><br>
-         <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
-        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
-        
-        
-
-      </div>
-      <div class="muted">
-        <br><br>
-       <a href="..">Main</a> •
+        <a href="..">Main</a> •
         <a href="../blogs">Blogs</a> •  
         <a href="../contact">Contacts</a>
        
@@ -1447,6 +1458,15 @@
         <button type="button" class="footer-link" id="terms-link">Terms & Conditions</button> •  
         <button type="button" class="footer-link" id="privacy-link">Privacy Policy</button> •  
         <button type="button" class="footer-link" id="shipping-link">Shipping Info</button>
+         
+        
+        
+
+      </div>
+      <div class="muted">
+        <br><br>
+       <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
+        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
       
         </div>
 
@@ -1459,6 +1479,7 @@
   <div id="cartModal" class="cart-modal" aria-hidden="true">
     <div class="cart-content" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
       <button id="closeCart" type="button" aria-label="Close cart"><i class="fas fa-times" aria-hidden="true"></i></button>
+      <br>
       <h2 id="cartTitle" style="font-weight:600; margin-top:0;">Your Cart</h2>
       <div id="cartItems" class="cart-items" style="margin-bottom:12px"></div>
       <div class="cart-footer" aria-hidden="false">
@@ -1475,10 +1496,10 @@
           <div id="cartInfoTooltip" class="tooltip" role="tooltip" aria-live="polite" aria-hidden="true">
             <div class="tt-title">Heads up!</div>
             <div class="tt-body">
-              <b>Images</b> may appear slightly different from real life.<br>
-              Some visuals are digitally enhanced or AI-assisted for presentation.<br>
-              Hoodies are printed with high-definition graphics only.<br>
-              Actual products may vary due to distortion or scaling during digital processes.
+              <b>Note:</b> Product images may not fully capture the real look.<br>
+              Some visuals are AI-assisted and can appear slightly off.<br>
+              Hoodies are printed in high-definition -- they look sharper in real life.<br>
+              Expect the actual product to look better than the preview images.
             </div>
           </div>
         </div>
@@ -1510,9 +1531,9 @@
   const sponsors = [
     {id:'spon-1',title:'DriftThreads Blogs',img:'assets/logo.png',url:'/blogs',description:'Bored? Read some of our blogs! 🙃',badge:'Sponsored'},
     
-    {id:'spon-2',title:'Instagram',img:'sponsors/ig.png',url:'https://www.instagram.com/driftthreads.official/',description:'Follow us @driftthreads.official',badge:'Social'},
+    {id:'spon-2',title:'Instagram',img:'sponsors/ig.png',url:'https://www.instagram.com/driftthreads.official/',description:'Follow us @driftthreads.official',badge:'Sponsored'},
     
-    {id:'spon-3',title:'TikTok',img:'sponsors/tt.png',url:'https://www.tiktok.com/@driftthreads.official/',description:'Check out our TikToks 👀',badge:'Social'}
+    {id:'spon-3',title:'TikTok',img:'sponsors/tt.png',url:'https://www.tiktok.com/@driftthreads.official/',description:'Check out our TikToks 👀',badge:'Sponsored'}
   ];
 
   const products = [
@@ -1902,14 +1923,14 @@
       description:"Sleek, clean, and fully Drift Threads™ certified -- sip in style",
       badge:'Official'
     },
-    {
+    /* {
       title: 'Liquid Gold™ Honey (1kg)',
       price: 220,
       cat: 'supplements',
       img: ['products/supplements/honey_1kg.jpeg'],
       description:"Pure, golden, unstoppable -- Liquid Gold™ by Drift Threads™",
       badge:'Limited'
-    }
+    } */
   ];
 
   /* Guarantee each product has an images array and a stable id */
@@ -2247,8 +2268,18 @@
     inner.className = 'card-inner';
     const front = document.createElement('div');
     front.className = 'sponsor-card-front';
-    front.innerHTML = `<div class="img-wrap sponsor-card"><img loading="lazy" decoding="async" src="${s.img}" alt="${s.title} logo"><div class="sponsor-label">Sponsored</div></div>
-      <div class="front-body" role="link" aria-label="${s.title} -- Sponsored" tabindex="-1"><div class="sponsor-title">${s.title}</div><div class="sponsor-desc">${s.description || ''}</div></div>`;
+    front.innerHTML = `
+      <div class="img-wrap sponsor-card">
+        <img loading="lazy" decoding="async" src="${s.img}" alt="${s.title} logo">
+        <div class="sponsor-overlay">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="overlay-text">${s.badge || 'Sponsored'}</span>
+        </div>
+      </div>
+      <div class="front-body" role="link" aria-label="${s.title} -- Sponsored" tabindex="-1">
+        <div class="sponsor-title">${s.title}</div>
+        <div class="sponsor-desc">${s.description || ''}</div>
+      </div>`;
     inner.appendChild(front); card.appendChild(inner);
     const imgEl = front.querySelector('img'); attachImageFallback(imgEl);
     card.addEventListener('click', () => { const url = s.url || '#'; if(url && url !== '#') window.open(url, '_blank', 'noopener'); });
@@ -2794,13 +2825,37 @@
     localStorage.setItem(CATS_SHOW_ALL_KEY, on ? '1' : '0');
   });
 
-  /* Scroll to top button */
+  /* Scroll to top button (now also hides near bottom to avoid footer overlap) */
   (function(){
     const btn = document.getElementById('scrollToTopBtn');
     if(!btn) return;
-    function updateVisibility(){ if(window.scrollY > 240) btn.classList.add('visible'); else btn.classList.remove('visible'); }
+
+    let bottomHideOffset = 300; // px from bottom when the button should hide (desktop)
+    const setBottomOffset = () => {
+      bottomHideOffset = window.matchMedia('(max-width: 600px)').matches ? 420 : 300;
+    };
+    setBottomOffset();
+
+    function isNearBottom(){
+      const doc = document.scrollingElement || document.documentElement;
+      const distanceFromBottom = doc.scrollHeight - (doc.scrollTop + window.innerHeight);
+      return distanceFromBottom < bottomHideOffset;
+    }
+
+    function updateVisibility(){
+      const pastTopThreshold = window.scrollY > 240;
+      const nearBottom = isNearBottom();
+      if(pastTopThreshold && !nearBottom){
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    }
+
     updateVisibility();
     window.addEventListener('scroll', updateVisibility, { passive:true });
+    window.addEventListener('resize', () => { setBottomOffset(); updateVisibility(); }, { passive:true });
+
     function scrollTopHandler(e){ e.preventDefault(); btn.classList.add('click-anim'); setTimeout(()=> btn.classList.remove('click-anim'), 300); window.scrollTo({ top:0, behavior:'smooth' }); btn.blur(); }
     btn.addEventListener('click', scrollTopHandler);
     btn.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); scrollTopHandler(e); }});
