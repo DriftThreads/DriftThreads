@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <!--
-    DriftThreads -- Home (Enhanced)
-    - Sponsored label moved into card body (above title/desc), not over the image
-    - Tags system added (product tags shown after description, muted style)
-    - Tag filter bar added (multi-select, AND filtering) + URL sync
-    - Categories generated from JSON
-    - Small code cleanup to avoid IDE syntax-highlighting quirks (kept your intentional "20px *" quirk intact)
+    DriftThreads – Home (Enhanced)
+    · Sponsored label moved into card body (above title/desc), not over the image
+    · Tags system added (product tags shown after description, muted style)
+    · Tag filter bar added (multi-select, AND filtering) + URL sync
+    · Categories generated from JSON
+    · Small code cleanup to avoid IDE syntax-highlighting quirks (kept your intentional "20px *" quirk intact)
   -->
   <meta charset="utf-8" />
   <title>DriftThreads -- Home</title>
@@ -251,6 +251,30 @@
     margin:2px 30px 8px 30px;padding-bottom:4px;
     position: relative;
   }
+  #clearTagsBtn{
+    position:sticky;
+    left:0;
+    z-index:2;
+    background:#102133;
+    border:1px solid rgba(155,212,255,0.3);
+    color:#d5ecff;
+    padding:6px 14px;
+    border-radius:999px;
+    font-weight:700;
+    flex:0 0 auto;
+    box-shadow:0 6px 18px rgba(0,0,0,0.35);
+    display:none;
+    align-items:center;
+    gap:6px;
+  }
+  #clearTagsBtn .count{
+    font-size:.78rem;
+    font-weight:600;
+    opacity:.85;
+  }
+  #clearTagsBtn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  #clearTagsBtn:active,#clearTagsBtn.pressed{transform:translateY(1px) scale(0.98);}
+
   .tag-chip{
     background:transparent;
     border:1px solid rgba(255,255,255,0.12);
@@ -263,21 +287,6 @@
   .tag-chip:hover{filter:brightness(1.1);transform:translateY(-1px)}
   .tag-chip:active,.tag-chip.pressed{transform:translateY(1px) scale(0.98)}
   .tag-chip.active{background:#06f;border-color:transparent;color:#fff}
-  #clearTagsBtn{
-    position: sticky; left: 0; z-index: 2;
-    background: rgba(16,16,16,0.75);
-    border:1px solid rgba(155,212,255,0.25);
-    color:#9bd4ff;
-    padding:6px 10px;
-    border-radius:999px;
-    font-weight:700;
-    text-decoration:none;
-    flex:0 0 auto;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  }
-  #clearTagsBtn:hover{filter:brightness(1.1)}
-  #clearTagsBtn[disabled]{opacity:.5; cursor:not-allowed}
-  #clearTagsBtn .count{opacity:.85}
 
   /* ===========================================================
      Products grid
@@ -423,27 +432,22 @@
   .empty-state{grid-column:1/-1;padding:28px;border-radius:10px;background:rgba(255,255,255,0.03);text-align:center;color:#aaa}
 
   /* Sponsor card visuals (overlay moved into body area) */
-  .sponsor-card{position:relative;}
-  .sponsor-badge{
+  .card.sponsor{position:relative;box-shadow:0 6px 22px rgba(0,0,0,0.45);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))}
+  .card.sponsor .img-wrap{height:62%;background:#fff}
+  .card.sponsor .front-body{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .card.sponsor .sponsor-note{
     align-self:flex-start;
     font-size:.72rem;
-    color:#9bd4ff;
-    border:1px solid rgba(155,212,255,0.3);
-    background:linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.25));
-    padding:3px 8px;
-    border-radius:999px;
+    color:var(--muted);
     margin-bottom:4px;
     text-transform:uppercase;
     letter-spacing:.3px;
   }
+  .card.sponsor .sponsor-title{font-weight:600;font-size:.95rem;margin-top:2px;color:var(--text)}
+  .card.sponsor .sponsor-desc{color:#cbd9ea;margin-top:6px;font-size:.88rem;opacity:.95}
+  .sponsor-card{position:relative;}
   .sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite;}
   @keyframes rainbowJitter{0%{outline-color:red}16%{outline-color:orange}33%{outline-color:yellow}50%{outline-color:lime}66%{outline-color:blue}83%{outline-color:#850bdd}100%{outline-color:violet}}
-  .card.sponsor{box-shadow:0 6px 22px rgba(0,0,0,0.45);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))}
-  .card.sponsor .img-wrap{height:62%;background:#fff}
-  .card.sponsor .front-body{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
-  .card.sponsor{color:var(--accent-strong);font-weight:600;font-size:.92rem;padding:0;margin:0}
-  .card.sponsor .sponsor-title{font-weight:600;font-size:.95rem;margin-top:2px}
-  .card.sponsor .sponsor-desc{color:#cbd9ea;margin-top:6px;font-size:.88rem;opacity:.95}
   /* Legacy sponsor overlay styles left for reference but unused now */
   .sponsor-overlay{display:none}
 
@@ -719,22 +723,18 @@
   #closePolicy:active,#closePolicy.pressed{ transform:translateY(1px) scale(0.98) }
 
   /* ===========================================================
-     Card tag list (muted chips under description)
+     Card tag list (muted text under description)
      =========================================================== */
   .tag-list{
-    display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;
+    margin-top:8px;
   }
-  .tag-chip-sm{
-    /* border:1px dashed rgba(255,255,255,0.15); */
+  .card-tags{
+    margin:0;
     color:var(--muted);
-    border: none;
-    background:transparent;
-    padding:4px 8px;
-    /* border-radius:999px; */
-    font-size:.7rem;
+    font-size:.88rem;
+    line-height:1.35;
+    word-break:break-word;
   }
-  .tag-chip-sm:hover{filter:brightness(1.05);transform:translateY(-1px)}
-  .tag-chip-sm:active,.tag-chip-sm.pressed{transform:translateY(1px) scale(0.98)}
 
   /* ===========================================================
      Mobile: keep actions visible, clip long desc/tags on card back
@@ -1285,7 +1285,7 @@
           <div class="tt-body">
   <b>Note:</b> Product images may not fully capture the real look.<br>
   Some visuals are AI-assisted and can appear slightly off.<br>
-  Hoodies are printed in high-definition — they look sharper in real life.<br>
+  Hoodies are printed in high-definition -- they look sharper in real life.<br>
   Expect the actual product to look better than the preview images.
 </div>
         </div>
@@ -1410,9 +1410,9 @@
 
   /* Sponsors */
   const sponsors = [
-    {id:'spon-1',title:'DriftThreads Blogs',img:'assets/logo.png',url:'/blogs',description:'Bored? Read some of our blogs! 🙃',badge:'Sponsored'},
-    {id:'spon-2',title:'Instagram',img:'sponsors/ig.png',url:'https://www.instagram.com/driftthreads.official/',description:'Follow us @driftthreads.official',badge:'Sponsored'},
-    {id:'spon-3',title:'TikTok',img:'sponsors/tt.png',url:'https://www.tiktok.com/@driftthreads.official/',description:'Check out our TikToks 👀',badge:'Sponsored'}
+    {id:'spon-1',title:'DriftThreads Blogs',img:'sponsors/dt_blogs.png',url:'/blogs',description:'Your daily dose of DriftThreads shenanigans 💥',badge:'Sponsored'},
+    {id:'spon-2',title:'Instagram',img:'sponsors/dt_ig.png',url:'https://www.instagram.com/driftthreads.official/',description:'Follow us (not asking) @driftthreads.official',badge:'Sponsored'},
+    {id:'spon-3',title:'TikTok',img:'sponsors/dt_tt.png',url:'https://www.tiktok.com/@driftthreads.official/',description:'Check out our TikToks 👀 @driftthreads.official',badge:'Sponsored'}
   ];
 
   /* Products + tags */
@@ -1651,6 +1651,88 @@
       badge:'',
       tags: ['hoodie','anime','jjk','gojo']
     },
+      // ...existing products
+  {
+    title: '404 Human Not Found Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/404_human_not_found.jpeg'],
+    description: "Glitch in reality? Flex the digital void with 404 energy",
+    badge: '',
+    tags: ['hoodie','tech','digital','glitch','streetwear']
+  },
+  {
+    title: 'Naruto 9 Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/naruto_9.jpeg'],
+    description: "Channel your inner shinobi -- Naruto vibes, street-approved",
+    badge: '',
+    tags: ['hoodie','anime','naruto','streetwear']
+  },
+  {
+    title: 'Vapengin UK Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/vapengin_uk.jpeg'],
+    description: "Clouds on deck -- UK Vapengin energy stitched into every seam",
+    badge: '',
+    tags: ['hoodie','vape','streetwear','uk','clouds']
+  },
+  {
+    title: 'Bugs Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/bugs.jpeg'],
+    description: "What’s up, flex? Bugs Bunny vibes, mischievous and legendary",
+    badge: '',
+    tags: ['hoodie','cartoon','bugs-bunny','streetwear','fun']
+  },
+  {
+    title: 'Vapengin 95 Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/vapengin_95.jpeg'],
+    description: "Retro clouds, fresh fit -- 95 style Vapengin drip unlocked",
+    badge: '',
+    tags: ['hoodie','vape','streetwear','retro','clouds']
+  },
+  {
+    title: 'Virat Kohli Minimal Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/virat_kohli_minimal.jpeg'],
+    description: "Minimalist flex, max impact -- Virat Kohli inspired streetwear",
+    badge: '',
+    tags: ['hoodie','cricket','virat-kohli','minimal','streetwear']
+  },
+  {
+    title: 'Life Begins After Coffee Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/life_begins_after_coffee.jpeg'],
+    description: "Fuel up, flex out -- caffeine energy stitched into comfort",
+    badge: '',
+    tags: ['hoodie','coffee','streetwear','lifestyle','fun']
+  },
+  {
+    title: 'Vapengin Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/vapengin.jpeg'],
+    description: "Clouds all day, street-approved -- classic Vapengin vibes",
+    badge: '',
+    tags: ['hoodie','vape','streetwear','clouds','classic']
+  },
+  {
+    title: 'Wake n Vape Hoodie',
+    price: 650,
+    cat: 'hoodies',
+    img: ['products/hoodies/wake_n_vape.jpeg'],
+    description: "Start strong, flex harder -- morning clouds stitched in style",
+    badge: '',
+    tags: ['hoodie','vape','streetwear','morning','clouds']
+  },
     {
       title: 'Hellcat Hoodie',
       price: 650,
@@ -2091,22 +2173,15 @@
       <p style="margin:0;color:#bcd9f2;">${p.description}</p>`;
     back.appendChild(desc);
 
-    // Tag chips (muted) on back
-    const tagsWrap = document.createElement('div');
-    tagsWrap.className = 'tag-list';
-    (p.tags || []).forEach(t => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'tag-chip-sm';
-      btn.dataset.tag = t;
-      btn.textContent = `#${t}`;
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleTag(t, true);
-      });
-      tagsWrap.appendChild(btn);
-    });
-    back.appendChild(tagsWrap);
+    if(p.tags && p.tags.length){
+      const tagsWrap = document.createElement('div');
+      tagsWrap.className = 'tag-list';
+      const tagsText = document.createElement('p');
+      tagsText.className = 'card-tags';
+      tagsText.textContent = p.tags.map(t => `#${t}`).join('  ');
+      tagsWrap.appendChild(tagsText);
+      back.appendChild(tagsWrap);
+    }
 
     const actions = document.createElement('div');
     actions.className = 'card-actions';
@@ -2188,7 +2263,7 @@
     return card;
   }
 
-  /* Sponsor card (Sponsored label moved to body area) */
+  /* Sponsor card (Sponsored label moved to muted text) */
   function createSponsorCard(s){
     const card = document.createElement('article');
     card.className = 'card sponsor';
@@ -2201,7 +2276,7 @@
         <img loading="lazy" decoding="async" src="${s.img}" alt="${s.title} logo">
       </div>
       <div class="front-body" role="link" aria-label="${s.title} -- Sponsored" tabindex="-1">
-        <div class="sponsor-badge">${s.badge || 'Sponsored'}</div>
+        <span class="sponsor-note">${s.badge || 'Sponsored'}</span>
         <div class="sponsor-title">${s.title}</div>
         <div class="sponsor-desc">${s.description || ''}</div>
       </div>`;
@@ -2277,7 +2352,8 @@
     const clearBtn = document.createElement('button');
     clearBtn.id = 'clearTagsBtn';
     clearBtn.type = 'button';
-    clearBtn.textContent = 'Clear tags';
+    clearBtn.innerHTML = 'Clear tags<span class="count"></span>';
+    clearBtn.style.display = 'none';
     clearBtn.addEventListener('click', () => {
       selectedTags.clear();
       filterAndRender();
@@ -2307,16 +2383,22 @@
       ch.classList.toggle('active', selected.has(t));
     });
 
-    // Update Clear button text and state
     const clearEl = document.getElementById('clearTagsBtn');
     if(clearEl){
       const n = selected.size;
-      clearEl.innerHTML = n ? `Clear tags (<span class="count">${n}</span>)` : 'Clear tags';
-      clearEl.disabled = n === 0;
-      clearEl.setAttribute('aria-disabled', n === 0 ? 'true' : 'false');
+      if(n){
+        clearEl.style.display = 'inline-flex';
+        clearEl.innerHTML = `Clear tags<span class="count">(${n})</span>`;
+        clearEl.disabled = false;
+        clearEl.setAttribute('aria-disabled','false');
+      } else {
+        clearEl.style.display = 'none';
+        clearEl.innerHTML = 'Clear tags<span class="count"></span>';
+        clearEl.disabled = true;
+        clearEl.setAttribute('aria-disabled','true');
+      }
     }
 
-    // Reorder: active tags first (keep original order within groups)
     const ordered = chips.slice().sort((a,b) => {
       const aActive = selected.has(a.dataset.tag) ? 1 : 0;
       const bActive = selected.has(b.dataset.tag) ? 1 : 0;
@@ -2324,7 +2406,6 @@
       return (parseInt(a.dataset.order,10)||0) - (parseInt(b.dataset.order,10)||0);
     });
 
-    // Remove all chips then append in the new order (keep clear button as first child)
     chips.forEach(ch => ch.remove());
     ordered.forEach(ch => tagBar.appendChild(ch));
   }
@@ -2392,7 +2473,6 @@
     if(match){ match.classList.add('active'); match.setAttribute('aria-current','true'); setTimeout(()=> match.scrollIntoView({ inline:'center', behavior:'smooth' }), 80); }
     else { const first = document.querySelector('.cat-btn[data-cat="all"]') || document.querySelector('.cat-btn'); if(first){ first.classList.add('active'); first.setAttribute('aria-current','true'); } }
 
-    // Tags
     selectedTags.clear();
     const tagsStr = (state.tags || '').trim();
     if(tagsStr){
@@ -2405,7 +2485,6 @@
   /* Category bar generation + wiring */
   function buildCategoryBar(){
     if(!catBar) return;
-    // Clear existing except hint if it exists
     const hint = document.getElementById('catScrollHint');
     catBar.innerHTML = '';
     CATEGORIES.forEach((c, idx) => {
@@ -2917,7 +2996,6 @@
 
   searchInput.addEventListener('input', ()=> {
     clearBtn.style.display = searchInput.value ? 'flex' : 'none';
-    // support #tag typed in search -> toggle tag quickly
     const val = searchInput.value.trim();
     const tagMatches = val.match(/#[a-z0-9\-]+/gi) || [];
     if(tagMatches.length){
@@ -2993,3 +3071,17 @@
   </script>
 </body>
 </html>
+
+
+make sure the buttons on the back of the card arent all the way at the botttom, they should be just under the tags and description, also incrase the font size for the title, front and back of the card, and for the sponsor card title too pls
+
+also, the tags should be directly next to the description, on the same line, it must just flow, since its alr another color anyways
+
+while u at it, restyle the scroll to top btn, i mean it works nhow, so dont fuck uo funtionality, just change how it looks, mkae it better, make it fit in better
+
+the 20px * works fine, trust me, thats an intentional bug
+
+i noticed a bug on mobile, the first few cardds in the 1st column end up very nrrow, and only re size to be normal after you scroll a bit, dunno why, fix that pls
+
+make sure to give the full html css js with the changes, and a tldr of wht u did, beofre the code
+and i mean... yeah
