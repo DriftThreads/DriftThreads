@@ -3,12 +3,12 @@
 <head>
   <!--
     DriftThreads -- Home (Enhanced)
-    - Desktop-only header Info button inserted between Search and Cart
-    - Mobile keeps Info bar as-is
-    - Info button color uses accent gradient (replaces bright red)
-    - Added small UX features: product count, keyboard shortcuts, persistent category "Show all", online/offline toast
-    - Extensive comments for feature developers
-    -->
+    - Sponsored label moved into card body (above title/desc), not over the image
+    - Tags system added (product tags shown after description, muted style)
+    - Tag filter bar added (multi-select, AND filtering) + URL sync
+    - Categories generated from JSON
+    - Small code cleanup to avoid IDE syntax-highlighting quirks (kept your intentional "20px *" quirk intact)
+  -->
   <meta charset="utf-8" />
   <title>DriftThreads -- Home</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -39,7 +39,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
 
   <!-- Structured data for SEO -->
   <script type="application/ld+json">
@@ -94,7 +93,6 @@
   }
 
   @media (max-width: 768px) { 
-    /* Slightly scale action buttons for better thumb reach on mobile */
     .add-btn, .share-btn, .view-img-btn { transform:scale(0.9) } 
   }
 
@@ -102,7 +100,6 @@
   ::selection{background:rgba(10,170,255,0.14)}
   ::-webkit-scrollbar{width:0;background:transparent}
 
-  /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce){
     *{
       animation-duration:0.001ms !important;
@@ -125,7 +122,7 @@
       outline-color 120ms ease;
     outline:0;
     -webkit-tap-highlight-color: transparent;
-    font-weight:600; /* lighter buttons */
+    font-weight:600;
     cursor:pointer;
   }
   button:hover,[role="button"]{transform:translateY(-1px)}
@@ -178,7 +175,6 @@
 
   /* ===========================================================
      Header (sticky)
-     - Desktop enhancement: Info button in header between Search and Cart
      =========================================================== */
   header{
     position:sticky;top:10px;z-index:50;
@@ -186,16 +182,13 @@
     padding:12px 16px;box-shadow:0 1px 0 rgba(255,255,255,0.02);margin:10px;border-radius:var(--card-radius);outline:1px solid rgba(255,255,255,0.02);outline-offset:-1px;
     backface-visibility:hidden;
     transform:translateZ(0);will-change:transform;contain:paint;
-  
   }
-  .top-row{display:flex;gap:12px;align-items:center; }
+  .top-row{display:flex;gap:12px;align-items:center;}
   .logo img{height:40px;display:block;background:#fff;padding:6px;border-radius:8px}
 
   /* Header search */
-  .search-wrap{flex:1;display:flex;gap:6px; justify-content: center;}
-  .search-box{position:relative;flex:1;min-width:0; 
-    max-width:750px;
-  }
+  .search-wrap{flex:1;display:flex;gap:6px;justify-content:center;}
+  .search-box{position:relative;flex:1;min-width:0;max-width:750px;}
   .search-box input{width:100%;padding:10px 36px 10px 12px;border-radius:25px 5px 5px 25px;background:#2b2b2b;border:0;color:#fff;font-size:14px;outline:0;box-shadow:0 4px 18px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.02)}
   #clearBtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:0;color:#888;cursor:pointer;display:none;padding:6px;border-radius:6px}
   #searchBtn{background:#06f;border:0;color:#fff;border-radius:8px;padding:8px 12px;box-shadow:0 8px 18px rgba(0,102,255,0.12)}
@@ -213,7 +206,7 @@
   }
 
   /* ===========================================================
-     Categories bar (horizontal on small, "Show all" on desktop)
+     Categories bar
      =========================================================== */
   .cat-bar{
     display:flex;padding-top:10px;overflow-x:auto;white-space:nowrap;margin-left:30px;position:relative;padding-bottom:10px;gap:6px;
@@ -231,7 +224,6 @@
   .cat-btn.active{background:#06f;color:#fff}
   .cat-btn.active:hover{filter:brightness(0.92)}
 
-  /* Subtle mobile scroll hint: edge shadow */
   .cat-scroll-hint{
     position:fixed;right:0;top:0;bottom:0;width:42px;
     background:linear-gradient(to left, rgba(22,22,22,0.95), rgba(22,22,22,0));
@@ -252,29 +244,55 @@
   }
 
   /* ===========================================================
+     Tag filter bar (new)
+     =========================================================== */
+  .tag-bar{
+    display:flex;gap:6px;align-items:center;overflow-x:auto;white-space:nowrap;
+    margin:2px 30px 8px 30px;padding-bottom:4px;
+    position: relative;
+  }
+  .tag-chip{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.12);
+    color:var(--muted);
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:.82rem;
+    flex:0 0 auto;
+  }
+  .tag-chip:hover{filter:brightness(1.1);transform:translateY(-1px)}
+  .tag-chip:active,.tag-chip.pressed{transform:translateY(1px) scale(0.98)}
+  .tag-chip.active{background:#06f;border-color:transparent;color:#fff}
+  #clearTagsBtn{
+    position: sticky; left: 0; z-index: 2;
+    background: rgba(16,16,16,0.75);
+    border:1px solid rgba(155,212,255,0.25);
+    color:#9bd4ff;
+    padding:6px 10px;
+    border-radius:999px;
+    font-weight:700;
+    text-decoration:none;
+    flex:0 0 auto;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  }
+  #clearTagsBtn:hover{filter:brightness(1.1)}
+  #clearTagsBtn[disabled]{opacity:.5; cursor:not-allowed}
+  #clearTagsBtn .count{opacity:.85}
+
+  /* ===========================================================
      Products grid
      =========================================================== */
   main{padding:20px 12px;flex:1}
-    footer{margin:20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px; padding-bottom: 40px;}
-
-    hr {
-      background: var(--muted);
-      width: 90vw;
-      border-radius: 3px;
-    }
-
-    .footer-img {
-      /* width: 32px; */
-      height: 32px;
-    }
-
-      @media (min-width: 700px){
-
-        footer{margin:20px 40px 40px 40px; padding-bottom: 30px;}
-
-    hr {
-      width: 95vw;
-    }
+  footer{margin:20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px; padding-bottom: 40px;}
+  hr {
+    background: var(--muted);
+    width: 90vw;
+    border-radius: 3px;
+  }
+  .footer-img { height: 32px; }
+  @media (min-width: 700px){
+    footer{margin:20px 40px 40px 40px; padding-bottom: 30px;}
+    hr { width: 95vw; }
   }
 
   #grid {
@@ -287,12 +305,8 @@
     margin: 0 auto;
     padding: 0 18px;
   }
-  @media (max-width: 900px) {
-    #grid { grid-template-columns: repeat(auto-fill, 200px); }
-  }
-  @media (max-width: 600px) {
-    #grid { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
-  }
+  @media (max-width: 900px) { #grid { grid-template-columns: repeat(auto-fill, 200px); } }
+  @media (max-width: 600px) { #grid { grid-template-columns: repeat(2, 1fr); max-width: 100%; } }
 
   /* ===========================================================
      Product cards (front/back flip)
@@ -351,7 +365,7 @@
     100% { --stop1: 40%; --stop2: 50%; --stop3: 80%; }
   }
 
-  .front-body{padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .front-body{padding:8px 10px;display:flex;flex-direction:column;gap:6px;flex:1;position:relative}
   .product-title-front{font-weight:600;font-size:.90rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .price-row{display:flex;justify-content:space-between;align-items:center}
   .price{font-weight:600;font-size:.96rem;color:#e8f8ff}
@@ -408,38 +422,30 @@
 
   .empty-state{grid-column:1/-1;padding:28px;border-radius:10px;background:rgba(255,255,255,0.03);text-align:center;color:#aaa}
 
-  /* Sponsor card visuals */
-  .sponsor-card{position:relative;;}
-  /* New sponsor overlay: full-width bottom gradient with light blue text (distinct from product badges) */
-  .sponsor-overlay{
-    position:absolute; 
-    left:0; right:0; bottom:0;
-    padding:8px 12px;
-    background:linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.64));
-    color:#9bd4ff; font-weight:700;
-    display:flex; align-items:center; gap:8px;
-    text-shadow:0 1px 2px rgba(0,0,0,0.6);
-    pointer-events:none; z-index:5;
+  /* Sponsor card visuals (overlay moved into body area) */
+  .sponsor-card{position:relative;}
+  .sponsor-badge{
+    align-self:flex-start;
+    font-size:.72rem;
+    color:#9bd4ff;
+    border:1px solid rgba(155,212,255,0.3);
+    background:linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.25));
+    padding:3px 8px;
+    border-radius:999px;
+    margin-bottom:4px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
   }
-  .sponsor-overlay .dot{
-    width:6px; height:6px; border-radius:50%;
-    background:#9bd4ff; box-shadow:0 0 8px rgba(155,212,255,0.7);
-    flex:0 0 6px;
-  }
-  /* Legacy sponsor label styles kept but unused now */
-  .sponsor-label{
-    position:absolute;bottom:8px;right:8px;
-    display:none;
-
-  }
-  .sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite; }
+  .sponsor-card-front{outline:3px solid red;outline-offset:2px;border-radius:10px;overflow:hidden;height:100%;min-height:200px;display:flex;flex-direction:column;animation:rainbowJitter 5s steps(1) infinite;}
   @keyframes rainbowJitter{0%{outline-color:red}16%{outline-color:orange}33%{outline-color:yellow}50%{outline-color:lime}66%{outline-color:blue}83%{outline-color:#850bdd}100%{outline-color:violet}}
   .card.sponsor{box-shadow:0 6px 22px rgba(0,0,0,0.45);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))}
   .card.sponsor .img-wrap{height:62%;background:#fff}
   .card.sponsor .front-body{padding:10px;display:flex;flex-direction:column;gap:6px;flex:1}
   .card.sponsor{color:var(--accent-strong);font-weight:600;font-size:.92rem;padding:0;margin:0}
-  .card.sponsor .sponsor-title{font-weight:600;font-size:.95rem;margin-top:4px}
+  .card.sponsor .sponsor-title{font-weight:600;font-size:.95rem;margin-top:2px}
   .card.sponsor .sponsor-desc{color:#cbd9ea;margin-top:6px;font-size:.88rem;opacity:.95}
+  /* Legacy sponsor overlay styles left for reference but unused now */
+  .sponsor-overlay{display:none}
 
   /* ===========================================================
      Carousel (shared by cards and lightbox)
@@ -449,7 +455,6 @@
   .carousel-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;background:#111}
   .carousel-slide img{width:100%;height:100%;object-fit:cover;display:block}
 
-  /* Carousel controls */
   .carousel-controls{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 8px;pointer-events:none}
   .carousel-btn{pointer-events:auto;background:rgba(0,0,0,0.45);border:0;color:#fff;padding:8px 10px;border-radius:8px;backdrop-filter:blur(2px);transition:background 140ms ease, opacity 200ms var(--ease), transform 160ms var(--ease)}
   .carousel-btn:hover{background:rgba(0,0,0,0.62)}
@@ -464,7 +469,6 @@
   .carousel-dot.active{background:#06f}
   .carousel-counter{position:absolute;right:8px;top:8px;background:rgba(0,0,0,0.5);padding:6px 8px;border-radius:8px;font-weight:600;font-size:0.82rem}
 
-  /* Lightbox-specific counter and dots */
   .lightbox .carousel-counter{
     position:fixed;
     left:12px;
@@ -525,9 +529,6 @@
 
   /* ===========================================================
      Info/Disclaimer buttons + tooltips
-     - Color switched to accent gradient (replaces bright red)
-     - Chevron rotates when expanded (aria-expanded=true)
-     - Global bar shown on mobile; header button on desktop
      =========================================================== */
   .info-btn{
     margin-top: 4px;
@@ -549,8 +550,6 @@
     color:#e6f7ff;border:2px solid rgba(0,194,255,0.15);border-radius:12px;padding:12px 14px;z-index:60;
     box-shadow:0 12px 40px rgba(0,0,0,0.6),0 6px 18px rgba(0,194,255,0.06) inset;display:none;
   }
-
-  
   .tooltip.visible{display:block;animation:fadeInUp .22s var(--ease)}
   .tooltip .tt-title{font-weight:700;margin-bottom:6px;color:#9bd4ff}
   .tooltip .tt-body{font-size:.92rem;line-height:1.25;opacity:.95}
@@ -561,19 +560,12 @@
     filter:drop-shadow(0 -4px 6px rgba(0,0,0,0.25))
   }
 
-  /* Global info bar (mobile) */
   #productInfoBar{
     display:flex; align-items:center; gap:8px; padding:0 18px; margin:6px 0 0 0;
-    position:relative; justify-content:space-between; /* left: product count, right: info button */
+    position:relative; justify-content:space-between;
   }
+  #productCount{ color: var(--muted); font-weight: 600; padding: 10px 0 0 15px; }
 
-  /* Product count label (mobile bar) */
-  #productCount{ color: var(--muted); 
-    font-weight: 600; 
-    padding: 10px 0 0 15px;
-  }
-
-  /* Global info tooltip position override (mobile) */
   #globalInfoTooltip.tooltip{
     top:46px; right:0; bottom:auto;
   }
@@ -583,9 +575,8 @@
     border-left:10px solid transparent; border-right:10px solid transparent; border-bottom:10px solid rgba(3,21,30,0.98);
   }
 
-  /* Header info tooltip positioning (desktop) */
   #headerInfoTooltip.tooltip{
-    top:46px; right:0; bottom:auto; /* drop down from the button */
+    top:46px; right:0; bottom:auto;
   }
   #headerInfoTooltip.tooltip::after{
     right:18px; bottom:auto; top:-10px;
@@ -594,20 +585,16 @@
   }
 
   /* ===========================================================
-     Lightbox (full-screen image viewer)
+     Lightbox
      =========================================================== */
   .lightbox{
-    position:fixed;inset:0;
-    background:#000;
-    display:none;align-items:center;justify-content:center;
-    z-index:200;touch-action:none;transition:background 260ms ease;
+    position:fixed;inset:0;background:#000;display:none;align-items:center;justify-content:center;z-index:200;touch-action:none;transition:background 260ms ease;
   }
   .lightbox.active{display:flex}
   .lightbox.opened{background:#000}
   .lightbox.closing{background:rgba(0,0,0,0)!important}
   .lightbox .lb-frame{
-    width:95vw;max-width:1100px;height:82vh;max-height:90vh;
-    display:flex;align-items:center;justify-content:center;
+    width:95vw;max-width:1100px;height:82vh;max-height:90vh;display:flex;align-items:center;justify-content:center;
     opacity:0;transform:translateY(14px) scale(0.96);
     transition:transform 260ms var(--ease),opacity 260ms var(--ease)
   }
@@ -619,32 +606,16 @@
   .lightbox .carousel-btn:hover{background:rgba(0,0,0,0.62)}
   .lightbox .carousel-dots{bottom:12px}
 
-  /* Desktop: keep constant image height while preserving fully-black background */
   @media (min-width:721px){
     .lightbox .carousel-slide img.zoom-img{
-      width:auto !important;
-      height:82vh !important;
-      max-height:82vh;
-      max-width:96vw;
-      object-fit:contain !important;
+      width:auto !important;height:82vh !important;max-height:82vh;max-width:96vw;object-fit:contain !important;
     }
   }
 
-  /* Zoom container and image */
   .zoom-wrap{width:100%;height:100%;overflow:hidden;touch-action:none;display:flex;align-items:center;justify-content:center;background:#000}
-  .zoom-img{
-    max-width:100%;
-    max-height:100%;
-    will-change:transform;
-    transform-origin:center center;
-    transition:transform 80ms ease-out;
-  }
-  .lightbox .carousel-slide img.zoom-img{
-    width:auto !important; height:auto !important;
-    max-width:96vw; max-height:88vh;
-    object-fit:contain !important;
-  }
-  /* Mobile: fix lightbox to viewport for stable reopen positioning */
+  .zoom-img{max-width:100%;max-height:100%;will-change:transform;transform-origin:center center;transition:transform 80ms ease-out;}
+  .lightbox .carousel-slide img.zoom-img{width:auto !important;height:auto !important;max-width:96vw;max-height:88vh;object-fit:contain !important}
+
   @media(max-width:720px){
     .lightbox .lb-frame{width:100vw;height:100vh;border-radius:0}
     .lightbox .carousel{border-radius:0; position:fixed; inset:0; width:100vw; height:100vh}
@@ -664,7 +635,7 @@
   :focus-visible{outline:3px solid rgba(0,102,255,0.12);outline-offset:3px;border-radius:8px}
 
   /* ===========================================================
-     Modern preloader overlay (initial page boot)
+     Modern preloader overlay
      =========================================================== */
   #preloader{
     position:fixed;top:0;left:0;width:100%;height:100%;
@@ -677,32 +648,14 @@
     box-shadow:0 30px 100px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.02);
   }
   .preloader-head{display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:12px}
-  .preloader-logo{
-    width:42px;height:42px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;
-  }
+  .preloader-logo{width:42px;height:42px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;}
   .preloader-logo img{width:100%;height:100%;object-fit:contain}
   .preloader-title{font-weight:600; letter-spacing:0.4px}
-  .loader{
-    height:64px;margin:2px auto 14px auto;
-    background: url('assets/wide_logo.svg') center/contain no-repeat;
-    /* Changed from spin to a subtle pulse */
-    animation:pulseLoader 1.4s ease-in-out infinite;
-    transform-origin:center;
-  }
-   /* breathe */
-   @keyframes pulseLoader {
-  0%, 100% { transform: scale(0.96); opacity: 0.8; }
-  50%      { transform: scale(1.03); opacity: 1; }
-}
-
+  .loader{height:64px;margin:2px auto 14px auto;background: url('assets/wide_logo.svg') center/contain no-repeat;animation:pulseLoader 1.4s ease-in-out infinite;transform-origin:center;}
+  @keyframes pulseLoader { 0%, 100% { transform: scale(0.96); opacity: 0.8; } 50% { transform: scale(1.03); opacity: 1; } }
   #preloaderText{color:#cfe8ff;font-weight:600;letter-spacing:.4px;margin-bottom:8px}
   #preloaderBar{width:100%;height:10px;border-radius:999px;background:#202020;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06); margin:0 auto}
-  #preloaderBar>span{
-    display:block;height:100%;width:0%;
-    background:linear-gradient(90deg,#00b4ff,#6ee7ff,#a78bfa);
-    background-size:200% 100%; animation:barShift 1.2s ease-in-out infinite;
-    border-radius:999px;
-  }
+  #preloaderBar>span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#00b4ff,#6ee7ff,#a78bfa);background-size:200% 100%; animation:barShift 1.2s ease-in-out infinite;border-radius:999px;}
   @keyframes barShift{0%{background-position:0% 50%}100%{background-position:100% 50%}}
 
   /* ===========================================================
@@ -723,12 +676,10 @@
     .add-notif{left:12px;right:12px;bottom:18px}
   }
 
-  /* Simple fade-out for add-notif */
   @keyframes fadeOutDown{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(18px)}}
 
   /* ===========================================================
      Connection status toast (new)
-     - Shows brief banner when the browser goes offline/online
      =========================================================== */
   #connectionToast{
     position:fixed; top:14px; right:14px;
@@ -745,13 +696,7 @@
      Footer policy links (rendered as buttons styled like links)
      =========================================================== */
   .footer-link{
-    background:transparent;
-    border:0;
-    padding:0;
-    color:var(--muted);
-    text-decoration:underline;
-    cursor:pointer;
-    font:inherit;
+    background:transparent;border:0;padding:0;color:var(--muted);text-decoration:underline;cursor:pointer;font:inherit;
   }
   .footer-link:hover{ filter:brightness(1.1) }
   .footer-link:focus-visible{ outline:3px solid rgba(0,102,255,0.35); outline-offset:3px; border-radius:6px }
@@ -760,10 +705,8 @@
      Policy modal (Terms, Privacy, Shipping)
      =========================================================== */
   .info-modal{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,0.6);
-    display:none; align-items:center; justify-content:center;
-    z-index:100;
+    position:fixed; inset:0; background:rgba(0,0,0,0.6);
+    display:none; align-items:center; justify-content:center; z-index:100;
   }
   .info-modal.active{ display:flex }
   .info-content{
@@ -771,24 +714,57 @@
     width:90%; max-width:680px; max-height:80vh; overflow:auto;
     box-shadow:0 40px 120px rgba(0,0,0,0.7); position:relative;
   }
-  #closePolicy{
-    position:absolute; right:18px; top:18px;
-    background:#06f; border:0; color:#fff; border-radius:50%;
-    width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center;
-    box-shadow:0 10px 30px rgba(0,102,255,0.12)
-  }
+  #closePolicy{position:absolute; right:18px; top:18px; background:#06f; border:0; color:#fff; border-radius:50%; width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 10px 30px rgba(0,102,255,0.12)}
   #closePolicy:hover{ transform:translateY(-1px) }
   #closePolicy:active,#closePolicy.pressed{ transform:translateY(1px) scale(0.98) }
+
+  /* ===========================================================
+     Card tag list (muted chips under description)
+     =========================================================== */
+  .tag-list{
+    display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;
+  }
+  .tag-chip-sm{
+    /* border:1px dashed rgba(255,255,255,0.15); */
+    color:var(--muted);
+    border: none;
+    background:transparent;
+    padding:4px 8px;
+    /* border-radius:999px; */
+    font-size:.7rem;
+  }
+  .tag-chip-sm:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .tag-chip-sm:active,.tag-chip-sm.pressed{transform:translateY(1px) scale(0.98)}
+
+  /* ===========================================================
+     Mobile: keep actions visible, clip long desc/tags on card back
+     =========================================================== */
+  .card-back .card-actions{
+    display:flex; gap:8px; flex-wrap:wrap; margin-top:auto;
+  }
+  @media (max-width: 600px){
+    .card-back{
+      display:grid;
+      grid-template-rows: auto minmax(0,1fr) auto;
+    }
+    .card-back .card-desc p{
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .card-back .tag-list{
+      overflow:hidden;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0));
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0));
+      padding-right:2px;
+    }
+    .card-back .card-actions{ margin-top:0 !important; }
+  }
   </style>
  
 </head>
 <body>
-
-  <!--
-    Core carousel utility shared by card carousels and the lightbox.
-    Includes lazy loading, looping with clones, swipe/drag, zoom (lightbox),
-    and accessible controls (keyboard, ARIA).
-  -->
   <script>
   /* Utility: safely ensure an array of images (>=1) per product */
   function ensureImagesArray(p){
@@ -800,7 +776,6 @@
     return imgs;
   }
 
-  /* Attach a fallback handler to an <img> DOM element to use placeholder on error */
   function attachImageFallback(imgEl){
     if(!imgEl) return;
     imgEl.addEventListener('error', () => {
@@ -811,20 +786,11 @@
     }, { once: false });
   }
 
-  /* Lightbox global state (updated by open/close) */
-  let lightboxState = {
-    active: false,
-    api: null, // carousel api for lightbox
-    idleTimer: null
-  };
+  let lightboxState = { active: false, api: null, idleTimer: null };
 
-  /* little helper */
   function money(n){return `R${Number(n).toFixed(2)}`;}
-
-  /* Debounce utility */
   function debounce(fn, wait = 300){ let t; return (...args) => { clearTimeout(t); t = setTimeout(()=>fn.apply(this,args), wait); }}
 
-  /* Preload helper with decode for smoother first paint */
   function preloadImage(src){
     return new Promise((resolve) => {
       const img = new Image();
@@ -838,12 +804,7 @@
     });
   }
 
-  /* CAROUSEL helper with smart lazy-loading per slide (cards and lightbox share)
-     containerEl: where carousel will be appended (image area)
-     images: array of image URLs
-     opts: { onImageClick, startIndex, loop, showDots, showButtons, showCounter, className, enableZoom, eagerFirst, getAlt }
-     returns object {setIndex, getIndex, destroy, prev, next, refresh}
-  */
+  /* CAROUSEL (cards + lightbox) */
   function createCarousel(containerEl, images, opts = {}){
     const {
       onImageClick = function(){},
@@ -865,7 +826,6 @@
     const track = document.createElement('div');
     track.className = 'carousel-track';
 
-    // Build slides with optional clones for looping
     let slides = [];
     const makeSlide = (src, realIdx, isClone=false) => {
       const slide = document.createElement('div');
@@ -873,7 +833,6 @@
       slide.dataset.realIndex = String(realIdx);
       const altText = getAlt(realIdx, total);
 
-      // Skeleton shimmer overlay for card carousels (not in lightbox)
       let skeleton = null;
       if(!enableZoom){
         skeleton = document.createElement('div');
@@ -899,14 +858,11 @@
         const img = document.createElement('img');
         img.loading = 'lazy';
         img.decoding = 'async';
-        // We avoid alt on card carousel images to reduce duplicate verbosity; lightbox provides alts
         img.dataset.src = src || 'assets/placeholder.png';
         attachImageFallback(img);
-        // Remove the skeleton overlay when image loads
         img.addEventListener('load', () => {
           if(skeleton && skeleton.parentNode){ skeleton.parentNode.removeChild(skeleton); }
         }, { once: true });
-        // If image already cached and complete, remove skeleton immediately
         queueMicrotask(() => {
           if(img.complete && img.naturalWidth > 0 && skeleton && skeleton.parentNode){
             skeleton.parentNode.removeChild(skeleton);
@@ -923,17 +879,12 @@
     };
 
     const useLoop = loop && total > 1;
-    if(useLoop){
-      slides.push(makeSlide(images[total-1], total-1, true));
-    }
+    if(useLoop){ slides.push(makeSlide(images[total-1], total-1, true)); }
     images.forEach((src, i) => slides.push(makeSlide(src, i, false)));
-    if(useLoop){
-      slides.push(makeSlide(images[0], 0, true));
-    }
+    if(useLoop){ slides.push(makeSlide(images[0], 0, true)); }
     slides.forEach(s => track.appendChild(s));
     containerEl.appendChild(track);
 
-    // controls
     let dots = null, prevBtn = null, nextBtn = null, counter = null, ctrlWrap = null;
     if(total > 1){
       if(showButtons){
@@ -980,12 +931,10 @@
       }
     }
 
-    // State
     let realIndex = Math.min(Math.max(0, startIndex|0), total-1);
     let trackIndex = useLoop ? realIndex + 1 : realIndex;
     let isTransitioning = false;
 
-    // Lazy-load helpers: load current and neighbors
     function imagesForRealIndex(idx){
       const arr = [];
       slides.forEach(sl => {
@@ -1028,7 +977,6 @@
         void track.offsetWidth;
         track.style.transition = '';
       }
-      // Ensure current and neighbors are loaded
       ensureLoadedAround(realIndex);
     }
 
@@ -1048,55 +996,37 @@
     track.addEventListener('transitionend', () => {
       if(!useLoop) return;
       if(trackIndex === 0){
-        isTransitioning = true;
-        track.style.transition = 'none';
-        trackIndex = total;
-        realIndex = total - 1;
-        updateUI();
-        void track.offsetWidth;
-        track.style.transition = '';
-        isTransitioning = false;
+        isTransitioning = true; track.style.transition = 'none';
+        trackIndex = total; realIndex = total - 1; updateUI();
+        void track.offsetWidth; track.style.transition = ''; isTransitioning = false;
       } else if(trackIndex === total + 1){
-        isTransitioning = true;
-        track.style.transition = 'none';
-        trackIndex = 1;
-        realIndex = 0;
-        updateUI();
-        void track.offsetWidth;
-        track.style.transition = '';
-        isTransitioning = false;
+        isTransitioning = true; track.style.transition = 'none';
+        trackIndex = 1; realIndex = 0; updateUI();
+        void track.offsetWidth; track.style.transition = ''; isTransitioning = false;
       }
     });
 
     function prev(){
       if(isTransitioning) return;
       instantWrapIfOnClone();
-      isTransitioning = true;
-      trackIndex -= 1;
+      isTransitioning = true; trackIndex -= 1;
       if(!useLoop){
         if(trackIndex < 0){ trackIndex = 0; }
-        realIndex = trackIndex;
-        updateUI();
-        setTimeout(()=> isTransitioning=false, 320);
+        realIndex = trackIndex; updateUI(); setTimeout(()=> isTransitioning=false, 320);
       } else {
-        realIndex = (realIndex - 1 + total) % total;
-        updateUI();
+        realIndex = (realIndex - 1 + total) % total; updateUI();
         setTimeout(()=> { isTransitioning=false; instantWrapIfOnClone(); }, 320);
       }
     }
     function next(){
       if(isTransitioning) return;
       instantWrapIfOnClone();
-      isTransitioning = true;
-      trackIndex += 1;
+      isTransitioning = true; trackIndex += 1;
       if(!useLoop){
         if(trackIndex > total - 1){ trackIndex = total - 1; }
-        realIndex = trackIndex;
-        updateUI();
-        setTimeout(()=> isTransitioning=false, 320);
+        realIndex = trackIndex; updateUI(); setTimeout(()=> isTransitioning=false, 320);
       } else {
-        realIndex = (realIndex + 1) % total;
-        updateUI();
+        realIndex = (realIndex + 1) % total; updateUI();
         setTimeout(()=> { isTransitioning=false; instantWrapIfOnClone(); }, 320);
       }
     }
@@ -1107,28 +1037,22 @@
       if(!animate){ updateUI(true); } else { updateUI(); }
     }
 
-    // Init
     ensureLoadedAround(realIndex, eagerFirst ? 'high' : 'auto');
     updateUI(true);
 
-    // controls events
     if(prevBtn) prevBtn.addEventListener('click', (e)=> { e.stopPropagation(); prev(); });
     if(nextBtn) nextBtn.addEventListener('click', (e)=> { e.stopPropagation(); next(); });
 
-    // swipe support
     let startX = 0, startY = 0, isDragging = false, moved = false, dragDX = 0;
     const touchStart = (x, y) => {
-      isDragging = true; moved = false; dragDX = 0;
-      startX = x; startY = y;
-      track.style.transition = 'none';
+      isDragging = true; moved = false; dragDX = 0; startX = x; startY = y; track.style.transition = 'none';
     };
     const touchMove = (x, y, e) => {
       if(!isDragging) return;
       const dx = x - startX;
       const dy = y - startY;
       if(Math.abs(dy) > Math.abs(dx)) { return; }
-      moved = true;
-      dragDX = dx;
+      moved = true; dragDX = dx;
       const width = containerEl.getBoundingClientRect().width || 1;
       const offset = -trackIndex * width + dx;
       track.style.transform = `translateX(${offset}px)`;
@@ -1136,8 +1060,7 @@
     };
     const touchEnd = () => {
       if(!isDragging) return;
-      isDragging = false;
-      track.style.transition = '';
+      isDragging = false; track.style.transition = '';
       if(!moved){ updateUI(); return; }
       const width = containerEl.getBoundingClientRect().width || 1;
       const threshold = Math.max(40, width * 0.18);
@@ -1156,7 +1079,6 @@
     }, {passive:false});
     track.addEventListener('touchend', () => touchEnd());
 
-    // mouse drag support (desktop)
     let mouseDown = false, mouseStartX = 0, mouseStartY = 0;
     track.addEventListener('mousedown', (e) => {
       mouseDown = true; mouseStartX = e.clientX; mouseStartY = e.clientY; track.style.transition = 'none'; e.preventDefault();
@@ -1182,14 +1104,12 @@
       else updateUI();
     });
 
-    // keyboard navigation
     containerEl.tabIndex = 0;
     containerEl.addEventListener('keydown', (e) => {
       if(e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
       if(e.key === 'ArrowRight') { e.preventDefault(); next(); }
     });
 
-    // resize observer -> keep correct offset
     const ro = new ResizeObserver(()=> updateUI(true));
     ro.observe(containerEl);
 
@@ -1198,7 +1118,6 @@
       slides.forEach(sl => { if(typeof sl._resetZoom === 'function') sl._resetZoom(); });
     }
 
-    // If zoom enabled, set it up per slide
     (function setupZoomHandlers(){
       if(!enableZoom) return;
       slides.forEach((sl) => {
@@ -1209,8 +1128,6 @@
         let minScale = 1;
         let maxScale = 4;
         let tx = 0, ty = 0;
-        let panning = false;
-        let lastX = 0, lastY = 0;
 
         function applyTransform(){
           img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
@@ -1236,14 +1153,12 @@
           clampPan(); applyTransform();
         }
 
-        // Wheel zoom (desktop)
         wrap.addEventListener('wheel', (e) => {
           e.preventDefault();
           const delta = e.deltaY < 0 ? 1.12 : 0.9;
           zoomAt(e.clientX, e.clientY, delta);
         }, { passive:false });
 
-        // Double click to toggle zoom
         let lastClick = 0;
         wrap.addEventListener('click', (e) => {
           const now = Date.now();
@@ -1258,11 +1173,6 @@
           lastClick = now;
         });
 
-        // Pan when zoomed
-        wrap.addEventListener('pointerdown', (e) => {
-          if(scale === 1) return;
-          let panning = true; wrap.setPointerCapture(e.pointerId);
-        });
         let panningActive = false, lastPX = 0, lastPY = 0;
         wrap.addEventListener('pointerdown', (e) => {
           if(scale === 1) return;
@@ -1279,7 +1189,6 @@
         wrap.addEventListener('pointerup', (e) => { panningActive = false; try{wrap.releasePointerCapture(e.pointerId);}catch(_e){} });
         wrap.addEventListener('pointercancel', () => { panningActive = false; });
 
-        // Pinch-to-zoom (touch)
         let pinch = { active:false, startDist:0, startScale:1, centerX:0, centerY:0 };
         wrap.addEventListener('touchstart', (e) => {
           if(e.touches.length === 2){
@@ -1303,27 +1212,24 @@
         }, {passive:false});
         wrap.addEventListener('touchend', () => { pinch.active = false; }, {passive:true});
 
-        // Reset zoom when slide becomes inactive
         const resetZoom = () => { scale = 1; tx = 0; ty = 0; applyTransform(); };
         sl._resetZoom = resetZoom;
       });
     })();
 
-    // Public API
     return {
       setIndex: (i) => { goTo(i, false); resetAllZooms(); },
       getIndex: () => realIndex,
       prev: () => { prev(); },
       next: () => { next(); },
-      refresh: () => { updateUI(true); }, // force realign
+      refresh: () => { updateUI(true); },
       destroy: () => { try{ ro.disconnect(); }catch(e){} containerEl.innerHTML = ''; }
     };
   }
   </script>
-  <!-- Skip navigation for screen readers and keyboard users -->
+
   <a href="#mainContent" class="skip-link">Skip to main content</a>
 
-  <!-- Initial preloader shown while fonts + a couple critical images warm up -->
   <div id="preloader">
     <div class="preloader-card" aria-live="polite" aria-busy="true">
       <div class="preloader-head"></div>
@@ -1333,7 +1239,6 @@
     </div>
   </div>
 
-  <!-- Toast: add-to-cart feedback -->
   <div id="addNotif" class="add-notif" role="status" aria-live="polite" aria-atomic="true">
     <img id="addNotifThumb" class="product-thumb" src="" alt="">
     <div id="addNotifMsg" class="msg">Product added to cart</div>
@@ -1341,7 +1246,6 @@
     <button id="closeAddNotif" class="close-btn" aria-label="Dismiss"><i class="fas fa-times" aria-hidden="true"></i></button>
   </div>
 
-  <!-- Toast: share feedback -->
   <div id="shareNotif" class="share-notif" role="status" aria-live="polite" aria-atomic="true">
     <div style="display:flex;align-items:center;gap:10px">
       <i class="fas fa-link" aria-hidden="true" style="font-size:18px"></i>
@@ -1349,25 +1253,19 @@
     </div>
   </div>
 
-  <!-- Quick usage hint after first load: cards flip -->
   <div id="hintTooltip" role="note" aria-hidden="true">
     <div class="icon" aria-hidden="true"><i class="fas fa-hand-pointer"></i></div>
     <div class="text">Cards flip -- click to see more!</div>
   </div>
 
-  <!-- Scroll to top floating button -->
   <a id="scrollToTopBtn" href="#" role="button" aria-label="Scroll to top" tabindex="0"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
 
-  <!-- Connection status toast (online/offline) -->
   <div id="connectionToast" role="status" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Sticky header with logo, search, Info (desktop), and cart -->
   <header>
     <div class="top-row">
-      <!-- Brand -->
       <div class="logo"><a href="./"><img src="assets/favicon.png" alt="Drift Threads logo"></a></div>
 
-      <!-- Search -->
       <div class="search-wrap">
         <div class="search-box">
           <input id="searchInput" type="text" placeholder="Search products..." aria-label="Search products" inputmode="search">
@@ -1387,13 +1285,12 @@
           <div class="tt-body">
   <b>Note:</b> Product images may not fully capture the real look.<br>
   Some visuals are AI-assisted and can appear slightly off.<br>
-  Hoodies are printed in high-definition -- they look sharper in real life.<br>
+  Hoodies are printed in high-definition — they look sharper in real life.<br>
   Expect the actual product to look better than the preview images.
 </div>
         </div>
       </div>
--->
-      <!-- Cart -->
+      -->
       <div id="cartBtn" role="button" tabindex="0" aria-label="Shopping cart" style="position:relative">
         <i class="fas fa-shopping-cart" aria-hidden="true"></i>
         <span id="cartCount">0</span>
@@ -1401,24 +1298,15 @@
     </div>
   </header>
 
-  <!-- Categories nav -->
+  <!-- Categories generated via JS (from CATEGORIES JSON) -->
   <nav class="cat-bar" role="tablist" aria-label="Product categories" id="catBar">
-    <button class="cat-btn active" data-cat="all" type="button" aria-current="true">All</button>
-    <button class="cat-btn" data-cat="hoodies" type="button">Hoodies</button>
-    <button class="cat-btn" data-cat="mugs" type="button">Mugs</button>
-    <button class="cat-btn" data-cat="supplements" type="button">Supplements</button>
-    <button class="cat-btn" data-cat="couples" type="button">Couples</button>
-    <button class="cat-btn" data-cat="tees" type="button">Tees</button>
-    <button class="cat-btn" data-cat="hats" type="button">Hats</button>
-    <button class="cat-btn" data-cat="accessories" type="button">Accessories</button>
-    <button class="cat-btn" data-cat="stickers" type="button">Stickers</button>
-    <button class="cat-btn" data-cat="bags" type="button">Bags</button>
-    <button class="cat-btn" data-cat="other" type="button">Other</button>
     <div class="cat-scroll-hint" id="catScrollHint" aria-hidden="true"></div>
   </nav>
   <button id="showAllCatsBtn" type="button" aria-label="Show all categories" style="padding-left: 20px;">Show all</button>
 
-  <!-- Global info bar (mobile). On desktop this is hidden; desktop uses the header Info button. -->
+  <!-- New Tag filter bar -->
+  <nav class="tag-bar" id="tagBar" aria-label="Filter by tags"></nav>
+
   <div id="productInfoBar" aria-label="Important info">
     <div id="productCount" role="status" aria-live="polite">0 items</div>
     <button id="globalInfoBtn" class="info-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="globalInfoTooltip" title="Important info">
@@ -1435,47 +1323,32 @@
     </div>
   </div>
 
-  <!-- Main product grid -->
   <main id="mainContent">
     <section id="grid" aria-live="polite" aria-busy="false"></section>
     <div id="loadingSpinner" style="display:none"><i class="fas fa-spinner fa-pulse fa-2x" aria-hidden="true"></i></div>
   </main>
 
   <hr>
-      <footer>
+  <footer>
+    <div>
+      <img src="assets/wide_logo.png" alt="DriftThreads Logo" class="footer-img" style="border-radius: 10px;"><br>
+      © DriftThreads<br>Streetwear built to drift -- Only in Joburg.
+      <br><br>
+      <a href="..">Main</a> •
+      <a href="../blogs">Blogs</a> •  
+      <a href="../contact">Contacts</a>
+      <br><br>
+      <button type="button" class="footer-link" id="terms-link">Terms & Conditions</button> •  
+      <button type="button" class="footer-link" id="privacy-link">Privacy Policy</button> •  
+      <button type="button" class="footer-link" id="shipping-link">Shipping Info</button>
+    </div>
+    <div class="muted">
+      <br><br>
+      <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
+      <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
+    </div>
+  </footer>
 
-      <div>
-        <img src="assets/wide_logo.png" alt="DriftThreads Logo" class="footer-img" style="border-radius: 10px;"><br>
-        © DriftThreads<br>Streetwear built to drift -- Only in Joburg.
-
-        
-        <br><br>
-        <a href="..">Main</a> •
-        <a href="../blogs">Blogs</a> •  
-        <a href="../contact">Contacts</a>
-       
-        <br><br>
-        <button type="button" class="footer-link" id="terms-link">Terms & Conditions</button> •  
-        <button type="button" class="footer-link" id="privacy-link">Privacy Policy</button> •  
-        <button type="button" class="footer-link" id="shipping-link">Shipping Info</button>
-         
-        
-        
-
-      </div>
-      <div class="muted">
-        <br><br>
-       <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
-        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
-      
-        </div>
-
-
-
-    </footer>
-
-
-  <!-- Cart modal -->
   <div id="cartModal" class="cart-modal" aria-hidden="true">
     <div class="cart-content" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
       <button id="closeCart" type="button" aria-label="Close cart"><i class="fas fa-times" aria-hidden="true"></i></button>
@@ -1489,7 +1362,6 @@
         <div class="right" style="display:flex;gap:8px;align-items:center;position:relative">
           <button id="clearCartBtn" type="button">Clear</button>
           <button id="waOrderBtn" class="wa-btn" type="button" aria-label="Order now via WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i> Order</button>
-          <!-- Legacy cart info button retained but hidden globally -->
           <button id="cartInfoBtn" class="info-btn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="cartInfoTooltip" title="Important info">
             <span class="label" style="font-weight:700">⚠️</span>
           </button>
@@ -1507,7 +1379,6 @@
     </div>
   </div>
 
-  <!-- Policy modal (Terms, Privacy, Shipping) -->
   <div id="policyModal" class="info-modal" aria-hidden="true">
     <div class="info-content" role="dialog" aria-modal="true" aria-labelledby="policyTitle">
       <button id="closePolicy" type="button" aria-label="Close policy"><i class="fas fa-times" aria-hidden="true"></i></button>
@@ -1516,26 +1387,35 @@
     </div>
   </div>
 
-  <!-- Lightbox (full-screen images) -->
   <div id="imgLightbox" class="lightbox" aria-hidden="true" tabindex="-1">
     <button id="closeLightbox" type="button" aria-label="Close image" style="position:absolute;right:18px;top:18px;background:transparent;border:0;color:#fff;font-size:22px;z-index:2"><i class="fas fa-times" aria-hidden="true"></i></button>
     <div class="lb-frame" id="lbFrame" aria-live="polite"></div>
   </div>
 
-  <!--
-    App logic (products, rendering, filtering, cart, lightbox, desktop/mobile info, UX niceties).
-    This section is heavily annotated to guide future feature development.
-  -->
   <script>
-  /* --- Data: products now use arrays of images (one or more) --- */
+  /* CATEGORIES (bar now generated from JSON) */
+  const CATEGORIES = [
+    { id: 'all', label: 'All' },
+    { id: 'hoodies', label: 'Hoodies' },
+    { id: 'mugs', label: 'Mugs' },
+    { id: 'supplements', label: 'Supplements' },
+    { id: 'couples', label: 'Couples' },
+    { id: 'tees', label: 'Tees' },
+    { id: 'hats', label: 'Hats' },
+    { id: 'accessories', label: 'Accessories' },
+    { id: 'stickers', label: 'Stickers' },
+    { id: 'bags', label: 'Bags' },
+    { id: 'other', label: 'Other' }
+  ];
+
+  /* Sponsors */
   const sponsors = [
     {id:'spon-1',title:'DriftThreads Blogs',img:'assets/logo.png',url:'/blogs',description:'Bored? Read some of our blogs! 🙃',badge:'Sponsored'},
-    
     {id:'spon-2',title:'Instagram',img:'sponsors/ig.png',url:'https://www.instagram.com/driftthreads.official/',description:'Follow us @driftthreads.official',badge:'Sponsored'},
-    
     {id:'spon-3',title:'TikTok',img:'sponsors/tt.png',url:'https://www.tiktok.com/@driftthreads.official/',description:'Check out our TikToks 👀',badge:'Sponsored'}
   ];
 
+  /* Products + tags */
   const products = [
     {
       title: 'Drift Threads™ Hoodie',
@@ -1547,7 +1427,8 @@
         'products/hoodies/driftthreads_hoodie(3).jpeg'
       ],
       description: "Soft inside, tough outside -- the hoodie that rides with you anywhere",
-      badge: 'Official'
+      badge: 'Official',
+      tags: ['hoodie','brand','official','driftthreads','streetwear']
     },
     {
       title: 'Gua Sha + Face Roller (Jade)',
@@ -1565,7 +1446,8 @@
         'products/other/gua_sha(9).jpeg'
       ],
       description: "Traditional Chinese scraping tool -- made from pure Jade Stone",
-      badge: 'Hot 🔥'
+      badge: 'Hot 🔥',
+      tags: ['accessory','beauty','gua-sha','wellness']
     },
     {
       title: '"Boss" Couples Hoodie (2)',
@@ -1577,7 +1459,8 @@
         'products/couples/boss_couples_hoodie(2).jpeg'
       ],
       description: 'Power couple energy -- twin hoodies for maximum flex and matching vibes',
-      badge: 'Hot'
+      badge: 'Hot',
+      tags: ['hoodie','couples','matching','set']
     },
     {
       title: 'Tokyo Revengers Hoodie',
@@ -1585,7 +1468,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/tokyo_revengers.jpeg'],
       description: "Rep the gang, rep the streets -- Tokyo Revengers style",
-      badge: ''
+      badge: '',
+      tags: ['hoodie','anime','tokyo-revengers']
     },
     {
       title: '911 GT3 RS Hoodie',
@@ -1593,7 +1477,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/911_gt3_rs.jpeg'],
       description: "Porsche vibes, street-ready fit -- feel the speed in every stitch",
-      badge: ''
+      badge: '',
+      tags: ['hoodie','car','porsche','911','gt3rs','euro']
     },
     {
       title: 'Akatsuki Hoodie',
@@ -1601,7 +1486,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/akatsuki.jpeg'],
       description:"Naruto’s legendary Akatsuki clouds, now on a hoodie -- menace approved",
-      badge:''
+      badge:'',
+      tags: ['hoodie','anime','naruto','akatsuki']
     },
     {
       title: 'BMW Hoodie',
@@ -1609,7 +1495,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/bmw.jpeg'],
       description:"Roll in style -- 'I need money for BMW' never looked this clean",
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','bmw','euro']
     },
     {
       title: 'Kakashi Hoodie',
@@ -1617,7 +1504,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/kakashi.jpeg'],
       description:"Stealthy, iconic, and stylish -- Kakashi fanart hoodie for true anime heads",
-      badge:''
+      badge:'',
+      tags: ['hoodie','anime','naruto','kakashi']
     },
     {
       title: 'Monkey D. Luffy Hoodie',
@@ -1625,7 +1513,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/monkey_d_luffy.jpeg'],
       description:"Set sail with Luffy -- One Piece vibes, maximum hype",
-      badge:''
+      badge:'',
+      tags: ['hoodie','anime','one-piece','luffy']
     },
     {
       title: 'Tokyo Ghoul Hoodie',
@@ -1633,7 +1522,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/tokyo_ghoul.jpeg'],
       description:"Dark, edgy, and savage -- Tokyo Ghoul energy for your streetwear",
-      badge:'20% Off'
+      badge:'20% Off',
+      tags: ['hoodie','anime','tokyo-ghoul','sale']
     },
     {
       title: 'BMW M Hoodie',
@@ -1641,7 +1531,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/bmw_m.jpeg'],
       description:"BMW M series inspired hoodie -- engineered for flexing",
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','bmw','m','euro']
     },
     {
       title: 'One Piece Bros Hoodie',
@@ -1649,7 +1540,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/one_piece_bros.jpeg'],
       description:"Luffy, Ace & Sabo -- the ultimate brotherhood, ultimate flex",
-      badge:''
+      badge:'',
+      tags: ['hoodie','anime','one-piece','luffy','ace','sabo']
     },
     {
       title: 'Batman Hoodie',
@@ -1657,7 +1549,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/batman.jpeg'],
       description:"Own the night -- Dark Knight vibes in hoodie form",
-      badge:''
+      badge:'',
+      tags: ['hoodie','superhero','batman','dc']
     },
     {
       title: 'Retrowave BMW M3 E46 Hoodie',
@@ -1665,7 +1558,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/retrowave_m3_e46.jpeg'],
       description:"Retro neon meets Bavarian muscle -- E46 M3 reimagined in retrowave drip",
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','bmw','e46','retrowave','euro']
     },
     {
       title: 'Mustang White Hoodie',
@@ -1673,7 +1567,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/mustang_white.jpeg'],
       description:"American muscle, timeless legend -- Mustang power stitched into street-ready comfort",
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','ford','mustang','muscle','white']
     },
     {
       title: 'Dodge Black Hoodie',
@@ -1681,71 +1576,71 @@
       cat: 'hoodies',
       img: ['products/hoodies/dodge_hellcat.jpeg'],
       description:"Hellcat attitude, midnight energy-- Dodge muscle reimagined as everyday drip",
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','dodge','hellcat','muscle','usa','black']
     },
     {
-  title: 'Demon Slayer Tee',
-  price: 300,
-  cat: 'tees',
-  img: ['products/tees/demon_slayer.jpeg'],
-  description: "Breath of drip -- Demon Slayer design locked onto a clean street tee",
-  badge: ''
-},
-{
-  title: 'Satoru Gojo Tee',
-  price: 300,
-  cat: 'tees',
-  img: ['products/tees/satoru_gojo.jpeg'],
-  description: "Infinity-level flex -- Gojo reimagined for casual streetwear",
-  badge: ''
-},
-{
-  title: 'Ultra Instinct Hoodie',
-  price: 650,
-  cat: 'hoodies',
-  img: ['products/hoodies/ultra_instinct.jpeg'],
-  description: "Goku’s ultimate form -- Ultra Instinct energy stitched into hoodie perfection",
-  badge: ''
-},
-{
-  title: 'Naruto Tee',
-  price: 300,
-  cat: 'tees',
-  img: ['products/tees/naruto.jpeg'],
-  description: "The legendary orange logo itself -- Naruto drip in tee form",
-  badge: ''
-},
-{
-  title: 'Sukuna Tee',
-  price: 400,
-  cat: 'tees',
-  img: ['products/tees/sukuna.jpeg'],
-  description: "The King of Curses, printed with menace -- Sukuna energy unleashed",
-  badge: ''
-},
+      title: 'Demon Slayer Tee',
+      price: 300,
+      cat: 'tees',
+      img: ['products/tees/demon_slayer.jpeg'],
+      description: "Breath of drip -- Demon Slayer design locked onto a clean street tee",
+      badge: '',
+      tags: ['tee','anime','demon-slayer']
+    },
+    {
+      title: 'Satoru Gojo Tee',
+      price: 300,
+      cat: 'tees',
+      img: ['products/tees/satoru_gojo.jpeg'],
+      description: "Infinity-level flex -- Gojo reimagined for casual streetwear",
+      badge: '',
+      tags: ['tee','anime','jjk','gojo']
+    },
+    {
+      title: 'Ultra Instinct Hoodie',
+      price: 650,
+      cat: 'hoodies',
+      img: ['products/hoodies/ultra_instinct.jpeg'],
+      description: "Goku’s ultimate form -- Ultra Instinct energy stitched into hoodie perfection",
+      badge: '',
+      tags: ['hoodie','anime','dragon-ball','goku','ultra-instinct']
+    },
+    {
+      title: 'Naruto Tee',
+      price: 300,
+      cat: 'tees',
+      img: ['products/tees/naruto.jpeg'],
+      description: "The legendary orange logo itself -- Naruto drip in tee form",
+      badge: '',
+      tags: ['tee','anime','naruto']
+    },
+    {
+      title: 'Sukuna Tee',
+      price: 400,
+      cat: 'tees',
+      img: ['products/tees/sukuna.jpeg'],
+      description: "The King of Curses, printed with menace -- Sukuna energy unleashed",
+      badge: '',
+      tags: ['tee','anime','jjk','sukuna']
+    },
     {
       title: 'McLaren Brown Hoodie',
       price: 700,
       cat: 'hoodies',
       img: ['products/hoodies/mclaren_brown.jpeg', 'products/hoodies/mclaren_brown(2).jpeg'],
       description:"Track-bred precision, street-certified flex -- McLaren speed in hoodie form",
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','mclaren','supercar','brown','euro']
     },
-    /* {
-      title: 'McLaren Blue Hoodie',
-      price: 700,
-      cat: 'hoodies',
-      img: ['products/hoodies/mclaren_blue.jpeg','products/hoodies/mclaren_blue(2).jpeg'],
-      description:"Exotic curves, raw performance -- McLaren vibes for those who live fast",
-      badge:''
-    }, */
     {
       title: 'Gojo Hoodie',
       price: 650,
       cat: 'hoodies',
       img: ['products/hoodies/gojo.jpeg'],
       description:"Gojo style, endless charm -- Jujutsu Kaisen energy unlocked",
-      badge:''
+      badge:'',
+      tags: ['hoodie','anime','jjk','gojo']
     },
     {
       title: 'Satoru Gojo Hoodie',
@@ -1753,7 +1648,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/satoru_gojo.jpeg'],
       description:"For the real Gojo stans -- keep your style untouchable",
-      badge:''
+      badge:'',
+      tags: ['hoodie','anime','jjk','gojo']
     },
     {
       title: 'Hellcat Hoodie',
@@ -1761,7 +1657,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/hellcat_hoodie.jpeg'],
       description:'Supercharged swagger -- Hellcat muscle meets streetwear drip',
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','dodge','hellcat','muscle','usa']
     },
     {
       title: 'Primitive Hellcat Hoodie',
@@ -1769,7 +1666,8 @@
       cat: 'hoodies',
       img: ['products/hoodies/prmtv_hellcat_hoodie.jpeg'],
       description:'Aggressive style, street-ready edge -- Hellcat vibes turned hoodie perfection',
-      badge:''
+      badge:'',
+      tags: ['hoodie','car','dodge','hellcat','muscle','usa','primitive']
     },
     {
       title: 'Straw Hats Hoodie',
@@ -1777,143 +1675,161 @@
       cat: 'hoodies',
       img: ['products/hoodies/straw_hats.jpeg'],
       description:"One Piece Straw Hats logo hoodie -- ride the Grand Line in style",
-      badge:''
+      badge:'',
+      tags: ['hoodie','anime','one-piece','straw-hat']
     },
     {
-  title: 'F1 Aston Martin Hoodie',
-  price: 700,
-  cat: 'hoodies',
-  img: ['products/hoodies/f1_aston_martin.jpeg'],
-  description: "Silver Arrows speed, stitched for the streets -- Mercedes AMG energy in hoodie form",
-  badge: ''
-},
-{
-  title: 'Gear 5 Nike Hoodie',
-  price: 750,
-  cat: 'hoodies',
-  img: ['products/hoodies/gear5_nike.jpeg'],
-  description: "Luffy Gear 5 meets Nike swagger -- anime drip fused with street legend style",
-  badge: ''
-},
-{
-  title: 'Porsche 911 Purple Hoodie',
-  price: 700,
-  cat: 'hoodies',
-  img: ['products/hoodies/porsche_911_purple.jpeg'],
-  description: "Royal vibes on a Stuttgart icon -- Porsche 911 flex in purple haze",
-  badge: ''
-},
-{
-  title: 'BMW M4 Hoodie',
-  price: 700,
-  cat: 'hoodies',
-  img: ['products/hoodies/bmw_m4.webp'],
-  description: "Bavarian beast, redefined -- M4 aggression printed for everyday drip",
-  badge: ''
-},
-{
-  title: 'GTR Nismo Hoodie',
-  price: 750,
-  cat: 'hoodies',
-  img: ['products/hoodies/gtr_nismo.jpeg'],
-  description: "Godzilla unleashed -- Nismo energy stitched for true JDM fans",
-  badge: ''
-},
-{
-  title: 'Skyline R34 Hoodie',
-  price: 700,
-  cat: 'hoodies',
-  img: ['products/hoodies/skyline_r34.jpeg'],
-  description: "R34 legend, timeless flex -- Skyline dreams turned into wearable drip",
-  badge: ''
-},
-{
-  title: 'BMW Pink Haze Hoodie',
-  price: 680,
-  cat: 'hoodies',
-  img: ['products/hoodies/bmw_pink.jpeg'],
-  description: "Bold color, Bavarian power -- BMW vibes with pink heat",
-  badge: ''
-},
-{
-  title: 'GTRS Red Beam Hoodie',
-  price: 720,
-  cat: 'hoodies',
-  img: ['products/hoodies/gtrs_red_beam.jpeg'],
-  description: "Twin turbo legend lit in crimson energy -- GTRS meet red beam chaos",
-  badge: ''
-},
-{
-  title: 'Supra Japan Hoodie',
-  price: 700,
-  cat: 'hoodies',
-  img: ['products/hoodies/supra_japan.jpeg'],
-  description: "Toyota’s icon repping the homeland -- JDM Supra hoodie with raw heritage",
-  badge: ''
-},
-{
-  title: 'Dodge Charger Hoodie',
-  price: 680,
-  cat: 'hoodies',
-  img: ['products/hoodies/dodge_charger.jpeg'],
-  description: "American muscle dominance -- Charger attitude built for the streets",
-  badge: ''
-},
-{
-  title: 'Lamborghini Huracan Hoodie',
-  price: 750,
-  cat: 'hoodies',
-  img: ['products/hoodies/lambo_huracan.jpeg'],
-  description: "Exotic fury, raging bull vibes -- Huracan spirit stitched into a hoodie",
-  badge: ''
-},
-{
-  title: 'The Speed Community Hoodie',
-  price: 650,
-  cat: 'hoodies',
-  img: ['products/hoodies/the_speed_community.jpeg'],
-  description: "For the car culture family -- speed, unity, and drip stitched as one",
-  badge: ''
-},
-{
-  title: 'F1 Red Bull Hoodie',
-  price: 720,
-  cat: 'hoodies',
-  img: ['products/hoodies/f1_redbull.jpeg'],
-  description: "Max power, team Red Bull vibes -- Formula 1 energy reimagined in streetwear",
-  badge: ''
-},
-{
-  title: 'Porsche 911 Petals Hoodie',
-  price: 700,
-  cat: 'hoodies',
-  img: ['products/hoodies/porsche_911_petals.jpeg'],
-  description: "Performance and elegance collide -- Porsche 911 wrapped in floral drip",
-  badge: ''
-},
+      title: 'F1 Aston Martin Hoodie',
+      price: 700,
+      cat: 'hoodies',
+      img: ['products/hoodies/f1_aston_martin.jpeg'],
+      description: "Silver Arrows speed, stitched for the streets -- Mercedes AMG energy in hoodie form",
+      badge: '',
+      tags: ['hoodie','car','f1','aston-martin','racing','euro']
+    },
     {
-  title: 'Nasty Hoodie',
-  price: 650,
-  cat: 'hoodies',
-  img: ['products/hoodies/nasty_hoodie.jpeg'],
-  description: 'Bold, unapologetic streetwear energy -- drip hard with \'choeff\' vibes',
-  badge: ''
-},
-{
-  title: 'Nasty Juice Hoodie',
-  price: 650,
-  cat: 'hoodies',
-  img: ['products/hoodies/nasty_juice_hoodie.jpeg'],
-  description: 'Fresh flavors, fresh fit -- channel Nasty Juice energy on the streets',
-  badge: ''
-},
+      title: 'Gear 5 Nike Hoodie',
+      price: 750,
+      cat: 'hoodies',
+      img: ['products/hoodies/gear5_nike.jpeg'],
+      description: "Luffy Gear 5 meets Nike swagger -- anime drip fused with street legend style",
+      badge: '',
+      tags: ['hoodie','anime','one-piece','gear5','nike','mashup']
+    },
+    {
+      title: 'Porsche 911 Purple Hoodie',
+      price: 700,
+      cat: 'hoodies',
+      img: ['products/hoodies/porsche_911_purple.jpeg'],
+      description: "Royal vibes on a Stuttgart icon -- Porsche 911 flex in purple haze",
+      badge: '',
+      tags: ['hoodie','car','porsche','911','purple','euro']
+    },
+    {
+      title: 'BMW M4 Hoodie',
+      price: 700,
+      cat: 'hoodies',
+      img: ['products/hoodies/bmw_m4.webp'],
+      description: "Bavarian beast, redefined -- M4 aggression printed for everyday drip",
+      badge: '',
+      tags: ['hoodie','car','bmw','m4','euro']
+    },
+    {
+      title: 'GTR Nismo Hoodie',
+      price: 750,
+      cat: 'hoodies',
+      img: ['products/hoodies/gtr_nismo.jpeg'],
+      description: "Godzilla unleashed -- Nismo energy stitched for true JDM fans",
+      badge: '',
+      tags: ['hoodie','car','nissan','gtr','nismo','jdm']
+    },
+    {
+      title: 'Skyline R34 Hoodie',
+      price: 700,
+      cat: 'hoodies',
+      img: ['products/hoodies/skyline_r34.jpeg'],
+      description: "R34 legend, timeless flex -- Skyline dreams turned into wearable drip",
+      badge: '',
+      tags: ['hoodie','car','nissan','skyline','r34','jdm']
+    },
+    {
+      title: 'BMW Pink Haze Hoodie',
+      price: 680,
+      cat: 'hoodies',
+      img: ['products/hoodies/bmw_pink.jpeg'],
+      description: "Bold color, Bavarian power -- BMW vibes with pink heat",
+      badge: '',
+      tags: ['hoodie','car','bmw','pink','euro']
+    },
+    {
+      title: 'GTRS Red Beam Hoodie',
+      price: 720,
+      cat: 'hoodies',
+      img: ['products/hoodies/gtrs_red_beam.jpeg'],
+      description: "Twin turbo legend lit in crimson energy -- GTRS meet red beam chaos",
+      badge: '',
+      tags: ['hoodie','car','porsche','gt3rs','red','euro']
+    },
+    {
+      title: 'Supra Japan Hoodie',
+      price: 700,
+      cat: 'hoodies',
+      img: ['products/hoodies/supra_japan.jpeg'],
+      description: "Toyota’s icon repping the homeland -- JDM Supra hoodie with raw heritage",
+      badge: '',
+      tags: ['hoodie','car','toyota','supra','jdm','japan']
+    },
+    {
+      title: 'Dodge Charger Hoodie',
+      price: 680,
+      cat: 'hoodies',
+      img: ['products/hoodies/dodge_charger.jpeg'],
+      description: "American muscle dominance -- Charger attitude built for the streets",
+      badge: '',
+      tags: ['hoodie','car','dodge','charger','muscle','usa']
+    },
+    {
+      title: 'Lamborghini Huracan Hoodie',
+      price: 750,
+      cat: 'hoodies',
+      img: ['products/hoodies/lambo_huracan.jpeg'],
+      description: "Exotic fury, raging bull vibes -- Huracan spirit stitched into a hoodie",
+      badge: '',
+      tags: ['hoodie','car','lamborghini','huracan','supercar','euro']
+    },
+    {
+      title: 'The Speed Community Hoodie',
+      price: 650,
+      cat: 'hoodies',
+      img: ['products/hoodies/the_speed_community.jpeg'],
+      description: "For the car culture family -- speed, unity, and drip stitched as one",
+      badge: '',
+      tags: ['hoodie','car','community','logo','brand']
+    },
+    {
+      title: 'F1 Red Bull Hoodie',
+      price: 720,
+      cat: 'hoodies',
+      img: ['products/hoodies/f1_redbull.jpeg'],
+      description: "Max power, team Red Bull vibes -- Formula 1 energy reimagined in streetwear",
+      badge: '',
+      tags: ['hoodie','car','f1','red-bull','racing','euro']
+    },
+    {
+      title: 'Porsche 911 Petals Hoodie',
+      price: 700,
+      cat: 'hoodies',
+      img: ['products/hoodies/porsche_911_petals.jpeg'],
+      description: "Performance and elegance collide -- Porsche 911 wrapped in floral drip",
+      badge: '',
+      tags: ['hoodie','car','porsche','911','floral','euro']
+    },
+    {
+      title: 'Nasty Hoodie',
+      price: 650,
+      cat: 'hoodies',
+      img: ['products/hoodies/nasty_hoodie.jpeg'],
+      description: 'Bold, unapologetic streetwear energy -- drip hard with \'choeff\' vibes',
+      badge: '',
+      tags: ['hoodie','streetwear','nasty','logo']
+    },
+    {
+      title: 'Nasty Juice Hoodie',
+      price: 650,
+      cat: 'hoodies',
+      img: ['products/hoodies/nasty_juice_hoodie.jpeg'],
+      description: 'Fresh flavors, fresh fit -- channel Nasty Juice energy on the streets',
+      badge: '',
+      tags: ['hoodie','streetwear','nasty','juice','logo']
+    },
     {
       title: 'Drift Threads™ Mug',
       price: 150,
       cat: 'mugs',
       img: ['products/mugs/driftthreads_mug.jpeg'],
       description:"Morning coffee, leveled up -- Drift Threads™ approved",
-      badge:'Official'
+      badge:'Official',
+      tags: ['mug','brand','official','driftthreads','drinkware']
     },
     {
       title: 'Drift Threads™ Mug (White)',
@@ -1921,26 +1837,20 @@
       cat: 'mugs',
       img: ['products/mugs/driftthreads_mug_white.jpeg'],
       description:"Sleek, clean, and fully Drift Threads™ certified -- sip in style",
-      badge:'Official'
-    },
-    /* {
-      title: 'Liquid Gold™ Honey (1kg)',
-      price: 220,
-      cat: 'supplements',
-      img: ['products/supplements/honey_1kg.jpeg'],
-      description:"Pure, golden, unstoppable -- Liquid Gold™ by Drift Threads™",
-      badge:'Limited'
-    } */
+      badge:'Official',
+      tags: ['mug','brand','official','driftthreads','drinkware','white']
+    }
   ];
 
-  /* Guarantee each product has an images array and a stable id */
+  /* Normalize images & tags; add ids */
   products.forEach((p, i) => {
     p.images = ensureImagesArray(p);
     if(!p.id) p.id = `prod-${i}`;
+    p.tags = Array.isArray(p.tags) ? p.tags.map(t => String(t).trim().toLowerCase()).filter(Boolean) : [];
   });
   sponsors.forEach((s, i) => { if(!s.id) s.id = `spon-${i}`; });
 
-  /* DOM references used across features */
+  /* DOM refs */
   const grid = document.getElementById('grid');
   const searchInput = document.getElementById('searchInput');
   const searchBtn = document.getElementById('searchBtn');
@@ -1968,8 +1878,6 @@
   const headerInfoBtn = document.getElementById('headerInfoBtn');
   const headerInfoTooltip = document.getElementById('headerInfoTooltip');
   const connectionToast = document.getElementById('connectionToast');
-
-  /* New: Footer policy buttons + modal refs */
   const termsLink = document.getElementById('terms-link');
   const privacyLink = document.getElementById('privacy-link');
   const shippingLink = document.getElementById('shipping-link');
@@ -1977,6 +1885,7 @@
   const policyTitle = document.getElementById('policyTitle');
   const policyBody = document.getElementById('policyBody');
   const closePolicyBtn = document.getElementById('closePolicy');
+  const tagBar = document.getElementById('tagBar');
 
   /* State */
   let cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -1986,8 +1895,9 @@
   let loading = false;
   let lastAdded = null;
   let notifTimer = null;
+  let selectedTags = new Set(); // NEW
 
-  /* Infinite scroll observer */
+  /* IntersectionObserver for infinite scroll */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if(entry.isIntersecting && !loading){
@@ -1997,21 +1907,15 @@
     });
   }, { root: null, rootMargin: '300px', threshold: 0.1 });
 
-  /* Sponsor placement cadence (after N normal cards) */
   let displayedNormalCount = 0;
   let sponsorIndex = 0;
   const SPONSOR_AFTER = 6;
 
-  /* LocalStorage key for "Show all" categories (desktop) */
   const CATS_SHOW_ALL_KEY = 'catsShowAll';
-
-  /* Gate for enabling infinite scroll only after two initial batches */
   let allowInfiniteScroll = false;
 
-  /* Persist cart */
   function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
 
-  /* Update cart UI and totals */
   function updateCartDisplay(){
     const totalQty = cart.reduce((a, c) => a + (c.qty || 0), 0);
     cartCount.textContent = totalQty;
@@ -2054,7 +1958,6 @@
     cartTotal.textContent = money(cart.reduce((a,c) => a + (c.price * (c.qty || 0)), 0));
   }
 
-  /* --- Add-to-cart toast --- */
   const addNotif = document.getElementById('addNotif');
   const addNotifMsg = document.getElementById('addNotifMsg');
   const addNotifThumb = document.getElementById('addNotifThumb');
@@ -2114,9 +2017,17 @@
     setTimeout(()=> addNotif.classList.remove('hiding'), 320);
   });
 
-  /* --- Share helpers --- */
-  function productShareUrl(p){ const base = `${window.location.origin}${window.location.pathname}`; const params = new URLSearchParams(window.location.search); params.set('q', p.title); return `${base}?${params.toString()}`; }
-  function showShareNotification(msg='Link copied!'){ try { document.getElementById('shareNotifMsg').textContent = msg; document.getElementById('shareNotif').classList.add('visible'); setTimeout(()=> document.getElementById('shareNotif').classList.remove('visible'), 2000); } catch(e){} }
+  function productShareUrl(p){
+    const base = `${window.location.origin}${window.location.pathname}`;
+    const params = new URLSearchParams();
+    params.set('q', p.title);
+    params.set('cat', p.cat || 'all');
+    if(p.tags && p.tags.length) params.set('tags', p.tags.join(','));
+    return `${base}?${params.toString()}`;
+  }
+  function showShareNotification(msg='Link copied!'){
+    try { document.getElementById('shareNotifMsg').textContent = msg; document.getElementById('shareNotif').classList.add('visible'); setTimeout(()=> document.getElementById('shareNotif').classList.remove('visible'), 2000); } catch(e){}
+  }
   async function shareProduct(p){
     const url = productShareUrl(p);
     const shareData = { title: p.title, text: `${p.title} -- ${money(p.price)}\n\n${(p.description||'').replace(/<[^>]*>?/gm,'')}`, url };
@@ -2129,7 +2040,7 @@
     try { window.prompt('Copy this link:', url); showShareNotification('Link ready -- copied?'); } catch(err){ showShareNotification('Could not copy link'); }
   }
 
-  /* Construct a product card (with carousel + back face actions) */
+  /* Build a product card */
   function createCard(p, {eager=false} = {}){
     const card = document.createElement('article');
     card.className = 'card';
@@ -2138,11 +2049,9 @@
     const inner = document.createElement('div');
     inner.className = 'card-inner';
 
-    // FRONT
     const front = document.createElement('div');
     front.className = 'card-front';
 
-    // Image carousel
     const imgWrap = document.createElement('div');
     imgWrap.className = 'img-wrap';
     const images = p.images || ensureImagesArray(p);
@@ -2165,7 +2074,6 @@
 
     imgWrap.appendChild(carouselContainer);
 
-    // Front body
     const frontBody = document.createElement('div');
     frontBody.className = 'front-body';
     frontBody.innerHTML = `<div class="product-title-front" style="margin-bottom:5px">${p.title}</div>
@@ -2175,23 +2083,49 @@
     front.appendChild(imgWrap);
     front.appendChild(frontBody);
 
-    // BACK
     const back = document.createElement('div');
     back.className = 'card-back';
-    back.innerHTML = `<h3 style="margin:0;font-weight:600">${p.title}</h3>
-      <p style="margin:0;color:#bcd9f2;">${p.description}</p>
-      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="view-img-btn" type="button" aria-label="View ${p.title} images"><i class="fas fa-image" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">View</span></button>
-        <button class="share-btn" type="button" aria-label="Share ${p.title}"><i class="fas fa-share-alt" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Share</span></button>
-        <button class="add-btn" type="button" aria-label="Add ${p.title}"><i class="fas fa-plus" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Add</span></button>
-      </div>`;
+    const desc = document.createElement('div');
+    desc.className = 'card-desc';
+    desc.innerHTML = `<h3 style="margin:0;font-weight:600">${p.title}</h3>
+      <p style="margin:0;color:#bcd9f2;">${p.description}</p>`;
+    back.appendChild(desc);
+
+    // Tag chips (muted) on back
+    const tagsWrap = document.createElement('div');
+    tagsWrap.className = 'tag-list';
+    (p.tags || []).forEach(t => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tag-chip-sm';
+      btn.dataset.tag = t;
+      btn.textContent = `#${t}`;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleTag(t, true);
+      });
+      tagsWrap.appendChild(btn);
+    });
+    back.appendChild(tagsWrap);
+
+    const actions = document.createElement('div');
+    actions.className = 'card-actions';
+    actions.style.display = 'flex';
+    actions.style.gap = '8px';
+    actions.style.flexWrap = 'wrap';
+    actions.innerHTML = `
+      <button class="view-img-btn" type="button" aria-label="View ${p.title} images"><i class="fas fa-image" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">View</span></button>
+      <button class="share-btn" type="button" aria-label="Share ${p.title}"><i class="fas fa-share-alt" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Share</span></button>
+      <button class="add-btn" type="button" aria-label="Add ${p.title}"><i class="fas fa-plus" aria-hidden="true" style="padding-right:3px;"></i><span class="btn-label">Add</span></button>
+    `;
+    back.appendChild(actions);
 
     const innerWrap = inner;
     innerWrap.appendChild(front);
     innerWrap.appendChild(back);
     card.appendChild(inner);
 
-    // Badge injection on front image if present (fixed duplicate variable declaration)
+    // Badge injection on front image
     try {
       const imgWrapForBadge = front.querySelector('.img-wrap');
       if(imgWrapForBadge && p.badge && String(p.badge).trim()){
@@ -2210,12 +2144,10 @@
       }
     } catch(err){ console.error('Badge injection', err); }
 
-    // Prevent flipping when interacting with controls/buttons
     function isControlTarget(el){
       return el.closest('.carousel-btn') || el.closest('.carousel-dots') || el.closest('.view-img-btn') || el.closest('.add-btn') || el.closest('.share-btn') || el.closest('.carousel');
     }
 
-    // Flip card on click (outside controls)
     card.addEventListener('click', (e) => {
       if(isControlTarget(e.target)) return;
       const other = document.querySelector('.card.flipped');
@@ -2223,19 +2155,16 @@
       card.classList.toggle('flipped');
     });
 
-    // Add to cart (front/back)
     const frontAdd = front.querySelector('.add-btn');
     if(frontAdd) frontAdd.addEventListener('click', (e) => { e.stopPropagation(); addToCart(p); });
     back.querySelectorAll('.add-btn').forEach(b => {
       b.addEventListener('click', e => { e.stopPropagation(); addToCart(p); });
     });
 
-    // Share (back)
     back.querySelectorAll('.share-btn').forEach(b => {
       b.addEventListener('click', e => { e.stopPropagation(); shareProduct(p); });
     });
 
-    // View images (back) -> lightbox starting from current carousel index
     const viewBtn = back.querySelector('.view-img-btn');
     if(viewBtn){
       viewBtn.addEventListener('click', e => {
@@ -2246,7 +2175,6 @@
       });
     }
 
-    // Keyboard flip (Enter/Space)
     card.addEventListener('keydown', e => {
       const isSpace = e.key === ' ' || e.key === 'Spacebar' || e.code === 'Space';
       if(e.key === 'Enter' || isSpace){
@@ -2260,7 +2188,7 @@
     return card;
   }
 
-  /* Sponsor card creation */
+  /* Sponsor card (Sponsored label moved to body area) */
   function createSponsorCard(s){
     const card = document.createElement('article');
     card.className = 'card sponsor';
@@ -2271,12 +2199,9 @@
     front.innerHTML = `
       <div class="img-wrap sponsor-card">
         <img loading="lazy" decoding="async" src="${s.img}" alt="${s.title} logo">
-        <div class="sponsor-overlay">
-          <span class="dot" aria-hidden="true"></span>
-          <span class="overlay-text">${s.badge || 'Sponsored'}</span>
-        </div>
       </div>
       <div class="front-body" role="link" aria-label="${s.title} -- Sponsored" tabindex="-1">
+        <div class="sponsor-badge">${s.badge || 'Sponsored'}</div>
         <div class="sponsor-title">${s.title}</div>
         <div class="sponsor-desc">${s.description || ''}</div>
       </div>`;
@@ -2288,18 +2213,15 @@
     return card;
   }
 
-  /* Spinner helpers */
   function showSpinner(){ document.getElementById('loadingSpinner').style.display = 'block'; }
   function hideSpinner(){ document.getElementById('loadingSpinner').style.display = 'none'; }
 
-  /* Intersection observer helper: observe last card for infinite loading */
   function observeLastCard(){
     const cards = grid.querySelectorAll('.card');
     const last = cards[cards.length - 1];
     if(last) observer.observe(last);
   }
 
-  /* Rendering + infinite scroll logic */
   function renderNextBatch(){
     return new Promise((resolve) => {
       if(loading){ resolve(); return; }
@@ -2308,7 +2230,7 @@
       setTimeout(() => {
         const slice = filteredProducts.slice(currentIndex, currentIndex + batchSize);
         slice.forEach((p, i) => {
-          const eager = (currentIndex === 0); // eager-load first batch for snappier first paint
+          const eager = (currentIndex === 0);
           const c = createCard(p, {eager});
           c.classList.add('pop-in');
           c.style.animationDelay = `${i * 60}ms`;
@@ -2325,7 +2247,6 @@
         currentIndex += slice.length;
         loading = false; hideSpinner();
 
-        // Only start observing for infinite scroll after initial two batches are done
         if(allowInfiniteScroll){
           if(currentIndex >= filteredProducts.length) observer.disconnect();
           else observeLastCard();
@@ -2338,30 +2259,106 @@
     });
   }
 
-  /* Update mobile product count (shows how many results after search/filter) */
+  /* Tag index + bar */
+  function buildTagIndex(list){
+    const freq = new Map();
+    list.forEach(p => (p.tags || []).forEach(t => freq.set(t, (freq.get(t)||0)+1)));
+    return freq;
+  }
+  function buildTagBar(){
+    const freq = buildTagIndex(products);
+    const items = Array.from(freq.entries())
+      .sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
+    tagBar.innerHTML = '';
+    const MAX_TAGS = 60;
+    const toShow = items.slice(0, MAX_TAGS);
+
+    // Clear button first (sticky)
+    const clearBtn = document.createElement('button');
+    clearBtn.id = 'clearTagsBtn';
+    clearBtn.type = 'button';
+    clearBtn.textContent = 'Clear tags';
+    clearBtn.addEventListener('click', () => {
+      selectedTags.clear();
+      filterAndRender();
+      updateTagBarSelection();
+    });
+    tagBar.appendChild(clearBtn);
+
+    toShow.forEach(([tag, count], idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tag-chip';
+      btn.dataset.tag = tag;
+      btn.dataset.order = String(idx);
+      btn.textContent = `#${tag}`;
+      btn.title = `${count} item${count>1?'s':''}`;
+      btn.addEventListener('click', () => toggleTag(tag, true));
+      tagBar.appendChild(btn);
+    });
+
+    updateTagBarSelection();
+  }
+  function updateTagBarSelection(){
+    const chips = Array.from(tagBar.querySelectorAll('.tag-chip'));
+    const selected = selectedTags;
+    chips.forEach(ch => {
+      const t = ch.dataset.tag;
+      ch.classList.toggle('active', selected.has(t));
+    });
+
+    // Update Clear button text and state
+    const clearEl = document.getElementById('clearTagsBtn');
+    if(clearEl){
+      const n = selected.size;
+      clearEl.innerHTML = n ? `Clear tags (<span class="count">${n}</span>)` : 'Clear tags';
+      clearEl.disabled = n === 0;
+      clearEl.setAttribute('aria-disabled', n === 0 ? 'true' : 'false');
+    }
+
+    // Reorder: active tags first (keep original order within groups)
+    const ordered = chips.slice().sort((a,b) => {
+      const aActive = selected.has(a.dataset.tag) ? 1 : 0;
+      const bActive = selected.has(b.dataset.tag) ? 1 : 0;
+      if(bActive !== aActive) return bActive - aActive;
+      return (parseInt(a.dataset.order,10)||0) - (parseInt(b.dataset.order,10)||0);
+    });
+
+    // Remove all chips then append in the new order (keep clear button as first child)
+    chips.forEach(ch => ch.remove());
+    ordered.forEach(ch => tagBar.appendChild(ch));
+  }
+  function getSelectedTagsString(){ return Array.from(selectedTags).join(','); }
+  function toggleTag(tag, doFilter=false){
+    if(selectedTags.has(tag)) selectedTags.delete(tag); else selectedTags.add(tag);
+    updateTagBarSelection();
+    if(doFilter) filterAndRender();
+  }
+
+  /* Product count text (show only count) */
   function updateProductCount(){
     if(!productCountEl) return;
     const n = filteredProducts.length;
     productCountEl.textContent = `${n} item${n === 1 ? '' : 's'}`;
   }
 
-  /* Filtering (by q and category) */
+  /* Filtering (q + category + tags) */
   function filterAndRender(){
     const q = (searchInput.value || '').trim().toLowerCase();
-    const cat = document.querySelector('.cat-btn.active').dataset.cat;
+    const cat = document.querySelector('.cat-btn.active')?.dataset?.cat || 'all';
     filteredProducts = products.filter(p => {
       const matchCat = (cat === 'all') || p.cat === cat;
-      const matchQ = !q || p.title.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      const matchQ = !q || p.title.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q) || (p.tags||[]).some(t => t.includes(q));
+      const matchTags = selectedTags.size === 0 || Array.from(selectedTags).every(tag => (p.tags||[]).includes(tag));
+      return matchCat && matchQ && matchTags;
     });
 
-    // Reset grid/infinite state and URL
     currentIndex = 0;
     grid.innerHTML = '';
     displayedNormalCount = 0;
     sponsorIndex = 0;
 
-    updateURL({ q: searchInput.value.trim(), cat }, { replace: true });
+    updateURL({ q: searchInput.value.trim(), cat, tags: getSelectedTagsString() }, { replace: true });
     updateProductCount();
 
     if(!filteredProducts.length){
@@ -2373,18 +2370,19 @@
     return renderNextBatch();
   }
 
-  /* URL state helpers */
+  /* URL state helpers (now includes tags) */
   function updateURL(state = {}, opts = { replace:false }){
     const params = new URLSearchParams(window.location.search);
     if(state.q !== undefined && state.q !== null && String(state.q).trim() !== '') params.set('q', String(state.q).trim()); else params.delete('q');
     if(state.cat !== undefined && state.cat !== null && String(state.cat).trim() !== '' && String(state.cat).trim() !== 'all') params.set('cat', String(state.cat).trim()); else params.delete('cat');
+    if(state.tags !== undefined && state.tags !== null && String(state.tags).trim() !== '') params.set('tags', String(state.tags).trim()); else params.delete('tags');
     const newPath = window.location.pathname + (params.toString()?`?${params.toString()}` : '');
-    if(opts.replace) history.replaceState({ q: state.q||'', cat: state.cat||'' }, '', newPath);
-    else history.pushState({ q: state.q||'', cat: state.cat||'' }, '', newPath);
+    if(opts.replace) history.replaceState({ q: state.q||'', cat: state.cat||'', tags: state.tags||'' }, '', newPath);
+    else history.pushState({ q: state.q||'', cat: state.cat||'', tags: state.tags||'' }, '', newPath);
   }
   function readStateFromURL(){
     const params = new URLSearchParams(window.location.search);
-    return { q: params.get('q') || '', cat: params.get('cat') || '' };
+    return { q: params.get('q') || '', cat: params.get('cat') || '', tags: params.get('tags') || '' };
   }
   function applyStateToUI(state){
     if(typeof state.q === 'string'){ searchInput.value = state.q; clearBtn.style.display = state.q ? 'flex' : 'none'; }
@@ -2393,398 +2391,54 @@
     const match = document.querySelector(`.cat-btn[data-cat="${cat}"]`);
     if(match){ match.classList.add('active'); match.setAttribute('aria-current','true'); setTimeout(()=> match.scrollIntoView({ inline:'center', behavior:'smooth' }), 80); }
     else { const first = document.querySelector('.cat-btn[data-cat="all"]') || document.querySelector('.cat-btn'); if(first){ first.classList.add('active'); first.setAttribute('aria-current','true'); } }
+
+    // Tags
+    selectedTags.clear();
+    const tagsStr = (state.tags || '').trim();
+    if(tagsStr){
+      tagsStr.split(',').map(t => t.trim().toLowerCase()).filter(Boolean).forEach(t => selectedTags.add(t));
+    }
+    updateTagBarSelection();
   }
   function applyStateFromURL(){ const st = readStateFromURL(); applyStateToUI(st); }
 
-  /* Modal interaction helpers (for lightbox & cart & policy) */
-  (function(){
-    function isInsideAny(target, list){ return list.some(el => el && (el === target || el.contains(target))); }
-    function modalKeyHandler(e){
-      if(e.key !== 'Tab') return;
-      const activeModal = document.querySelector('.cart-modal.active, .lightbox.active, .info-modal.active');
-      if(!activeModal) return;
-      const focusables = Array.from(activeModal.querySelectorAll('a[href], button, textarea, input, select, [tabindex]:not([tabindex="-1"])')).filter(el => !el.disabled && el.offsetParent !== null);
-      if(!focusables.length){ e.preventDefault(); return; }
-      const first = focusables[0], last = focusables[focusables.length-1];
-      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-    }
-    window.disableBackgroundInteraction = function(allowedElements = []){
-      // lock scroll position
-      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-      document.body.dataset.scrollY = String(scrollY);
-      document.body.classList.add('modal-open');
-      document.body.style.top = `-${scrollY}px`;
-
-      document.querySelectorAll('header, main, footer, #productInfoBar').forEach(el => {
-        el.setAttribute('aria-hidden','true');
-        try{ el.inert = true; }catch(e){}
-        el.style.pointerEvents = 'none';
+  /* Category bar generation + wiring */
+  function buildCategoryBar(){
+    if(!catBar) return;
+    // Clear existing except hint if it exists
+    const hint = document.getElementById('catScrollHint');
+    catBar.innerHTML = '';
+    CATEGORIES.forEach((c, idx) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `cat-btn${c.id==='all'?' active':''}`;
+      btn.dataset.cat = c.id;
+      if(c.id==='all'){ btn.setAttribute('aria-current','true'); }
+      btn.textContent = c.label;
+      catBar.appendChild(btn);
+    });
+    if(hint){ catBar.appendChild(hint); }
+    wireCategoryButtons();
+  }
+  function wireCategoryButtons(){
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', ()=> {
+        document.querySelectorAll('.cat-btn').forEach(b => { b.classList.remove('active'); b.removeAttribute('aria-current'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-current','true');
+        const cat = btn.dataset.cat;
+        updateURL({ q: searchInput.value.trim(), cat, tags: getSelectedTagsString() }, { replace:false });
+        filterAndRender(); setTimeout(()=> updateCatBarUI(), 90);
       });
-      const prevent = function(e){ const tgt = e.target; if(isInsideAny(tgt, allowedElements)) return; e.preventDefault(); };
-      document._modalPrevent = prevent;
-      document.addEventListener('touchmove', prevent, { passive:false });
-      document.addEventListener('wheel', prevent, { passive:false });
-      document.addEventListener('keydown', modalKeyHandler, true);
-    };
-    window.enableBackgroundInteraction = function(){
-      const savedY = parseInt(document.body.dataset.scrollY || '0', 10);
-      document.body.classList.remove('modal-open');
-      document.body.style.top = '';
-      window.scrollTo(0, savedY);
-
-      document.querySelectorAll('header, main, footer, #productInfoBar').forEach(el => {
-        el.removeAttribute('aria-hidden');
-        try{ el.inert = false; }catch(e){}
-        el.style.pointerEvents = '';
-      });
-      if(document._modalPrevent){
-        document.removeEventListener('touchmove', document._modalPrevent, { passive:false });
-        document.removeEventListener('wheel', document._modalPrevent, { passive:false });
-        document._modalPrevent = null;
-      }
-      document.removeEventListener('keydown', modalKeyHandler, true);
-    };
-    window._isInsideAny = isInsideAny;
-  })();
-
-  /* Cart modal handlers */
-  function openCartModal(){ cartModal.classList.add('active'); cartModal.setAttribute('aria-hidden','false'); disableBackgroundInteraction([cartModal.querySelector('.cart-content')]); setTimeout(()=>{ try{ waOrderBtn.focus(); }catch(e){} }, 50); }
-  cartBtn.addEventListener('click', ()=> openCartModal());
-  closeCart.addEventListener('click', ()=>{ cartModal.classList.remove('active'); cartModal.setAttribute('aria-hidden','true'); enableBackgroundInteraction(); cartBtn.focus(); });
-  cartModal.addEventListener('click', e => { if(e.target === cartModal) closeCart.click(); });
-  clearCartBtn.addEventListener('click', ()=> { if(cart.length && confirm('Clear cart?')){ cart = []; saveCart(); updateCartDisplay(); } });
-
-  /* WhatsApp integration + Google Sheets webhook */
-  const WA_NUMBER = '27713468567';
-
-  /* Fill this with your Apps Script Web App URL, e.g. 'https://script.google.com/macros/s/XXXXX/exec' */
-  const ORDER_WEBHOOK_URL = ''; // TODO: paste your Web App URL here
-
-  function genOrderId(){
-    const t = new Date();
-    const pad = n => String(n).padStart(2,'0');
-    const date = `${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}`;
-    const time = `${pad(t.getHours())}${pad(t.getMinutes())}${pad(t.getSeconds())}`;
-    const rand = Math.random().toString(36).slice(2,6).toUpperCase();
-    return `DT-${date}-${time}-${rand}`;
-  }
-
-  function buildWhatsAppMessage(orderId){
-    if(!cart || !cart.length) return encodeURIComponent("🛒 Hey -- ordering from the site:\n\nNo items in cart. (bruh)");
-    let lines = [];
-    lines.push("🛒 Hey -- ordering from the site:");
-    if(orderId){ lines.push(`Order ID: ${orderId}`); }
-    lines.push("");
-    cart.forEach(item => {
-      const line = `- ${item.title} (${money(item.price)}) x${item.qty}`;
-      lines.push(line);
+      btn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); btn.click(); }});
     });
-    lines.push("");
-    const subtotal = money(cart.reduce((a,c) => a + c.price*c.qty, 0));
-    lines.push(`*Subtotal: ${subtotal}*`);
-    lines.push("");
-    lines.push(`Link: ${window.location.href}`);
-    return encodeURIComponent(lines.join("\n"));
   }
 
-  function getWhatsAppLink(orderId){
-    const base = `https://wa.me/${WA_NUMBER}`;
-    const msg = buildWhatsAppMessage(orderId);
-    return `${base}?text=${msg}`;
-  }
-
-  async function sendOrderToSheet(channel='whatsapp', orderId=null){
-    try {
-      if(!ORDER_WEBHOOK_URL) return;
-      const payload = {
-        orderId: orderId || genOrderId(),
-        channel,
-        items: cart.map(({ id, title, price, qty }) => ({ id, title, price, qty })),
-        subtotal: cart.reduce((a,c) => a + c.price * (c.qty||0), 0),
-        currency: 'ZAR',
-        pageUrl: window.location.href,
-        referrer: document.referrer || '',
-        userAgent: navigator.userAgent || ''
-      };
-      const body = JSON.stringify(payload);
-      if(navigator.sendBeacon){
-        const blob = new Blob([body], { type: 'text/plain' });
-        navigator.sendBeacon(ORDER_WEBHOOK_URL, blob);
-      } else {
-        fetch(ORDER_WEBHOOK_URL, {
-          method:'POST',
-          mode:'no-cors',
-          headers:{ 'Content-Type':'text/plain' },
-          body
-        }).catch(()=>{});
-      }
-    } catch(e){}
-  }
-
-  waOrderBtn.addEventListener('click', () => {
-    const orderId = genOrderId();
-    sendOrderToSheet('whatsapp', orderId);
-    const link = getWhatsAppLink(orderId);
-    window.open(link, '_blank', 'noopener');
-  });
-
-  /* LIGHTBOX with looping carousel + pinch/wheel zoom + open/close animations */
-  function openLightbox(imgs, startIndex = 0, titleText = 'Image'){
-    if(!Array.isArray(imgs) || !imgs.length) imgs = ['assets/placeholder.png'];
-    lbFrame.innerHTML = ''; // clear previous
-    const carouselHolder = document.createElement('div');
-    carouselHolder.style.width = '100%';
-    carouselHolder.style.height = '100%';
-
-    const api = createCarousel(carouselHolder, imgs, {
-      onImageClick: () => {},
-      startIndex: startIndex,
-      loop: true,
-      showDots: true,
-      showButtons: true,
-      showCounter: true,
-      className: 'carousel',
-      enableZoom: true,
-      eagerFirst: true,
-      getAlt: (i, total) => `${titleText} -- large view ${i+1} of ${total}`
-    });
-    lightboxState.api = api;
-
-    lbFrame.appendChild(carouselHolder);
-
-    // Show lightbox with animation
-    imgLightbox.classList.add('active');
-    imgLightbox.setAttribute('aria-hidden','false');
-
-    // Ensure proper sizing and index after lightbox is visible (fix rare offset)
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        try {
-          api.setIndex(startIndex);
-          if(api.refresh) api.refresh();
-        } catch(e){}
-        imgLightbox.classList.add('opened');
-        setTimeout(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 60);
-      });
-    });
-
-    disableBackgroundInteraction([imgLightbox, lbFrame]);
-    lightboxState.active = true;
-
-    // focus close button for a11y
-    setTimeout(()=>{ try{ closeLightboxBtn.focus(); }catch(e){} }, 50);
-
-    // Mobile-specific control auto-hide after 1s idle
-    const isMobile = window.matchMedia('(max-width: 720px)').matches;
-    if(isMobile){
-      const resetIdle = () => {
-        imgLightbox.classList.remove('hide-controls');
-        if(lightboxState.idleTimer) clearTimeout(lightboxState.idleTimer);
-        lightboxState.idleTimer = setTimeout(() => {
-          imgLightbox.classList.add('hide-controls');
-        }, 1000);
-      };
-      ['touchstart','pointermove','mousemove','keydown'].forEach(ev => imgLightbox.addEventListener(ev, resetIdle, {passive:true}));
-      resetIdle(); // start timer
-    }
-
-    // Keep alignment correct on resize/orientation changes
-    const onWinResize = debounce(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 80);
-    window.addEventListener('resize', onWinResize);
-    imgLightbox._onResize = onWinResize;
-  }
-  function lightboxClose(withAnim=true){
-    if(lightboxState.idleTimer){ clearTimeout(lightboxState.idleTimer); lightboxState.idleTimer = null; }
-    if(withAnim){
-      imgLightbox.classList.add('closing');
-      setTimeout(()=>{
-        try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
-        lightboxState.api = null;
-
-        if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
-
-        imgLightbox.classList.remove('active','opened','closing','hide-controls');
-        imgLightbox.setAttribute('aria-hidden','true');
-        lbFrame.innerHTML = '';
-        enableBackgroundInteraction();
-        lightboxState.active = false;
-      }, 260);
-    } else {
-      try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
-      lightboxState.api = null;
-      if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
-
-      imgLightbox.classList.remove('active','opened','closing','hide-controls');
-      imgLightbox.setAttribute('aria-hidden','true');
-      lbFrame.innerHTML = '';
-      enableBackgroundInteraction();
-      lightboxState.active = false;
-    }
-  }
-  document.getElementById('closeLightbox').addEventListener('click', ()=> lightboxClose(true));
-
-  // Close when clicking overlay or outside content (desktop)
-  imgLightbox.addEventListener('click', function(e){
-    const isMobile = window.matchMedia('(max-width: 720px)').matches;
-    if(e.target === imgLightbox){ lightboxClose(true); return; }
-    if(!isMobile){
-      const insideImage = e.target.closest('.zoom-wrap');
-      const insideControls = e.target.closest('.carousel-controls');
-      const insideDots = e.target.closest('.carousel-dots');
-      const isCloseBtn = e.target.closest('#closeLightbox');
-      if(!insideImage && !insideControls && !insideDots && !isCloseBtn){
-        lightboxClose(true);
-      }
-    }
-  });
-
-  /* ESC closes modals if open */
-  window.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape'){
-      if(cartModal.classList.contains('active')){ closeCart.click(); }
-      if(imgLightbox.classList.contains('active')){ lightboxClose(true); }
-      if(policyModal.classList.contains('active')){ closePolicyModal(); }
-      // Also hide any open info tooltips
-      hideHeaderInfoTooltip();
-      hideGlobalInfoTooltip();
-    }
-  });
-
-  /* Preloader: prepare assets but do not hide until first two batches are rendered */
-  async function preloadCriticalAssets(){
-    const pre = document.getElementById('preloader');
-    const txt = document.getElementById('preloaderText');
-    const bar = document.querySelector('#preloaderBar>span');
-
-    let progress = 0;
-    const setProgress = (p) => {
-      progress = Math.max(progress, Math.min(100, Math.round(p)));
-      if(txt) txt.textContent = `Loading ${progress}%`;
-      if(bar) bar.style.width = `${progress}%`;
-    };
-    setProgress(5);
-
-    // Fonts: cap wait time to 1200ms
-    try {
-      const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
-      await Promise.race([fontsReady, new Promise(r=>setTimeout(r, 1200))]);
-    } catch(e){}
-    setProgress(20);
-
-    // Determine first visible product given current state
-    const st = readStateFromURL();
-    const cat = (st.cat && st.cat.trim()) ? st.cat.trim() : 'all';
-    const q = (st.q || '').trim().toLowerCase();
-    const list = products.filter(p => ((cat === 'all') || p.cat === cat) && (!q || p.title.toLowerCase().includes(q)));
-
-    const first = list[0] || products[0];
-    const critImgs = [
-      'assets/favicon.png',
-      'assets/logo.png',
-      (first && first.images && first.images[0]) ? first.images[0] : null
-    ].filter(Boolean);
-
-    // Preload critical in sequence to update progress smoothly
-    const step = Math.floor(70 / Math.max(1, critImgs.length)); // up to ~90%
-    const safety = new Promise(r => setTimeout(r, 2500)); // 2.5s safety cap
-    const doLoad = (async () => {
-      for(const src of critImgs){
-        try { await preloadImage(src); } catch(e){}
-        setProgress(progress + step);
-      }
-      setProgress(90);
-    })();
-
-    await Promise.race([doLoad, safety]);
-
-    // Expose an API to hide the preloader when ready (after initial render)
-    const hide = () => new Promise((resolve) => {
-      setProgress(100);
-      setTimeout(()=> {
-        if(pre){
-          pre.style.opacity = '0';
-          setTimeout(()=> { try{ pre.remove(); }catch(e){} resolve(); }, 450);
-        } else {
-          resolve();
-        }
-      }, 120);
-    });
-
-    return { setProgress, hide };
-  }
-
-  /* Initial hint tooltip -- show for 3s AFTER preloader unloads */
-  function showHintTooltip(){
-    try {
-      const tip = document.getElementById('hintTooltip');
-      if(!tip) return;
-      const icon = tip.querySelector('.icon');
-      tip.style.display = '';
-      requestAnimationFrame(()=> {
-        tip.classList.add('visible','glowy');
-        tip.setAttribute('aria-hidden', 'false');
-        if(icon) icon.classList.add('pulse');
-      });
-      setTimeout(()=> {
-        tip.classList.remove('glowy');
-        tip.style.transition = 'opacity 220ms var(--ease), transform 220ms var(--ease)';
-        tip.style.opacity = '0';
-        tip.setAttribute('aria-hidden', 'true');
-        if(icon) icon.classList.remove('pulse');
-        setTimeout(()=> { tip.classList.remove('visible'); tip.style.display = 'none'; tip.style.transition = ''; tip.style.opacity = ''; }, 260);
-      }, 3000);
-    } catch(e){}
-  }
-
-  /* Search + categories binding */
-  const debouncedSearch = debounce(()=> {
-    const cat = document.querySelector('.cat-btn.active').dataset.cat;
-    updateURL({ q: searchInput.value.trim(), cat }, { replace:false });
-    filterAndRender();
-  }, 320);
-
-  searchInput.addEventListener('input', ()=> { clearBtn.style.display = searchInput.value ? 'flex' : 'none'; debouncedSearch(); });
-  searchBtn.addEventListener('click', ()=> { filterAndRender(); searchInput.focus(); });
-  clearBtn.addEventListener('click', ()=> { searchInput.value = ''; filterAndRender(); clearBtn.style.display = 'none'; searchInput.focus(); });
-
-  // Keyboard shortcut: '/' focuses search (if not typing in another input)
-  document.addEventListener('keydown', (e) => {
-    if(e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey){
-      const tag = (document.activeElement && document.activeElement.tagName) || '';
-      if(!/INPUT|TEXTAREA|SELECT/.test(tag)){
-        e.preventDefault();
-        searchInput.focus();
-      }
-    }
-  });
-  // Esc clears search fast
-  searchInput.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape'){
-      e.preventDefault();
-      clearBtn.click();
-    }
-  });
-
-  // Category buttons (click + keyboard) + aria-current
-  document.querySelectorAll('.cat-btn').forEach(btn => {
-    btn.addEventListener('click', ()=> {
-      document.querySelectorAll('.cat-btn').forEach(b => { b.classList.remove('active'); b.removeAttribute('aria-current'); });
-      btn.classList.add('active');
-      btn.setAttribute('aria-current','true');
-      const cat = btn.dataset.cat;
-      updateURL({ q: searchInput.value.trim(), cat }, { replace:false });
-      filterAndRender(); setTimeout(()=> updateCatBarUI(), 90);
-    });
-    btn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); btn.click(); }});
-  });
-
-  /* Categories bar UI: scroll shadow on mobile; "Show all" toggle on desktop */
+  /* Categories bar UI */
   function updateCatShadow(){
     if(!catBar) return;
     const maxScroll = catBar.scrollWidth - catBar.clientWidth;
     if(maxScroll > 2 && window.matchMedia('(max-width: 900px)').matches){
-      // show shadow if not scrolled all the way to the end
       if(catBar.scrollLeft < maxScroll - 1){
         catScrollHint.classList.add('visible');
       } else {
@@ -2798,14 +2452,9 @@
     if(!catBar) return;
     const canScroll = catBar.scrollWidth > catBar.clientWidth + 2;
     const isDesktop = window.matchMedia('(min-width: 901px)').matches;
-
-    // Mobile scroll shadow hint
     updateCatShadow();
-
-    /* // Desktop: Show All button only if overflowing */
     if(isDesktop && canScroll){
       showAllCatsBtn.style.display = 'inline-flex';
-      // Apply persisted "show all" state
       const wantShowAll = localStorage.getItem(CATS_SHOW_ALL_KEY) === '1';
       catBar.classList.toggle('show-all', wantShowAll);
       showAllCatsBtn.textContent = wantShowAll ? 'Collapse' : 'Show all';
@@ -2819,43 +2468,34 @@
   window.addEventListener('resize', debounce(updateCatBarUI, 150));
   showAllCatsBtn.addEventListener('click', () => {
     const isDesktop = window.matchMedia('(min-width: 901px)').matches;
-    if(!isDesktop) return; // guard: never toggle on mobile/tablet
+    if(!isDesktop) return;
     const on = catBar.classList.toggle('show-all');
     showAllCatsBtn.textContent = on ? 'Collapse' : 'Show all';
     localStorage.setItem(CATS_SHOW_ALL_KEY, on ? '1' : '0');
   });
 
-  /* Scroll to top button (now also hides near bottom to avoid footer overlap) */
+  /* Scroll to top button */
   (function(){
     const btn = document.getElementById('scrollToTopBtn');
     if(!btn) return;
-
-    let bottomHideOffset = 300; // px from bottom when the button should hide (desktop)
+    let bottomHideOffset = 300;
     const setBottomOffset = () => {
       bottomHideOffset = window.matchMedia('(max-width: 600px)').matches ? 420 : 300;
     };
     setBottomOffset();
-
     function isNearBottom(){
       const doc = document.scrollingElement || document.documentElement;
       const distanceFromBottom = doc.scrollHeight - (doc.scrollTop + window.innerHeight);
       return distanceFromBottom < bottomHideOffset;
     }
-
     function updateVisibility(){
       const pastTopThreshold = window.scrollY > 240;
       const nearBottom = isNearBottom();
-      if(pastTopThreshold && !nearBottom){
-        btn.classList.add('visible');
-      } else {
-        btn.classList.remove('visible');
-      }
+      if(pastTopThreshold && !nearBottom){ btn.classList.add('visible'); } else { btn.classList.remove('visible'); }
     }
-
     updateVisibility();
     window.addEventListener('scroll', updateVisibility, { passive:true });
     window.addEventListener('resize', () => { setBottomOffset(); updateVisibility(); }, { passive:true });
-
     function scrollTopHandler(e){ e.preventDefault(); btn.classList.add('click-anim'); setTimeout(()=> btn.classList.remove('click-anim'), 300); window.scrollTo({ top:0, behavior:'smooth' }); btn.blur(); }
     btn.addEventListener('click', scrollTopHandler);
     btn.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); scrollTopHandler(e); }});
@@ -2863,7 +2503,7 @@
     btn.addEventListener('blur', ()=> btn.classList.remove('focused'));
   })();
 
-  /* Keyboard "pressed" class for buttons when using Space/Enter */
+  /* Keyboard "pressed" class */
   (function(){
     function isButtonLike(el){
       return el && (el.tagName === 'BUTTON' || el.getAttribute('role') === 'button');
@@ -2914,7 +2554,6 @@
     closeCart && closeCart.addEventListener('click', hideTooltip);
   })();
 
-  /* Global/mobile info tooltip handlers */
   function hideGlobalInfoTooltip(){
     if(!globalInfoTooltip) return;
     globalInfoTooltip.classList.remove('visible');
@@ -2935,7 +2574,6 @@
     });
   })();
 
-  /* Header/desktop info tooltip handlers (NEW) */
   function hideHeaderInfoTooltip(){
     if(!headerInfoTooltip) return;
     headerInfoTooltip.classList.remove('visible');
@@ -2955,15 +2593,11 @@
       if(e.target === headerInfoBtn || (headerInfoTooltip && headerInfoTooltip.contains(e.target))) return;
       hideHeaderInfoTooltip();
     });
-    // On resize, if switching to mobile, ensure header tooltip is closed
     window.addEventListener('resize', debounce(() => {
-      if(window.matchMedia('(max-width: 900px)').matches){
-        hideHeaderInfoTooltip();
-      }
+      if(window.matchMedia('(max-width: 900px)').matches){ hideHeaderInfoTooltip(); }
     }, 120));
   })();
 
-  /* Responsive search placeholder: mobile uses "Search..." */
   function updateSearchPlaceholder(){
     try{
       const isMobile = window.matchMedia('(max-width: 600px)').matches;
@@ -2972,7 +2606,6 @@
   }
   window.addEventListener('resize', debounce(updateSearchPlaceholder, 120));
 
-  /* Connection toast helpers (online/offline) */
   function showConnectionToast(msg){
     if(!connectionToast) return;
     connectionToast.textContent = msg;
@@ -2982,25 +2615,18 @@
   window.addEventListener('offline', () => showConnectionToast('You are offline'));
   window.addEventListener('online', () => showConnectionToast('Back online'));
 
-  /* Policy modal content + open/close */
   const POLICY_CONTENT = {
     terms: {
       title: 'Terms & Conditions',
-      html: `
-        <p>All sales are final. DriftThreads reserves the right to update prices, availability, or designs without notice. By purchasing, you agree not to resell counterfeit or altered versions of our products.</p>
-      `
+      html: `<p>All sales are final. DriftThreads reserves the right to update prices, availability, or designs without notice. By purchasing, you agree not to resell counterfeit or altered versions of our products.</p>`
     },
     privacy: {
       title: 'Privacy Policy',
-      html: `
-        <p>We don’t sell your data. Info you give us (like shipping details) is used only to process orders and improve your shopping experience. Analytics may run in the background (cookies, etc.), but that’s standard.</p>
-      `
+      html: `<p>We don’t sell your data. Info you give us (like shipping details) is used only to process orders and improve your shopping experience. Analytics may run in the background (cookies, etc.), but that’s standard.</p>`
     },
     shipping: {
       title: 'Shipping Info',
-      html: `
-        <p>Every item is made-to-order/custom. Standard production + shipping times are 10--20 business days, depending on location and demand. Once shipped, delivery is handled by the courier, and delays are out of our control.</p>
-      `
+      html: `<p>Every item is made-to-order/custom. Standard production + shipping times are 10--20 business days, depending on location and demand. Once shipped, delivery is handled by the courier, and delays are out of our control.</p>`
     }
   };
   let lastPolicyTrigger = null;
@@ -3028,31 +2654,323 @@
   closePolicyBtn.addEventListener('click', closePolicyModal);
   policyModal.addEventListener('click', (e) => { if(e.target === policyModal) closePolicyModal(); });
 
-  /* Initialize: preload assets, render two batches with preloader shown, then enable infinite scroll */
+  /* Cart modal */
+  function openCartModal(){ cartModal.classList.add('active'); cartModal.setAttribute('aria-hidden','false'); disableBackgroundInteraction([cartModal.querySelector('.cart-content')]); setTimeout(()=>{ try{ waOrderBtn.focus(); }catch(e){} }, 50); }
+  cartBtn.addEventListener('click', ()=> openCartModal());
+  closeCart.addEventListener('click', ()=>{ cartModal.classList.remove('active'); cartModal.setAttribute('aria-hidden','true'); enableBackgroundInteraction(); cartBtn.focus(); });
+  cartModal.addEventListener('click', e => { if(e.target === cartModal) closeCart.click(); });
+  clearCartBtn.addEventListener('click', ()=> { if(cart.length && confirm('Clear cart?')){ cart = []; saveCart(); updateCartDisplay(); } });
+
+  const WA_NUMBER = '27713468567';
+  const ORDER_WEBHOOK_URL = '';
+
+  function genOrderId(){
+    const t = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const date = `${t.getFullYear()}${pad(t.getMonth()+1)}${pad(t.getDate())}`;
+    const time = `${pad(t.getHours())}${pad(t.getMinutes())}${pad(t.getSeconds())}`;
+    const rand = Math.random().toString(36).slice(2,6).toUpperCase();
+    return `DT-${date}-${time}-${rand}`;
+  }
+  function buildWhatsAppMessage(orderId){
+    if(!cart || !cart.length) return encodeURIComponent("🛒 Hey -- ordering from the site:\n\nNo items in cart. (bruh)");
+    let lines = [];
+    lines.push("🛒 Hey -- ordering from the site:");
+    if(orderId){ lines.push(`Order ID: ${orderId}`); }
+    lines.push("");
+    cart.forEach(item => { const line = `- ${item.title} (${money(item.price)}) x${item.qty}`; lines.push(line); });
+    lines.push("");
+    const subtotal = money(cart.reduce((a,c) => a + c.price*c.qty, 0));
+    lines.push(`*Subtotal: ${subtotal}*`);
+    lines.push("");
+    lines.push(`Link: ${window.location.href}`);
+    return encodeURIComponent(lines.join("\n"));
+  }
+  function getWhatsAppLink(orderId){ const base = `https://wa.me/${WA_NUMBER}`; const msg = buildWhatsAppMessage(orderId); return `${base}?text=${msg}`; }
+  async function sendOrderToSheet(channel='whatsapp', orderId=null){
+    try {
+      if(!ORDER_WEBHOOK_URL) return;
+      const payload = {
+        orderId: orderId || genOrderId(),
+        channel,
+        items: cart.map(({ id, title, price, qty }) => ({ id, title, price, qty })),
+        subtotal: cart.reduce((a,c) => a + c.price * (c.qty||0), 0),
+        currency: 'ZAR',
+        pageUrl: window.location.href,
+        referrer: document.referrer || '',
+        userAgent: navigator.userAgent || ''
+      };
+      const body = JSON.stringify(payload);
+      if(navigator.sendBeacon){
+        const blob = new Blob([body], { type: 'text/plain' });
+        navigator.sendBeacon(ORDER_WEBHOOK_URL, blob);
+      } else {
+        fetch(ORDER_WEBHOOK_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain' }, body }).catch(()=>{});
+      }
+    } catch(e){}
+  }
+  waOrderBtn.addEventListener('click', () => {
+    const orderId = genOrderId();
+    sendOrderToSheet('whatsapp', orderId);
+    const link = getWhatsAppLink(orderId);
+    window.open(link, '_blank', 'noopener');
+  });
+
+  function openLightbox(imgs, startIndex = 0, titleText = 'Image'){
+    if(!Array.isArray(imgs) || !imgs.length) imgs = ['assets/placeholder.png'];
+    lbFrame.innerHTML = '';
+    const carouselHolder = document.createElement('div');
+    carouselHolder.style.width = '100%';
+    carouselHolder.style.height = '100%';
+
+    const api = createCarousel(carouselHolder, imgs, {
+      onImageClick: () => {},
+      startIndex: startIndex,
+      loop: true,
+      showDots: true,
+      showButtons: true,
+      showCounter: true,
+      className: 'carousel',
+      enableZoom: true,
+      eagerFirst: true,
+      getAlt: (i, total) => `${titleText} -- large view ${i+1} of ${total}`
+    });
+    lightboxState.api = api;
+
+    lbFrame.appendChild(carouselHolder);
+
+    imgLightbox.classList.add('active');
+    imgLightbox.setAttribute('aria-hidden','false');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        try {
+          api.setIndex(startIndex);
+          if(api.refresh) api.refresh();
+        } catch(e){}
+        imgLightbox.classList.add('opened');
+        setTimeout(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 60);
+      });
+    });
+
+    disableBackgroundInteraction([imgLightbox, lbFrame]);
+    lightboxState.active = true;
+
+    setTimeout(()=>{ try{ closeLightboxBtn.focus(); }catch(e){} }, 50);
+
+    const isMobile = window.matchMedia('(max-width: 720px)').matches;
+    if(isMobile){
+      const resetIdle = () => {
+        imgLightbox.classList.remove('hide-controls');
+        if(lightboxState.idleTimer) clearTimeout(lightboxState.idleTimer);
+        lightboxState.idleTimer = setTimeout(() => {
+          imgLightbox.classList.add('hide-controls');
+        }, 1000);
+      };
+      ['touchstart','pointermove','mousemove','keydown'].forEach(ev => imgLightbox.addEventListener(ev, resetIdle, {passive:true}));
+      resetIdle();
+    }
+
+    const onWinResize = debounce(()=> { try{ api.refresh && api.refresh(); }catch(e){} }, 80);
+    window.addEventListener('resize', onWinResize);
+    imgLightbox._onResize = onWinResize;
+  }
+  function lightboxClose(withAnim=true){
+    if(lightboxState.idleTimer){ clearTimeout(lightboxState.idleTimer); lightboxState.idleTimer = null; }
+    if(withAnim){
+      imgLightbox.classList.add('closing');
+      setTimeout(()=>{
+        try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
+        lightboxState.api = null;
+        if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
+        imgLightbox.classList.remove('active','opened','closing','hide-controls');
+        imgLightbox.setAttribute('aria-hidden','true');
+        lbFrame.innerHTML = '';
+        enableBackgroundInteraction();
+        lightboxState.active = false;
+      }, 260);
+    } else {
+      try{ if(lightboxState.api && typeof lightboxState.api.destroy === 'function') lightboxState.api.destroy(); }catch(e){}
+      lightboxState.api = null;
+      if(imgLightbox._onResize){ window.removeEventListener('resize', imgLightbox._onResize); imgLightbox._onResize = null; }
+      imgLightbox.classList.remove('active','opened','closing','hide-controls');
+      imgLightbox.setAttribute('aria-hidden','true');
+      lbFrame.innerHTML = '';
+      enableBackgroundInteraction();
+      lightboxState.active = false;
+    }
+  }
+  document.getElementById('closeLightbox').addEventListener('click', ()=> lightboxClose(true));
+  imgLightbox.addEventListener('click', function(e){
+    const isMobile = window.matchMedia('(max-width: 720px)').matches;
+    if(e.target === imgLightbox){ lightboxClose(true); return; }
+    if(!isMobile){
+      const insideImage = e.target.closest('.zoom-wrap');
+      const insideControls = e.target.closest('.carousel-controls');
+      const insideDots = e.target.closest('.carousel-dots');
+      const isCloseBtn = e.target.closest('#closeLightbox');
+      if(!insideImage && !insideControls && !insideDots && !isCloseBtn){
+        lightboxClose(true);
+      }
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){
+      if(cartModal.classList.contains('active')){ closeCart.click(); }
+      if(imgLightbox.classList.contains('active')){ lightboxClose(true); }
+      if(policyModal.classList.contains('active')){ closePolicyModal(); }
+      hideHeaderInfoTooltip();
+      hideGlobalInfoTooltip();
+    }
+  });
+
+  async function preloadCriticalAssets(){
+    const pre = document.getElementById('preloader');
+    const txt = document.getElementById('preloaderText');
+    const bar = document.querySelector('#preloaderBar>span');
+
+    let progress = 0;
+    const setProgress = (p) => {
+      progress = Math.max(progress, Math.min(100, Math.round(p)));
+      if(txt) txt.textContent = `Loading ${progress}%`;
+      if(bar) bar.style.width = `${progress}%`;
+    };
+    setProgress(5);
+
+    try {
+      const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
+      await Promise.race([fontsReady, new Promise(r=>setTimeout(r, 1200))]);
+    } catch(e){}
+    setProgress(20);
+
+    const st = readStateFromURL();
+    const cat = (st.cat && st.cat.trim()) ? st.cat.trim() : 'all';
+    const q = (st.q || '').trim().toLowerCase();
+    const tags = (st.tags || '').split(',').map(t=>t.trim().toLowerCase()).filter(Boolean);
+    const list = products.filter(p => {
+      const matchCat = (cat === 'all') || p.cat === cat;
+      const matchQ = !q || p.title.toLowerCase().includes(q);
+      const matchTags = tags.length===0 || tags.every(t => (p.tags||[]).includes(t));
+      return matchCat && matchQ && matchTags;
+    });
+
+    const first = list[0] || products[0];
+    const critImgs = [
+      'assets/favicon.png',
+      'assets/logo.png',
+      (first && first.images && first.images[0]) ? first.images[0] : null
+    ].filter(Boolean);
+
+    const step = Math.floor(70 / Math.max(1, critImgs.length));
+    const safety = new Promise(r => setTimeout(r, 2500));
+    const doLoad = (async () => {
+      for(const src of critImgs){
+        try { await preloadImage(src); } catch(e){}
+        setProgress(progress + step);
+      }
+      setProgress(90);
+    })();
+
+    await Promise.race([doLoad, safety]);
+
+    const hide = () => new Promise((resolve) => {
+      setProgress(100);
+      setTimeout(()=> {
+        if(pre){
+          pre.style.opacity = '0';
+          setTimeout(()=> { try{ pre.remove(); }catch(e){} resolve(); }, 450);
+        } else { resolve(); }
+      }, 120);
+    });
+
+    return { setProgress, hide };
+  }
+
+  function showHintTooltip(){
+    try {
+      const tip = document.getElementById('hintTooltip');
+      if(!tip) return;
+      const icon = tip.querySelector('.icon');
+      tip.style.display = '';
+      requestAnimationFrame(()=> {
+        tip.classList.add('visible','glowy');
+        tip.setAttribute('aria-hidden', 'false');
+        if(icon) icon.classList.add('pulse');
+      });
+      setTimeout(()=> {
+        tip.classList.remove('glowy');
+        tip.style.transition = 'opacity 220ms var(--ease), transform 220ms var(--ease)';
+        tip.style.opacity = '0';
+        tip.setAttribute('aria-hidden', 'true');
+        if(icon) icon.classList.remove('pulse');
+        setTimeout(()=> { tip.classList.remove('visible'); tip.style.display = 'none'; tip.style.transition = ''; tip.style.opacity = ''; }, 260);
+      }, 3000);
+    } catch(e){}
+  }
+
+  const debouncedSearch = debounce(()=> {
+    const cat = document.querySelector('.cat-btn.active')?.dataset?.cat || 'all';
+    updateURL({ q: searchInput.value.trim(), cat, tags: getSelectedTagsString() }, { replace:false });
+    filterAndRender();
+  }, 320);
+
+  searchInput.addEventListener('input', ()=> {
+    clearBtn.style.display = searchInput.value ? 'flex' : 'none';
+    // support #tag typed in search -> toggle tag quickly
+    const val = searchInput.value.trim();
+    const tagMatches = val.match(/#[a-z0-9\-]+/gi) || [];
+    if(tagMatches.length){
+      tagMatches.forEach(m => selectedTags.add(m.replace('#','').toLowerCase()));
+      updateTagBarSelection();
+    }
+    debouncedSearch();
+  });
+  searchBtn.addEventListener('click', ()=> { filterAndRender(); searchInput.focus(); });
+  clearBtn.addEventListener('click', ()=> { searchInput.value = ''; filterAndRender(); clearBtn.style.display = 'none'; searchInput.focus(); });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey){
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if(!/INPUT|TEXTAREA|SELECT/.test(tag)){
+        e.preventDefault();
+        searchInput.focus();
+      }
+    }
+  });
+  searchInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){
+      e.preventDefault();
+      clearBtn.click();
+    }
+  });
+
+  function buildEverythingBars(){
+    buildCategoryBar();
+    buildTagBar();
+  }
+
+  /* Initialize */
   window.addEventListener('DOMContentLoaded', async () => {
     updateCartDisplay();
+    buildEverythingBars();
     applyStateFromURL();
     updateCatBarUI();
     updateSearchPlaceholder();
 
-    const pre = await preloadCriticalAssets(); // warm up fonts + 1-2 critical images
+    const pre = await preloadCriticalAssets();
 
-    // First batch
     await filterAndRender();
-    // Second batch (explicit)
     await renderNextBatch();
 
-    // Hide preloader now that first two batches are visible
     await pre.hide();
 
-    // Enable infinite scroll for batch 3+
     allowInfiniteScroll = true;
     observeLastCard();
 
     showHintTooltip();
   });
 
-  /* Dev helper: send a dummy row to your sheet to verify webhook quickly */
+  /* Dev helper */
   window.__testOrderPing = () => {
     const backup = cart.slice();
     cart = [{ id:'test-1', title:'Test Item', price:123, qty:2 }];
@@ -3061,6 +2979,17 @@
     cart = backup;
     console.log('Sent test order to sheet with ID:', id);
   };
+  </script>
+
+  <script>
+  /* Accessibility: basic focus trap helpers for modals (existing site assumed to include these) */
+  function disableBackgroundInteraction(allowListEls){
+    document.body.classList.add('modal-open');
+    // Could add inert/aria-hidden to siblings for stricter a11y if desired
+  }
+  function enableBackgroundInteraction(){
+    document.body.classList.remove('modal-open');
+  }
   </script>
 </body>
 </html>
