@@ -1,0 +1,677 @@
+<!-- TLDR:
+- Replaced the placeholder banner with a full-bleed banner using **banner.png** (place it next to this HTML file).
+- Added a full-bleed footer using **footer.png**.
+- Replaced the gradient logo badge with **logo.png**.
+- Replaced all window.prompt / alert / confirm calls with real UI: login modal (magic-link), confirmation modal, and a toast notification system.
+- Converted inline JS confirm/alert flows to non-blocking modals & toasts. Delete uses a confirmation modal with callback.
+- Kept your Supabase URL and anon key exactly as you gave them.
+- Drop `banner.png`, `footer.png`, and `logo.png` in the same directory as this file and open it in the browser.
+
+Notes: I left Supabase setup and realtime presence intact. If you want animations, toast icons, or a prettier toast lib, I can add that next.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AniBros — Your Anime Shelf</title>
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --panel:#111319;
+      --panel-2:#0f1117;
+      --text:#e6e8ef;
+      --muted:#9aa3b2;
+      --brand:#7c3aed;    /* violet */
+      --brand-2:#22d3ee;  /* cyan */
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --card:#151927;
+      --chip:#1d2336;
+      --ring:#2b2f45;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+      --radius-sm:10px;
+      --container:1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:linear-gradient(180deg,#090a0f,#0b0c10 30%);
+      color:var(--text); font:400 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit}
+    .container{max-width:var(--container); margin:0 auto; padding:0 16px}
+
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:60;
+      background:linear-gradient(180deg,#090a0f,rgba(9,10,15,.85));
+      backdrop-filter: blur(8px);
+      border-bottom:1px solid #151826;
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .logo{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
+    .logo-img{width:28px; height:28px; border-radius:8px; object-fit:cover; display:block}
+    .nav-cta{display:flex; gap:10px; align-items:center}
+    .btn{appearance:none; border:0; border-radius:12px; padding:10px 14px; background:#20263a; color:#e9ecf3; cursor:pointer; display:inline-flex; gap:8px; align-items:center; box-shadow:var(--shadow); transition:.18s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.brand{background:linear-gradient(90deg,var(--brand),var(--brand-2)); color:white; font-weight:700}
+    .btn.ghost{background:transparent; border:1px solid #2a2f45; box-shadow:none}
+    .tag{display:inline-flex; gap:8px; align-items:center; background:var(--chip); border:1px solid #2a2f45; color:#b6bfd3; border-radius:999px; padding:6px 10px; font-size:12px}
+
+    /* Banner — full-bleed */
+    .banner{
+      position:relative; display:grid; grid-template-columns:1fr; min-height:260px;
+      width:100vw; margin-left:calc(50% - 50vw); /* full-bleed */
+      background:linear-gradient(180deg, #0b0c10, #0b0c10);
+      border-bottom:1px solid #171b2c;
+      overflow:hidden;
+    }
+    .banner-image{
+      position:absolute; inset:0; background-position:center; background-size:cover; background-repeat:no-repeat; opacity:1; mix-blend-mode:normal;
+      background-image: url('banner.png');
+      filter: saturate(.98) contrast(1.02) brightness(.96);
+    }
+    .banner-inner{position:relative; z-index:2; padding:28px 0 20px}
+    .hero{display:grid; gap:16px; max-width:var(--container); margin:0 auto}
+    .hero h1{margin:0; font-size: clamp(26px, 3vw, 34px); line-height:1.15; letter-spacing:.2px}
+    .hero .sub{color:var(--muted)}
+    .quick{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:18px 0}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; background:#0e1220; border:1px solid #1c2136; border-radius:999px; padding:6px;}
+    .tab{padding:8px 12px; border-radius:999px; color:#c6cde0; background:transparent; border:0; cursor:pointer; transition:.15s}
+    .tab.active{background:linear-gradient(90deg, rgba(124,58,237,.25), rgba(34,211,238,.25)); color:#fff; box-shadow:inset 0 0 0 1px #2b2f45}
+    .search{flex:1; min-width:220px; background:#0f1424; border:1px solid #272c45; border-radius:12px; color:#e8ecfa; padding:10px 12px; outline:none}
+
+    .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:14px}
+    .col{grid-column: span 12}
+    @media (min-width:700px){ .col{grid-column: span 6} }
+    @media (min-width:1000px){ .col{grid-column: span 4} }
+
+    .card{background:linear-gradient(180deg, #12172a 0%, #0f1424 100%); border:1px solid #20253a; border-radius:var(--radius); padding:14px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden}
+    .card::after{content:""; position:absolute; inset:-1px; pointer-events:none; border-radius:inherit; background:linear-gradient(180deg, rgba(124,58,237,.05), transparent);}
+    .title{font-weight:700; letter-spacing:.2px}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color:#b3bad2; font-size:13px}
+    .k{font-size:12px; padding:3px 8px; border-radius:999px; background:#18203b; border:1px solid #2a3150; color:#cfe0ff}
+    .status{font-size:12px; padding:3px 8px; border-radius:999px; border:1px solid #2a2f45; background:#151a2b; color:#d8def0}
+    .actions{display:flex; gap:8px; margin-top:6px; flex-wrap:wrap}
+    .btn.sm{padding:8px 10px; border-radius:10px; font-size:13px}
+    .right{margin-left:auto}
+    .muted{color:#9aa3b2}
+    .foot{display:flex; align-items:center; gap:10px; justify-content:space-between}
+    .presence{display:flex; gap:8px; align-items:center; color:#a7b0c5}
+    .dot{width:8px; height:8px; background:var(--ok); border-radius:999px; box-shadow:0 0 12px var(--ok)}
+
+    /* Modal */
+    .modal{position:fixed; inset:0; background:rgba(7,9,14,.6); display:none; align-items:center; justify-content:center; padding:16px; z-index:120}
+    .modal.open{display:flex}
+    .sheet{background:#0e1220; border:1px solid #202642; border-radius:16px; width:min(720px, 100%); padding:16px}
+    .sheet h3{margin:0 0 10px}
+    .form{display:grid; gap:10px}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .input, .select, .file{background:#0f1424; border:1px solid #272c45; border-radius:12px; color:#e8ecfa; padding:10px 12px; outline:none; width:100%;}
+    .select{appearance:none}
+    .hint{color:#9aa3b2; font-size:12px}
+    .danger{color:var(--danger)}
+    .link{color:#8ab4ff; cursor:pointer}
+    .small{font-size:12px}
+    .chiprow{display:flex; gap:8px; flex-wrap:wrap}
+    .banner-uploader{display:flex; gap:10px; flex-wrap:wrap}
+
+    /* Footer (full-bleed) */
+    .site-footer{width:100vw; margin-left:calc(50% - 50vw); position:relative; min-height:100px; display:block}
+    .footer-image{position:absolute; inset:0; background-image:url('footer.png'); background-size:cover; background-position:center;}
+
+    /* Toasts */
+    #toasts{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:8px; z-index:150}
+    .toast{min-width:220px; max-width:360px; padding:10px 14px; border-radius:12px; box-shadow:var(--shadow); color:#fff; font-weight:600; display:flex; gap:10px; align-items:center}
+    .toast.info{background:#243b5a}
+    .toast.success{background:linear-gradient(90deg,#16a34a,#22c55e)}
+    .toast.error{background:linear-gradient(90deg,#ef4444,#ef6b6b)}
+    .toast .msg{font-weight:600; font-size:14px}
+
+    /* Small helpers */
+    .center{display:flex; align-items:center; justify-content:center}
+    .muted-small{color:#9aa3b2; font-size:13px}
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="logo">
+        <img src="logo.png" alt="AniBros" class="logo-img" />
+        <div>AniBros</div>
+        <span class="tag" id="presence"><span class="dot"></span><span id="presence-text">0 online</span></span>
+      </div>
+      <div class="nav-cta" id="auth-cta">
+        <button class="btn ghost" id="btn-login">Sign in</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="banner">
+    <div class="banner-image" id="banner-image" aria-hidden="true"></div>
+    <div class="banner-inner">
+      <div class="hero">
+        <h1>Track anime across Watching, Plan, Rewatch, Waiting, and Completed — fast and clean.</h1>
+        <div class="sub">Realtime sync. Private by default. Replace these banner zones with your own images anytime.</div>
+        <div class="quick banner-uploader" id="banner-tools" style="display:none">
+          <input type="file" id="banner-file" class="file" accept="image/*" />
+          <button class="btn" id="btn-upload-banner">Upload banner</button>
+          <span class="hint">Uploads to your private <b>banners</b> bucket under your user ID.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="toolbar">
+      <div class="tabs" id="tabs"></div>
+      <input class="search" id="search" placeholder="Search title…" />
+      <button class="btn brand" id="btn-add">Add item</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="foot" style="margin:22px 0 30px">
+      <div class="muted small">Pro tip: click +1 to bump EP, or move items between tabs.</div>
+      <div class="right">
+        <button class="btn ghost small" id="btn-export">Export JSON</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add/Edit modal -->
+  <div class="modal" id="modal">
+    <div class="sheet">
+      <h3 id="modal-title">Add item</h3>
+      <div class="form">
+        <div class="row">
+          <input id="f-title" class="input" placeholder="Title (e.g., One Piece)" />
+        </div>
+        <div class="row">
+          <select id="f-kind" class="select">
+            <option value="SERIES">Series</option>
+            <option value="MOVIE">Movie</option>
+          </select>
+          <select id="f-status" class="select">
+            <option>WATCHING</option>
+            <option>PLAN</option>
+            <option>REWATCH</option>
+            <option>WAITING</option>
+            <option>COMPLETED</option>
+          </select>
+        </div>
+        <div class="row">
+          <input type="number" id="f-season" class="input" placeholder="Season #" />
+          <input type="number" id="f-episode" class="input" placeholder="Episode #" />
+          <input type="number" id="f-abs" class="input" placeholder="Absolute EP #" />
+        </div>
+        <div class="row">
+          <input id="f-notes" class="input" placeholder="Notes (optional)" />
+        </div>
+        <div class="row">
+          <button class="btn brand" id="btn-save">Save</button>
+          <button class="btn ghost" id="btn-cancel">Cancel</button>
+          <button class="btn danger" id="btn-delete" style="display:none">Delete</button>
+        </div>
+        <div class="hint">If you use Absolute EP, we’ll show that first. Season/Episode are optional.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login modal -->
+  <div class="modal" id="login-modal">
+    <div class="sheet">
+      <h3>Sign in — magic link</h3>
+      <div class="form">
+        <div class="row">
+          <input id="login-email" class="input" placeholder="Your email" type="email" />
+        </div>
+        <div class="row">
+          <button class="btn brand" id="login-send">Send magic link</button>
+          <button class="btn ghost" id="login-cancel">Cancel</button>
+        </div>
+        <div class="hint">We send a magic link. No passwords, just vibes.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm modal -->
+  <div class="modal" id="confirm-modal">
+    <div class="sheet center">
+      <div style="width:100%;">
+        <h3 id="confirm-title">Confirm</h3>
+        <p id="confirm-msg" class="muted-small">Are you sure?</p>
+        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+          <button class="btn ghost" id="confirm-cancel">Cancel</button>
+          <button class="btn danger" id="confirm-ok">Yes, do it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-image" aria-hidden="true"></div>
+  </footer>
+
+  <script type="module">
+    // 1) Set your Supabase project keys here
+    const SUPABASE_URL = 'https://odvbznpmrorgdaaqjkrf.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kdmJ6bnBtcm9yZGFhcWpra3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1OTc5MjgsImV4cCI6MjA3NTE3MzkyOH0.5-fC1TmZTlGwHzsLJSxo0pTIdcbJm0_cOehoILdd31w';
+
+    // 2) Import supabase-js (ESM from CDN)
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // UI state
+    const STATUSES = ['WATCHING','PLAN','REWATCH','WAITING','COMPLETED'];
+    const TABS = [
+      { id:'WATCHING', label:'Watching' },
+      { id:'PLAN', label:'Plan' },
+      { id:'REWATCH', label:'Rewatch' },
+      { id:'WAITING', label:'Waiting' },
+      { id:'COMPLETED_SERIES', label:'Completed (Series)' },
+      { id:'COMPLETED_MOVIES', label:'Completed (Movies)' },
+      { id:'ALL', label:'All' },
+    ];
+
+    let session = null;
+    let user = null;
+    let data = [];
+    let activeTab = 'WATCHING';
+    let q = '';
+
+    // Elements
+    const gridEl = document.getElementById('grid');
+    const tabsEl = document.getElementById('tabs');
+    const searchEl = document.getElementById('search');
+    const btnAdd = document.getElementById('btn-add');
+    const btnLogin = document.getElementById('btn-login');
+    const authCta = document.getElementById('auth-cta');
+    const bannerTools = document.getElementById('banner-tools');
+    const bannerImage = document.getElementById('banner-image');
+    const bannerFile = document.getElementById('banner-file');
+    const btnUploadBanner = document.getElementById('btn-upload-banner');
+    const presenceText = document.getElementById('presence-text');
+
+    // Modal refs
+    const modal = document.getElementById('modal');
+    const mTitle = document.getElementById('modal-title');
+    const fTitle = document.getElementById('f-title');
+    const fKind = document.getElementById('f-kind');
+    const fStatus = document.getElementById('f-status');
+    const fSeason = document.getElementById('f-season');
+    const fEpisode = document.getElementById('f-episode');
+    const fAbs = document.getElementById('f-abs');
+    const fNotes = document.getElementById('f-notes');
+    const btnSave = document.getElementById('btn-save');
+    const btnCancel = document.getElementById('btn-cancel');
+    const btnDelete = document.getElementById('btn-delete');
+
+    const loginModal = document.getElementById('login-modal');
+    const loginEmail = document.getElementById('login-email');
+    const loginSend = document.getElementById('login-send');
+    const loginCancel = document.getElementById('login-cancel');
+
+    const confirmModal = document.getElementById('confirm-modal');
+    const confirmTitle = document.getElementById('confirm-title');
+    const confirmMsg = document.getElementById('confirm-msg');
+    const confirmOk = document.getElementById('confirm-ok');
+    const confirmCancel = document.getElementById('confirm-cancel');
+
+    const toasts = document.getElementById('toasts');
+
+    let editingId = null;
+
+    // --- UI helpers: toasts, modals, confirm ---
+    function showToast(type, msg, ms = 4200){
+      const t = document.createElement('div');
+      t.className = 'toast ' + (type||'info');
+      t.innerHTML = `<div class=msg>${escapeHtml(msg)}</div>`;
+      toasts.appendChild(t);
+      setTimeout(()=>{ t.style.opacity = '0'; t.style.transform='translateY(8px)'; }, ms - 300);
+      setTimeout(()=>{ t.remove(); }, ms);
+      return t;
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]); }
+
+    function openModal(el){ el.classList.add('open'); }
+    function closeModal(el){ el.classList.remove('open'); }
+
+    // confirmModal callback pattern
+    let confirmCallback = null;
+    function openConfirm(title, message, onOk){
+      confirmTitle.textContent = title || 'Confirm';
+      confirmMsg.textContent = message || 'Are you sure?';
+      confirmCallback = onOk;
+      openModal(confirmModal);
+    }
+    confirmOk.onclick = async ()=>{ closeModal(confirmModal); if (confirmCallback){ try{ await confirmCallback(); } catch(e){ console.error(e); showToast('error', e.message || 'Error'); } confirmCallback = null; } };
+    confirmCancel.onclick = ()=>{ confirmCallback = null; closeModal(confirmModal); };
+
+    // Tabs
+    function renderTabs(){
+      tabsEl.innerHTML = '';
+      TABS.forEach(t=>{
+        const b = document.createElement('button');
+        b.className = 'tab' + (activeTab===t.id ? ' active':'');
+        b.textContent = t.label + ' ' + countBadge(t.id);
+        b.onclick = ()=>{ activeTab = t.id; render(); };
+        tabsEl.appendChild(b);
+      });
+    }
+    function countBadge(tabId){
+      if (tabId==='ALL') return '('+data.length+')';
+      if (tabId==='COMPLETED_SERIES'){
+        return '('+data.filter(d=>d.status==='COMPLETED' && d.kind==='SERIES').length+')';
+      }
+      if (tabId==='COMPLETED_MOVIES'){
+        return '('+data.filter(d=>d.status==='COMPLETED' && d.kind==='MOVIE').length+')';
+      }
+      return '('+data.filter(d=>d.status===tabId).length+')';
+    }
+
+    function formatProgress(row){
+      if (row.absolute_episode) return `EP ${row.absolute_episode}`;
+      const se = [];
+      if (row.season) se.push('S'+row.season);
+      if (row.episode) se.push('EP '+row.episode);
+      return se.join(' ') || '';
+    }
+
+    function filtered(){
+      let rows = data;
+      if (activeTab!=='ALL'){
+        if (activeTab==='COMPLETED_SERIES'){
+          rows = rows.filter(r=>r.status==='COMPLETED' && r.kind==='SERIES');
+        } else if (activeTab==='COMPLETED_MOVIES'){
+          rows = rows.filter(r=>r.status==='COMPLETED' && r.kind==='MOVIE');
+        } else {
+          rows = rows.filter(r=>r.status===activeTab);
+        }
+      }
+      if (q) rows = rows.filter(r=>r.title.toLowerCase().includes(q));
+      return rows.sort((a,b)=> (b.updated_at?.localeCompare?.(a.updated_at)) || 0);
+    }
+
+    function chip(text){ const s = document.createElement('span'); s.className='status'; s.textContent=text; return s; }
+    function kchip(text){ const s = document.createElement('span'); s.className='k'; s.textContent=text; return s; }
+
+    function render(){
+      renderTabs();
+      gridEl.innerHTML = '';
+      filtered().forEach(row=>{
+        const col = document.createElement('div');
+        col.className='col';
+        const card = document.createElement('div');
+        card.className='card';
+
+        const title = document.createElement('div');
+        title.className='title';
+        title.textContent = row.title;
+        card.appendChild(title);
+
+        const meta = document.createElement('div');
+        meta.className='meta';
+        meta.appendChild(kchip(row.kind==='MOVIE' ? 'Movie' : 'Series'));
+        meta.appendChild(chip(row.status));
+        if (formatProgress(row)) meta.appendChild(chip(formatProgress(row)));
+        if (row.notes){ const n=document.createElement('span'); n.className='muted small'; n.textContent=row.notes; meta.appendChild(n); }
+        card.appendChild(meta);
+
+        const actions = document.createElement('div');
+        actions.className='actions';
+
+        const inc = document.createElement('button');
+        inc.className='btn sm'; inc.textContent='+1 EP';
+        inc.onclick = async()=>{
+          const patch = {};
+          if (row.absolute_episode) patch.absolute_episode = (row.absolute_episode||0)+1;
+          else patch.episode = (row.episode||0)+1;
+          try{
+            const { error } = await supabase.from('entries').update(patch).eq('id', row.id);
+            if (error) throw error;
+            showToast('success', '+1 EP');
+          } catch(e){ showToast('error', e.message || 'Failed to update'); }
+        };
+        actions.appendChild(inc);
+
+        const move = document.createElement('select');
+        move.className='select'; move.style.width='180px';
+        move.innerHTML = STATUSES.map(s=>`<option ${row.status===s?'selected':''}>${s}</option>`).join('');
+        move.onchange = async (e)=>{
+          try{
+            const { error } = await supabase.from('entries').update({ status: e.target.value }).eq('id', row.id);
+            if (error) throw error;
+            showToast('success', 'Moved to '+e.target.value);
+          } catch(e){ showToast('error', e.message || 'Failed'); }
+        };
+        actions.appendChild(move);
+
+        const edit = document.createElement('button');
+        edit.className='btn sm'; edit.textContent='Edit';
+        edit.onclick = ()=> openModalFor(row);
+        actions.appendChild(edit);
+
+        const del = document.createElement('button');
+        del.className='btn sm'; del.style.background='#3a2030'; del.textContent='Delete';
+        del.onclick = async()=>{
+          openConfirm('Delete item', `Delete "${row.title}"? This can\'t be undone.`, async ()=>{
+            const { error } = await supabase.from('entries').delete().eq('id', row.id);
+            if (error) throw error;
+            showToast('success', 'Deleted');
+          });
+        };
+        actions.appendChild(del);
+
+        card.appendChild(actions);
+        col.appendChild(card);
+        gridEl.appendChild(col);
+      });
+    }
+
+    // Auth UI wiring
+    function updateAuthUI(){
+      if (user){
+        authCta.innerHTML='';
+        const who = document.createElement('span'); who.className='muted small'; who.textContent = user.email || user?.user_metadata?.email || 'user';
+        const out = document.createElement('button'); out.className='btn ghost'; out.textContent='Sign out';
+        out.onclick = async()=> { await supabase.auth.signOut(); location.reload(); };
+        authCta.append(who, out);
+        bannerTools.style.display='';
+      }else{
+        authCta.innerHTML='';
+        const btn = document.createElement('button'); btn.className='btn ghost'; btn.id='btn-login-2'; btn.textContent='Sign in';
+        btn.onclick = ()=> openModal(loginModal);
+        authCta.append(btn);
+        bannerTools.style.display='none';
+      }
+    }
+
+    // Load rows
+    async function load(){
+      try{
+        const { data: rows, error } = await supabase.from('entries').select('*').order('updated_at', { ascending:false });
+        if (error) throw error;
+        data = rows || [];
+        render();
+      } catch(e){ console.error(e); showToast('error', e.message || 'Failed to load'); }
+    }
+
+    // Realtime DB changes for your rows only (RLS enforces)
+    let changesChannel = null;
+    function setupRealtime(){
+      if (changesChannel) supabase.removeChannel(changesChannel);
+      changesChannel = supabase.channel('entries-db').on(
+        'postgres_changes',
+        { event:'*', schema:'public', table:'entries', filter: `user_id=eq.${user.id}` },
+        (payload)=>{
+          const { eventType, new: n, old: o } = payload;
+          if (eventType==='INSERT'){
+            data.unshift(n);
+          } else if (eventType==='UPDATE'){
+            const i = data.findIndex(r=>r.id===n.id);
+            if (i>=0) data[i]=n;
+          } else if (eventType==='DELETE'){
+            const i = data.findIndex(r=>r.id===o.id);
+            if (i>=0) data.splice(i,1);
+          }
+          render();
+        }
+      ).subscribe();
+    }
+
+    // Presence
+    let presenceChannel = null;
+    function setupPresence(){
+      if (presenceChannel) supabase.removeChannel(presenceChannel);
+      presenceChannel = supabase.channel('room:lobby', { config:{ presence:{ key: user.id } } });
+      presenceChannel.on('presence', { event:'sync' }, ()=>{
+        const state = presenceChannel.presenceState();
+        const all = new Set();
+        Object.values(state).forEach(arr => arr.forEach(v => all.add(v.presence_ref)));
+        presenceText.textContent = `${all.size} online`;
+      });
+      presenceChannel.subscribe(async status=>{
+        if (status==='SUBSCRIBED'){
+          await presenceChannel.track({ at: Date.now() });
+        }
+      });
+    }
+
+    // Add / Edit
+    btnAdd.onclick = ()=> openModalFor();
+    btnCancel.onclick = closeModalMain;
+    btnSave.onclick = saveModal;
+    btnDelete.onclick = removeModal;
+
+    function openModalFor(row){
+      editingId = row?.id || null;
+      mTitle.textContent = editingId ? 'Edit item' : 'Add item';
+      fTitle.value = row?.title || '';
+      fKind.value = row?.kind || 'SERIES';
+      fStatus.value = row?.status || 'PLAN';
+      fSeason.value = row?.season || '';
+      fEpisode.value = row?.episode || '';
+      fAbs.value = row?.absolute_episode || '';
+      fNotes.value = row?.notes || '';
+      btnDelete.style.display = editingId ? '' : 'none';
+      openModal(modal);
+      fTitle.focus();
+    }
+    function closeModalMain(){ closeModal(modal); }
+
+    async function saveModal(){
+      if (!user) return showToast('error','Sign in first');
+      const row = {
+        title: fTitle.value.trim(),
+        kind: fKind.value,
+        status: fStatus.value,
+        season: fSeason.value ? parseInt(fSeason.value) : null,
+        episode: fEpisode.value ? parseInt(fEpisode.value) : null,
+        absolute_episode: fAbs.value ? parseInt(fAbs.value) : null,
+        notes: fNotes.value.trim() || null,
+        user_id: user.id
+      };
+      if (!row.title) return showToast('error','Title required');
+      try{
+        if (editingId){
+          const { error } = await supabase.from('entries').update(row).eq('id', editingId);
+          if (error) throw error;
+          showToast('success','Saved');
+        } else {
+          const { error } = await supabase.from('entries').insert(row);
+          if (error) throw error;
+          showToast('success','Added');
+        }
+        closeModal(modal);
+      } catch(e){ showToast('error', e.message || 'Failed to save'); }
+    }
+
+    async function removeModal(){
+      if (!editingId) return;
+      try{
+        const { error } = await supabase.from('entries').delete().eq('id', editingId);
+        if (error) throw error;
+        showToast('success','Deleted');
+        closeModal(modal);
+      } catch(e){ showToast('error', e.message || 'Failed to delete'); }
+    }
+
+    // Search
+    searchEl.oninput = ()=>{ q = searchEl.value.trim().toLowerCase(); render(); };
+
+    // Export
+    const btnExport = document.getElementById('btn-export');
+    btnExport.onclick = ()=>{
+      const rows = data.map(({id,user_id,created_at,updated_at,...rest})=>rest);
+      const blob = new Blob([JSON.stringify(rows,null,2)], { type:'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'anibros-export.json'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('success','Exported');
+    };
+
+    // Banner upload/preview
+    bannerFile?.addEventListener('change', ()=>{
+      const f = bannerFile.files?.[0]; if(!f) return;
+      const url = URL.createObjectURL(f);
+      bannerImage.style.backgroundImage = `url(${url})`;
+    });
+    btnUploadBanner?.addEventListener('click', async ()=>{
+      if (!user) return showToast('error','Sign in first');
+      const f = bannerFile.files?.[0]; if(!f) return showToast('error','Choose a file first');
+      const path = `${user.id}/header-${Date.now()}-${f.name}`;
+      try{
+        const { data: up, error } = await supabase.storage.from('banners').upload(path, f, { upsert:false });
+        if (error) throw error;
+        showToast('success', 'Uploaded! Path: ' + up.path);
+      } catch(e){ showToast('error', e.message || 'Upload failed'); }
+    });
+
+    // Login modal wiring
+    btnLogin.onclick = ()=> openModal(loginModal);
+    loginCancel.onclick = ()=> closeModal(loginModal);
+    loginSend.onclick = async ()=>{
+      const email = loginEmail.value?.trim();
+      if (!email) return showToast('error','Enter an email');
+      try{
+        const { error } = await supabase.auth.signInWithOtp({ email });
+        if (error) throw error;
+        showToast('success','Magic link sent — check your inbox');
+        closeModal(loginModal);
+      } catch(e){ showToast('error', e.message || 'Failed to send'); }
+    };
+
+    // Initialize: get session and set things up
+    (async function init(){
+      const { data: { session: s } } = await supabase.auth.getSession();
+      session = s; user = s?.user ?? null;
+      updateAuthUI();
+      if (user){ load(); setupRealtime(); setupPresence(); }
+      render(); // tabs on first load
+    })();
+
+    // react to auth changes
+    supabase.auth.onAuthStateChange((_evt, s)=>{
+      session = s; user = s?.user ?? null;
+      updateAuthUI();
+      if (user){ load(); setupRealtime(); setupPresence(); }
+    });
+
+  </script>
+</body>
+</html>
