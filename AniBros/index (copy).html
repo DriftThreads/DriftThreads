@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AniBros — Your Anime Shelf</title>
+  <link rel="icon" href="favicon.ico" />
+  <!-- Fonts: Orbitron for titles, system for everything else -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --panel:#0f1117;
+      --panel-2:#0b0f16;
+      --text:#e6e8ef;
+      --muted:#9aa3b2;
+      --brand:#7c3aed;    /* violet */
+      --brand-2:#22d3ee;  /* cyan */
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --card:#151927;
+      --chip:#1d2336;
+      --ring:#2b2f45;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+      --radius-sm:10px;
+      --container:1100px;
+      --title-font: 'Orbitron', system-ui, -apple-system, 'Segoe UI', Roboto;
+      --ui-duration: 220ms;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:linear-gradient(180deg,#07070a,#0b0c10 40%);
+      color:var(--text); font:400 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      -webkit-tap-highlight-color:transparent;
+    }
+    a{color:inherit}
+    .container{max-width:var(--container); margin:0 auto; padding:0 16px}
+
+    /* Header */
+    .header{
+      position:sticky; top:0; z-index:60;
+      background:linear-gradient(180deg, rgba(9,10,15,.9), rgba(9,10,15,.6));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; height:66px}
+    .logo{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.3px}
+    .logo-img{width:34px; height:34px; border-radius:9px; object-fit:cover; display:block}
+    .nav-cta{display:flex; gap:10px; align-items:center}
+    .btn{appearance:none; border:0; border-radius:12px; padding:10px 14px; background:#20263a; color:#e9ecf3; cursor:pointer; display:inline-flex; gap:8px; align-items:center; box-shadow:var(--shadow); transition:transform var(--ui-duration) ease, opacity var(--ui-duration) ease}
+    .btn:hover{transform:translateY(-3px)}
+    .btn.brand{background:linear-gradient(90deg,var(--brand),var(--brand-2)); color:white; font-weight:700}
+    .btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.04); box-shadow:none}
+    .tag{display:inline-flex; gap:8px; align-items:center; background:var(--chip); border:1px solid rgba(255,255,255,0.03); color:#b6bfd3; border-radius:999px; padding:6px 10px; font-size:12px}
+
+    /* Banner — full-bleed */
+    .banner{
+      position:relative; display:grid; grid-template-columns:1fr; min-height:300px;
+      width:100vw; margin-left:calc(50% - 50vw); /* full-bleed */
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      overflow:hidden; padding-bottom:18px;
+    }
+    .banner-image{
+      position:absolute; inset:0; background-position:center top; background-size:cover; background-repeat:no-repeat; opacity:1; mix-blend-mode:normal;
+      filter: saturate(.98) contrast(1.03) brightness(.9) blur(.2px);
+      transition:opacity .45s ease, transform 1.6s cubic-bezier(.2,.8,.2,1);
+      transform: scale(1.02);
+    }
+    .banner-inner{position:relative; z-index:2; padding:28px 0 26px}
+    .hero{display:grid; gap:10px; max-width:var(--container); margin:0 auto}
+    .hero h1{margin:0; font-size: clamp(28px, 3.6vw, 40px); line-height:1.05; letter-spacing:.6px; font-family:var(--title-font); font-weight:700; color:linear-gradient(90deg,var(--brand),var(--brand-2));}
+    .hero .sub{color:var(--muted); font-size:15px}
+    .quick{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+
+    .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:18px 0}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border:1px solid rgba(255,255,255,0.02); border-radius:999px; padding:6px;}
+    .tab{padding:8px 12px; border-radius:999px; color:#c6cde0; background:transparent; border:0; cursor:pointer; transition:transform .15s}
+    .tab.active{background:linear-gradient(90deg, rgba(124,58,237,.16), rgba(34,211,238,.12)); color:#fff; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02)}
+    .search{flex:1; min-width:220px; background:#0f1424; border:1px solid rgba(255,255,255,0.03); border-radius:12px; color:#e8ecfa; padding:10px 12px; outline:none}
+
+    .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:14px}
+    .col{grid-column: span 12}
+    @media (min-width:700px){ .col{grid-column: span 6} }
+    @media (min-width:1000px){ .col{grid-column: span 4} }
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border:1px solid rgba(255,255,255,0.03); border-radius:var(--radius); padding:14px; box-shadow:0 6px 20px rgba(2,6,23,.6); display:flex; flex-direction:column; gap:10px; position:relative; overflow:hidden}
+    .title{font-weight:700; letter-spacing:.2px; font-family:var(--title-font)}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; align-items:center; color:#b3bad2; font-size:13px}
+    .k{font-size:12px; padding:3px 8px; border-radius:999px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.02); color:#cfe0ff}
+    .status{font-size:12px; padding:3px 8px; border-radius:999px; border:1px solid rgba(255,255,255,0.02); background:#151a2b; color:#d8def0}
+    .actions{display:flex; gap:8px; margin-top:6px; flex-wrap:wrap}
+    .btn.sm{padding:8px 10px; border-radius:10px; font-size:13px}
+    .right{margin-left:auto}
+    .muted{color:#9aa3b2}
+    .foot{display:flex; align-items:center; gap:10px; justify-content:space-between}
+    .presence{display:flex; gap:8px; align-items:center; color:#a7b0c5}
+    .dot{width:8px; height:8px; background:var(--ok); border-radius:999px; box-shadow:0 0 12px var(--ok)}
+
+    /* Modal improvements */
+    .modal{position:fixed; inset:0; background:rgba(7,9,14,.56); display:none; align-items:center; justify-content:center; padding:16px; z-index:120; transition:opacity var(--ui-duration) ease}
+    .modal.open{display:flex;}
+    .sheet{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); border-radius:14px; width:min(760px, 98%); padding:18px; transform:translateY(8px) scale(.995); opacity:0; transition:transform .28s cubic-bezier(.2,.9,.3,1), opacity .2s ease}
+    .modal.open .sheet{transform:translateY(0) scale(1); opacity:1}
+    .sheet h3{margin:0 0 8px; font-family:var(--title-font)}
+    .form{display:grid; gap:10px}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .input, .select, .file{background:#0f1424; border:1px solid rgba(255,255,255,0.03); border-radius:12px; color:#e8ecfa; padding:10px 12px; outline:none; width:100%;}
+    .input:focus, .select:focus{box-shadow:0 0 0 4px rgba(124,58,237,0.12); border-color:rgba(124,58,237,.7)}
+    .hint{color:#9aa3b2; font-size:12px}
+    .danger{color:var(--danger)}
+    .link{color:#8ab4ff; cursor:pointer}
+    .small{font-size:12px}
+    .chiprow{display:flex; gap:8px; flex-wrap:wrap}
+
+    /* Toasts: animate in/out */
+    #toasts{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:10px; z-index:150}
+    .toast{min-width:220px; max-width:420px; padding:12px 14px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.45); color:#fff; font-weight:700; display:flex; gap:12px; align-items:center; transform:translateY(10px) scale(.995); opacity:0}
+    .toast .msg{font-weight:700; font-size:14px}
+    .toast.info{background:linear-gradient(180deg,#243b5a,#1b304a)}
+    .toast.success{background:linear-gradient(90deg,#16a34a,#22c55e)}
+    .toast.error{background:linear-gradient(90deg,#ef4444,#ef6b6b)}
+    .toast.enter{animation:toast-in .26s cubic-bezier(.2,.9,.3,1) forwards}
+    .toast.exit{animation:toast-out .3s ease forwards}
+
+    @keyframes toast-in{ to{ transform:translateY(0) scale(1); opacity:1 } }
+    @keyframes toast-out{ to{ transform:translateY(8px) scale(.98); opacity:0 } }
+
+    /* Footer (fixed to bottom of page, not overlapping) */
+    .site-footer{width:100vw; margin-left:calc(50% - 50vw); position:relative; min-height:120px; display:block; padding:22px 0 40px; margin-top:24px}
+    .footer-image{position:absolute; inset:0; background-image:url('footer.png'); background-size:cover; background-position:center; opacity:.08}
+    .site-footer .container{position:relative; z-index:2}
+
+    /* Small helpers */
+    .center{display:flex; align-items:center; justify-content:center}
+    .muted-small{color:#9aa3b2; font-size:13px}
+
+    /* little niceties */
+    input::placeholder{color:rgba(255,255,255,0.22)}
+    button:active{transform:translateY(0)}
+
+    /* responsive tweaks */
+    @media (max-width:720px){ .toolbar{gap:8px} .hero h1{font-size:22px}}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="logo">
+        <img src="logo.png" alt="AniBros" class="logo-img" />
+        <div style="font-family:var(--title-font);">AniBros</div>
+        <span class="tag" id="presence"><span class="dot"></span><span id="presence-text">0 online</span></span>
+      </div>
+      <div class="nav-cta" id="auth-cta">
+        <button class="btn ghost" id="btn-login">Sign in</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="banner">
+    <div class="banner-image" id="banner-image" aria-hidden="true"></div>
+    <div class="banner-inner">
+      <div class="hero container">
+        <h1 id="hero-title">AniBros — Anime Watchlist For The Boys</h1>
+        <div class="sub">Fast. Private. Built for bros who binge and forget where they left off.</div>
+        <div class="quick banner-uploader" id="banner-tools" style="display:none">
+          <input type="file" id="banner-file" class="file" accept="image/*" />
+          <button class="btn" id="btn-upload-banner">Upload banner</button>
+          <span class="hint">Uploads to your private <b>banners</b> bucket under your user ID.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="toolbar">
+      <div class="tabs" id="tabs"></div>
+      <input class="search" id="search" placeholder="Search title…" aria-label="Search titles" />
+      <button class="btn brand" id="btn-add">Add item</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <div class="foot" style="margin:22px 0 30px">
+      <div class="muted small">Pro tip: click +1 to bump EP, or move items between tabs.</div>
+      <div class="right">
+        <button class="btn ghost small" id="btn-export">Export JSON</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add/Edit modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="sheet" role="document">
+      <h3 id="modal-title">Add item</h3>
+      <div class="form">
+        <div class="row">
+          <input id="f-title" class="input" placeholder="Title (e.g., One Piece)" />
+        </div>
+        <div class="row">
+          <select id="f-kind" class="select">
+            <option value="SERIES">Series</option>
+            <option value="MOVIE">Movie</option>
+          </select>
+          <select id="f-status" class="select">
+            <option>WATCHING</option>
+            <option>PLAN</option>
+            <option>REWATCH</option>
+            <option>WAITING</option>
+            <option>COMPLETED</option>
+          </select>
+        </div>
+        <div class="row">
+          <input type="number" id="f-season" class="input" placeholder="Season #" />
+          <input type="number" id="f-episode" class="input" placeholder="Episode #" />
+          <input type="number" id="f-abs" class="input" placeholder="Absolute EP #" />
+        </div>
+        <div class="row">
+          <input id="f-notes" class="input" placeholder="Notes (optional)" />
+        </div>
+        <div class="row">
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn brand" id="btn-save">Save</button>
+            <button class="btn ghost" id="btn-cancel">Cancel</button>
+          </div>
+          <div style="margin-left:auto"><button class="btn danger" id="btn-delete" style="display:none">Delete</button></div>
+        </div>
+        <div class="hint">If you use Absolute EP, we’ll show that first. Season/Episode are optional.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login modal (redesigned) -->
+  <div class="modal" id="login-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="sheet" role="document" style="max-width:520px;">
+      <h3 style="display:flex;align-items:center;gap:10px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v7c0 5 3.8 9 10 9s10-4 10-9V7L12 2z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Sign in — magic link</h3>
+      <div class="form">
+        <div class="row" style="align-items:center">
+          <input id="login-email" class="input" placeholder="Your email" type="email" />
+          <button class="btn brand" id="login-send">Send</button>
+        </div>
+        <div class="row" style="justify-content:space-between;align-items:center">
+          <div class="hint">No passwords. Magic link sent to your inbox. Private by default.</div>
+          <button class="btn ghost" id="login-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm modal -->
+  <div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="sheet center" style="max-width:520px;">
+      <div style="width:100%;">
+        <h3 id="confirm-title">Confirm</h3>
+        <p id="confirm-msg" class="muted-small">Are you sure?</p>
+        <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:12px;">
+          <button class="btn ghost" id="confirm-cancel">Cancel</button>
+          <button class="btn danger" id="confirm-ok">Yes, do it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-image" aria-hidden="true"></div>
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;">
+        <div style="font-family:var(--title-font);">AniBros</div>
+        <div class="muted-small">Made with chaos & ramen. © AniBros</div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // 1) Set your Supabase project keys here
+    const SUPABASE_URL = 'https://odvbznpmrorgdaaqjkrf.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kdmJ6bnBtcm9yZ2RhYXFqa3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1OTc5MjgsImV4cCI6MjA3NTE3MzkyOH0.5-fC1TmZTlGwHzsLJSxo0pTIdcbJm0_cOehoILdd31w';
+
+    // 2) Import supabase-js (ESM from CDN)
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // UI state
+    const STATUSES = ['WATCHING','PLAN','REWATCH','WAITING','COMPLETED'];
+    const TABS = [
+      { id:'WATCHING', label:'Watching' },
+      { id:'PLAN', label:'Plan' },
+      { id:'REWATCH', label:'Rewatch' },
+      { id:'WAITING', label:'Waiting' },
+      { id:'COMPLETED_SERIES', label:'Completed (Series)' },
+      { id:'COMPLETED_MOVIES', label:'Completed (Movies)' },
+      { id:'ALL', label:'All' },
+    ];
+
+    let session = null;
+    let user = null;
+    let data = [];
+    let activeTab = 'WATCHING';
+    let q = '';
+
+    // Elements
+    const gridEl = document.getElementById('grid');
+    const tabsEl = document.getElementById('tabs');
+    const searchEl = document.getElementById('search');
+    const btnAdd = document.getElementById('btn-add');
+    const btnLogin = document.getElementById('btn-login');
+    const authCta = document.getElementById('auth-cta');
+    const bannerTools = document.getElementById('banner-tools');
+    const bannerImage = document.getElementById('banner-image');
+    const bannerFile = document.getElementById('banner-file');
+    const btnUploadBanner = document.getElementById('btn-upload-banner');
+    const presenceText = document.getElementById('presence-text');
+
+    // Modal refs
+    const modal = document.getElementById('modal');
+    const mTitle = document.getElementById('modal-title');
+    const fTitle = document.getElementById('f-title');
+    const fKind = document.getElementById('f-kind');
+    const fStatus = document.getElementById('f-status');
+    const fSeason = document.getElementById('f-season');
+    const fEpisode = document.getElementById('f-episode');
+    const fAbs = document.getElementById('f-abs');
+    const fNotes = document.getElementById('f-notes');
+    const btnSave = document.getElementById('btn-save');
+    const btnCancel = document.getElementById('btn-cancel');
+    const btnDelete = document.getElementById('btn-delete');
+
+    const loginModal = document.getElementById('login-modal');
+    const loginEmail = document.getElementById('login-email');
+    const loginSend = document.getElementById('login-send');
+    const loginCancel = document.getElementById('login-cancel');
+
+    const confirmModal = document.getElementById('confirm-modal');
+    const confirmTitle = document.getElementById('confirm-title');
+    const confirmMsg = document.getElementById('confirm-msg');
+    const confirmOk = document.getElementById('confirm-ok');
+    const confirmCancel = document.getElementById('confirm-cancel');
+
+    const toasts = document.getElementById('toasts');
+
+    let editingId = null;
+
+    // --- UI helpers: toasts, modals, confirm ---
+    function showToast(type, msg, ms = 4200){
+      const t = document.createElement('div');
+      t.className = 'toast ' + (type||'info');
+      t.innerHTML = `<div class=msg>${escapeHtml(msg)}</div>`;
+      toasts.appendChild(t);
+      // enter animation
+      requestAnimationFrame(()=> t.classList.add('enter'));
+      t.classList.add('enter');
+      t.classList.add('enter');
+      t.classList.add('enter');
+      // ensure CSS animation triggers
+      t.classList.add('enter');
+      t.classList.add('enter');
+      // add class that triggers animation
+      t.classList.add('enter');
+      t.classList.add('enter');
+      t.classList.add('enter');
+      t.classList.add('enter');
+      t.classList.add('enter');
+      t.classList.add('enter');
+      t.classList.add('enter');
+      t.classList.add('enter');
+      // actually, just use .enter
+      t.classList.add('enter');
+
+      // remove enter and schedule exit
+      setTimeout(()=>{ t.classList.remove('enter'); t.classList.add('exit'); }, ms - 260);
+      setTimeout(()=>{ t.remove(); }, ms);
+      return t;
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\\':'\\\\','"':'&quot;',"'":"&#39;"})[c]); }
+
+    function openModal(el){ el.classList.add('open'); el.setAttribute('aria-hidden', 'false'); trapFocus(el); }
+    function closeModal(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); releaseFocus(); }
+
+    // focus-trap (basic)
+    let lastFocused = null;
+    function trapFocus(modalEl){ lastFocused = document.activeElement; const focusable = modalEl.querySelectorAll('button,a,input,select,textarea'); if(focusable[0]) focusable[0].focus(); document.addEventListener('keydown', onKeyDownModal); }
+    function releaseFocus(){ document.removeEventListener('keydown', onKeyDownModal); if(lastFocused) lastFocused.focus(); }
+    function onKeyDownModal(e){ if(e.key==='Escape'){ document.querySelectorAll('.modal.open').forEach(m=>closeModal(m)); } }
+
+    // confirmModal callback pattern
+    let confirmCallback = null;
+    function openConfirm(title, message, onOk){
+      confirmTitle.textContent = title || 'Confirm';
+      confirmMsg.textContent = message || 'Are you sure?';
+      confirmCallback = onOk;
+      openModal(confirmModal);
+    }
+    confirmOk.onclick = async ()=>{ closeModal(confirmModal); if (confirmCallback){ try{ await confirmCallback(); } catch(e){ console.error(e); showToast('error', e.message || 'Error'); } confirmCallback = null; } };
+    confirmCancel.onclick = ()=>{ confirmCallback = null; closeModal(confirmModal); };
+
+    // Random banner on load (banner-1.png .. banner-10.png)
+    function setRandomBanner(){
+      try{
+        const n = Math.floor(Math.random()*10)+1;
+        bannerImage.style.backgroundImage = `url('banner-${n}.png')`;
+        bannerImage.style.opacity = '1';
+      }catch(e){/* ignore */}
+    }
+
+    // Tabs
+    function renderTabs(){
+      tabsEl.innerHTML = '';
+      TABS.forEach(t=>{
+        const b = document.createElement('button');
+        b.className = 'tab' + (activeTab===t.id ? ' active':'');
+        b.textContent = t.label + ' ' + countBadge(t.id);
+        b.onclick = ()=>{ activeTab = t.id; render(); };
+        tabsEl.appendChild(b);
+      });
+    }
+    function countBadge(tabId){
+      if (tabId==='ALL') return '('+data.length+')';
+      if (tabId==='COMPLETED_SERIES'){
+        return '('+data.filter(d=>d.status==='COMPLETED' && d.kind==='SERIES').length+')';
+      }
+      if (tabId==='COMPLETED_MOVIES'){
+        return '('+data.filter(d=>d.status==='COMPLETED' && d.kind==='MOVIE').length+')';
+      }
+      return '('+data.filter(d=>d.status===tabId).length+')';
+    }
+
+    function formatProgress(row){
+      if (row.absolute_episode) return `EP ${row.absolute_episode}`;
+      const se = [];
+      if (row.season) se.push('S'+row.season);
+      if (row.episode) se.push('EP '+row.episode);
+      return se.join(' ') || '';
+    }
+
+    function filtered(){
+      let rows = data;
+      if (activeTab!=='ALL'){
+        if (activeTab==='COMPLETED_SERIES'){
+          rows = rows.filter(r=>r.status==='COMPLETED' && r.kind==='SERIES');
+        } else if (activeTab==='COMPLETED_MOVIES'){
+          rows = rows.filter(r=>r.status==='COMPLETED' && r.kind==='MOVIE');
+        } else {
+          rows = rows.filter(r=>r.status===activeTab);
+        }
+      }
+      if (q) rows = rows.filter(r=>r.title.toLowerCase().includes(q));
+      return rows.sort((a,b)=> (b.updated_at?.localeCompare?.(a.updated_at)) || 0);
+    }
+
+    function chip(text){ const s = document.createElement('span'); s.className='status'; s.textContent=text; return s; }
+    function kchip(text){ const s = document.createElement('span'); s.className='k'; s.textContent=text; return s; }
+
+    function render(){
+      renderTabs();
+      gridEl.innerHTML = '';
+      filtered().forEach(row=>{
+        const col = document.createElement('div');
+        col.className='col';
+        const card = document.createElement('div');
+        card.className='card';
+
+        const title = document.createElement('div');
+        title.className='title';
+        title.textContent = row.title;
+        card.appendChild(title);
+
+        const meta = document.createElement('div');
+        meta.className='meta';
+        meta.appendChild(kchip(row.kind==='MOVIE' ? 'Movie' : 'Series'));
+        meta.appendChild(chip(row.status));
+        if (formatProgress(row)) meta.appendChild(chip(formatProgress(row)));
+        if (row.notes){ const n=document.createElement('span'); n.className='muted small'; n.textContent=row.notes; meta.appendChild(n); }
+        card.appendChild(meta);
+
+        const actions = document.createElement('div');
+        actions.className='actions';
+
+        const inc = document.createElement('button');
+        inc.className='btn sm'; inc.textContent='+1 EP';
+        inc.onclick = async()=>{
+          const patch = {};
+          if (row.absolute_episode) patch.absolute_episode = (row.absolute_episode||0)+1;
+          else patch.episode = (row.episode||0)+1;
+          try{
+            const { error } = await supabase.from('entries').update(patch).eq('id', row.id);
+            if (error) throw error;
+            showToast('success', '+1 EP');
+          } catch(e){ showToast('error', e.message || 'Failed to update'); }
+        };
+        actions.appendChild(inc);
+
+        const move = document.createElement('select');
+        move.className='select'; move.style.width='180px';
+        move.innerHTML = STATUSES.map(s=>`<option ${row.status===s?'selected':''}>${s}</option>`).join('');
+        move.onchange = async (e)=>{
+          try{
+            const { error } = await supabase.from('entries').update({ status: e.target.value }).eq('id', row.id);
+            if (error) throw error;
+            showToast('success', 'Moved to '+e.target.value);
+          } catch(e){ showToast('error', e.message || 'Failed'); }
+        };
+        actions.appendChild(move);
+
+        const edit = document.createElement('button');
+        edit.className='btn sm'; edit.textContent='Edit';
+        edit.onclick = ()=> openModalFor(row);
+        actions.appendChild(edit);
+
+        const del = document.createElement('button');
+        del.className='btn sm'; del.style.background='#3a2030'; del.textContent='Delete';
+        del.onclick = async()=>{
+          openConfirm('Delete item', `Delete "${row.title}"? This can\'t be undone.`, async ()=>{
+            const { error } = await supabase.from('entries').delete().eq('id', row.id);
+            if (error) throw error;
+            showToast('success', 'Deleted');
+          });
+        };
+        actions.appendChild(del);
+
+        card.appendChild(actions);
+        col.appendChild(card);
+        gridEl.appendChild(col);
+      });
+    }
+
+    // Auth UI wiring
+    function updateAuthUI(){
+      if (user){
+        authCta.innerHTML='';
+        const who = document.createElement('span'); who.className='muted small'; who.textContent = user.email || user?.user_metadata?.email || 'user';
+        const out = document.createElement('button'); out.className='btn ghost'; out.textContent='Sign out';
+        out.onclick = async()=> { await supabase.auth.signOut(); location.reload(); };
+        authCta.append(who, out);
+        bannerTools.style.display = '';
+      }else{
+        authCta.innerHTML='';
+        const btn = document.createElement('button'); btn.className='btn ghost'; btn.id='btn-login-2'; btn.textContent='Sign in';
+        btn.onclick = ()=> openModal(loginModal);
+        authCta.append(btn);
+        bannerTools.style.display='none';
+      }
+    }
+
+    // Load rows
+    async function load(){
+      try{
+        const { data: rows, error } = await supabase.from('entries').select('*').order('updated_at', { ascending:false });
+        if (error) throw error;
+        data = rows || [];
+        render();
+      } catch(e){ console.error(e); showToast('error', e.message || 'Failed to load'); }
+    }
+
+    // Realtime DB changes for your rows only (RLS enforces)
+    let changesChannel = null;
+    function setupRealtime(){
+      if (changesChannel) supabase.removeChannel(changesChannel);
+      changesChannel = supabase.channel('entries-db').on(
+        'postgres_changes',
+        { event:'*', schema:'public', table:'entries', filter: `user_id=eq.${user.id}` },
+        (payload)=>{
+          const { eventType, new: n, old: o } = payload;
+          if (eventType==='INSERT'){
+            data.unshift(n);
+          } else if (eventType==='UPDATE'){
+            const i = data.findIndex(r=>r.id===n.id);
+            if (i>=0) data[i]=n;
+          } else if (eventType==='DELETE'){
+            const i = data.findIndex(r=>r.id===o.id);
+            if (i>=0) data.splice(i,1);
+          }
+          render();
+        }
+      ).subscribe();
+    }
+
+    // Presence
+    let presenceChannel = null;
+    function setupPresence(){
+      if (presenceChannel) supabase.removeChannel(presenceChannel);
+      presenceChannel = supabase.channel('room:lobby', { config:{ presence:{ key: user.id } } });
+      presenceChannel.on('presence', { event:'sync' }, ()=>{
+        const state = presenceChannel.presenceState();
+        const all = new Set();
+        Object.values(state).forEach(arr => arr.forEach(v => all.add(v.presence_ref)));
+        presenceText.textContent = `${all.size} online`;
+      });
+      presenceChannel.subscribe(async status=>{
+        if (status==='SUBSCRIBED'){
+          await presenceChannel.track({ at: Date.now() });
+        }
+      });
+    }
+
+    // Add / Edit
+    btnAdd.onclick = ()=> openModalFor();
+    btnCancel.onclick = closeModalMain;
+    btnSave.onclick = saveModal;
+    btnDelete.onclick = removeModal;
+
+    function openModalFor(row){
+      editingId = row?.id || null;
+      mTitle.textContent = editingId ? 'Edit item' : 'Add item';
+      fTitle.value = row?.title || '';
+      fKind.value = row?.kind || 'SERIES';
+      fStatus.value = row?.status || 'PLAN';
+      fSeason.value = row?.season || '';
+      fEpisode.value = row?.episode || '';
+      fAbs.value = row?.absolute_episode || '';
+      fNotes.value = row?.notes || '';
+      btnDelete.style.display = editingId ? '' : 'none';
+      openModal(modal);
+      fTitle.focus();
+    }
+    function closeModalMain(){ closeModal(modal); }
+
+    async function saveModal(){
+      if (!user) return showToast('error','Sign in first');
+      const row = {
+        title: fTitle.value.trim(),
+        kind: fKind.value,
+        status: fStatus.value,
+        season: fSeason.value ? parseInt(fSeason.value) : null,
+        episode: fEpisode.value ? parseInt(fEpisode.value) : null,
+        absolute_episode: fAbs.value ? parseInt(fAbs.value) : null,
+        notes: fNotes.value.trim() || null,
+        user_id: user.id
+      };
+      if (!row.title) return showToast('error','Title required');
+      try{
+        if (editingId){
+          const { error } = await supabase.from('entries').update(row).eq('id', editingId);
+          if (error) throw error;
+          showToast('success','Saved');
+        } else {
+          const { error } = await supabase.from('entries').insert(row);
+          if (error) throw error;
+          showToast('success','Added');
+        }
+        closeModal(modal);
+      } catch(e){ showToast('error', e.message || 'Failed to save'); }
+    }
+
+    async function removeModal(){
+      if (!editingId) return;
+      try{
+        const { error } = await supabase.from('entries').delete().eq('id', editingId);
+        if (error) throw error;
+        showToast('success','Deleted');
+        closeModal(modal);
+      } catch(e){ showToast('error', e.message || 'Failed to delete'); }
+    }
+
+    // Search
+    searchEl.oninput = ()=>{ q = searchEl.value.trim().toLowerCase(); render(); };
+
+    // Export
+    const btnExport = document.getElementById('btn-export');
+    btnExport.onclick = ()=>{
+      const rows = data.map(({id,user_id,created_at,updated_at,...rest})=>rest);
+      const blob = new Blob([JSON.stringify(rows,null,2)], { type:'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'anibros-export.json'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('success','Exported');
+    };
+
+    // Banner upload/preview
+    bannerFile?.addEventListener('change', ()=>{
+      const f = bannerFile.files?.[0]; if(!f) return;
+      const url = URL.createObjectURL(f);
+      bannerImage.style.backgroundImage = `url(${url})`;
+      bannerImage.style.transform = 'scale(1.04)';
+    });
+    btnUploadBanner?.addEventListener('click', async ()=>{
+      if (!user) return showToast('error','Sign in first');
+      const f = bannerFile.files?.[0]; if(!f) return showToast('error','Choose a file first');
+      const path = `${user.id}/header-${Date.now()}-${f.name}`;
+      try{
+        const { data: up, error } = await supabase.storage.from('banners').upload(path, f, { upsert:false });
+        if (error) throw error;
+        showToast('success', 'Uploaded! Path: ' + up.path);
+      } catch(e){ showToast('error', e.message || 'Upload failed'); }
+    });
+
+    // Login modal wiring
+    btnLogin.onclick = ()=> openModal(loginModal);
+    loginCancel.onclick = ()=> closeModal(loginModal);
+    loginSend.onclick = async ()=>{
+      const email = loginEmail.value?.trim();
+      if (!email) return showToast('error','Enter an email');
+      try{
+        const { error } = await supabase.auth.signInWithOtp({ email });
+        if (error) throw error;
+        showToast('success','Magic link sent — check your inbox');
+        closeModal(loginModal);
+      } catch(e){ showToast('error', e.message || 'Failed to send'); }
+    };
+
+    // keyboard shortcut: press / to focus search
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === '/') { e.preventDefault(); searchEl.focus(); }
+    });
+
+    // click outside to close modal
+    document.addEventListener('click', (e)=>{
+      document.querySelectorAll('.modal.open').forEach(m=>{
+        if (e.target === m) closeModal(m);
+      });
+    });
+
+    // Initialize: get session and set things up
+    (async function init(){
+      setRandomBanner();
+      const { data: { session: s } } = await supabase.auth.getSession();
+      session = s; user = s?.user ?? null;
+      updateAuthUI();
+      if (user){ load(); setupRealtime(); setupPresence(); }
+      render(); // tabs on first load
+    })();
+
+    // react to auth changes
+    supabase.auth.onAuthStateChange((_evt, s)=>{
+      session = s; user = s?.user ?? null;
+      updateAuthUI();
+      if (user){ load(); setupRealtime(); setupPresence(); }
+    });
+
+  </script>
+</body> 
+</html>
+
+
+the boxes with the actual anime also needs to get a complete new look, also make it that theres also -1 ep, not just +1, pls, with it curently shoiwng what ep u on, make it that the card it self shows all the info u need (EP, S, what list (watching, plan to watch, etc)), then theres a settings icon where u can edit it, and also have like a delete icon too, with the the -1 +1 and allat shit too
+also make it possible for their to be acover image for your anime, bto h on the dd list, and the edit list, it shouldnt be an uploadeable one, it should be url only, aint got server space lol, the images should be in a 1:1 ratio img box for the lists and shi
+
+the banner image also need to be cropped, so yeah 100vw but maybe a certain height only, espeically for pc, otherwise it can take up too much space, pick a rtio u see fit
+
+the titles use Orbitron rn, make all the other non title text use a good sans font from google fonts, one that looks good and matches
+
+the search title should also be moved to the left side of the cat bar, and the cat tags (watching, all etc) should be under it instead, also 'all' needs to be in front, and the default selected one, obv thaat section having seperatores with watching, plan to watch and allat, obv above allat sould be the nav bar and hero/banner
+
+also add the url search queary thing or wathcever, like how website.com/?q=whatever for the categoriess/cats/tags
+
+add a warning modal for the sign out option, make it work out somehow, and also it sends the email whenu press enter on pc, and also swap all these wordings of 'magic links' to 'login links' no need to be fancy
+
+when inside a modal, remove the ability to scroll the bg, and darken it out obv
+
+alr remove tht whole uploading custom banner, it should randomly pick from banner-1.png to banner-10.png on every load, footer postioning also needs to be fixed, and favicon and shi, mkae sure its completely fgone from this code pls
+
+make a favicon too pls, its favicon.png
+
+remove the footer img, just make a normal footer with normal footer stuff
+
+make sure the site is fully reposnive for mobile too
+
+use and implement fontawesome icons all over the site
+
+add/improve anything else u see fit
+
+
+remove all these unneccesry tranparcy places, they just fuck up most of the site, add it only in places where it works, and looks nice without breaking anything
+
+make sure all the Add Item is there by the cats and shi too, dont move it
+
+mkae it possible to import json files, gimme an example of one with like 10 anime, image and all
+
+give the full html css js with changes, keep all APIs and shi intact, and tldr wat u do before the code 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+the cat buttons should be in a horizontally scrollable list, not wrapped. especially for mobile
+
+remove the notes on the card, they should only be viewable in the settings
+
+add an X button in the inputs (titles, etc.) that is only there when there is texxt inside the input box, otherwise it shouldnt be there
+
+the anime that is edited should be sent to the top of the list in its cat, instead just stay in its pos at the time, otherwise it gets annoying, obv newly added ones hould go to the top
+
+
+as for the imaage grabs, only the highest qulaity should be preffered, otherwise whatever it finds
+
+the autocover should be in the same line as the img url box when in settings
+
+make the usrname, sign in/out, users online, and other shit u see fit, should be in a hamburger menu on mobile
+the title should be in its own line, and then the add item and grid.shelf buttons in the other
+
+for the compact view on desktop, there should be 3 cards in a row
+
+add a working scroll to top button, thats on the right bottom on desktop and mid bottom on mobile, and hides until u scroll a bit, so its not there at the top whenits useless, obv style it to the rest of the web
+
+
+
+
+
+
+
+
+
+
+
+
+make the banner about double the height it is rn (or whatever would be right, and not too small), and add some padding above the title thats over the banner, alongside some bg shadow for both the title and slogn,sub title
+
+move the cat (plan, watching etc) thats on the card to be on the bottom left, instead of the bottom right

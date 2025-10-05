@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AniBros — Your Anime Shelf</title>
+<link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<style>
+:root{--bg:#0b0c10;--panel:#0f1117;--panel-2:#0b0f16;--text:#e6e8ef;--muted:#9aa3b2;--brand:#7c3aed;--brand-2:#22d3ee;--ok:#22c55e;--warn:#f59e0b;--danger:#f56565;--card:#151927;--chip:#1d2336;--ring:#2b2f45;--shadow:0 10px 24px rgba(0,0,0,.35);--radius:14px;--radius-sm:10px;--container:1100px;--title-font:'Orbitron',system-ui,-apple-system,'Segoe UI',Roboto;--body-font:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial;--ui-duration:220ms;--bp-mobile:720px;--bp-compact:520px;--bp-small:600px}*{box-sizing:border-box}body,html{height:100%}body{margin:0;background:linear-gradient(180deg,#07070a,#0b0c10 40%);color:var(--text);font:400 16px/1.55 var(--body-font);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-tap-highlight-color:transparent;min-height:100dvh;display:flex;flex-direction:column}a{color:inherit}.container{max-width:var(--container);margin:0 auto;padding:0 16px}.header{position:sticky;top:0;z-index:60;background:rgba(11,12,16,.9);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.06)}.nav{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:66px;padding:6px 0;flex-wrap:nowrap}.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px;min-width:0;flex:1 1 auto}.logo-img{width:34px;height:34px;border-radius:9px;object-fit:cover;display:block;flex:0 0 auto}.brand-title{font-family:var(--title-font);letter-spacing:.4px;white-space:nowrap}.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.nav-cta{display:flex;gap:10px;align-items:center;margin-left:auto}.btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:var(--panel);color:#e9ecf3;cursor:pointer;display:inline-flex;gap:8px;align-items:center;box-shadow:var(--shadow);transition:transform var(--ui-duration) ease,opacity var(--ui-duration) ease}.btn:hover{transform:translateY(-2px)}.btn.brand{background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#fff;font-weight:700}.btn.ghost{background:#131826;border:1px solid rgba(255,255,255,.08);box-shadow:none}.btn.danger{background:#2d1a25;color:#fee2e2;border:1px solid rgba(255,255,255,.06)}.btn.sm{padding:8px 10px;border-radius:10px;font-size:13px}.btn.icon{padding:8px 10px;border-radius:10px;font-size:14px;box-shadow:none;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.15)}.tag{display:inline-flex;gap:8px;align-items:center;background:#151a2b;border:1px solid rgba(255,255,255,.06);color:#b6bfd3;border-radius:999px;padding:6px 10px;font-size:12px;white-space:nowrap}.hamburger{display:none}@media (max-width:var(--bp-mobile)){.nav{row-gap:8px}.nav-cta{display:none}.hamburger{display:inline-flex;margin-left:auto}.brand-title{font-size:15px}.logo-img{width:30px;height:30px}}.menu-panel{position:fixed;top:66px;right:12px;z-index:80;width:min(320px,92vw);background:#101525;border:1px solid rgba(255,255,255,.08);border-radius:14px;box-shadow:0 20px 40px rgba(0,0,0,.5);transform-origin:top right;transform:scale(.98) translateY(-6px);opacity:0;pointer-events:none;transition:transform .2s ease,opacity .2s ease}.menu-panel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}.menu-sec{padding:12px;border-bottom:1px solid rgba(255,255,255,.06)}.menu-sec:last-child{border-bottom:0}.menu-title{font-family:var(--title-font);font-size:13px;color:#cbd5f7;margin-bottom:8px}.menu-row{display:flex;flex-wrap:wrap;gap:8px}.menu-item{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#12182a;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px}.menu-kv{display:flex;align-items:center;gap:10px}.menu-note{font-size:12px;color:#9aa3b2}.banner{position:relative;display:block;height:clamp(220px,28vw,360px);width:100vw;margin-left:calc(50% - 50vw);border-bottom:1px solid rgba(255,255,255,.06);overflow:hidden}.banner-image{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:1;filter:saturate(1.02) contrast(1.05) brightness(.9);transform:scale(1.02)}.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,12,.6),rgba(7,8,12,.75) 40%,rgba(7,8,12,.9));pointer-events:none}.banner-inner{position:relative;z-index:2;height:100%;display:flex;align-items:flex-end;padding:16px 0 18px}.hero{display:grid;gap:8px;max-width:var(--container);margin:0 auto;width:100%}.hero h1{margin:0;font-size:clamp(26px,3.2vw,40px);line-height:1.05;letter-spacing:.6px;font-family:var(--title-font);font-weight:700}.hero .sub{color:#d4daf0;font-size:14px}.toolbar{display:flex;flex-direction:column;gap:12px;margin:14px 0 10px}.toolbar-top{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.search{flex:1;min-width:220px;background:#0f1424;border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#e8ecfa;padding:10px 12px;outline:0}.search:focus{box-shadow:0 0 0 4px rgba(124,58,237,.12);border-color:rgba(124,58,237,.7)}.toolbar-tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{padding:8px 12px;border-radius:999px;color:#c6cde0;background:#141a2a;border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:transform .15s}.tab:hover{transform:translateY(-1px)}.tab.active{background:linear-gradient(90deg,rgba(124,58,237,.25),rgba(34,211,238,.2));color:#fff;border-color:rgba(255,255,255,.12)}.tab .count{opacity:.7;margin-left:6px}.view-toggle{display:inline-flex;background:#11162a;border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden}.seg{appearance:none;background:0 0;color:#cfe0ff;padding:8px 12px;border:0;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:8px}.seg:hover{background:rgba(255,255,255,.04)}.seg.active{background:linear-gradient(90deg,rgba(124,58,237,.25),rgba(34,211,238,.2));color:#fff}@media (max-width:var(--bp-mobile)){.view-toggle{display:none}}.section{margin-top:18px}.section-title{display:flex;align-items:center;gap:10px;margin:8px 0 10px;font-family:var(--title-font);font-size:15px;letter-spacing:.3px;color:#d6dbef}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.col{grid-column:span 12}.grid.view-grid .col{grid-column:span 6}@media (min-width:var(--bp-small)){.grid.view-grid .col{grid-column:span 6}} @media (min-width:700px){.grid.view-grid .col{grid-column:span 4}} @media (min-width:900px){.grid.view-grid .col{grid-column:span 3}}.grid.view-compact .col{grid-column:span 12}@media (min-width:900px){.grid.view-compact .col{grid-column:span 6}}.card{background:#12182a;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 20px rgba(1,5,18,.5);display:flex;flex-direction:column;min-width:0}.cover{position:relative;width:100%;aspect-ratio:1/1.4;background:#0e1323;overflow:hidden}.cover img{width:100%;height:100%;object-fit:cover;display:block}.cover .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#1a2040,#11162e);color:#aeb8d9;font-weight:800;font-size:clamp(22px,5vw,36px);letter-spacing:.8px;text-transform:uppercase}.floating-actions{position:absolute;top:6px;right:6px;display:flex;gap:6px;z-index:2}.floating-actions .icon-btn{background:rgba(6,9,16,.7);color:#e8ecfa;border:1px solid rgba(255,255,255,.15);padding:6px;border-radius:8px;cursor:pointer}.floating-actions .icon-btn:hover{background:rgba(6,9,16,.9)}.badge-bottom{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12);color:#eaf0ff;font-size:11px;padding:4px 6px;border-radius:999px;display:flex;gap:6px;align-items:center}.card-body{padding:8px;min-width:0;display:flex;flex-direction:column;gap:4px}.title-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px;min-width:0}.title{font-weight:800;letter-spacing:.2px;font-family:var(--title-font);font-size:14px;line-height:1.2;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.status-chip{font-size:10px;padding:3px 6px;border-radius:999px;background:#1c233a;border:1px solid rgba(255,255,255,.08);color:#d8def0}.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;color:#b3bad2;font-size:11px;margin:2px 0 4px}.chip{font-size:10px;padding:3px 6px;border-radius:999px;background:#161c2e;border:1px solid rgba(255,255,255,.08);color:#cfe0ff}.note{color:#9aa3b2;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}.controls{display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap}.control-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:28px;border-radius:8px;background:#1a2240;color:#dfe6ff;border:1px solid rgba(255,255,255,.12);cursor:pointer}.control-btn:hover{background:#1f2850}.progress-readout{display:inline-flex;gap:4px;align-items:center;padding:4px 8px;border-radius:8px;background:#131a2f;border:1px solid rgba(255,255,255,.08);font-size:12px;color:#cfe0ff}.move-select{margin-left:auto;background:#0f1424;border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#e8ecfa;padding:5px 8px;outline:0;height:28px}.move-select:focus{box-shadow:0 0 0 3px rgba(124,58,237,.16);border-color:rgba(124,58,237,.7)}@media (max-width:var(--bp-mobile)){.title-row{grid-template-columns:1fr}.status-chip{justify-self:start}}.muted{color:#9aa3b2}.muted-small{color:#9aa3b2;font-size:13px}.card.row{flex-direction:row;align-items:stretch;gap:0;flex-wrap:nowrap!important}.card.row .cover{width:72px;flex:0 0 72px;aspect-ratio:1/1.4}.card.row .badge-bottom{display:none}.card.row .card-body{padding:8px 10px;gap:4px}.card.row .chips{margin:2px 0 2px}.card.row .title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.card.row .controls{margin-top:2px}.modal{position:fixed;inset:0;background:rgba(5,7,12,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:120;transition:opacity var(--ui-duration) ease}.modal.open{display:flex}.sheet{background:#10162a;border:1px solid rgba(255,255,255,.08);border-radius:14px;width:min(760px,98%);padding:18px;transform:translateY(8px) scale(.995);opacity:0;transition:transform .28s cubic-bezier(.2,.9,.3,1),opacity .2s ease}.modal.open .sheet{transform:translateY(0) scale(1);opacity:1}.sheet h3{margin:0 0 8px;font-family:var(--title-font)}.form{display:grid;gap:10px}.row{display:flex;gap:10px;flex-wrap:wrap}.file,.input,.select{background:#0f1424;border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#e8ecfa;padding:10px 12px;outline:0;width:100%}.input:focus,.select:focus{box-shadow:0 0 0 4px rgba(124,58,237,.12);border-color:rgba(124,58,237,.7)}.hint{color:#9aa3b2;font-size:12px}.danger-text{color:var(--danger)}.link{color:#8ab4ff;cursor:pointer}.small{font-size:12px}.oauth-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}@media (max-width:520px){.oauth-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.btn.oauth{justify-content:center;font-weight:700}.btn.oauth.google{background:#1a2138}.btn.oauth.apple{background:#1a1a1a}.btn.oauth.discord{background:#202553}#toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:150}.toast{min-width:220px;max-width:420px;padding:12px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.45);color:#fff;font-weight:700;display:flex;gap:10px;align-items:center;transform:translateY(10px) scale(.995);opacity:0}.toast .msg{font-weight:700;font-size:14px}.toast.info{background:#1b304a}.toast.success{background:linear-gradient(90deg,#16a34a,#22c55e)}.toast.error{background:linear-gradient(90deg,var(--danger),#ef6b6b)}.toast.enter{animation:toast-in .26s cubic-bezier(.2,.9,.3,1) forwards}.toast.exit{animation:toast-out .3s ease forwards}@keyframes toast-in{to{transform:translateY(0) scale(1);opacity:1}}@keyframes toast-out{to{transform:translateY(8px) scale(.98);opacity:0}}footer{border-top:1px solid rgba(255,255,255,.08);margin-top:auto;background:#0f1117}footer .foot-wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0 26px}.center{display:flex;align-items:center;justify-content:center}.hidden{display:none!important}@media (max-width:var(--bp-mobile)){.hero h1{font-size:22px}.toolbar-top{gap:8px}.move-select{margin-left:0;width:100%}#presence{opacity:0}}#loading-spinner{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100;display:none;color:var(--brand);font-size:24px;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}#loading-spinner.active{display:block}#btn-refresh-covers{margin-left:8px}
+</style>
+</head>
+<body>
+<header class="header">
+<div class="container nav">
+<div class="logo"><img src="logo.png" alt="AniBros" class="logo-img"><div class="brand-title">AniBros</div><div class="nav-meta"><span class="tag" id="presence"><i class="fa-solid fa-circle" style="color:var(--ok);font-size:8px"></i><span id="presence-text">0 online</span></span></div></div>
+<div class="nav-cta" id="auth-cta"><button class="btn ghost" id="btn-login"><i class="fa-solid fa-right-to-bracket"></i>Sign in</button></div>
+<button class="btn icon hamburger" id="btn-menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobile-menu" title="Menu"><i class="fa-solid fa-bars"></i></button>
+</div>
+<div class="menu-panel" id="mobile-menu" role="menu" aria-label="Navigation menu">
+<div class="menu-sec"><div class="menu-title">Quick actions</div><div class="menu-row"><button class="btn brand" id="m-add"><i class="fa-solid fa-plus"></i>Add item</button></div></div>
+<div class="menu-sec"><div class="menu-title">View</div><div class="menu-row" role="group" aria-label="View toggle"><div class="menu-item"><div class="menu-kv"><i class="fa-solid fa-grip"></i>Grid</div><button class="btn ghost sm" id="m-view-grid">Use</button></div><div class="menu-item"><div class="menu-kv"><i class="fa-solid fa-list"></i>Shelf</div><button class="btn ghost sm" id="m-view-compact">Use</button></div></div></div>
+<div class="menu-sec"><div class="menu-title">Account</div><div class="menu-row"><div class="menu-item" id="m-auth-row"><div class="menu-kv"><i class="fa-solid fa-user"></i><span id="m-user-email">Signed out</span></div><button class="btn ghost sm" id="m-login"><i class="fa-solid fa-right-to-bracket"></i>Sign in</button><button class="btn ghost sm hidden" id="m-logout"><i class="fa-solid fa-right-from-bracket"></i>Sign out</button></div></div></div>
+<div class="menu-sec"><div class="menu-title">Data</div><div class="menu-row"><button class="btn ghost sm" id="m-import"><i class="fa-solid fa-file-import"></i>Import JSON</button><button class="btn ghost sm" id="m-export"><i class="fa-solid fa-file-export"></i>Export JSON</button><div class="menu-note">Import/Export your list as JSON</div></div></div>
+</div>
+</header>
+<section class="banner" aria-label="Featured">
+<div class="banner-image" id="banner-image" aria-hidden="true"></div>
+<div class="banner-inner"><div class="hero container"><h1 id="hero-title">AniBros — Anime Watchlist For The Bros</h1><div class="sub">Fast. Private. Built for bros who binge and forget where they left off.</div></div></div>
+</section>
+<main class="container" id="main">
+<div class="toolbar"><div class="toolbar-top"><input class="search" id="search" placeholder="Search title…" aria-label="Search titles (press / to focus)"><div class="view-toggle" role="group" aria-label="View mode"><button class="seg" id="view-btn-grid" aria-pressed="true"><i class="fa-solid fa-grip"></i>Grid</button><button class="seg" id="view-btn-compact" aria-pressed="false"><i class="fa-solid fa-list"></i>Shelf</button></div><button class="btn brand" id="btn-add"><i class="fa-solid fa-plus"></i>Add item</button></div><div class="toolbar-tabs" id="tabs"></div></div>
+<div id="empty" class="muted-small" style="display:none;margin:16px 0">Sign in to start your shelf.</div>
+<div id="sections"></div>
+<div class="grid" id="grid"></div>
+<div class="foot" style="margin:22px 0 30px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap"><div class="muted small">Pro tip: press / to search. Click -1/+1 to adjust EP (Shift = ±5). Use the gear to edit, trash to delete.</div><div class="right" style="display:flex;gap:8px;flex-wrap:wrap"><input type="file" id="import-file" accept="application/json" class="hidden"><button class="btn ghost small" id="btn-import"><i class="fa-solid fa-file-import"></i>Import JSON</button><button class="btn ghost small" id="btn-export"><i class="fa-solid fa-file-export"></i>Export JSON</button><button class="btn ghost small" id="btn-refresh-covers"><i class="fa-solid fa-sync"></i>Refresh covers</button></div></div>
+</main>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+<div class="sheet" role="document"><h3 id="modal-title"><i class="fa-solid fa-pen-to-square"></i>Add item</h3><div class="form"><div class="row"><input id="f-title" class="input" placeholder="Title (e.g., One Piece)"></div><div class="row"><select id="f-kind" class="select"><option value="SERIES">Series</option><option value="MOVIE">Movie</option></select><select id="f-status" class="select"><option>WATCHING</option><option>PLAN</option><option>REWATCH</option><option>WAITING</option><option>COMPLETED</option></select></div><div class="row"><input type="number" id="f-season" class="input" placeholder="Season #"> <input type="number" id="f-episode" class="input" placeholder="Episode #"> <input type="number" id="f-abs" class="input" placeholder="Absolute EP #"></div><div class="row" style="align-items:center"><input id="f-image" class="input" placeholder="Image URL (1:1 recommended)"><button class="btn ghost" id="btn-autocover" title="Auto fetch cover by title"><i class="fa-solid fa-wand-magic-sparkles"></i>Auto cover</button></div><div class="row"><input id="f-notes" class="input" placeholder="Notes (optional)"></div><div class="row"><div style="display:flex;gap:8px;align-items:center"><button class="btn brand" id="btn-save"><i class="fa-solid fa-floppy-disk"></i>Save</button><button class="btn ghost" id="btn-cancel"><i class="fa-solid fa-xmark"></i>Cancel</button></div><div style="margin-left:auto"><button class="btn danger" id="btn-delete" style="display:none"><i class="fa-solid fa-trash"></i>Delete</button></div></div><div class="hint">Auto cover now uses AniList first (fuzzy titles & synonyms) and falls back to Jikan (MAL). If your DB lacks image_url, we’ll store covers locally.</div></div></div>
+</div>
+<div class="modal" id="login-modal" role="dialog" aria-modal="true" aria-hidden="true">
+<div class="sheet" role="document" style="max-width:560px"><h3 style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-right-to-bracket"></i>Sign in</h3><div class="form"><div class="row"><div class="oauth-grid" aria-label="Sign in with"><button class="btn oauth google" id="oauth-google" title="Sign in with Google"><i class="fa-brands fa-google"></i>Google</button><button class="btn oauth apple" id="oauth-apple" title="Sign in with Apple"><i class="fa-brands fa-apple"></i>Apple</button><button class="btn oauth discord" id="oauth-discord" title="Sign in with Discord"><i class="fa-brands fa-discord"></i>Discord</button><button class="btn oauth" id="oauth-email-link" title="Email login link"><i class="fa-solid fa-envelope"></i>Email link</button></div></div><div class="row" id="email-login-row" style="align-items:center;display:none"><input id="login-email" class="input" placeholder="Your email" type="email"><button class="btn brand" id="login-send"><i class="fa-solid fa-paper-plane"></i>Send link</button></div><div class="row" style="justify-content:space-between;align-items:center"><div class="hint">No passwords. Use OAuth or get a magic login link to your inbox.</div><button class="btn ghost" id="login-cancel"><i class="fa-solid fa-xmark"></i>Close</button></div></div></div>
+</div>
+<div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-hidden="true">
+<div class="sheet center" style="max-width:520px"><div style="width:100%"><h3 id="confirm-title"><i class="fa-solid fa-triangle-exclamation"></i>Confirm</h3><p id="confirm-msg" class="muted-small">Are you sure?</p><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px"><button class="btn ghost" id="confirm-cancel"><i class="fa-solid fa-xmark"></i>Cancel</button><button class="btn danger" id="confirm-ok"><i class="fa-solid fa-check"></i>Yes, do it</button></div></div></div>
+</div>
+<div id="toasts" aria-live="polite"></div>
+<div id="loading-spinner" aria-label="Loading"><i class="fa-solid fa-spinner"></i></div>
+<footer><div class="container foot-wrap"><div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-layer-group" style="opacity:.7"></i><div style="font-family:var(--title-font)">AniBros</div></div><div class="muted-small">Made with chaos & ramen. © AniBros</div></div></footer>
+<script type="module">
+// 1) Set your Supabase project keys here (kept intact)
+    const SUPABASE_URL = 'https://odvbznpmrorgdaaqjkrf.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kdmJ6bnBtcm9yZ2RhYXFqa3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1OTc5MjgsImV4cCI6MjA3NTE3MzkyOH0.5-fC1TmZTlGwHzsLJSxo0pTIdcbJm0_cOehoILdd31w';
+
+    // 2) Import supabase-js (ESM from CDN)
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // UI constants/state
+    const STATUSES = ['WATCHING','PLAN','REWATCH','WAITING','COMPLETED'];
+    const TABS = [
+      { id:'ALL', label:'All' },
+      { id:'WATCHING', label:'Watching' },
+      { id:'PLAN', label:'Plan to watch' },
+      { id:'REWATCH', label:'Rewatch' },
+      { id:'WAITING', label:'Waiting' },
+      { id:'COMPLETED_SERIES', label:'Completed (Series)' },
+      { id:'COMPLETED_MOVIES', label:'Completed (Movies)' },
+    ];
+    let session = null;
+    let user = null;
+    let data = [];
+    let activeTab = 'ALL';
+    let q = '';
+    let viewMode = 'grid'; // 'grid' | 'compact'
+    const IMG_LOCAL_PREFIX = 'anibros_images:';
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const btnRefreshCovers = document.getElementById('btn-refresh-covers');
+
+    // Elements
+    const sectionsEl = document.getElementById('sections');
+    const gridEl = document.getElementById('grid');
+    const tabsEl = document.getElementById('tabs');
+    const searchEl = document.getElementById('search');
+    const btnAdd = document.getElementById('btn-add');
+    const btnLogin = document.getElementById('btn-login');
+    const authCta = document.getElementById('auth-cta');
+    const bannerImage = document.getElementById('banner-image');
+    const presenceText = document.getElementById('presence-text');
+    const emptyEl = document.getElementById('empty');
+
+    // View toggle
+    const viewBtnGrid = document.getElementById('view-btn-grid');
+    const viewBtnCompact = document.getElementById('view-btn-compact');
+
+    // Mobile menu
+    const menuBtn = document.getElementById('btn-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mAdd = document.getElementById('m-add');
+    const mViewGrid = document.getElementById('m-view-grid');
+    const mViewCompact = document.getElementById('m-view-compact');
+    const mLogin = document.getElementById('m-login');
+    const mLogout = document.getElementById('m-logout');
+    const mUserEmail = document.getElementById('m-user-email');
+    const mImport = document.getElementById('m-import');
+    const mExport = document.getElementById('m-export');
+
+    // Modal refs
+    const modal = document.getElementById('modal');
+    const mTitle = document.getElementById('modal-title');
+    const fTitle = document.getElementById('f-title');
+    const fKind = document.getElementById('f-kind');
+    const fStatus = document.getElementById('f-status');
+    const fSeason = document.getElementById('f-season');
+    const fEpisode = document.getElementById('f-episode');
+    const fAbs = document.getElementById('f-abs');
+    const fImage = document.getElementById('f-image');
+    const fNotes = document.getElementById('f-notes');
+    const btnSave = document.getElementById('btn-save');
+    const btnCancel = document.getElementById('btn-cancel');
+    const btnDelete = document.getElementById('btn-delete');
+    const btnAutoCover = document.getElementById('btn-autocover');
+
+    const loginModal = document.getElementById('login-modal');
+    const loginEmail = document.getElementById('login-email');
+    const loginSend = document.getElementById('login-send');
+    const loginCancel = document.getElementById('login-cancel');
+    const oauthGoogle = document.getElementById('oauth-google');
+    const oauthApple = document.getElementById('oauth-apple');
+    const oauthDiscord = document.getElementById('oauth-discord');
+    const oauthEmailLink = document.getElementById('oauth-email-link');
+    const emailLoginRow = document.getElementById('email-login-row');
+
+    const confirmModal = document.getElementById('confirm-modal');
+    const confirmTitle = document.getElementById('confirm-title');
+    const confirmMsg = document.getElementById('confirm-msg');
+    const confirmOk = document.getElementById('confirm-ok');
+    const confirmCancel = document.getElementById('confirm-cancel');
+
+    const toasts = document.getElementById('toasts');
+
+    // Import/Export
+    const btnExport = document.getElementById('btn-export');
+    const btnImport = document.getElementById('btn-import');
+    const importFile = document.getElementById('import-file');
+
+    let editingId = null;
+    let changesChannel = null;
+    let presenceChannel = null;
+
+    // --- Helpers ---
+    function showToast(type, msg, ms = 4200){
+      const t = document.createElement('div');
+      t.className = 'toast ' + (type||'info');
+      const icon = type==='success' ? 'fa-circle-check' : type==='error' ? 'fa-triangle-exclamation' : 'fa-circle-info';
+      t.innerHTML = `<i class="fa-solid ${icon}"></i><div class="msg">${escapeHtml(msg)}</div>`;
+      toasts.appendChild(t);
+      requestAnimationFrame(()=> t.classList.add('enter'));
+      setTimeout(()=>{ t.classList.remove('enter'); t.classList.add('exit'); }, Math.max(1200, ms - 260));
+      setTimeout(()=>{ t.remove(); }, ms);
+      return t;
+    }
+    function escapeHtml(s){ return String(s).replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\\':'\\\\','"':'&quot;',"'":"&#39;"})[c]); }
+
+    function showLoading(show = true){ loadingSpinner.classList.toggle('active', show); }
+
+    function openModal(el){ el.classList.add('open'); el.setAttribute('aria-hidden', 'false'); trapFocus(el); document.body.classList.add('modal-open'); }
+    function closeModal(el){ el.classList.remove('open'); el.setAttribute('aria-hidden', 'true'); releaseFocus(); if (!document.querySelector('.modal.open')) document.body.classList.remove('modal-open'); }
+
+    // focus-trap (basic)
+    let lastFocused = null;
+    function trapFocus(modalEl){ lastFocused = document.activeElement; const focusable = modalEl.querySelectorAll('button,a,input,select,textarea'); if(focusable[0]) focusable[0].focus(); document.addEventListener('keydown', onKeyDownModal); }
+    function releaseFocus(){ document.removeEventListener('keydown', onKeyDownModal); if(lastFocused) lastFocused.focus(); }
+    function onKeyDownModal(e){ if(e.key==='Escape'){ document.querySelectorAll('.modal.open').forEach(m=>closeModal(m)); } }
+
+    // confirmModal callback pattern
+    let confirmCallback = null;
+    function openConfirm(title, message, onOk){
+      confirmTitle.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(title||'Confirm')}`;
+      confirmMsg.textContent = message || 'Are you sure?';
+      confirmCallback = onOk;
+      openModal(confirmModal);
+    }
+    confirmOk.onclick = async ()=>{ closeModal(confirmModal); if (confirmCallback){ try{ await confirmCallback(); } catch(e){ console.error(e); showToast('error', e.message || 'Error'); } confirmCallback = null; } };
+    confirmCancel.onclick = ()=>{ confirmCallback = null; closeModal(confirmModal); };
+
+    // Random banner on load
+    function setRandomBanner(){
+      const n = Math.floor(Math.random()*10)+1;
+      bannerImage.style.backgroundImage = `url('banner-${n}.png')`;
+      bannerImage.style.opacity = '1';
+    }
+
+    function chipEl(text){ const s = document.createElement('span'); s.className='chip'; s.textContent=text; return s; }
+    function statusChip(text){ const s = document.createElement('span'); s.className='status-chip'; s.textContent=text; return s; }
+
+    function formatProgress(row){
+      if (row.absolute_episode != null) return `EP ${row.absolute_episode}`;
+      const se = [];
+      if (row.season != null) se.push('S'+row.season);
+      if (row.episode != null) se.push('EP '+row.episode);
+      return se.join(' ') || 'EP 0';
+    }
+    function currentEpisode(row){
+      if (row.absolute_episode != null) return row.absolute_episode;
+      return row.episode || 0;
+    }
+
+    function getLocalImgMap(){
+      if (!user) return {};
+      try{
+        return JSON.parse(localStorage.getItem(IMG_LOCAL_PREFIX + user.id) || '{}');
+      }catch{ return {}; }
+    }
+    function setLocalImage(id, url){
+      if (!user) return;
+      const map = getLocalImgMap();
+      map[id] = url || '';
+      localStorage.setItem(IMG_LOCAL_PREFIX + user.id, JSON.stringify(map));
+    }
+    function getLocalImage(id){
+      const map = getLocalImgMap();
+      return map[id] || '';
+    }
+    function attachLocalImages(rows){
+      const map = getLocalImgMap();
+      rows.forEach(r => { if (!r.image_url && map[r.id]) r.image_url = map[r.id]; });
+      return rows;
+    }
+
+    // Tabs
+    function renderTabs(){
+      tabsEl.innerHTML = '';
+      TABS.forEach(t=>{
+        const b = document.createElement('button');
+        b.className = 'tab' + (activeTab===t.id ? ' active':'');
+        b.innerHTML = `${t.label} <span class="count">${countBadge(t.id)}</span>`;
+        b.onclick = ()=>{ activeTab = t.id; updateURL(); render(); };
+        tabsEl.appendChild(b);
+      });
+    }
+    function countBadge(tabId){
+      if (tabId==='ALL') return data.length;
+      if (tabId==='COMPLETED_SERIES'){
+        return data.filter(d=>d.status==='COMPLETED' && d.kind==='SERIES').length;
+      }
+      if (tabId==='COMPLETED_MOVIES'){
+        return data.filter(d=>d.status==='COMPLETED' && d.kind==='MOVIE').length;
+      }
+      return data.filter(d=>d.status===tabId).length;
+    }
+
+    function filtered(){
+      let rows = data.slice();
+      if (activeTab!=='ALL'){
+        if (activeTab==='COMPLETED_SERIES'){
+          rows = rows.filter(r=>r.status==='COMPLETED' && r.kind==='SERIES');
+        } else if (activeTab==='COMPLETED_MOVIES'){
+          rows = rows.filter(r=>r.status==='COMPLETED' && r.kind==='MOVIE');
+        } else {
+          rows = rows.filter(r=>r.status===activeTab);
+        }
+      }
+      if (q) rows = rows.filter(r=>r.title.toLowerCase().includes(q));
+      return rows.sort((a,b)=> (b.updated_at?.localeCompare?.(a.updated_at)) || 0);
+    }
+
+    function progressBadgeText(row){
+      if (row.absolute_episode != null) return `EP ${row.absolute_episode}`;
+      if (row.season != null || row.episode != null) return `${row.season ? 'S'+row.season+' ' : ''}${row.episode ? 'EP '+row.episode : ''}`.trim();
+      return 'EP 0';
+    }
+
+    function makeGridCard(row){
+      const col = document.createElement('div');
+      col.className='col';
+
+      const card = document.createElement('div');
+      card.className='card';
+
+      // Cover
+      const cover = document.createElement('div');
+      cover.className='cover';
+
+      const imgUrl = row.image_url || '';
+      const img = document.createElement('img');
+      img.alt = `Cover for ${row.title || 'anime'}`;
+      img.loading = 'lazy';
+      let hasImg = !!imgUrl;
+      if (hasImg) img.src = imgUrl;
+
+      const ph = document.createElement('div');
+      ph.className='ph';
+      ph.textContent = initials(row.title || '');
+      if (!hasImg) ph.style.display = 'flex';
+      else ph.style.display = 'none';
+      img.onerror = () => { ph.style.display = 'flex'; img.remove(); };
+
+      cover.appendChild(ph);
+      if (hasImg) cover.appendChild(img);
+
+      // Floating actions: edit + delete
+      const float = document.createElement('div');
+      float.className='floating-actions';
+
+      const editBtn = document.createElement('button');
+      editBtn.className='icon-btn'; editBtn.title='Edit'; editBtn.setAttribute('aria-label', 'Edit entry');
+      editBtn.innerHTML = '<i class="fa-solid fa-gear"></i>';
+      editBtn.onclick = ()=> openModalFor(row);
+
+      const delBtn = document.createElement('button');
+      delBtn.className='icon-btn'; delBtn.title='Delete'; delBtn.setAttribute('aria-label', 'Delete entry');
+      delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+      delBtn.onclick = ()=>{
+        openConfirm('Delete item', `Delete "${row.title}"? This can\'t be undone.`, async ()=>{
+          const { error } = await supabase.from('entries').delete().eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Deleted');
+        });
+      };
+
+      float.append(editBtn, delBtn);
+      cover.appendChild(float);
+
+      // Bottom progress badge
+      const badge = document.createElement('div');
+      badge.className='badge-bottom';
+      badge.innerHTML = `<i class="fa-solid fa-film"></i> ${progressBadgeText(row)}`;
+      cover.appendChild(badge);
+
+      // Body
+      const body = document.createElement('div');
+      body.className='card-body';
+
+      const titleRow = document.createElement('div');
+      titleRow.className='title-row';
+      const t = document.createElement('div');
+      t.className='title';
+      t.textContent = row.title;
+      const st = statusChip(row.status);
+      titleRow.append(t, st);
+
+      const chips = document.createElement('div');
+      chips.className='chips';
+      chips.appendChild(chipEl(row.kind==='MOVIE' ? 'Movie' : 'Series'));
+      const fmt = formatProgress(row);
+      if (fmt) chips.appendChild(chipEl(fmt));
+      if (row.notes){ const n=document.createElement('div'); n.className='note'; n.textContent=row.notes; chips.appendChild(n); }
+
+      const controls = document.createElement('div');
+      controls.className='controls';
+
+      const dec = document.createElement('button');
+      dec.className='control-btn'; dec.title='-1 episode'; dec.setAttribute('aria-label', 'Decrease episode');
+      dec.innerHTML = '<i class="fa-solid fa-minus"></i>';
+      dec.onclick = (e)=> adjustEpisode(row, e.shiftKey ? -5 : -1);
+
+      const prog = document.createElement('div');
+      prog.className='progress-readout';
+      prog.innerHTML = `<i class="fa-solid fa-tv"></i> <span>${progressBadgeText(row)}</span>`;
+
+      const inc = document.createElement('button');
+      inc.className='control-btn'; inc.title='+1 episode'; inc.setAttribute('aria-label', 'Increase episode');
+      inc.innerHTML = '<i class="fa-solid fa-plus"></i>';
+      inc.onclick = (e)=> adjustEpisode(row, e.shiftKey ? +5 : +1);
+
+      const move = document.createElement('select');
+      move.className='move-select';
+      move.setAttribute('aria-label','Move to list');
+      move.innerHTML = STATUSES.map(s=>`<option ${row.status===s?'selected':''}>${s}</option>`).join('');
+      move.onchange = async (e)=>{
+        try{
+          const { error } = await supabase.from('entries').update({ status: e.target.value }).eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Moved to '+e.target.value);
+        } catch(e){ showToast('error', e.message || 'Failed'); }
+      };
+
+      controls.append(dec, prog, inc, move);
+
+      body.append(titleRow, chips, controls);
+
+      card.append(cover, body);
+      col.appendChild(card);
+
+      return col;
+    }
+
+    function makeCompactCard(row){
+      const col = document.createElement('div');
+      col.className='col';
+
+      const card = document.createElement('div');
+      card.className='card row'; // horizontal layout
+
+      // Cover (thumbnail)
+      const cover = document.createElement('div');
+      cover.className='cover';
+
+      const imgUrl = row.image_url || '';
+      const img = document.createElement('img');
+      img.alt = `Thumbnail for ${row.title || 'anime'}`;
+      img.loading = 'lazy';
+      let hasImg = !!imgUrl;
+      if (hasImg) img.src = imgUrl;
+
+      const ph = document.createElement('div');
+      ph.className='ph';
+      ph.textContent = initials(row.title || '');
+      if (!hasImg) ph.style.display = 'flex';
+      else ph.style.display = 'none';
+      img.onerror = () => { ph.style.display = 'flex'; img.remove(); };
+
+      cover.appendChild(ph);
+      if (hasImg) cover.appendChild(img);
+
+      // Floating actions
+      const float = document.createElement('div');
+      float.className='floating-actions';
+      const editBtn = document.createElement('button');
+      editBtn.className='icon-btn'; editBtn.title='Edit'; editBtn.setAttribute('aria-label', 'Edit entry');
+      editBtn.innerHTML = '<i class="fa-solid fa-gear"></i>';
+      editBtn.onclick = ()=> openModalFor(row);
+
+      const delBtn = document.createElement('button');
+      delBtn.className='icon-btn'; delBtn.title='Delete'; delBtn.setAttribute('aria-label', 'Delete entry');
+      delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+      delBtn.onclick = ()=>{
+        openConfirm('Delete item', `Delete "${row.title}"? This can\'t be undone.`, async ()=>{
+          const { error } = await supabase.from('entries').delete().eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Deleted');
+        });
+      };
+      float.append(editBtn, delBtn);
+      cover.appendChild(float);
+
+      // Body
+      const body = document.createElement('div');
+      body.className='card-body';
+
+      const titleRow = document.createElement('div');
+      titleRow.className='title-row';
+      const t = document.createElement('div');
+      t.className='title';
+      t.textContent = row.title;
+      const st = statusChip(row.status);
+      titleRow.append(t, st);
+
+      const meta = document.createElement('div');
+      meta.className='chips';
+      meta.appendChild(chipEl(row.kind==='MOVIE' ? 'Movie' : 'Series'));
+      meta.appendChild(chipEl(progressBadgeText(row)));
+      if (row.notes){
+        const n=document.createElement('div'); n.className='note'; n.textContent=row.notes;
+        meta.appendChild(n);
+      }
+
+      const controls = document.createElement('div');
+      controls.className='controls';
+
+      const dec = document.createElement('button');
+      dec.className='control-btn'; dec.title='-1 episode'; dec.setAttribute('aria-label', 'Decrease episode');
+      dec.innerHTML = '<i class="fa-solid fa-minus"></i>';
+      dec.onclick = (e)=> adjustEpisode(row, e.shiftKey ? -5 : -1);
+
+      const prog = document.createElement('div');
+      prog.className='progress-readout';
+      prog.innerHTML = `<i class="fa-solid fa-tv"></i> <span>${progressBadgeText(row)}</span>`;
+
+      const inc = document.createElement('button');
+      inc.className='control-btn'; inc.title='+1 episode'; inc.setAttribute('aria-label', 'Increase episode');
+      inc.innerHTML = '<i class="fa-solid fa-plus"></i>';
+      inc.onclick = (e)=> adjustEpisode(row, e.shiftKey ? +5 : +1);
+
+      const move = document.createElement('select');
+      move.className='move-select';
+      move.setAttribute('aria-label','Move to list');
+      move.innerHTML = STATUSES.map(s=>`<option ${row.status===s?'selected':''}>${s}</option>`).join('');
+      move.onchange = async (e)=>{
+        try{
+          const { error } = await supabase.from('entries').update({ status: e.target.value }).eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Moved to '+e.target.value);
+        } catch(e){ showToast('error', e.message || 'Failed'); }
+      };
+
+      controls.append(dec, prog, inc, move);
+
+      card.append(cover, body);
+      body.append(titleRow, meta, controls);
+      col.appendChild(card);
+      return col;
+    }
+
+    function initials(title){
+      const parts = String(title).trim().toUpperCase().split(/\s+/).slice(0,2);
+      return parts.map(p=>p[0]).join('');
+    }
+
+    let renderDebounce = null;
+    function render(){
+      if (renderDebounce) clearTimeout(renderDebounce);
+      renderDebounce = setTimeout(() => {
+        renderTabs();
+        sectionsEl.innerHTML = '';
+        gridEl.innerHTML = '';
+
+        if (!user){
+          emptyEl.style.display = '';
+          return;
+        } else {
+          emptyEl.style.display = 'none';
+        }
+
+        const renderItem = viewMode === 'compact' ? makeCompactCard : makeGridCard;
+        const gridClass = viewMode === 'compact' ? 'grid view-compact' : 'grid view-grid';
+
+        if (activeTab === 'ALL'){
+          const groups = [
+            { id:'WATCHING', label:'Watching', icon:'fa-eye' },
+            { id:'PLAN', label:'Plan to watch', icon:'fa-list-check' },
+            { id:'REWATCH', label:'Rewatch', icon:'fa-rotate-left' },
+            { id:'WAITING', label:'Waiting', icon:'fa-hourglass-half' },
+            { id:'COMPLETED', label:'Completed', icon:'fa-check-double' },
+          ];
+          groups.forEach(g=>{
+            let rows = data.filter(r => r.status === g.id);
+            if (q) rows = rows.filter(r=>r.title.toLowerCase().includes(q));
+            if (!rows.length) return;
+
+            const section = document.createElement('div');
+            section.className = 'section';
+
+            const h = document.createElement('div');
+            h.className = 'section-title';
+            h.innerHTML = `<i class="fa-solid ${g.icon}"></i> ${g.label} <span class="muted-small">(${rows.length})</span>`;
+            section.appendChild(h);
+
+            const grid = document.createElement('div');
+            grid.className = gridClass;
+            rows.sort((a,b)=> (b.updated_at?.localeCompare?.(a.updated_at)) || 0)
+                .forEach(row => grid.appendChild(renderItem(row)));
+
+            section.appendChild(grid);
+            sectionsEl.appendChild(section);
+          });
+        } else {
+          gridEl.className = gridClass;
+          filtered().forEach(row => gridEl.appendChild(renderItem(row)));
+        }
+
+        updateViewToggleUI();
+        updateMobileMenuUI();
+      }, 100);
+    }
+
+    async function adjustEpisode(row, delta){
+      const patch = {};
+      if (row.absolute_episode != null){
+        const next = Math.max(0, (row.absolute_episode||0) + delta);
+        patch.absolute_episode = next;
+      } else {
+        const next = Math.max(0, (row.episode||0) + delta);
+        patch.episode = next;
+      }
+      try{
+        const { error } = await supabase.from('entries').update(patch).eq('id', row.id);
+        if (error) throw error;
+        showToast('success', `${delta>0?`+${delta}`:delta} EP`);
+      } catch(e){ showToast('error', e.message || 'Failed to update'); }
+    }
+
+    // Auth UI wiring
+    function updateAuthUI(){
+      if (user){
+        authCta.innerHTML='';
+        const who = document.createElement('span'); who.className='muted small'; who.textContent = user.email || user?.user_metadata?.email || 'user';
+        const out = document.createElement('button'); out.className='btn ghost'; out.innerHTML='<i class="fa-solid fa-right-from-bracket"></i> Sign out';
+        out.onclick = ()=> openConfirm('Sign out', 'Are you sure you want to sign out?', async ()=>{
+          await supabase.auth.signOut(); location.reload();
+        });
+        authCta.append(who, out);
+      }else{
+        authCta.innerHTML='';
+        const btn = document.createElement('button'); btn.className='btn ghost'; btn.id='btn-login-2'; btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Sign in';
+        btn.onclick = ()=> openModal(loginModal);
+        authCta.append(btn);
+      }
+      updateMobileMenuUI();
+    }
+
+    // Load rows
+    async function load(){
+      if (!user) return;
+      showLoading(true);
+      try{
+        const { data: rows, error } = await supabase.from('entries').select('*').order('updated_at', { ascending:false });
+        if (error) throw error;
+        data = attachLocalImages(rows || []);
+        await autoFetchMissingCovers(data);
+        render();
+      } catch(e){ console.error(e); showToast('error', e.message || 'Failed to load'); }
+      finally { showLoading(false); }
+    }
+
+    // Realtime DB changes for your rows only (RLS enforces)
+    function setupRealtime(){
+      if (changesChannel) supabase.removeChannel(changesChannel);
+      changesChannel = supabase.channel('entries-db').on(
+        'postgres_changes',
+        { event:'*', schema:'public', table:'entries', filter: `user_id=eq.${user.id}` },
+        (payload)=>{
+          const { eventType, new: n, old: o } = payload;
+          if (eventType==='INSERT'){
+            const row = attachLocalImages([n])[0];
+            data.unshift(row);
+            autoFetchMissingCovers([row]);
+          } else if (eventType==='UPDATE'){
+            const i = data.findIndex(r=>r.id===n.id);
+            if (i>=0) data[i]=attachLocalImages([n])[0];
+          } else if (eventType==='DELETE'){
+            const i = data.findIndex(r=>r.id===o.id);
+            if (i>=0) data.splice(i,1);
+          }
+          render();
+        }
+      ).subscribe();
+    }
+
+    // Presence
+    function setupPresence(){
+      if (presenceChannel) supabase.removeChannel(presenceChannel);
+      presenceChannel = supabase.channel('room:lobby', { config:{ presence:{ key: user.id } } });
+      presenceChannel.on('presence', { event:'sync' }, ()=>{
+        const state = presenceChannel.presenceState();
+        const all = new Set();
+        Object.values(state).forEach(arr => arr.forEach(v => all.add(v.presence_ref)));
+        presenceText.textContent = `${all.size} online`;
+      });
+      presenceChannel.subscribe(async status=>{
+        if (status==='SUBSCRIBED'){
+          await presenceChannel.track({ at: Date.now() });
+        }
+      });
+    }
+
+    // Add / Edit modal wiring
+    btnAdd.onclick = ()=> openModalFor();
+    btnCancel.onclick = closeModalMain;
+    btnSave.onclick = saveModal;
+    btnDelete.onclick = removeModal;
+
+    function openModalFor(row){
+      editingId = row?.id || null;
+      mTitle.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${editingId ? 'Edit item' : 'Add item'}`;
+      fTitle.value = row?.title || '';
+      fKind.value = row?.kind || 'SERIES';
+      fStatus.value = row?.status || 'PLAN';
+      fSeason.value = row?.season ?? '';
+      fEpisode.value = row?.episode ?? '';
+      fAbs.value = row?.absolute_episode ?? '';
+      fImage.value = row?.image_url || getLocalImage(row?.id) || '';
+      fNotes.value = row?.notes || '';
+      btnDelete.style.display = editingId ? '' : 'none';
+      openModal(modal);
+      fTitle.focus();
+    }
+    function closeModalMain(){ closeModal(modal); }
+
+    async function saveModal(){
+      if (!user) return showToast('error','Sign in first');
+      const row = {
+        title: fTitle.value.trim(),
+        kind: fKind.value,
+        status: fStatus.value,
+        season: fSeason.value ? parseInt(fSeason.value) : null,
+        episode: fEpisode.value ? parseInt(fEpisode.value) : null,
+        absolute_episode: fAbs.value ? parseInt(fAbs.value) : null,
+        image_url: fImage.value.trim() || null,
+        notes: fNotes.value.trim() || null,
+        user_id: user.id
+      };
+      if (!row.title) return showToast('error','Title required');
+
+      try{
+        if (editingId){
+          await upsertEntry('update', row, editingId);
+          showToast('success','Saved');
+        } else {
+          await upsertEntry('insert', row);
+          showToast('success','Added');
+        }
+        closeModal(modal);
+      } catch(e){ showToast('error', e.message || 'Failed to save'); }
+    }
+
+    async function upsertEntry(mode, row, id){
+      // Attempt to include image_url. If the column is missing, retry without it and store locally.
+      const payload = { ...row };
+      if (!payload.image_url) delete payload.image_url;
+      try{
+        if (mode==='insert'){
+          const { data: ins, error } = await supabase.from('entries').insert(payload).select().single();
+          if (error) throw error;
+          const newId = ins?.id;
+          if (row.image_url && newId) setLocalImage(newId, row.image_url);
+          return ins;
+        } else {
+          const { data: upd, error } = await supabase.from('entries').update(payload).eq('id', id).select().single();
+          if (error) throw error;
+          if (row.image_url) setLocalImage(id, row.image_url);
+          return upd;
+        }
+      } catch(e){
+        const msg = String(e?.message || '');
+        if (msg.includes('image_url') || (msg.toLowerCase().includes('column') && msg.toLowerCase().includes('does not exist'))){
+          const retry = { ...row };
+          delete retry.image_url;
+          if (mode==='insert'){
+            const { data: ins2, error: err2 } = await supabase.from('entries').insert(retry).select().single();
+            if (err2) throw err2;
+            if (row.image_url && ins2?.id) setLocalImage(ins2.id, row.image_url);
+            showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
+            return ins2;
+          } else {
+            const { data: upd2, error: err2 } = await supabase.from('entries').update(retry).eq('id', id).select().single();
+            if (err2) throw err2;
+            if (row.image_url) setLocalImage(id, row.image_url);
+            showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
+            return upd2;
+          }
+        } else {
+          throw e;
+        }
+      }
+    }
+
+    async function removeModal(){
+      if (!editingId) return;
+      try{
+        const { error } = await supabase.from('entries').delete().eq('id', editingId);
+        if (error) throw error;
+        showToast('success','Deleted');
+        closeModal(modal);
+      } catch(e){ showToast('error', e.message || 'Failed to delete'); }
+    }
+
+    // Search (debounced)
+    let searchTimer;
+    searchEl.oninput = ()=>{
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(()=>{
+        q = searchEl.value.trim().toLowerCase();
+        updateURL();
+        render();
+      }, 120);
+    };
+
+    // Export
+    btnExport.onclick = doExport;
+    function doExport(){
+      const rows = data.map(({id,user_id,created_at,updated_at,...rest})=>rest);
+      const blob = new Blob([JSON.stringify(rows,null,2)], { type:'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'anibros-export.json'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('success','Exported');
+    }
+
+    // Import
+    btnImport.onclick = ()=> importFile.click();
+    importFile.addEventListener('change', handleImport);
+    async function handleImport(){
+      const file = importFile.files?.[0];
+      if (!file) return;
+      showLoading(true);
+      try{
+        const text = await file.text();
+        const arr = JSON.parse(text);
+        if (!Array.isArray(arr)) throw new Error('Invalid JSON: expected an array');
+        if (!user) throw new Error('Sign in first');
+
+        const rows = arr.map(normalizeImport).map(r => ({ ...r, user_id: user.id }));
+        const rowsWithoutImage = rows.map(({ image_url, ...rest }) => rest);
+
+        let insertErr = null;
+        let inserted = [];
+        try{
+          const { data: ins, error } = await supabase.from('entries').insert(rows).select();
+          if (error) throw error;
+          inserted = ins || [];
+        } catch(e){
+          const msg = String(e?.message||'');
+          if (msg.includes('image_url')){
+            insertErr = e;
+          } else {
+            throw e;
+          }
+        }
+
+        if (insertErr){
+          const { data: ins2, error: err2 } = await supabase.from('entries').insert(rowsWithoutImage).select();
+          if (err2) throw err2;
+          inserted = ins2 || [];
+          inserted.forEach((it, idx)=>{
+            const original = rows[idx];
+            if (original?.image_url) setLocalImage(it.id, original.image_url);
+          });
+          showToast('info', 'Imported without cover sync. Add "image_url" column to entries to sync covers.');
+        }
+
+        await autoFetchMissingCovers(inserted);
+
+        showToast('success', `Imported ${inserted.length} items`);
+        importFile.value = '';
+      } catch(e){
+        console.error(e);
+        showToast('error', e.message || 'Import failed');
+      } finally { showLoading(false); }
+    }
+
+    function normalizeImport(o){
+      const t = (o.title||'').toString().trim();
+      const kind = (o.kind||'SERIES').toUpperCase()==='MOVIE' ? 'MOVIE' : 'SERIES';
+      let status = (o.status||'PLAN').toUpperCase();
+      if (!STATUSES.includes(status)) status = 'PLAN';
+      const season = isFinite(o.season) && o.season!=='' ? Number(o.season) : null;
+      const episode = isFinite(o.episode) && o.episode!=='' ? Number(o.episode) : null;
+      const absolute_episode = isFinite(o.absolute_episode) && o.absolute_episode!=='' ? Number(o.absolute_episode) : null;
+      const notes = (o.notes||'').toString().trim() || null;
+      const image_url = (o.image_url||'').toString().trim() || null;
+      return { title:t, kind, status, season, episode, absolute_episode, notes, image_url };
+    }
+
+    // Keyboard helpers
+    document.addEventListener('keydown', (e)=>{
+      if (e.key === '/') { e.preventDefault(); searchEl.focus(); }
+    });
+
+    // Click outside to close modal and mobile menu
+    document.addEventListener('click', (e)=>{
+      document.querySelectorAll('.modal.open').forEach(m=>{
+        if (e.target === m) closeModal(m);
+      });
+      if (mobileMenu.classList.contains('open')){
+        const within = mobileMenu.contains(e.target) || menuBtn.contains(e.target);
+        if (!within) closeMenu();
+      }
+    });
+
+    // Login modal wiring
+    btnLogin?.addEventListener('click', ()=> openModal(loginModal));
+    document.getElementById('btn-login-2')?.addEventListener('click', ()=> openModal(loginModal));
+
+    loginCancel.onclick = ()=> closeModal(loginModal);
+
+    // OAuth handlers
+    oauthGoogle.onclick = ()=> signInProvider('google');
+    oauthApple.onclick = ()=> signInProvider('apple');
+    oauthDiscord.onclick = ()=> signInProvider('discord');
+    oauthEmailLink.onclick = ()=>{
+      emailLoginRow.style.display = '';
+      loginEmail.focus();
+    };
+
+    async function signInProvider(provider){
+      try{
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: { redirectTo: window.location.origin }
+        });
+        if (error) throw error;
+      } catch(e){
+        console.error(e);
+        showToast('error', e.message || 'Sign-in failed');
+      }
+    }
+
+    loginSend.onclick = async ()=>{
+      const email = loginEmail.value?.trim();
+      if (!email) return showToast('error','Enter an email');
+      try{
+        const { error } = await supabase.auth.signInWithOtp({ email });
+        if (error) throw error;
+        showToast('success','Login link sent — check your inbox');
+        closeModal(loginModal);
+      } catch(e){ showToast('error', e.message || 'Failed to send'); }
+    };
+    loginEmail.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter') { e.preventDefault(); loginSend.click(); }
+    });
+
+    // URL params sync
+    function updateURL(){
+      const params = new URLSearchParams(window.location.search);
+      params.set('tab', activeTab);
+      params.set('view', viewMode);
+      if (q) params.set('q', q); else params.delete('q');
+      history.replaceState(null,'', `${location.pathname}?${params.toString()}`);
+    }
+    function readURL(){
+      const params = new URLSearchParams(window.location.search);
+      const t = params.get('tab');
+      const found = TABS.find(x=>x.id===t);
+      activeTab = found ? found.id : 'ALL';
+      const qq = params.get('q') || '';
+      q = qq.trim().toLowerCase();
+      searchEl.value = qq;
+      const v = params.get('view');
+      const stored = localStorage.getItem('anibros:view') || 'grid';
+      viewMode = (v==='compact' || v==='grid') ? v : stored;
+    }
+    function updateViewToggleUI(){
+      if (viewMode==='grid'){
+        viewBtnGrid.classList.add('active'); viewBtnGrid.setAttribute('aria-pressed','true');
+        viewBtnCompact.classList.remove('active'); viewBtnCompact.setAttribute('aria-pressed','false');
+      } else {
+        viewBtnCompact.classList.add('active'); viewBtnCompact.setAttribute('aria-pressed','true');
+        viewBtnGrid.classList.remove('active'); viewBtnGrid.setAttribute('aria-pressed','false');
+      }
+    }
+    viewBtnGrid.addEventListener('click', ()=>{
+      viewMode = 'grid';
+      localStorage.setItem('anibros:view', viewMode);
+      updateURL(); render();
+    });
+    viewBtnCompact.addEventListener('click', ()=>{
+      viewMode = 'compact';
+      localStorage.setItem('anibros:view', viewMode);
+      updateURL(); render();
+    });
+
+    // Mobile menu wiring
+    function openMenu(){
+      mobileMenu.classList.add('open');
+      menuBtn.setAttribute('aria-expanded','true');
+    }
+    function closeMenu(){
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded','false');
+    }
+    menuBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if (mobileMenu.classList.contains('open')) closeMenu(); else openMenu();
+    });
+    mAdd.addEventListener('click', ()=>{ closeMenu(); openModalFor(); });
+    mViewGrid.addEventListener('click', ()=>{ viewMode='grid'; localStorage.setItem('anibros:view', viewMode); updateURL(); closeMenu(); render(); });
+    mViewCompact.addEventListener('click', ()=>{ viewMode='compact'; localStorage.setItem('anibros:view', viewMode); updateURL(); closeMenu(); render(); });
+    mLogin.addEventListener('click', ()=>{ closeMenu(); openModal(loginModal); });
+    mLogout.addEventListener('click', ()=> openConfirm('Sign out', 'Are you sure you want to sign out?', async ()=>{
+      await supabase.auth.signOut(); location.reload();
+    }));
+    mImport.addEventListener('click', ()=>{ closeMenu(); importFile.click(); });
+    mExport.addEventListener('click', ()=>{ closeMenu(); doExport(); });
+
+    function updateMobileMenuUI(){
+      if (user){
+        mUserEmail.textContent = user.email || user?.user_metadata?.email || 'user';
+        mLogin.classList.add('hidden');
+        mLogout.classList.remove('hidden');
+      } else {
+        mUserEmail.textContent = 'Signed out';
+        mLogin.classList.remove('hidden');
+        mLogout.classList.add('hidden');
+      }
+    }
+
+    // Auto cover: AniList first (fuzzy), fall back to Jikan
+    let autoCoverAbort = null;
+
+    function normalizeStr(s){
+      return String(s||'')
+        .toLowerCase()
+        .replace(/’|‘|“|”/g,'"')
+        .replace(/[^a-z0-9\s]/g,' ')
+        .replace(/\s+/g,' ')
+        .trim();
+    }
+    function tokenSet(str){
+      return new Set(normalizeStr(str).split(' ').filter(Boolean).filter(w => !['the','a','an','and','of'].includes(w)));
+    }
+    function jaccard(aStr, bStr){
+      const a = tokenSet(aStr), b = tokenSet(bStr);
+      if (!a.size || !b.size) return 0;
+      let inter = 0;
+      a.forEach(x => { if (b.has(x)) inter++; });
+      const union = a.size + b.size - inter;
+      return inter / union;
+    }
+    function scoreCandidate(query, media, wantKind){
+      const titles = [
+        media?.title?.romaji, media?.title?.english, media?.title?.native,
+        ...(media?.synonyms||[])
+      ].filter(Boolean);
+      let bestTitleScore = 0;
+      for (const t of titles){
+        bestTitleScore = Math.max(bestTitleScore, jaccard(query, t));
+      }
+      // Type bias: prefer MOVIE vs TV/ONA/OVA based on kind selection
+      let typeBias = 0;
+      const type = (media?.format||'').toUpperCase(); // MOVIE, TV, ONA, OVA, SPECIAL
+      if (wantKind === 'MOVIE'){
+        if (type === 'MOVIE') typeBias = 0.15; else if (type === 'TV') typeBias = -0.05;
+      } else { // SERIES
+        if (type === 'TV') typeBias = 0.10; else if (type === 'MOVIE') typeBias = -0.05;
+      }
+      // Popularity small bias to avoid obscure wrong picks if tie
+      const pop = media?.popularity || 0;
+      const popBias = Math.min(0.05, (pop / 1000000) * 0.05);
+
+      return bestTitleScore + typeBias + popBias;
+    }
+
+    async function fetchAniListCover(title, wantKind, retry = false){
+      const query = `
+        query ($search: String) {
+          Page(perPage: 6) {
+            media(search: $search, type: ANIME) {
+              id
+              title { romaji english native }
+              synonyms
+              format
+              popularity
+              coverImage { large extraLarge color }
+            }
+          }
+        }
+      `;
+      try {
+        const res = await fetch('https://graphql.anilist.co', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+          body: JSON.stringify({ query, variables:{ search: title } })
+        });
+        if (!res.ok) throw new Error('AniList search failed');
+        const json = await res.json();
+        const items = json?.data?.Page?.media || [];
+        if (!items.length) throw new Error('No results');
+        items.forEach(m => { m._score = scoreCandidate(title, m, wantKind); });
+        items.sort((a,b)=> b._score - a._score);
+        const top = items[0];
+        const image = top?.coverImage?.extraLarge || top?.coverImage?.large;
+        return { image, match: top };
+      } catch (e) {
+        if (retry) throw e;
+        return fetchAniListCover(title, wantKind, true);
+      }
+    }
+
+    async function fetchJikanCover(title, retry = false){
+      const url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(title)}&limit=3&sfw`;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Jikan search failed');
+        const json = await res.json();
+        const list = json?.data || [];
+        if (!list.length) throw new Error('No results');
+        // Prefer TV > Movie if kind indicates; else first
+        let pick = list[0];
+        return { image: pick?.images?.webp?.image_url || pick?.images?.jpg?.image_url, match: pick };
+      } catch (e) {
+        if (retry) throw e;
+        return fetchJikanCover(title, true);
+      }
+    }
+
+    async function autoFetchCover(title, kind) {
+      if (!title) return null;
+      try{
+        // Try AniList first with fuzzy scoring
+        let image = null;
+        try{
+          const { image: aImage } = await fetchAniListCover(title, kind);
+          image = aImage;
+        } catch(_){ /* ignore and fall back */ }
+
+        // Fallback to Jikan if AniList failed or gave nothing
+        if (!image){
+          try{
+            const { image: jImage } = await fetchJikanCover(title);
+            image = jImage;
+          } catch(e){
+            console.error(e);
+          }
+        }
+
+        return image || null;
+      } catch(e){
+        console.error(e);
+        return null;
+      }
+    }
+    btnAutoCover.addEventListener('click', async () => {
+      const title = fTitle.value?.trim();
+      if (!title) return showToast('error','Enter title first');
+      const image = await autoFetchCover(title, fKind.value);
+      if (image) {
+        fImage.value = image;
+        showToast('success','Cover set');
+      } else {
+        showToast('error','No cover found');
+      }
+    });
+    fTitle.addEventListener('blur', async ()=>{
+      if (!fImage.value.trim()) {
+        const title = fTitle.value?.trim();
+        if (title) {
+          const image = await autoFetchCover(title, fKind.value);
+          if (image) fImage.value = image;
+        }
+      }
+    });
+
+    // Auto-fetch missing covers for a list of rows
+    async function autoFetchMissingCovers(rows) {
+      const missing = rows.filter(r => !r.image_url && r.title);
+      if (!missing.length) return;
+
+      showToast('info', `Fetching covers for ${missing.length} items...`);
+      const concurrentLimit = 5;
+      let activeFetches = 0;
+
+      for (const row of missing) {
+        if (activeFetches >= concurrentLimit) {
+          await new Promise(resolve => setTimeout(resolve, 500)); // Throttle
+        }
+        activeFetches++;
+        (async () => {
+          const image = await autoFetchCover(row.title, row.kind);
+          if (image) {
+            const patch = { image_url: image };
+            try {
+              await upsertEntry('update', { ...row, image_url: image }, row.id);
+            } catch (e) {
+              console.error(`Failed to update cover for ${row.title}:`, e);
+              setLocalImage(row.id, image); // Fallback to local
+            }
+          }
+          activeFetches--;
+        })();
+      }
+    }
+
+    btnRefreshCovers.addEventListener('click', async () => {
+      if (!user) return showToast('error', 'Sign in first');
+      await autoFetchMissingCovers(data);
+      showToast('success', 'Covers refreshed');
+      render();
+    });
+
+    // Initialize
+    (async function init(){
+      setRandomBanner();
+      readURL();
+      renderTabs();
+      updateViewToggleUI();
+
+      const { data: { session: s } } = await supabase.auth.getSession();
+      session = s; user = s?.user ?? null;
+      updateAuthUI();
+
+      if (user){ load(); setupRealtime(); setupPresence(); }
+      render(); // initial render for tabs/empty state
+    })();
+
+    // react to auth changes
+    supabase.auth.onAuthStateChange((_evt, s)=>{
+      session = s; user = s?.user ?? null;
+      updateAuthUI();
+      if (user){ load(); setupRealtime(); setupPresence(); }
+      render();
+    });
+</script>
+</body>
+</html>
+
+
+
+
+the cat buttons should be in a horizontally scrollable list, not wrapped. especially for mobile
+
+remove the notes on the card, they should only be viewable in the settings
+
+add an X button in the inputs (titles, etc.) that is only there when there is texxt inside the input box, otherwise it shouldnt be there
+
+the anime that is edited should be sent to the top of the list in its cat, instead just stay in its pos at the time, otherwise it gets annoying, obv newly added ones hould go to the top
+
+
+as for the imaage grabs, only the highest qulaity should be preffered, otherwise whatever it finds
+
+the autocover should be in the same line as the img url box when in settings
+
+make the usrname, sign in/out, users online, and other shit u see fit, should be in a hamburger menu on mobile
+the title should be in its own line, and then the add item and grid.shelf buttons in the other
+
+for the compact view on desktop, there should be 3 cards in a row
+
+add a working scroll to top button, thats on the right bottom on desktop and mid bottom on mobile, and hides until u scroll
+
+format the code nicely
+
+add/improve anything else u see fit
+
+give the full html css js with changes, keep all APIs and shi intact, and tldr wat u do before the code 
