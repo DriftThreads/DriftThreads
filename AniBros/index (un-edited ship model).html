@@ -37,7 +37,8 @@
 
     * { box-sizing: border-box; }
     img { max-width: 100%; }
-    html, body { height: 100%; overflow-x: clip; }
+
+    body, html { height: 100%; }
 
     body {
       margin: 0;
@@ -134,7 +135,6 @@
       transition: transform var(--ui-duration) ease, opacity var(--ui-duration) ease, background .2s ease;
     }
     .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: translateY(0) scale(.98); }
     .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
     .btn.brand {
       background: linear-gradient(90deg, var(--brand), var(--brand-2));
@@ -179,15 +179,20 @@
     @media (max-width: var(--bp-mobile)) {
       .nav {
         row-gap: 8px;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
       }
       .nav-cta { display: none; }
       .hamburger { display: inline-flex; margin-left: auto; }
       .brand-title { font-size: 15px; }
       .logo-img { width: 30px; height: 30px; }
-      .logo { justify-content: flex-start; flex: none; }
+      .logo { justify-content: center; flex: none; }
       .nav-meta { display: none; }
+      .toolbar-top { flex-direction: column; align-items: stretch; gap: 8px; }
+      .actions-row { flex-direction: row; justify-content: space-between; }
+      .search { width: 100%; }
+      .view-toggle { justify-content: center; flex: 1 1 auto; }
+      .btn.brand { flex: 0 0 auto; }
     }
 
     .menu-panel {
@@ -195,7 +200,7 @@
       top: 66px;
       right: 12px;
       z-index: 80;
-      width: min(340px, 92vw);
+      width: min(320px, 92vw);
       background: #101525;
       border: 1px solid rgba(255,255,255,.08);
       border-radius: 14px;
@@ -225,12 +230,12 @@
     .menu-kv { display: flex; align-items: center; gap: 10px; }
     .menu-note { font-size: 12px; color: #9aa3b2; }
 
-    /* Banner: remove full-bleed to avoid horizontal scroll on mobile */
     .banner {
       position: relative;
       display: block;
       height: clamp(520px, 70vw, 880px);
-      width: 100%;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
       border-bottom: 1px solid rgba(255,255,255,.06);
       overflow: hidden;
     }
@@ -291,33 +296,8 @@
       text-shadow: 0 1px 4px rgba(0,0,0,.5);
     }
 
-    /* Toolbar (reworked) */
-    .toolbar { display: grid; gap: 12px; margin: 14px 0 10px; }
-    .toolbar-head {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-    }
-    .page-title {
-      margin: 0;
-      font-family: var(--title-font);
-      font-size: 18px;
-      letter-spacing: .4px;
-      color: #eaf0ff;
-    }
-    .toolbar-search { display: flex; gap: 10px; }
-    .toolbar-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    .toolbar-tabs::-webkit-scrollbar { display: none; }
-    .toolbar-meta {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-    }
-
+    .toolbar { display: flex; flex-direction: column; gap: 12px; margin: 14px 0 10px; }
+    .toolbar-top { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .actions-row { display: flex; gap: 10px; align-items: center; flex-wrap: nowrap; }
 
     .search {
@@ -331,6 +311,17 @@
       outline: 0;
     }
     .search:focus { box-shadow: var(--focus-ring); border-color: rgba(124,58,237,.7); }
+
+    .toolbar-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .toolbar-tabs::-webkit-scrollbar { display: none; }
 
     .tab {
       padding: 8px 12px;
@@ -374,12 +365,6 @@
       background: linear-gradient(90deg, rgba(124,58,237,.25), rgba(34,211,238,.2));
       color: #fff;
     }
-    .seg .seg-label { margin-left: 4px; }
-    @media (max-width: var(--bp-mobile)) {
-      .seg .seg-label { display: none; }
-    }
-
-    .items-count { color: #cfe0ff; font-weight: 700; }
 
     .section { margin-top: 18px; }
     .section-title {
@@ -388,15 +373,9 @@
       gap: 10px;
       margin: 8px 0 10px;
       font-family: var(--title-font);
-      font-size: 16px;
+      font-size: 15px;
       letter-spacing: .3px;
       color: #d6dbef;
-    }
-    .section-hr {
-      border: 0;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.12), rgba(255,255,255,.06));
-      margin: 14px 0 10px;
     }
 
     .grid {
@@ -410,8 +389,7 @@
     @media (min-width: 780px) { .grid.view-grid .col { grid-column: span 3; } }
     @media (min-width: 1024px) { .grid.view-grid .col { grid-column: span 3; } }
     .grid.view-compact .col { grid-column: span 12; }
-    /* Desktop shelf: 3 per row */
-    @media (min-width: 1000px) { .grid.view-compact .col { grid-column: span 4; } }
+    @media (min-width: 900px) { .grid.view-compact .col { grid-column: span 6; } }
 
     .card {
       background: #12182a;
@@ -422,7 +400,6 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
-      position: relative;
     }
 
     .cover {
@@ -465,6 +442,8 @@
     }
     .floating-actions .icon-btn:hover { background: rgba(6,9,16,.9); }
 
+    /* Removed status badge on covers (redundant with dropdown) */
+
     /* Progress badge bottom-right */
     .badge-bottom {
       position: absolute;
@@ -491,7 +470,7 @@
     }
     .title-row {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr;
       align-items: center;
       gap: 6px;
       min-width: 0;
@@ -532,7 +511,7 @@
       align-items: center;
       gap: 6px;
       margin-top: 2px;
-      flex-wrap: wrap; /* allows mobile wrapping */
+      flex-wrap: wrap;
     }
     .control-btn {
       display: inline-flex;
@@ -559,14 +538,6 @@
       font-size: 12px;
       color: #cfe0ff;
       flex: 0 1 auto;
-    }
-
-    /* Grid view: put status/select on next line on mobile */
-    @media (max-width: var(--bp-mobile)) {
-      .grid.view-grid .controls .move-select {
-        flex: 1 1 100%;
-        margin-top: 6px;
-      }
     }
 
     /* Custom select styling (Move + form selects) */
@@ -618,25 +589,6 @@
     .card.row .title { -webkit-line-clamp: 2; }
     .card.row .controls { margin-top: 2px; }
 
-    /* New: top-right actions for shelf (compact) */
-    .card-actions-top {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      display: flex;
-      gap: 6px;
-      z-index: 3;
-    }
-    .card-actions-top .icon-btn {
-      background: rgba(6,9,16,.7);
-      color: #e8ecfa;
-      border: 1px solid rgba(255,255,255,.15);
-      padding: 6px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .card-actions-top .icon-btn:hover { background: rgba(6,9,16,.9); }
-
     /* Modal and floating labels */
     .modal {
       position: fixed;
@@ -664,7 +616,7 @@
     .sheet h3 { margin: 0 0 8px; font-family: var(--title-font); }
 
     .form { display: grid; gap: 10px; }
-    .row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom:5px;}
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
     .row.img-row { align-items: center; flex-wrap: nowrap; }
     @media (max-width: 520px) {
       .row.img-row { flex-wrap: wrap; }
@@ -713,6 +665,7 @@
       background: #10162a;
     }
 
+    /* Clear button only when value exists */
     .clear-btn {
       position: absolute;
       right: 8px;
@@ -737,6 +690,17 @@
     .danger-text { color: var(--danger); }
     .link { color: #8ab4ff; cursor: pointer; }
     .small { font-size: 12px; }
+
+    .oauth-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    @media (max-width: 520px) { .oauth-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .btn.oauth { justify-content: center; font-weight: 700; }
+    .btn.oauth.google { background: #1a2138; }
+    .btn.oauth.apple { background: #1a1a1a; }
+    .btn.oauth.discord { background: #202553; }
 
     #toasts {
       position: fixed;
@@ -781,14 +745,6 @@
       align-items: center;
       gap: 16px;
       padding: 22px 0 26px;
-      flex-wrap: wrap;
-    }
-    @media (max-width: var(--bp-mobile)) {
-      footer .foot-wrap {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
     }
 
     .center { display: flex; align-items: center; justify-content: center; }
@@ -796,6 +752,7 @@
 
     @media (max-width: var(--bp-mobile)) {
       .hero h1 { font-size: 22px; }
+      .toolbar-top { gap: 8px; }
       .move-select { margin-left: 0; width: 100%; }
       .card.row .cover { width: 68px; flex: 0 0 68px; }
       .controls { gap: 8px; }
@@ -816,14 +773,14 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     #loading-spinner.active { display: block; }
 
-    /* Scroll-to-top: plain white with black icon; hover scale/color */
+    /* Scroll-to-top: brand gradient */
     #scroll-to-top {
       position: fixed;
       bottom: 20px;
       right: 20px;
       z-index: 100;
-      background: #ffffff;
-      color: #111111;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #ffffff;
       border: 0;
       border-radius: 50%;
       width: 48px;
@@ -834,15 +791,14 @@
       cursor: pointer;
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.3s, transform 0.3s, box-shadow .2s ease, background .2s ease, color .2s ease;
-      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+      transition: opacity 0.3s, transform 0.3s, box-shadow .2s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
     }
     #scroll-to-top.visible { opacity: 1; transform: translateY(0); }
-    #scroll-to-top:hover { transform: translateY(-2px) scale(1.06); background:#f2f2f2; box-shadow: 0 12px 28px rgba(0,0,0,.35); }
-    #scroll-to-top:active { transform: translateY(0) scale(.96); background:#eaeaea; }
+    #scroll-to-top:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.45); }
 
     @media (max-width: var(--bp-mobile)) {
-      #scroll-to-top { right: auto; left: 50%; transform: translateX(-50%) translateY(20px); width: 42px; height: 42px; }
+      #scroll-to-top { right: auto; left: 50%; transform: translateX(-50%) translateY(20px); }
       #scroll-to-top.visible { transform: translateX(-50%) translateY(0); }
     }
 
@@ -904,14 +860,6 @@
         </div>
       </div>
       <div class="menu-sec">
-        <div class="menu-title">Security</div>
-        <div class="menu-row">
-          <button class="btn ghost sm" id="mfa-enable"><i class="fa-solid fa-shield-halved"></i>Enable 2FA</button>
-          <button class="btn ghost sm" id="mfa-disable"><i class="fa-solid fa-shield"></i>Disable 2FA</button>
-          <div class="menu-note">Optional TOTP 2FA. Use an authenticator app.</div>
-        </div>
-      </div>
-      <div class="menu-sec">
         <div class="menu-title">Data</div>
         <div class="menu-row">
           <button class="btn ghost sm" id="m-import"><i class="fa-solid fa-file-import"></i>Import JSON</button>
@@ -921,7 +869,6 @@
       </div>
     </div>
   </header>
-
   <section class="banner" aria-label="Featured">
     <div class="banner-image" id="banner-image" aria-hidden="true"></div>
     <div class="banner-inner">
@@ -933,35 +880,23 @@
       </div>
     </div>
   </section>
-
   <main class="container" id="main">
     <div class="toolbar">
-      <div class="toolbar-head">
-        <h2 class="page-title">Your Shelf</h2>
-        <button class="btn brand" id="btn-add"><i class="fa-solid fa-plus"></i>Add item</button>
-      </div>
-
-      <div class="toolbar-search">
+      <div class="toolbar-top">
         <input class="search" id="search" placeholder="Search title…" aria-label="Search titles (press / to focus)">
-      </div>
-
-      <div class="toolbar-tabs" id="tabs"></div>
-
-      <div class="toolbar-meta">
-        <div class="items-count" id="items-count">Items: 0</div>
         <div class="actions-row">
           <div class="view-toggle" role="group" aria-label="View mode">
-            <button class="seg" id="view-btn-grid" aria-pressed="true"><i class="fa-solid fa-grip"></i><span class="seg-label">Grid</span></button>
-            <button class="seg" id="view-btn-compact" aria-pressed="false"><i class="fa-solid fa-list"></i><span class="seg-label">Shelf</span></button>
+            <button class="seg" id="view-btn-grid" aria-pressed="true"><i class="fa-solid fa-grip"></i>Grid</button>
+            <button class="seg" id="view-btn-compact" aria-pressed="false"><i class="fa-solid fa-list"></i>Shelf</button>
           </div>
+          <button class="btn brand" id="btn-add"><i class="fa-solid fa-plus"></i>Add item</button>
         </div>
       </div>
+      <div class="toolbar-tabs" id="tabs"></div>
     </div>
-
     <div id="empty" class="muted-small" style="display:none;margin:16px 0">Sign in to start your shelf.</div>
     <div id="sections"></div>
     <div class="grid" id="grid"></div>
-
     <div class="foot" style="margin:22px 0 30px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
       <div class="muted small">Pro tip: press / to search. Click -1/+1 to adjust EP (Shift = ±5). Use the gear to edit, trash to delete.</div>
       <div class="right" style="display:flex;gap:8px;flex-wrap:wrap">
@@ -972,7 +907,6 @@
       </div>
     </div>
   </main>
-
   <!-- Add/Edit Modal -->
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="sheet" role="document">
@@ -988,14 +922,12 @@
         <div class="row">
           <div class="input-wrapper">
             <select id="f-kind" class="select" aria-label="Kind">
-              <option value="" selected disabled>Series/Movie</option>
               <option value="SERIES">Series</option>
               <option value="MOVIE">Movie</option>
             </select>
           </div>
           <div class="input-wrapper">
             <select id="f-status" class="select" aria-label="Status">
-              <option value="" selected disabled>Category</option>
               <option>WATCHING</option>
               <option>PLAN</option>
               <option>REWATCH</option>
@@ -1045,85 +977,37 @@
             <button class="btn danger" id="btn-delete" style="display:none"><i class="fa-solid fa-trash"></i>Delete</button>
           </div>
         </div>
-        <div class="hint">Auto cover uses AniList (fuzzy titles & synonyms), falling back to Jikan (MAL). Covers are stored in Supabase (image_url) so they sync across devices.</div>
+        <div class="hint">Auto cover now uses AniList first (fuzzy titles & synonyms) and falls back to Jikan (MAL). If your DB lacks image_url, we’ll store covers locally.</div>
       </div>
     </div>
   </div>
-
-  <!-- Auth Modal (email + username + password, optional TOTP MFA) -->
-  <div class="modal" id="auth-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <!-- Login Modal -->
+  <div class="modal" id="login-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="sheet" role="document" style="max-width:560px">
-      <h3 style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-right-to-bracket"></i><span id="auth-title">Sign in</span></h3>
+      <h3 style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-right-to-bracket"></i>Sign in</h3>
       <div class="form">
-        <div class="row" style="gap:6px">
-          <button class="btn ghost sm" id="auth-tab-signin">Sign in</button>
-          <button class="btn ghost sm" id="auth-tab-signup">Create account</button>
-        </div>
-
-        <!-- Sign in form -->
-        <div id="signin-form">
-          <div class="row">
-            <div class="float-group input-wrapper">
-              <input id="login-identifier" class="input" aria-label="Email or username">
-              <label for="login-identifier">Email or username</label>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="float-group input-wrapper">
-              <input id="login-password" class="input" type="password" aria-label="Password">
-              <label for="login-password">Password</label>
-            </div>
-          </div>
-
-
-          <div class="row hidden" id="signin-2fa-row">
-            <div class="float-group input-wrapper">
-              <input id="login-totp" class="input" inputmode="numeric" aria-label="2FA code">
-              <label for="login-totp">2FA code (if prompted)</label>
-            </div>
-          </div>
-          <div class="row" style="justify-content:space-between;align-items:center">
-            <div class="hint">Use your email/username and password.</div>
-            <div style="display:flex;gap:8px">
-              <button class="btn brand" id="login-submit"><i class="fa-solid fa-right-to-bracket"></i>Sign in</button>
-              <button class="btn ghost" id="auth-cancel"><i class="fa-solid fa-xmark"></i>Close</button>
-            </div>
+        <div class="row">
+          <div class="oauth-grid" aria-label="Sign in with">
+            <button class="btn oauth google" id="oauth-google" title="Sign in with Google"><i class="fa-brands fa-google"></i>Google</button>
+            <button class="btn oauth apple" id="oauth-apple" title="Sign in with Apple"><i class="fa-brands fa-apple"></i>Apple</button>
+            <button class="btn oauth discord" id="oauth-discord" title="Sign in with Discord"><i class="fa-brands fa-discord"></i>Discord</button>
+            <button class="btn oauth" id="oauth-email-link" title="Email login link"><i class="fa-solid fa-envelope"></i>Email link</button>
           </div>
         </div>
-
-        <!-- Sign up form -->
-        <div id="signup-form" class="hidden">
-          <div class="row">
-            <div class="float-group input-wrapper">
-              <input id="signup-username" class="input" aria-label="Username">
-              <label for="signup-username">Username</label>
-            </div>
+        <div class="row" id="email-login-row" style="align-items:center;display:none">
+          <div class="float-group input-wrapper">
+            <input id="login-email" class="input" type="email" aria-label="Your email">
+            <label for="login-email">Your email</label>
           </div>
-          <div class="row">
-            <div class="float-group input-wrapper">
-              <input id="signup-email" class="input" type="email" aria-label="Email">
-              <label for="signup-email">Email</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="float-group input-wrapper">
-              <input id="signup-password" class="input" type="password" aria-label="Password">
-              <label for="signup-password">Password (min. 6 characters)</label>
-            </div>
-          </div>
-          <div class="row">
-            <div style="display:flex;gap:8px;justify-content:flex-end;width:100%">
-              <button class="btn brand" id="signup-submit"><i class="fa-solid fa-user-plus"></i>Create</button>
-              <button class="btn ghost" id="auth-cancel-2"><i class="fa-solid fa-xmark"></i>Close</button>
-            </div>
-          </div>
-          <div class="hint">After sign-up, check your email if confirmation is required. Username can be changed later.</div>
+          <button class="btn brand" id="login-send"><i class="fa-solid fa-paper-plane"></i>Send link</button>
+        </div>
+        <div class="row" style="justify-content:space-between;align-items:center">
+          <div class="hint">No passwords. Use OAuth or get a magic login link to your inbox.</div>
+          <button class="btn ghost" id="login-cancel"><i class="fa-solid fa-xmark"></i>Close</button>
         </div>
       </div>
     </div>
   </div>
-
   <!-- Confirm Modal -->
   <div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="sheet center" style="max-width:520px">
@@ -1137,11 +1021,9 @@
       </div>
     </div>
   </div>
-
   <div id="toasts" aria-live="polite"></div>
   <div id="loading-spinner" aria-label="Loading"><i class="fa-solid fa-spinner"></i></div>
-  <button id="scroll-to-top" aria-label="Scroll to top"><i class="fa-solid fa-angle-up"></i></button>
-
+  <button id="scroll-to-top" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
   <footer>
     <div class="container foot-wrap">
       <div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-layer-group" style="opacity:.7"></i><div style="font-family:var(--title-font)">AniBros</div></div>
@@ -1150,11 +1032,11 @@
   </footer>
 
   <script type="module">
-    // 1) Supabase project keys
+    // 1) Set your Supabase project keys here (kept intact)
     const SUPABASE_URL = 'https://odvbznpmrorgdaaqjkrf.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kdmJ6bnBtcm9yZ2RhYXFqa3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1OTc5MjgsImV4cCI6MjA3NTE3MzkyOH0.5-fC1TmZTlGwHzsLJSxo0pTIdcbJm0_cOehoILdd31w';
 
-    // 2) supabase-js (ESM)
+    // 2) Import supabase-js (ESM from CDN)
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -1175,7 +1057,9 @@
     let activeTab = 'ALL';
     let q = '';
     let viewMode = 'grid'; // 'grid' | 'compact'
+    const IMG_LOCAL_PREFIX = 'anibros_images:';
     const loadingSpinner = document.getElementById('loading-spinner');
+    const btnRefreshCovers = document.getElementById('btn-refresh-covers');
 
     // Elements
     const sectionsEl = document.getElementById('sections');
@@ -1189,7 +1073,6 @@
     const presenceText = document.getElementById('presence-text');
     const mPresenceText = document.getElementById('m-presence-text');
     const emptyEl = document.getElementById('empty');
-    const itemsCountEl = document.getElementById('items-count');
 
     // View toggle
     const viewBtnGrid = document.getElementById('view-btn-grid');
@@ -1207,11 +1090,7 @@
     const mImport = document.getElementById('m-import');
     const mExport = document.getElementById('m-export');
 
-    // MFA buttons
-    const mfaEnableBtn = document.getElementById('mfa-enable');
-    const mfaDisableBtn = document.getElementById('mfa-disable');
-
-    // Add/Edit modal refs
+    // Modal refs
     const modal = document.getElementById('modal');
     const mTitle = document.getElementById('modal-title');
     const fTitle = document.getElementById('f-title');
@@ -1227,26 +1106,16 @@
     const btnDelete = document.getElementById('btn-delete');
     const btnAutoCover = document.getElementById('btn-autocover');
 
-    // Auth modal refs
-    const authModal = document.getElementById('auth-modal');
-    const authTitle = document.getElementById('auth-title');
-    const tabSignin = document.getElementById('auth-tab-signin');
-    const tabSignup = document.getElementById('auth-tab-signup');
-    const signinForm = document.getElementById('signin-form');
-    const signupForm = document.getElementById('signup-form');
-    const authCancel = document.getElementById('auth-cancel');
-    const authCancel2 = document.getElementById('auth-cancel-2');
-    const loginIdentifier = document.getElementById('login-identifier');
-    const loginPassword = document.getElementById('login-password');
-    const loginSubmit = document.getElementById('login-submit');
-    const signin2faRow = document.getElementById('signin-2fa-row');
-    const loginTotp = document.getElementById('login-totp');
-    const signupUsername = document.getElementById('signup-username');
-    const signupEmail = document.getElementById('signup-email');
-    const signupPassword = document.getElementById('signup-password');
-    const signupSubmit = document.getElementById('signup-submit');
+    const loginModal = document.getElementById('login-modal');
+    const loginEmail = document.getElementById('login-email');
+    const loginSend = document.getElementById('login-send');
+    const loginCancel = document.getElementById('login-cancel');
+    const oauthGoogle = document.getElementById('oauth-google');
+    const oauthApple = document.getElementById('oauth-apple');
+    const oauthDiscord = document.getElementById('oauth-discord');
+    const oauthEmailLink = document.getElementById('oauth-email-link');
+    const emailLoginRow = document.getElementById('email-login-row');
 
-    // Confirm modal refs
     const confirmModal = document.getElementById('confirm-modal');
     const confirmTitle = document.getElementById('confirm-title');
     const confirmMsg = document.getElementById('confirm-msg');
@@ -1384,6 +1253,35 @@
       return row.episode || 0;
     }
 
+    function getLocalImgMap() {
+      if (!user) return {};
+      try {
+        return JSON.parse(localStorage.getItem(IMG_LOCAL_PREFIX + user.id) || '{}');
+      } catch {
+        return {};
+      }
+    }
+
+    function setLocalImage(id, url) {
+      if (!user) return;
+      const map = getLocalImgMap();
+      map[id] = url || '';
+      localStorage.setItem(IMG_LOCAL_PREFIX + user.id, JSON.stringify(map));
+    }
+
+    function getLocalImage(id) {
+      const map = getLocalImgMap();
+      return map[id] || '';
+    }
+
+    function attachLocalImages(rows) {
+      const map = getLocalImgMap();
+      rows.forEach(r => {
+        if (!r.image_url && map[r.id]) r.image_url = map[r.id];
+      });
+      return rows;
+    }
+
     // Tabs
     function renderTabs() {
       tabsEl.innerHTML = '';
@@ -1432,6 +1330,14 @@
       return 'EP 0';
     }
 
+    // Removed makeStatusBadge usage; function retained (unused) for reference
+    function makeStatusBadge(text) {
+      const s = document.createElement('div');
+      s.className = 'status-badge';
+      s.innerHTML = `<i class="fa-solid fa-tag"></i> ${text}`;
+      return s;
+    }
+
     function makeGridCard(row) {
       const col = document.createElement('div');
       col.className = 'col';
@@ -1453,13 +1359,17 @@
       const ph = document.createElement('div');
       ph.className = 'ph';
       ph.textContent = initials(row.title || '');
-      ph.style.display = hasImg ? 'none' : 'flex';
-      img.onerror = () => { ph.style.display = 'flex'; img.remove(); };
+      if (!hasImg) ph.style.display = 'flex';
+      else ph.style.display = 'none';
+      img.onerror = () => {
+        ph.style.display = 'flex';
+        img.remove();
+      };
 
       cover.appendChild(ph);
       if (hasImg) cover.appendChild(img);
 
-      // Floating actions: edit + delete (grid keeps on cover)
+      // Floating actions: edit + delete
       const float = document.createElement('div');
       float.className = 'floating-actions';
 
@@ -1575,25 +1485,26 @@
       const ph = document.createElement('div');
       ph.className = 'ph';
       ph.textContent = initials(row.title || '');
-      ph.style.display = hasImg ? 'none' : 'flex';
-      img.onerror = () => { ph.style.display = 'flex'; img.remove(); };
+      if (!hasImg) ph.style.display = 'flex';
+      else ph.style.display = 'none';
+      img.onerror = () => {
+        ph.style.display = 'flex';
+        img.remove();
+      };
 
       cover.appendChild(ph);
       if (hasImg) cover.appendChild(img);
 
-      // Body
-      const body = document.createElement('div');
-      body.className = 'card-body';
-
-      // Top-right actions for shelf (not on cover)
-      const actionsTop = document.createElement('div');
-      actionsTop.className = 'card-actions-top';
+      // Floating actions
+      const float = document.createElement('div');
+      float.className = 'floating-actions';
       const editBtn = document.createElement('button');
       editBtn.className = 'icon-btn';
       editBtn.title = 'Edit';
       editBtn.setAttribute('aria-label', 'Edit entry');
       editBtn.innerHTML = '<i class="fa-solid fa-gear"></i>';
       editBtn.onclick = () => openModalFor(row);
+
       const delBtn = document.createElement('button');
       delBtn.className = 'icon-btn';
       delBtn.title = 'Delete';
@@ -1606,8 +1517,12 @@
           showToast('success', 'Deleted');
         });
       };
-      actionsTop.append(editBtn, delBtn);
-      card.appendChild(actionsTop);
+      float.append(editBtn, delBtn);
+      cover.appendChild(float);
+
+      // Body
+      const body = document.createElement('div');
+      body.className = 'card-body';
 
       const titleRow = document.createElement('div');
       titleRow.className = 'title-row';
@@ -1679,7 +1594,6 @@
 
         if (!user) {
           emptyEl.style.display = '';
-          itemsCountEl.textContent = 'Items: 0';
           return;
         } else {
           emptyEl.style.display = 'none';
@@ -1687,9 +1601,6 @@
 
         const renderItem = viewMode === 'compact' ? makeCompactCard : makeGridCard;
         const gridClass = viewMode === 'compact' ? 'grid view-compact' : 'grid view-grid';
-
-        const rowsFiltered = filtered();
-        itemsCountEl.textContent = `Items: ${rowsFiltered.length}`;
 
         if (activeTab === 'ALL') {
           const groups = [
@@ -1699,7 +1610,6 @@
             { id: 'WAITING', label: 'Waiting', icon: 'fa-hourglass-half' },
             { id: 'COMPLETED', label: 'Completed', icon: 'fa-check-double' },
           ];
-          let firstSection = true;
           groups.forEach(g => {
             let rows = data.filter(r => r.status === g.id);
             if (q) rows = rows.filter(r => r.title.toLowerCase().includes(q));
@@ -1707,12 +1617,6 @@
 
             const section = document.createElement('div');
             section.className = 'section';
-
-            if (!firstSection) {
-              const hr = document.createElement('hr');
-              hr.className = 'section-hr';
-              sectionsEl.appendChild(hr);
-            }
 
             const h = document.createElement('div');
             h.className = 'section-title';
@@ -1726,16 +1630,15 @@
 
             section.appendChild(grid);
             sectionsEl.appendChild(section);
-            firstSection = false;
           });
         } else {
           gridEl.className = gridClass;
-          rowsFiltered.forEach(row => gridEl.appendChild(renderItem(row)));
+          filtered().forEach(row => gridEl.appendChild(renderItem(row)));
         }
 
         updateViewToggleUI();
         updateMobileMenuUI();
-      }, 80);
+      }, 100);
     }
 
     async function adjustEpisode(row, delta) {
@@ -1762,8 +1665,7 @@
         authCta.innerHTML = '';
         const who = document.createElement('span');
         who.className = 'muted small';
-        const username = user.user_metadata?.username;
-        who.textContent = username || user.email || 'user';
+        who.textContent = user.email || user?.user_metadata?.email || 'user';
         const out = document.createElement('button');
         out.className = 'btn ghost';
         out.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Sign out';
@@ -1778,7 +1680,7 @@
         btn.className = 'btn ghost';
         btn.id = 'btn-login-2';
         btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign in';
-        btn.onclick = () => openModal(authModal);
+        btn.onclick = () => openModal(loginModal);
         authCta.append(btn);
       }
       updateMobileMenuUI();
@@ -1791,9 +1693,8 @@
       try {
         const { data: rows, error } = await supabase.from('entries').select('*').order('created_at', { ascending: false });
         if (error) throw error;
-        data = rows || [];
-        // only auto-fetch covers if they are missing image_url
-        await autoFetchMissingCovers(data.filter(r => !r.image_url));
+        data = attachLocalImages(rows || []);
+        await autoFetchMissingCovers(data);
         render();
       } catch (e) {
         console.error(e);
@@ -1812,10 +1713,12 @@
         (payload) => {
           const { eventType, new: n, old: o } = payload;
           if (eventType === 'INSERT') {
-            data.unshift(n);
+            const row = attachLocalImages([n])[0];
+            data.unshift(row);
+            autoFetchMissingCovers([row]);
           } else if (eventType === 'UPDATE') {
             const i = data.findIndex(r => r.id === n.id);
-            if (i >= 0) data[i] = n;
+            if (i >= 0) data[i] = attachLocalImages([n])[0];
           } else if (eventType === 'DELETE') {
             const i = data.findIndex(r => r.id === o.id);
             if (i >= 0) data.splice(i, 1);
@@ -1845,7 +1748,7 @@
 
     // Add / Edit modal wiring
     btnAdd.onclick = () => openModalFor();
-    btnCancel.onclick = () => closeModal(modal);
+    btnCancel.onclick = closeModalMain;
     btnSave.onclick = saveModal;
     btnDelete.onclick = removeModal;
 
@@ -1872,12 +1775,12 @@
       editingId = row?.id || null;
       mTitle.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${editingId ? 'Edit item' : 'Add item'}`;
       fTitle.value = row?.title || '';
-      fKind.value = row?.kind || '';
-      fStatus.value = row?.status || '';
+      fKind.value = row?.kind || 'SERIES';
+      fStatus.value = row?.status || 'PLAN';
       fSeason.value = row?.season ?? '';
       fEpisode.value = row?.episode ?? '';
       fAbs.value = row?.absolute_episode ?? '';
-      fImage.value = row?.image_url || '';
+      fImage.value = row?.image_url || getLocalImage(row?.id) || '';
       fNotes.value = row?.notes || '';
       btnDelete.style.display = editingId ? '' : 'none';
       openModal(modal);
@@ -1886,19 +1789,16 @@
       initFloatingLabels(modal);
     }
 
+    function closeModalMain() {
+      closeModal(modal);
+    }
+
     async function saveModal() {
       if (!user) return showToast('error', 'Sign in first');
-      const title = fTitle.value.trim();
-      const kind = fKind.value;
-      const status = fStatus.value;
-      if (!title) return showToast('error', 'Title required');
-      if (!kind) return showToast('error', 'Please choose Series/Movie');
-      if (!status) return showToast('error', 'Please choose a Category');
-
       const row = {
-        title,
-        kind,
-        status,
+        title: fTitle.value.trim(),
+        kind: fKind.value,
+        status: fStatus.value,
         season: fSeason.value ? parseInt(fSeason.value) : null,
         episode: fEpisode.value ? parseInt(fEpisode.value) : null,
         absolute_episode: fAbs.value ? parseInt(fAbs.value) : null,
@@ -1906,20 +1806,60 @@
         notes: fNotes.value.trim() || null,
         user_id: user.id
       };
+      if (!row.title) return showToast('error', 'Title required');
 
       try {
         if (editingId) {
-          const { error } = await supabase.from('entries').update(row).eq('id', editingId);
-          if (error) throw error;
+          await upsertEntry('update', row, editingId);
           showToast('success', 'Saved');
         } else {
-          const { error } = await supabase.from('entries').insert(row);
-          if (error) throw error;
+          await upsertEntry('insert', row);
           showToast('success', 'Added');
         }
         closeModal(modal);
       } catch (e) {
         showToast('error', e.message || 'Failed to save');
+      }
+    }
+
+    async function upsertEntry(mode, row, id) {
+      // Attempt to include image_url. If the column is missing, retry without it and store locally.
+      const payload = { ...row };
+      if (!payload.image_url) delete payload.image_url;
+      try {
+        if (mode === 'insert') {
+          const { data: ins, error } = await supabase.from('entries').insert(payload).select().single();
+          if (error) throw error;
+          const newId = ins?.id;
+          if (row.image_url && newId) setLocalImage(newId, row.image_url);
+          return ins;
+        } else {
+          const { data: upd, error } = await supabase.from('entries').update(payload).eq('id', id).select().single();
+          if (error) throw error;
+          if (row.image_url) setLocalImage(id, row.image_url);
+          return upd;
+        }
+      } catch (e) {
+        const msg = String(e?.message || '');
+        if (msg.includes('image_url') || (msg.toLowerCase().includes('column') && msg.toLowerCase().includes('does not exist'))) {
+          const retry = { ...row };
+          delete retry.image_url;
+          if (mode === 'insert') {
+            const { data: ins2, error: err2 } = await supabase.from('entries').insert(retry).select().single();
+            if (err2) throw err2;
+            if (row.image_url && ins2?.id) setLocalImage(ins2.id, row.image_url);
+            showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
+            return ins2;
+          } else {
+            const { data: upd2, error: err2 } = await supabase.from('entries').update(retry).eq('id', id).select().single();
+            if (err2) throw err2;
+            if (row.image_url) setLocalImage(id, row.image_url);
+            showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
+            return upd2;
+          }
+        } else {
+          throw e;
+        }
       }
     }
 
@@ -1974,14 +1914,37 @@
         if (!user) throw new Error('Sign in first');
 
         const rows = arr.map(normalizeImport).map(r => ({ ...r, user_id: user.id }));
+        const rowsWithoutImage = rows.map(({ image_url, ...rest }) => rest);
 
-        const { data: ins, error } = await supabase.from('entries').insert(rows).select();
-        if (error) throw error;
+        let insertErr = null;
+        let inserted = [];
+        try {
+          const { data: ins, error } = await supabase.from('entries').insert(rows).select();
+          if (error) throw error;
+          inserted = ins || [];
+        } catch (e) {
+          const msg = String(e?.message || '');
+          if (msg.includes('image_url')) {
+            insertErr = e;
+          } else {
+            throw e;
+          }
+        }
 
-        // Try to auto-fetch missing covers for those imported without image_url
-        await autoFetchMissingCovers((ins || []).filter(r => !r.image_url));
+        if (insertErr) {
+          const { data: ins2, error: err2 } = await supabase.from('entries').insert(rowsWithoutImage).select();
+          if (err2) throw err2;
+          inserted = ins2 || [];
+          inserted.forEach((it, idx) => {
+            const original = rows[idx];
+            if (original?.image_url) setLocalImage(it.id, original.image_url);
+          });
+          showToast('info', 'Imported without cover sync. Add "image_url" column to entries to sync covers.');
+        }
 
-        showToast('success', `Imported ${ins?.length || 0} items`);
+        await autoFetchMissingCovers(inserted);
+
+        showToast('success', `Imported ${inserted.length} items`);
         importFile.value = '';
       } catch (e) {
         console.error(e);
@@ -2023,151 +1986,54 @@
       }
     });
 
-    // Open auth modal
-    btnLogin?.addEventListener('click', () => openModal(authModal));
-    document.getElementById('btn-login-2')?.addEventListener('click', () => openModal(authModal));
-    mLogin.addEventListener('click', () => { closeMenu(); openModal(authModal); });
+    // Login modal wiring
+    btnLogin?.addEventListener('click', () => openModal(loginModal));
+    document.getElementById('btn-login-2')?.addEventListener('click', () => openModal(loginModal));
 
-    // Auth tabs
-    function showSignin() {
-      authTitle.textContent = 'Sign in';
-      signinForm.classList.remove('hidden');
-      signupForm.classList.add('hidden');
-    }
-    function showSignup() {
-      authTitle.textContent = 'Create account';
-      signinForm.classList.add('hidden');
-      signupForm.classList.remove('hidden');
-    }
-    tabSignin.onclick = showSignin;
-    tabSignup.onclick = showSignup;
+    loginCancel.onclick = () => closeModal(loginModal);
 
-    // Close auth modal
-    authCancel.onclick = () => closeModal(authModal);
-    authCancel2.onclick = () => closeModal(authModal);
+    // OAuth handlers
+    oauthGoogle.onclick = () => signInProvider('google');
+    oauthApple.onclick = () => signInProvider('apple');
+    oauthDiscord.onclick = () => signInProvider('discord');
+    oauthEmailLink.onclick = () => {
+      emailLoginRow.style.display = '';
+      loginEmail.focus();
+      initFloatingLabels(loginModal);
+    };
 
-    // Sign up
-    signupSubmit.onclick = async () => {
-      const username = signupUsername.value?.trim();
-      const email = signupEmail.value?.trim();
-      const password = signupPassword.value;
-      if (!username) return showToast('error', 'Username required');
-      if (!email) return showToast('error', 'Email required');
-      if (!password || password.length < 6) return showToast('error', 'Password must be at least 6 characters');
+    async function signInProvider(provider) {
       try {
-        const { data, error } = await supabase.auth.signUp({
-          email, password,
-          options: { data: { username } }
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: { redirectTo: window.location.origin }
         });
         if (error) throw error;
-        showToast('success', 'Account created. Check your email if confirmation is required.');
-        closeModal(authModal);
       } catch (e) {
-        showToast('error', e.message || 'Sign-up failed');
-      }
-    };
-
-    // Username -> email resolver via RPC
-    async function resolveEmail(identifier) {
-      if (identifier.includes('@')) return identifier;
-      try {
-        const { data, error } = await supabase.rpc('email_for_username', { p_username: identifier });
-        if (error) throw error;
-        if (!data) throw new Error('Username not found');
-        return data;
-      } catch (e) {
-        throw new Error('Username not found');
+        console.error(e);
+        showToast('error', e.message || 'Sign-in failed');
       }
     }
 
-    // Sign in (with optional MFA)
-    loginSubmit.onclick = async () => {
-      const identifier = loginIdentifier.value?.trim();
-      const password = loginPassword.value;
-      if (!identifier) return showToast('error', 'Enter email or username');
-      if (!password) return showToast('error', 'Enter password');
-
+    loginSend.onclick = async () => {
+      const email = loginEmail.value?.trim();
+      if (!email) return showToast('error', 'Enter an email');
       try {
-        const email = await resolveEmail(identifier);
-        // Attempt normal sign-in
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) {
-          // Handle MFA required (Supabase GoTrue error name/hint)
-          const needsMfa = /mfa|2fa/i.test(error.message || '');
-          if (!needsMfa) throw error;
-
-          // Show 2FA input
-          signin2faRow.classList.remove('hidden');
-          loginTotp.focus();
-
-          // Challenge known TOTP factor
-          const { data: factorsList } = await supabase.auth.mfa.listFactors?.();
-          const totpFactor = factorsList?.totp?.find?.(f => f.status === 'verified') || factorsList?.all?.find?.(f => f.factor_type === 'totp');
-          if (!totpFactor) throw new Error('No TOTP factor enrolled');
-
-          // Create a challenge
-          const { data: challenge, error: chErr } = await supabase.auth.mfa.challenge({ factorId: totpFactor.id });
-          if (chErr) throw chErr;
-
-          // Wait for user input then verify
-          const onEnter = async (evt) => {
-            if (evt.key !== 'Enter') return;
-            evt.preventDefault();
-            const code = loginTotp.value?.trim();
-            if (!code) return;
-            try {
-              const { data: verified, error: vErr } = await supabase.auth.mfa.verify({
-                factorId: totpFactor.id, code, challengeId: challenge.id
-              });
-              if (vErr) throw vErr;
-              showToast('success', 'Signed in');
-              closeModal(authModal);
-            } catch (e) {
-              showToast('error', e.message || 'Invalid 2FA code');
-            } finally {
-              loginTotp.removeEventListener('keydown', onEnter);
-            }
-          };
-          loginTotp.addEventListener('keydown', onEnter);
-          return;
-        }
-        // Success
-        showToast('success', 'Signed in');
-        closeModal(authModal);
-      } catch (e) {
-        showToast('error', e.message || 'Sign-in failed');
-      }
-    };
-
-    // MFA (TOTP) enable/disable in menu
-    mfaEnableBtn.onclick = async () => {
-      if (!user) { showToast('error', 'Sign in first'); return; }
-      try {
-        const { data, error } = await supabase.auth.mfa.enroll({ factorType: 'totp' });
+        const { error } = await supabase.auth.signInWithOtp({ email });
         if (error) throw error;
-        const uri = data?.totp?.uri || data?.uri;
-        if (!uri) {
-          showToast('info', 'Scan the TOTP secret in your authenticator, then enter code in sign-in.');
-        } else {
-          showToast('success', 'TOTP enrolled. Add this to your authenticator:\n' + uri);
-        }
+        showToast('success', 'Login link sent — check your inbox');
+        closeModal(loginModal);
       } catch (e) {
-        showToast('error', e.message || 'Failed to enable 2FA');
+        showToast('error', e.message || 'Failed to send');
       }
     };
-    mfaDisableBtn.onclick = async () => {
-      if (!user) { showToast('error', 'Sign in first'); return; }
-      try {
-        const { data: factors } = await supabase.auth.mfa.listFactors?.();
-        const totp = factors?.totp?.find?.(f => f.status === 'verified') || factors?.all?.find?.(f => f.factor_type === 'totp');
-        if (!totp) return showToast('info', 'No 2FA enabled');
-        const { error } = await supabase.auth.mfa.unenroll({ factorId: totp.id });
-        if (error) throw error;
-        showToast('success', '2FA disabled');
-      } catch (e) {
-        showToast('error', e.message || 'Failed to disable 2FA');
+
+    loginEmail.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        loginSend.click();
       }
-    };
+    });
 
     // URL params sync
     function updateURL() {
@@ -2225,10 +2091,12 @@
       mobileMenu.classList.add('open');
       menuBtn.setAttribute('aria-expanded', 'true');
     }
+
     function closeMenu() {
       mobileMenu.classList.remove('open');
       menuBtn.setAttribute('aria-expanded', 'false');
     }
+
     menuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (mobileMenu.classList.contains('open')) closeMenu();
@@ -2239,6 +2107,7 @@
       closeMenu();
       openModalFor();
     });
+
     mViewGrid.addEventListener('click', () => {
       viewMode = 'grid';
       localStorage.setItem('anibros:view', viewMode);
@@ -2246,12 +2115,18 @@
       closeMenu();
       render();
     });
+
     mViewCompact.addEventListener('click', () => {
       viewMode = 'compact';
       localStorage.setItem('anibros:view', viewMode);
       updateURL();
       closeMenu();
       render();
+    });
+
+    mLogin.addEventListener('click', () => {
+      closeMenu();
+      openModal(loginModal);
     });
 
     mLogout.addEventListener('click', () => openConfirm('Sign out', 'Are you sure you want to sign out?', async () => {
@@ -2263,6 +2138,7 @@
       closeMenu();
       importFile.click();
     });
+
     mExport.addEventListener('click', () => {
       closeMenu();
       doExport();
@@ -2270,7 +2146,7 @@
 
     function updateMobileMenuUI() {
       if (user) {
-        mUserEmail.textContent = user.user_metadata?.username || user.email || 'user';
+        mUserEmail.textContent = user.email || user?.user_metadata?.email || 'user';
         mLogin.classList.add('hidden');
         mLogout.classList.remove('hidden');
       } else {
@@ -2325,7 +2201,7 @@
         const json = await res.json();
         const list = json?.data || [];
         if (!list.length) throw new Error('No results');
-        const pick = list[0];
+        let pick = list[0];
         return { image: pick?.images?.webp?.large_image_url || pick?.images?.jpg?.large_image_url || pick?.images?.webp?.image_url, match: pick };
       } catch (e) {
         if (retry) throw e;
@@ -2405,7 +2281,7 @@
     btnAutoCover.addEventListener('click', async () => {
       const title = fTitle.value?.trim();
       if (!title) return showToast('error', 'Enter title first');
-      const image = await autoFetchCover(title, fKind.value || 'SERIES');
+      const image = await autoFetchCover(title, fKind.value);
       if (image) {
         fImage.value = image;
         showToast('success', 'Cover set');
@@ -2420,7 +2296,7 @@
       if (!fImage.value.trim()) {
         const title = fTitle.value?.trim();
         if (title) {
-          const image = await autoFetchCover(title, fKind.value || 'SERIES');
+          const image = await autoFetchCover(title, fKind.value);
           if (image) {
             fImage.value = image;
             initFloatingLabels(modal);
@@ -2430,26 +2306,29 @@
       }
     });
 
-    // Auto-fetch missing covers for a list of rows (persist image_url)
+    // Auto-fetch missing covers for a list of rows
     async function autoFetchMissingCovers(rows) {
       const missing = rows.filter(r => !r.image_url && r.title);
       if (!missing.length) return;
+
       showToast('info', `Fetching covers for ${missing.length} items...`);
       const concurrentLimit = 5;
       let activeFetches = 0;
 
       for (const row of missing) {
         if (activeFetches >= concurrentLimit) {
-          await new Promise(resolve => setTimeout(resolve, 400));
+          await new Promise(resolve => setTimeout(resolve, 500)); // Throttle
         }
         activeFetches++;
         (async () => {
           const image = await autoFetchCover(row.title, row.kind);
           if (image) {
+            const patch = { image_url: image };
             try {
-              await supabase.from('entries').update({ image_url: image }).eq('id', row.id);
+              await upsertEntry('update', { ...row, image_url: image }, row.id);
             } catch (e) {
               console.error(`Failed to update cover for ${row.title}:`, e);
+              setLocalImage(row.id, image); // Fallback to local
             }
           }
           activeFetches--;
@@ -2457,7 +2336,14 @@
       }
     }
 
-    // Clear buttons logic
+    btnRefreshCovers.addEventListener('click', async () => {
+      if (!user) return showToast('error', 'Sign in first');
+      await autoFetchMissingCovers(data);
+      showToast('success', 'Covers refreshed');
+      render();
+    });
+
+    // Clear buttons logic (only show when there is text)
     function toggleClearButtons() {
       const toggle = (btn, input) => btn.classList.toggle('visible', String(input.value ?? '').trim() !== '');
       toggle(clearTitle, fTitle);
@@ -2466,11 +2352,15 @@
       toggle(clearAbs, fAbs);
       toggle(clearImage, fImage);
       toggle(clearNotes, fNotes);
+
+      // keep floating labels in sync
       initFloatingLabels(modal);
     }
+
     [fTitle, fSeason, fEpisode, fAbs, fImage, fNotes].forEach(input => {
       input.addEventListener('input', toggleClearButtons);
     });
+
     clearTitle.onclick = () => { fTitle.value = ''; toggleClearButtons(); fTitle.focus(); };
     clearSeason.onclick = () => { fSeason.value = ''; toggleClearButtons(); fSeason.focus(); };
     clearEpisode.onclick = () => { fEpisode.value = ''; toggleClearButtons(); fEpisode.focus(); };
@@ -2479,10 +2369,16 @@
     clearNotes.onclick = () => { fNotes.value = ''; toggleClearButtons(); fNotes.focus(); };
 
     // Scroll to top
-    scrollToTop.onclick = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    scrollToTop.onclick = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 200) scrollToTop.classList.add('visible');
-      else scrollToTop.classList.remove('visible');
+      if (window.scrollY > 200) {
+        scrollToTop.classList.add('visible');
+      } else {
+        scrollToTop.classList.remove('visible');
+      }
     });
 
     // Initialize
@@ -2504,7 +2400,7 @@
       }
       render(); // initial render for tabs/empty state
 
-      // Floating labels init
+      // Initialize floating labels on first paint
       initFloatingLabels(document);
     })();
 
@@ -2523,3 +2419,173 @@
   </script>
 </body>
 </html>
+
+so currently, i believe that the image URLs are not being saved in supabase, change that and make it work like that insted of regrabbing the images everytime u log onto ur acount on a new device-width, i willl link the sql below, so mkae changes there too
+
+as for mobile ui,  the -, EP #, and + should be on one line, then the category (plan, complete, etc) should be on the next, for the grid view, the shelf is fine
+
+on mobile especially, make sure theres no horizontal scroll, there is slight rn
+
+acctually, for the shelf on mobile and desktop, the settings and delete icon should be moved to the top right of the card, since theres enough space, instead of on the cover img
+
+for the desktop shelf view, there should be 3 cards in a row, not 2 like now
+
+on mobile, the users online, username, and sign in/oout should be put into a hamburger menu, coz they just overlapping and looking fucked now
+
+change the theme of the scroll to top btn, it should be a plain white with a black angle up icon instead, and add colour and scale wehn hovered or clicked and shi, u know the stuffs 
+
+on mobile, the scroll to top btn should be centered instead of on the right, and it should be scaled down a bit
+
+as for the title, grid/shelf view, and add item, rework them like this: 
+Title and add item on one line
+then cats on the other like now
+then the # Items (new, add this) and grid/shelf view (right side ofc) in the 3rd line, also on mobile, the grid/shelf view button should jsut be the icons, no text, desktop should keep the text tho like now, since theres enough space
+
+in the all section, there should be nicely themed (but minimilist) <hr> tags to speerate the sections/cats, and their font should be increased a bit, itsa bit small now
+
+move the google, apple and discord sigin, it should be email only, in fact, tweak it up, make a username and PW system, and also include optional 2FA, obv ur gonna need to eidt the signup modal with all this, and the sql im gonna provide with the changes
+
+for the footer, mkae there be 2 sides, there already is, just rework it a bit, the aninbros should be on the left, and the made with ramen blah blah on the right, and on moible, they should be under each other intead of left and right like desktop
+
+
+as for the inputs in the settings modal, the series/movie should also have a placehole/title that says "Series/Movie", and the category, that sys "Category"
+
+
+heres the sql btw:
+-- Extensions
+create extension if not exists "uuid-ossp";
+create extension if not exists "pgcrypto";
+
+-- Profile for each auth user
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  username text unique,
+  display_name text,
+  avatar_url text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create or replace function public.handle_new_user()
+returns trigger language plpgsql security definer as $$
+begin
+  insert into public.profiles (id, username, display_name)
+  values (new.id, new.email, split_part(new.email,'@',1))
+  on conflict (id) do nothing;
+  return new;
+end; $$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute procedure public.handle_new_user();
+
+-- Enums
+do $$ begin
+  create type public.media_kind as enum ('SERIES','MOVIE');
+exception when duplicate_object then null; end $$;
+
+do $$ begin
+  create type public.list_status as enum ('WATCHING','PLAN','REWATCH','WAITING','COMPLETED');
+exception when duplicate_object then null; end $$;
+
+-- Anime entries per user
+create table if not exists public.entries (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  title text not null,
+  kind public.media_kind not null default 'SERIES',
+  status public.list_status not null,
+  season int,
+  episode int,
+  absolute_episode int,
+  notes text,
+  tags text[] not null default '{}',
+  rating smallint check (rating between 1 and 10),
+  image_url text,                    -- cover image URL (preferred by app)
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Updated_at trigger
+create or replace function public.set_updated_at()
+returns trigger language plpgsql as $$
+begin
+  new.updated_at = now();
+  return new;
+end; $$;
+
+drop trigger if exists t_entries_updated on public.entries;
+create trigger t_entries_updated
+before update on public.entries
+for each row execute procedure public.set_updated_at();
+
+-- Helpful indexes
+create index if not exists idx_entries_user on public.entries(user_id);
+create index if not exists idx_entries_user_status on public.entries(user_id, status);
+create index if not exists idx_entries_user_title on public.entries(lower(title), user_id);
+create index if not exists idx_entries_updated on public.entries(user_id, updated_at desc);
+
+-- Enable RLS
+alter table public.profiles enable row level security;
+alter table public.entries  enable row level security;
+
+-- Profiles policies: user can see/update self
+drop policy if exists "profiles_select_own" on public.profiles;
+create policy "profiles_select_own"
+on public.profiles for select
+using (id = auth.uid());
+
+drop policy if exists "profiles_update_own" on public.profiles;
+create policy "profiles_update_own"
+on public.profiles for update
+using (id = auth.uid())
+with check (id = auth.uid());
+
+-- Entries policies: CRUD only for owner
+drop policy if exists "entries_read_own" on public.entries;
+create policy "entries_read_own"
+on public.entries for select
+using (user_id = auth.uid());
+
+drop policy if exists "entries_insert_own" on public.entries;
+create policy "entries_insert_own"
+on public.entries for insert
+with check (user_id = auth.uid());
+
+drop policy if exists "entries_update_own" on public.entries;
+create policy "entries_update_own"
+on public.entries for update
+using (user_id = auth.uid())
+with check (user_id = auth.uid());
+
+drop policy if exists "entries_delete_own" on public.entries;
+create policy "entries_delete_own"
+on public.entries for delete
+using (user_id = auth.uid());
+
+-- Realtime: add 'entries' table to publication
+do $$
+begin
+  perform 1 from pg_publication where pubname = 'supabase_realtime';
+  if not found then
+    create publication supabase_realtime;
+  end if;
+end$$;
+
+alter publication supabase_realtime add table public.entries;
+
+-- Note: Removed banner storage bucket policies and banner_key/cover_url fields per requirements.
+
+
+
+
+
+
+
+
+
+
+add/improve anything else u see fit
+
+give the full html css js with changes, keep all APIs and shi intact, and tldr wat u do before the code 
