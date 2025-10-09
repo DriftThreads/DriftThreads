@@ -105,6 +105,36 @@
       .loading-icon { font-size: 48px; }
       .title { font-size: 28px; }
     }
+
+
+
+
+    /* Add this to your existing CSS */
+::selection {
+  background: #7ee081; /* Light green */
+  color: #0f172a; /* Dark navy-ish text for contrast */
+}
+
+/* For Firefox support */
+::-moz-selection {
+  background: #7ee081;
+  color: #0f172a;
+}
+
+/* Optional: Different shade for specific elements */
+.highlight-green::selection {
+  background: #a3e635; /* Softer, slightly yellow-green */
+  color: #0f172a;
+}
+
+/* Dark mode compatible version */
+@media (prefers-color-scheme: dark) {
+  ::selection {
+    background: #86efac; /* Soft mint green for dark mode */
+    color: #1a202c; /* Dark text for good contrast */
+  }
+}
+
   </style>
 </head>
 <body>
