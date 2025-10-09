@@ -1,0 +1,3773 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AniBros — Your Anime Shelf</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --panel: #0f1117;
+      --panel-2: #0b0f16;
+      --text: #e6e8ef;
+      --muted: #9aa3b2;
+      --brand: #7c3aed;
+      --brand-2: #22d3ee;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --danger: #f56565;
+      --card: #151927;
+      --chip: #1d2336;
+      --ring: #2b2f45;
+      --shadow: 0 10px 24px rgba(0,0,0,.35);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --container: 1100px;
+      --title-font: 'Orbitron', system-ui, -apple-system, 'Segoe UI', Roboto;
+      --body-font: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      --ui-duration: 220ms;
+      --bp-mobile: 720px;
+      --bp-compact: 520px;
+      --bp-small: 600px;
+      --focus-ring: 0 0 0 4px rgba(124,58,237,.14);
+    }
+
+    * { box-sizing: border-box; }
+    img { max-width: 100%; display: block; }
+    html, body { height: 100%; overflow-x: clip; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #07070a, #0b0c10 40%);
+      color: var(--text);
+      font: 400 16px/1.55 var(--body-font);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+    body.modal-open { overflow: hidden; }
+
+    main {
+      flex: 1 0 auto;
+      width: 100%;
+      display: block;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 16px;
+      width: 100%;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: rgba(11,12,16,.9);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 66px;
+      padding: 6px 0;
+      flex-wrap: nowrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: .3px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .logo-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      object-fit: cover;
+      flex: 0 0 auto;
+    }
+
+    .brand-title {
+      font-family: var(--title-font);
+      letter-spacing: .4px;
+      white-space: nowrap;
+    }
+
+    .nav-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-left: auto;
+      flex: 0 0 auto;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: var(--panel);
+      color: #e9ecf3;
+      cursor: pointer;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      transition: transform var(--ui-duration) ease, opacity var(--ui-duration) ease, background .2s ease;
+      font-weight: 600;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0) scale(.98); }
+    .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    .btn[disabled] { opacity: .65; cursor: progress; transform: none; }
+
+    .btn.brand {
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      color: #fff;
+      font-weight: 700;
+    }
+    .btn.ghost {
+      background: #131826;
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: none;
+    }
+    .btn.danger {
+      background: #2d1a25;
+      color: #fee2e2;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .btn.sm { padding: 8px 10px; border-radius: 10px; font-size: 13px; }
+    .btn.icon {
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      box-shadow: none;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .tag {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: #151a2b;
+      border: 1px solid rgba(255,255,255,.06);
+      color: #b6bfd3;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .hamburger { display: none; }
+
+    @media (max-width: var(--bp-mobile)) {
+      .nav {
+        row-gap: 8px;
+        flex-direction: row;
+        align-items: center;
+      }
+      .nav-cta { display: none; }
+      .nav-meta { display: none; }
+      .hamburger { display: inline-flex; margin-left: auto; }
+      .brand-title { font-size: 15px; }
+      .logo-img { width: 30px; height: 30px; }
+      .logo { justify-content: flex-start; flex: none; }
+    }
+
+    .menu-panel {
+      position: fixed;
+      top: 66px;
+      right: 12px;
+      z-index: 80;
+      width: min(340px, 92vw);
+      background: #101525;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.5);
+      transform-origin: top right;
+      transform: scale(.98) translateY(-6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+    .menu-panel.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: auto; }
+    .menu-sec { padding: 12px; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .menu-sec:last-child { border-bottom: 0; }
+    .menu-title { font-family: var(--title-font); font-size: 13px; color: #cbd5f7; margin-bottom: 8px; letter-spacing: .4px; }
+    .menu-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .menu-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #12182a;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .menu-kv { display: flex; align-items: center; gap: 10px; }
+    .menu-note { font-size: 12px; color: #9aa3b2; }
+
+    .banner {
+      position: relative;
+      display: block;
+      height: clamp(520px, 70vw, 880px);
+      width: 100%;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      overflow: hidden;
+    }
+    .banner-image {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      opacity: 1;
+      filter: saturate(1.02) contrast(1.05) brightness(.9);
+      transform: scale(1.02);
+    }
+    .banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,8,12,.6), rgba(7,8,12,.75) 40%, rgba(7,8,12,.9));
+      pointer-events: none;
+    }
+    .banner-inner {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      padding: 96px 0 40px;
+    }
+    .hero {
+      display: grid;
+      gap: 10px;
+      max-width: var(--container);
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 16px;
+    }
+    .hero-box {
+      max-width: min(820px, 96%);
+      background: rgba(7,8,12,.45);
+      border: 1px solid rgba(255,255,255,.15);
+      padding: 14px 16px;
+      border-radius: 14px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.45);
+      backdrop-filter: blur(4px);
+    }
+    .hero h1 {
+      margin: 0 0 6px 0;
+      font-size: clamp(22px, 3.2vw, 38px);
+      line-height: 1.1;
+      letter-spacing: .6px;
+      font-family: var(--title-font);
+      font-weight: 700;
+      text-shadow: 0 2px 6px rgba(0,0,0,.55);
+    }
+    .hero .sub {
+      color: #d4daf0;
+      font-size: 14px;
+      text-shadow: 0 1px 4px rgba(0,0,0,.5);
+    }
+
+    .toolbar { display: grid; gap: 12px; margin: 14px 0 10px; }
+    .toolbar-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    }
+    .page-title {
+      margin: 0;
+      font-family: var(--title-font);
+      font-size: 18px;
+      letter-spacing: .4px;
+      color: #eaf0ff;
+    }
+    .toolbar-search { display: flex; gap: 10px; }
+    .toolbar-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .toolbar-tabs::-webkit-scrollbar { display: none; }
+    .toolbar-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .sort-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #10162a;
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+    .sort-label {
+      font-size: 13px;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sort-label i { font-size: 12px; opacity: .8; }
+    .sort-select {
+      min-width: 160px;
+      background: transparent;
+      font-size: 13px;
+      padding: 12px 34px 12px 12px;
+    }
+    @media (max-width: var(--bp-small)) {
+      .sort-control {
+        width: 100%;
+        justify-content: space-between;
+        padding-right: 10px;
+      }
+      .sort-select {
+        flex: 1 1 auto;
+        width: auto;
+      }
+    }
+
+    .actions-row { display: flex; gap: 10px; align-items: center; flex-wrap: nowrap; }
+
+    .search {
+      flex: 1;
+      min-width: 220px;
+      background: #0f1424;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      color: #e8ecfa;
+      padding: 10px 12px;
+      outline: 0;
+    }
+    .search:focus { box-shadow: var(--focus-ring); border-color: rgba(124,58,237,.7); }
+
+    .tab {
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: #c6cde0;
+      background: #141a2a;
+      border: 1px solid rgba(255,255,255,.06);
+      cursor: pointer;
+      transition: transform .15s;
+      flex: 0 0 auto;
+      font-weight: 600;
+    }
+    .tab:hover { transform: translateY(-1px); }
+    .tab.active {
+      background: linear-gradient(90deg, rgba(124,58,237,.25), rgba(34,211,238,.2));
+      color: #fff;
+      border-color: rgba(255,255,255,.12);
+    }
+    .tab .count { opacity: .7; margin-left: 6px; font-weight: 500; }
+
+    .view-toggle {
+      display: inline-flex;
+      background: #11162a;
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .seg {
+      appearance: none;
+      background: 0 0;
+      color: #cfe0ff;
+      padding: 8px 12px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .seg:hover { background: rgba(255,255,255,.04); }
+    .seg.active {
+      background: linear-gradient(90deg, rgba(124,58,237,.25), rgba(34,211,238,.2));
+      color: #fff;
+    }
+    .seg .seg-label { margin-left: 4px; }
+    @media (max-width: var(--bp-mobile)) {
+      .seg .seg-label { display: none; }
+    }
+
+    .section { margin-top: 18px; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0 10px;
+      font-family: var(--title-font);
+      font-size: 16px;
+      letter-spacing: .3px;
+      color: #d6dbef;
+    }
+    .section-title .muted-small { font-family: var(--body-font); }
+    .section-hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255,255,255,.06), rgba(255,255,255,.12), rgba(255,255,255,.06));
+      margin: 14px 0 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .col { grid-column: span 12; }
+    .grid.view-grid .col { grid-column: span 6; }
+    @media (min-width: 540px) { .grid.view-grid .col { grid-column: span 4; } }
+    @media (min-width: 780px) { .grid.view-grid .col { grid-column: span 3; } }
+    @media (min-width: 1024px) { .grid.view-grid .col { grid-column: span 3; } }
+    .grid.view-compact .col { grid-column: span 12; }
+    @media (min-width: 1000px) { .grid.view-compact .col { grid-column: span 4; } }
+
+    .card {
+      background: #12182a;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(1,5,18,.5);
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      position: relative;
+    }
+
+    .cover {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1.4;
+      background: #0e1323;
+      overflow: hidden;
+    }
+    .cover img { width: 100%; height: 100%; object-fit: cover; }
+    .cover .ph {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #1a2040, #11162e);
+      color: #aeb8d9;
+      font-weight: 800;
+      font-size: clamp(22px, 5vw, 36px);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .floating-actions {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      display: flex;
+      gap: 6px;
+      z-index: 2;
+    }
+    .floating-actions .icon-btn {
+      background: rgba(6,9,16,.7);
+      color: #e8ecfa;
+      border: 1px solid rgba(255,255,255,.15);
+      padding: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .floating-actions .icon-btn:hover { background: rgba(6,9,16,.9); }
+
+    .badge-bottom {
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.12);
+      color: #eaf0ff;
+      font-size: 11px;
+      padding: 4px 6px;
+      border-radius: 999px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      z-index: 1;
+      letter-spacing: .3px;
+    }
+
+    .card-body {
+      padding: 8px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .title-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+    .title {
+      font-weight: 800;
+      letter-spacing: .2px;
+      font-family: var(--title-font);
+      font-size: 14px;
+      line-height: 1.2;
+      min-width: 0;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: #b3bad2;
+      font-size: 11px;
+      margin: 2px 0 4px;
+    }
+    .chip {
+      font-size: 10px;
+      padding: 3px 6px;
+      border-radius: 999px;
+      background: #161c2e;
+      border: 1px solid rgba(255,255,255,.08);
+      color: #cfe0ff;
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+      flex-wrap: wrap;
+    }
+    .control-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 32px;
+      border-radius: 8px;
+      background: #1a2240;
+      color: #dfe6ff;
+      border: 1px solid rgba(255,255,255,.12);
+      cursor: pointer;
+      flex: 0 0 auto;
+      font-size: 14px;
+    }
+    .control-btn:hover { background: #1f2850; }
+    .progress-readout {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #131a2f;
+      border: 1px solid rgba(255,255,255,.08);
+      font-size: 12px;
+      color: #cfe0ff;
+      flex: 0 1 auto;
+      font-weight: 600;
+    }
+
+    @media (max-width: var(--bp-mobile)) {
+      .grid.view-grid .controls .move-select {
+        flex: 1 1 100%;
+        margin-top: 6px;
+      }
+    }
+
+    .select, .move-select {
+      appearance: none;
+      background: #0f1424;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 12px;
+      color: #e8ecfa;
+      padding: 10px 38px 10px 12px;
+      outline: 0;
+      height: 38px;
+      line-height: 1;
+      position: relative;
+      cursor: pointer;
+      box-shadow: none;
+      font-size: 13px;
+    }
+    .move-select {
+      height: 32px;
+      padding: 6px 34px 6px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      background: #11162a;
+    }
+    .select:focus, .move-select:focus { box-shadow: var(--focus-ring); border-color: rgba(124,58,237,.7); }
+    .select, .move-select {
+      background-image:
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0) 40%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23cfe0ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat, no-repeat;
+      background-position: 0 0, calc(100% - 12px) 50%;
+      background-size: auto, 14px;
+    }
+
+    .move-select { margin-left: auto; }
+
+    @media (max-width: 420px) {
+      .controls { gap: 8px; }
+      .move-select { flex: 1 1 100%; margin-left: 0; }
+    }
+
+    .muted { color: #9aa3b2; }
+    .muted-small { color: #9aa3b2; font-size: 13px; }
+
+    .card.row {
+      flex-direction: row;
+      align-items: stretch;
+      gap: 0;
+      flex-wrap: nowrap !important;
+    }
+    .card.row .cover { width: 80px; flex: 0 0 80px; aspect-ratio: 1/1.4; }
+    .card.row .badge-bottom { display: none; }
+    .card.row .card-body { padding: 8px 10px; gap: 6px; }
+    .card.row .chips { margin: 2px 0 2px; }
+    .card.row .controls { margin-top: 2px; }
+    .card.row .title { -webkit-line-clamp: 2; }
+
+    .card-actions-top {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      display: flex;
+      gap: 6px;
+      z-index: 3;
+    }
+    .card-actions-top .icon-btn {
+      background: rgba(6,9,16,.7);
+      color: #e8ecfa;
+      border: 1px solid rgba(255,255,255,.15);
+      padding: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .card-actions-top .icon-btn:hover { background: rgba(6,9,16,.9); }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,7,12,.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 120;
+      transition: opacity var(--ui-duration) ease;
+    }
+    .modal.open { display: flex; }
+    .sheet {
+      background: #10162a;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      width: min(760px, 98%);
+      padding: 18px;
+      transform: translateY(8px) scale(.995);
+      opacity: 0;
+      transition: transform .28s cubic-bezier(.2,.9,.3,1), opacity .2s ease;
+    }
+    .modal.open .sheet { transform: translateY(0) scale(1); opacity: 1; }
+    .sheet h3 { margin: 0 0 8px; font-family: var(--title-font); }
+
+    .form { display: grid; gap: 10px; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 5px; }
+    .row.img-row { align-items: center; flex-wrap: nowrap; }
+    @media (max-width: 520px) {
+      .row.img-row { flex-wrap: wrap; }
+      .row.img-row .btn { width: 100%; justify-content: center; }
+    }
+
+    .input-wrapper { position: relative; flex: 1; min-width: 0; }
+
+    .file, .input, .select {
+      background: #0f1424;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      color: #e8ecfa;
+      padding: 12px 12px;
+      outline: 0;
+      width: 100%;
+      font-size: 14px;
+    }
+    .input:focus, .select:focus { box-shadow: var(--focus-ring); border-color: rgba(124,58,237,.7); }
+
+    .float-group {
+      position: relative;
+      flex: 1 1 auto;
+    }
+    .float-group .input,
+    .float-group .select {
+      padding: 18px 40px 10px 12px;
+    }
+    .float-group .select {
+      line-height: 1.4;
+    }
+    .float-group label {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9aa3b2;
+      font-size: 13px;
+      pointer-events: none;
+      transition: all .16s ease;
+      background: transparent;
+      padding: 0 4px;
+    }
+    .float-group:focus-within label,
+    .float-group.filled label {
+      top: 6px;
+      transform: none;
+      font-size: 11px;
+      color: #cbd5f7;
+      background: #10162a;
+      border-radius: 6px;
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: #cfd6ea;
+      cursor: pointer;
+      font-size: 12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .clear-btn.visible { display: inline-flex; }
+    .clear-btn:focus-visible { box-shadow: var(--focus-ring); }
+
+    .hint { color: #9aa3b2; font-size: 12px; }
+    .danger-text { color: var(--danger); }
+    .link { color: #8ab4ff; cursor: pointer; }
+    .small { font-size: 12px; }
+
+    #toasts {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 150;
+    }
+    .toast {
+      min-width: 220px;
+      max-width: 420px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      color: #fff;
+      font-weight: 700;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      transform: translateY(10px) scale(.995);
+      opacity: 0;
+    }
+    .toast .msg { font-weight: 700; font-size: 14px; }
+    .toast.info { background: #1b304a; }
+    .toast.success { background: linear-gradient(90deg, #16a34a, #22c55e); }
+    .toast.error { background: linear-gradient(90deg, var(--danger), #ef6b6b); }
+    .toast.enter { animation: toast-in .26s cubic-bezier(.2,.9,.3,1) forwards; }
+    .toast.exit { animation: toast-out .3s ease forwards; }
+    @keyframes toast-in { to { transform: translateY(0) scale(1); opacity: 1; } }
+    @keyframes toast-out { to { transform: translateY(8px) scale(.98); opacity: 0; } }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin-top: auto;
+      background: #0f1117;
+    }
+    footer .foot-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 22px 0 26px;
+      flex-wrap: nowrap;
+    }
+    @media (max-width: var(--bp-mobile)) {
+      footer .foot-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+
+    .center { display: flex; align-items: center; justify-content: center; }
+    .hidden { display: none !important; }
+
+    @media (max-width: var(--bp-mobile)) {
+      .hero h1 { font-size: 22px; }
+      .move-select { margin-left: 0; width: 100%; }
+      .card.row .cover { width: 68px; flex: 0 0 68px; }
+      .controls { gap: 8px; }
+      .progress-readout { font-size: 12px; }
+    }
+
+    #loading-spinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+      display: none;
+      color: var(--brand);
+      font-size: 24px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    #loading-spinner.active { display: block; }
+
+    #scroll-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: #ffffff;
+      color: #111111;
+      border: 0;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s, box-shadow .2s ease, background .2s ease, color .2s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    }
+    #scroll-to-top.visible { opacity: 1; transform: translateY(0); }
+    #scroll-to-top:hover { transform: translateY(-2px) scale(1.06); background:#f2f2f2; box-shadow: 0 12px 28px rgba(0,0,0,.35); }
+    #scroll-to-top:active { transform: translateY(0) scale(.96); background:#eaeaea; }
+    @media (max-width: var(--bp-mobile)) {
+      #scroll-to-top { right: auto; left: 50%; transform: translateX(-50%) translateY(20px); width: 42px; height: 42px; }
+      #scroll-to-top.visible { transform: translateX(-50%) translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="logo">
+        <img src="logo.png" alt="AniBros" class="logo-img">
+        <div class="brand-title">AniBros</div>
+        <div class="nav-meta">
+          <span class="tag" id="presence"><i class="fa-solid fa-circle" style="color:var(--ok);font-size:8px"></i><span id="presence-text">0 online</span></span>
+        </div>
+      </div>
+      <div class="nav-cta" id="auth-cta">
+        <button class="btn ghost" id="btn-login-head"><i class="fa-solid fa-right-to-bracket"></i>Sign in</button>
+      </div>
+      <button class="btn icon hamburger" id="btn-menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobile-menu" title="Menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    <div class="menu-panel" id="mobile-menu" role="menu" aria-label="Navigation menu">
+      <div class="menu-sec">
+        <div class="menu-title">Status</div>
+        <div class="menu-row">
+          <span class="tag"><i class="fa-solid fa-circle" style="color:var(--ok);font-size:8px"></i><span id="m-presence-text">0 online</span></span>
+        </div>
+      </div>
+      <div class="menu-sec">
+        <div class="menu-title">Quick actions</div>
+        <div class="menu-row">
+          <button class="btn brand" id="m-add"><i class="fa-solid fa-plus"></i>Add item</button>
+        </div>
+      </div>
+      <div class="menu-sec">
+        <div class="menu-title">View</div>
+        <div class="menu-row" role="group" aria-label="View toggle">
+          <div class="menu-item">
+            <div class="menu-kv"><i class="fa-solid fa-grip"></i>Grid</div>
+            <button class="btn ghost sm" id="m-view-grid">Use</button>
+          </div>
+          <div class="menu-item">
+            <div class="menu-kv"><i class="fa-solid fa-list"></i>Shelf</div>
+            <button class="btn ghost sm" id="m-view-compact">Use</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-sec">
+        <div class="menu-title">Account</div>
+        <div class="menu-row">
+          <div class="menu-item" id="m-auth-row">
+            <div class="menu-kv"><i class="fa-solid fa-user"></i><span id="m-user-email">Signed out</span></div>
+            <button class="btn ghost sm" id="m-login"><i class="fa-solid fa-right-to-bracket"></i>Sign in</button>
+            <button class="btn ghost sm hidden" id="m-logout"><i class="fa-solid fa-right-from-bracket"></i>Sign out</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-sec">
+        <div class="menu-title">Security</div>
+        <div class="menu-row">
+          <button class="btn ghost sm" id="mfa-enable"><i class="fa-solid fa-shield-halved"></i>Enable 2FA</button>
+          <button class="btn ghost sm" id="mfa-disable"><i class="fa-solid fa-shield"></i>Disable 2FA</button>
+          <div class="menu-note">Optional TOTP 2FA. Use an authenticator app.</div>
+        </div>
+      </div>
+      <div class="menu-sec">
+        <div class="menu-title">Data</div>
+        <div class="menu-row">
+          <button class="btn ghost sm" id="m-import"><i class="fa-solid fa-file-import"></i>Import JSON</button>
+          <button class="btn ghost sm" id="m-export"><i class="fa-solid fa-file-export"></i>Export JSON</button>
+          <div class="menu-note">Import/Export your list as JSON</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="banner" aria-label="Featured">
+    <div class="banner-image" id="banner-image" aria-hidden="true"></div>
+    <div class="banner-inner">
+      <div class="hero container">
+        <div class="hero-box">
+          <h1 id="hero-title">AniBros — Anime Watchlist For The Bros</h1>
+          <div class="sub">Fast. Private. Built for bros who binge and forget where they left off.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container" id="main">
+    <div class="toolbar">
+      <div class="toolbar-head">
+        <h2 class="page-title">Your Shelf</h2>
+        <button class="btn brand" id="btn-add"><i class="fa-solid fa-plus"></i>Add item</button>
+      </div>
+
+      <div class="toolbar-search">
+        <input class="search" id="search" placeholder="Search title…" aria-label="Search titles (press / to focus)">
+      </div>
+
+      <div class="toolbar-tabs" id="tabs"></div>
+
+      <div class="toolbar-meta">
+        <div class="sort-control">
+          <span class="sort-label"><i class="fa-solid fa-arrow-down-a-z"></i> Sort</span>
+          <select id="sort-select" class="select sort-select" aria-label="Sort entries">
+            <option value="recent">Recently added</option>
+            <option value="title-asc">A → Z</option>
+            <option value="title-desc">Z → A</option>
+          </select>
+        </div>
+        <div class="actions-row">
+          <div class="view-toggle" role="group" aria-label="View mode">
+            <button class="seg" id="view-btn-grid" aria-pressed="true"><i class="fa-solid fa-grip"></i><span class="seg-label">Grid</span></button>
+            <button class="seg" id="view-btn-compact" aria-pressed="false"><i class="fa-solid fa-list"></i><span class="seg-label">Shelf</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="empty" class="muted-small" style="display:none;margin:16px 0">Sign in to start your shelf.</div>
+    <div id="sections"></div>
+    <div class="grid" id="grid"></div>
+
+    <div class="foot" style="margin:22px 0 30px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <div class="muted small">Pro tip: press / to search. Click -1/+1 to adjust EP (Shift = ±5). Use the gear to edit, trash to delete.</div>
+      <div class="right" style="display:flex;gap:8px;flex-wrap:wrap">
+        <input type="file" id="import-file" accept="application/json" class="hidden">
+        <button class="btn ghost small" id="btn-import"><i class="fa-solid fa-file-import"></i>Import JSON</button>
+        <button class="btn ghost small" id="btn-export"><i class="fa-solid fa-file-export"></i>Export JSON</button>
+        <button class="btn ghost small" id="btn-refresh-covers"><i class="fa-solid fa-sync"></i>Refresh covers</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="sheet" role="document">
+      <h3 id="modal-title"><i class="fa-solid fa-pen-to-square"></i>Add item</h3>
+      <div class="form">
+        <div class="row">
+          <div class="float-group input-wrapper">
+            <input id="f-title" class="input" aria-label="Title">
+            <label for="f-title">Title</label>
+            <button class="clear-btn" id="clear-title" aria-label="Clear title"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="float-group input-wrapper">
+            <select id="f-kind" class="select" aria-label="Kind">
+              <option value="" selected disabled>Series/Movie</option>
+              <option value="SERIES">Series</option>
+              <option value="MOVIE">Movie</option>
+            </select>
+            <label for="f-kind">Series / Movie</label>
+          </div>
+          <div class="float-group input-wrapper">
+            <select id="f-status" class="select" aria-label="Status">
+              <option value="" selected disabled>Category</option>
+              <option>WATCHING</option>
+              <option>PLAN</option>
+              <option>REWATCH</option>
+              <option>WAITING</option>
+              <option>COMPLETED</option>
+            </select>
+            <label for="f-status">Category</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="float-group input-wrapper">
+            <input type="number" id="f-season" class="input" inputmode="numeric" aria-label="Season number">
+            <label for="f-season">Season #</label>
+            <button class="clear-btn" id="clear-season" aria-label="Clear season"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="float-group input-wrapper">
+            <input type="number" id="f-episode" class="input" inputmode="numeric" aria-label="Episode number">
+            <label for="f-episode">Episode #</label>
+            <button class="clear-btn" id="clear-episode" aria-label="Clear episode"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="float-group input-wrapper">
+            <input type="number" id="f-abs" class="input" inputmode="numeric" aria-label="Absolute episode number">
+            <label for="f-abs">Absolute EP #</label>
+            <button class="clear-btn" id="clear-abs" aria-label="Clear absolute episode"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+        <div class="row img-row">
+          <div class="float-group input-wrapper">
+            <input id="f-image" class="input" aria-label="Image URL">
+            <label for="f-image">Cover URL</label>
+            <button class="clear-btn" id="clear-image" aria-label="Clear image URL"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <button class="btn ghost" id="btn-autocover" title="Auto fetch cover by title"><i class="fa-solid fa-wand-magic-sparkles"></i>Auto cover</button>
+        </div>
+        <div class="row">
+          <div class="float-group input-wrapper">
+            <input id="f-notes" class="input" aria-label="Notes">
+            <label for="f-notes">Notes (optional)</label>
+            <button class="clear-btn" id="clear-notes" aria-label="Clear notes"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+        </div>
+        <div class="row">
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn brand" id="btn-save"><i class="fa-solid fa-floppy-disk"></i>Save</button>
+            <button class="btn ghost" id="btn-cancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          </div>
+          <div style="margin-left:auto">
+            <button class="btn danger" id="btn-delete" style="display:none"><i class="fa-solid fa-trash"></i>Delete</button>
+          </div>
+        </div>
+        <div class="hint">Auto cover uses AniList (fuzzy titles & synonyms), falling back to Jikan (MAL). Covers are stored in Supabase (image_url) so they sync across devices.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="auth-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="sheet" role="document" style="max-width:560px">
+      <h3 style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-right-to-bracket"></i><span id="auth-title">Sign in</span></h3>
+      <div class="form">
+        <div class="row" style="gap:6px">
+          <button class="btn ghost sm" id="auth-tab-signin">Sign in</button>
+          <button class="btn ghost sm" id="auth-tab-signup">Create account</button>
+        </div>
+
+        <div id="signin-form">
+          <div class="row">
+            <div class="float-group input-wrapper">
+              <input id="login-identifier" class="input" aria-label="Email or username">
+              <label for="login-identifier">Email or username</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="float-group input-wrapper">
+              <input id="login-password" class="input" type="password" aria-label="Password">
+              <label for="login-password">Password</label>
+            </div>
+          </div>
+
+          <div class="row hidden" id="signin-2fa-row">
+            <div class="float-group input-wrapper">
+              <input id="login-totp" class="input" inputmode="numeric" aria-label="2FA code">
+              <label for="login-totp">2FA code (if prompted)</label>
+            </div>
+          </div>
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <div class="hint">Use your email/username and password.</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn brand" id="login-submit"><i class="fa-solid fa-right-to-bracket"></i>Sign in</button>
+              <button class="btn ghost" id="auth-cancel"><i class="fa-solid fa-xmark"></i>Close</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="signup-form" class="hidden">
+          <div class="row">
+            <div class="float-group input-wrapper">
+              <input id="signup-username" class="input" aria-label="Username">
+              <label for="signup-username">Username</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="float-group input-wrapper">
+              <input id="signup-email" class="input" type="email" aria-label="Email">
+              <label for="signup-email">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="float-group input-wrapper">
+              <input id="signup-password" class="input" type="password" aria-label="Password">
+              <label for="signup-password">Password (min. 6 characters)</label>
+            </div>
+          </div>
+          <div class="row">
+            <div style="display:flex;gap:8px;justify-content:flex-end;width:100%">
+              <button class="btn brand" id="signup-submit"><i class="fa-solid fa-user-plus"></i>Create</button>
+              <button class="btn ghost" id="auth-cancel-2"><i class="fa-solid fa-xmark"></i>Close</button>
+            </div>
+          </div>
+          <div class="hint">After sign-up, check your email if confirmation is required. Username can be changed later.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="sheet center" style="max-width:520px">
+      <div style="width:100%">
+        <h3 id="confirm-title"><i class="fa-solid fa-triangle-exclamation"></i>Confirm</h3>
+        <p id="confirm-msg" class="muted-small">Are you sure?</p>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+          <button class="btn ghost" id="confirm-cancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button class="btn danger" id="confirm-ok"><i class="fa-solid fa-check"></i>Yes, do it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts" aria-live="polite"></div>
+  <div id="loading-spinner" aria-label="Loading"><i class="fa-solid fa-spinner"></i></div>
+  <button id="scroll-to-top" aria-label="Scroll to top"><i class="fa-solid fa-angle-up"></i></button>
+
+  <footer>
+    <div class="container foot-wrap">
+      <div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-layer-group" style="opacity:.7"></i><div style="font-family:var(--title-font)">AniBros</div></div>
+      <div class="muted-small">Made with chaos & ramen. © AniBros</div>
+    </div>
+  </footer>
+
+  <script type="module">
+    const SUPABASE_URL = 'https://odvbznpmrorgdaaqjkrf.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kdmJ6bnBtcm9yZ2RhYXFqa3JmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1OTc5MjgsImV4cCI6MjA3NTE3MzkyOH0.5-fC1TmZTlGwHzsLJSxo0pTIdcbJm0_cOehoILdd31w';
+
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const STATUSES = ['WATCHING', 'PLAN', 'REWATCH', 'WAITING', 'COMPLETED'];
+    const TABS = [
+      { id: 'ALL', label: 'All' },
+      { id: 'WATCHING', label: 'Watching' },
+      { id: 'PLAN', label: 'Plan to watch' },
+      { id: 'REWATCH', label: 'Rewatch' },
+      { id: 'WAITING', label: 'Waiting' },
+      { id: 'COMPLETED_SERIES', label: 'Completed (Series)' },
+      { id: 'COMPLETED_MOVIES', label: 'Completed (Movies)' },
+    ];
+    const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
+
+    let session = null;
+    let user = null;
+    let data = [];
+    let activeTab = 'ALL';
+    let q = '';
+    let viewMode = 'grid';
+    let sortOrder = 'recent';
+    let renderDebounce = null;
+
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const sectionsEl = document.getElementById('sections');
+    const gridEl = document.getElementById('grid');
+    const tabsEl = document.getElementById('tabs');
+    const searchEl = document.getElementById('search');
+    const btnAdd = document.getElementById('btn-add');
+    const authCta = document.getElementById('auth-cta');
+    const bannerImage = document.getElementById('banner-image');
+    const presenceText = document.getElementById('presence-text');
+    const mPresenceText = document.getElementById('m-presence-text');
+    const emptyEl = document.getElementById('empty');
+    const sortSelect = document.getElementById('sort-select');
+
+    const viewBtnGrid = document.getElementById('view-btn-grid');
+    const viewBtnCompact = document.getElementById('view-btn-compact');
+
+    const menuBtn = document.getElementById('btn-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mAdd = document.getElementById('m-add');
+    const mViewGrid = document.getElementById('m-view-grid');
+    const mViewCompact = document.getElementById('m-view-compact');
+    const mLogin = document.getElementById('m-login');
+    const mLogout = document.getElementById('m-logout');
+    const mUserEmail = document.getElementById('m-user-email');
+    const mImport = document.getElementById('m-import');
+    const mExport = document.getElementById('m-export');
+
+    const mfaEnableBtn = document.getElementById('mfa-enable');
+    const mfaDisableBtn = document.getElementById('mfa-disable');
+
+    const modal = document.getElementById('modal');
+    const mTitle = document.getElementById('modal-title');
+    const fTitle = document.getElementById('f-title');
+    const fKind = document.getElementById('f-kind');
+    const fStatus = document.getElementById('f-status');
+    const fSeason = document.getElementById('f-season');
+    const fEpisode = document.getElementById('f-episode');
+    const fAbs = document.getElementById('f-abs');
+    const fImage = document.getElementById('f-image');
+    const fNotes = document.getElementById('f-notes');
+    const btnSave = document.getElementById('btn-save');
+    const btnCancel = document.getElementById('btn-cancel');
+    const btnDelete = document.getElementById('btn-delete');
+    const btnAutoCover = document.getElementById('btn-autocover');
+
+    const authModal = document.getElementById('auth-modal');
+    const authTitle = document.getElementById('auth-title');
+    const tabSignin = document.getElementById('auth-tab-signin');
+    const tabSignup = document.getElementById('auth-tab-signup');
+    const signinForm = document.getElementById('signin-form');
+    const signupForm = document.getElementById('signup-form');
+    const authCancel = document.getElementById('auth-cancel');
+    const authCancel2 = document.getElementById('auth-cancel-2');
+    const loginIdentifier = document.getElementById('login-identifier');
+    const loginPassword = document.getElementById('login-password');
+    const loginSubmit = document.getElementById('login-submit');
+    const signin2faRow = document.getElementById('signin-2fa-row');
+    const loginTotp = document.getElementById('login-totp');
+    const signupUsername = document.getElementById('signup-username');
+    const signupEmail = document.getElementById('signup-email');
+    const signupPassword = document.getElementById('signup-password');
+    const signupSubmit = document.getElementById('signup-submit');
+
+    const confirmModal = document.getElementById('confirm-modal');
+    const confirmTitle = document.getElementById('confirm-title');
+    const confirmMsg = document.getElementById('confirm-msg');
+    const confirmOk = document.getElementById('confirm-ok');
+    const confirmCancel = document.getElementById('confirm-cancel');
+
+    const toasts = document.getElementById('toasts');
+
+    const btnExport = document.getElementById('btn-export');
+    const btnImport = document.getElementById('btn-import');
+    const importFile = document.getElementById('import-file');
+
+    const clearTitle = document.getElementById('clear-title');
+    const clearSeason = document.getElementById('clear-season');
+    const clearEpisode = document.getElementById('clear-episode');
+    const clearAbs = document.getElementById('clear-abs');
+    const clearImage = document.getElementById('clear-image');
+    const clearNotes = document.getElementById('clear-notes');
+
+    const scrollToTop = document.getElementById('scroll-to-top');
+
+    let editingId = null;
+    let changesChannel = null;
+    let presenceChannel = null;
+
+    let mfaState = { factorId: null, challengeId: null };
+
+    function showToast(type, msg, ms = 4200) {
+      const t = document.createElement('div');
+      t.className = 'toast ' + (type || 'info');
+      const icon = type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-info';
+      t.innerHTML = `<i class="fa-solid ${icon}"></i><div class="msg">${escapeHtml(msg)}</div>`;
+      toasts.appendChild(t);
+      requestAnimationFrame(() => t.classList.add('enter'));
+      setTimeout(() => { t.classList.remove('enter'); t.classList.add('exit'); }, Math.max(1200, ms - 260));
+      setTimeout(() => { t.remove(); }, ms);
+      return t;
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+    }
+
+    function showLoading(show = true) {
+      loadingSpinner.classList.toggle('active', show);
+    }
+
+    let lastFocused = null;
+    function trapFocus(modalEl) {
+      lastFocused = document.activeElement;
+      const focusable = modalEl.querySelectorAll('button, a, input, select, textarea');
+      if (focusable[0]) focusable[0].focus();
+      document.addEventListener('keydown', onKeyDownModal);
+    }
+
+    function releaseFocus() {
+      document.removeEventListener('keydown', onKeyDownModal);
+      if (lastFocused) lastFocused.focus();
+    }
+
+    function onKeyDownModal(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.open').forEach(m => closeModal(m));
+      }
+    }
+
+    function openModal(el) {
+      el.classList.add('open');
+      el.setAttribute('aria-hidden', 'false');
+      trapFocus(el);
+      document.body.classList.add('modal-open');
+    }
+
+    function closeModal(el) {
+      el.classList.remove('open');
+      el.setAttribute('aria-hidden', 'true');
+      releaseFocus();
+      if (!document.querySelector('.modal.open')) document.body.classList.remove('modal-open');
+    }
+
+    let confirmCallback = null;
+    confirmOk.onclick = async () => {
+      closeModal(confirmModal);
+      if (confirmCallback) {
+        try {
+          await confirmCallback();
+        } catch (e) {
+          console.error(e);
+          showToast('error', e.message || 'Error');
+        }
+        confirmCallback = null;
+      }
+    };
+    confirmCancel.onclick = () => {
+      confirmCallback = null;
+      closeModal(confirmModal);
+    };
+
+    function openConfirm(title, message, onOk) {
+      confirmTitle.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHtml(title || 'Confirm')}`;
+      confirmMsg.textContent = message || 'Are you sure?';
+      confirmCallback = onOk;
+      openModal(confirmModal);
+    }
+
+    function setRandomBanner() {
+      const n = Math.floor(Math.random() * 10) + 1;
+      bannerImage.style.backgroundImage = `url('banner-${n}.png')`;
+      bannerImage.style.opacity = '1';
+    }
+
+    function chipEl(text) {
+      const s = document.createElement('span');
+      s.className = 'chip';
+      s.textContent = text;
+      return s;
+    }
+
+    function formatProgress(row) {
+      if (row.absolute_episode != null) return `EP ${row.absolute_episode}`;
+      const parts = [];
+      if (row.season != null) parts.push('S' + row.season);
+      if (row.episode != null) parts.push('EP ' + row.episode);
+      return parts.join(' ') || 'EP 0';
+    }
+
+    function progressBadgeText(row) {
+      if (row.absolute_episode != null) return `EP ${row.absolute_episode}`;
+      const parts = [];
+      if (row.season != null) parts.push('S' + row.season);
+      if (row.episode != null) parts.push('EP ' + row.episode);
+      return parts.join(' ') || 'EP 0';
+    }
+
+    function sortRows(rows) {
+      const arr = rows.slice();
+      if (sortOrder === 'title-asc') {
+        arr.sort((a, b) => collator.compare(a.title || '', b.title || ''));
+      } else if (sortOrder === 'title-desc') {
+        arr.sort((a, b) => collator.compare(b.title || '', a.title || ''));
+      } else {
+        arr.sort((a, b) => {
+          const tsA = Date.parse(b.updated_at || b.created_at || '') || 0;
+          const tsB = Date.parse(a.updated_at || a.created_at || '') || 0;
+          return tsA - tsB;
+        });
+      }
+      return arr;
+    }
+
+    function renderTabs() {
+      tabsEl.innerHTML = '';
+      TABS.forEach(t => {
+        const b = document.createElement('button');
+        b.className = 'tab' + (activeTab === t.id ? ' active' : '');
+        b.innerHTML = `${t.label} <span class="count">${countBadge(t.id)}</span>`;
+        b.onclick = () => {
+          activeTab = t.id;
+          updateURL();
+          render();
+        };
+        tabsEl.appendChild(b);
+      });
+    }
+
+    function countBadge(tabId) {
+      if (tabId === 'ALL') return data.length;
+      if (tabId === 'COMPLETED_SERIES') {
+        return data.filter(d => d.status === 'COMPLETED' && d.kind === 'SERIES').length;
+      }
+      if (tabId === 'COMPLETED_MOVIES') {
+        return data.filter(d => d.status === 'COMPLETED' && d.kind === 'MOVIE').length;
+      }
+      return data.filter(d => d.status === tabId).length;
+    }
+
+    function filtered() {
+      let rows = data.slice();
+      if (activeTab !== 'ALL') {
+        if (activeTab === 'COMPLETED_SERIES') {
+          rows = rows.filter(r => r.status === 'COMPLETED' && r.kind === 'SERIES');
+        } else if (activeTab === 'COMPLETED_MOVIES') {
+          rows = rows.filter(r => r.status === 'COMPLETED' && r.kind === 'MOVIE');
+        } else {
+          rows = rows.filter(r => r.status === activeTab);
+        }
+      }
+      if (q) rows = rows.filter(r => r.title.toLowerCase().includes(q));
+      return sortRows(rows);
+    }
+
+    function makeGridCard(row) {
+      const col = document.createElement('div');
+      col.className = 'col';
+
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const cover = document.createElement('div');
+      cover.className = 'cover';
+
+      const imgUrl = row.image_url || '';
+      const img = document.createElement('img');
+      img.alt = `Cover for ${row.title || 'anime'}`;
+      img.loading = 'lazy';
+      const hasImg = !!imgUrl;
+      if (hasImg) img.src = imgUrl;
+
+      const ph = document.createElement('div');
+      ph.className = 'ph';
+      ph.textContent = initials(row.title || '');
+      ph.style.display = hasImg ? 'none' : 'flex';
+      img.onerror = () => { ph.style.display = 'flex'; img.remove(); };
+
+      cover.appendChild(ph);
+      if (hasImg) cover.appendChild(img);
+
+      const float = document.createElement('div');
+      float.className = 'floating-actions';
+
+      const editBtn = document.createElement('button');
+      editBtn.className = 'icon-btn';
+      editBtn.title = 'Edit';
+      editBtn.setAttribute('aria-label', 'Edit entry');
+      editBtn.innerHTML = '<i class="fa-solid fa-gear"></i>';
+      editBtn.onclick = () => openModalFor(row);
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'icon-btn';
+      delBtn.title = 'Delete';
+      delBtn.setAttribute('aria-label', 'Delete entry');
+      delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+      delBtn.onclick = () => {
+        openConfirm('Delete item', `Delete "${row.title}"? This can\'t be undone.`, async () => {
+          const { error } = await supabase.from('entries').delete().eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Deleted');
+        });
+      };
+
+      float.append(editBtn, delBtn);
+      cover.appendChild(float);
+
+      const badge = document.createElement('div');
+      badge.className = 'badge-bottom';
+      badge.innerHTML = `<i class="fa-solid fa-film"></i> ${progressBadgeText(row)}`;
+      cover.appendChild(badge);
+
+      const body = document.createElement('div');
+      body.className = 'card-body';
+
+      const titleRow = document.createElement('div');
+      titleRow.className = 'title-row';
+      const t = document.createElement('div');
+      t.className = 'title';
+      t.textContent = row.title;
+      titleRow.append(t);
+
+      const chips = document.createElement('div');
+      chips.className = 'chips';
+      chips.appendChild(chipEl(row.kind === 'MOVIE' ? 'Movie' : 'Series'));
+      const fmt = formatProgress(row);
+      if (fmt) chips.appendChild(chipEl(fmt));
+
+      const controls = document.createElement('div');
+      controls.className = 'controls';
+
+      const dec = document.createElement('button');
+      dec.className = 'control-btn';
+      dec.title = '-1 episode';
+      dec.setAttribute('aria-label', 'Decrease episode');
+      dec.innerHTML = '<i class="fa-solid fa-minus"></i>';
+      dec.onclick = (e) => adjustEpisode(row, e.shiftKey ? -5 : -1);
+
+      const prog = document.createElement('div');
+      prog.className = 'progress-readout';
+      prog.innerHTML = `<i class="fa-solid fa-tv"></i> <span>${progressBadgeText(row)}</span>`;
+
+      const inc = document.createElement('button');
+      inc.className = 'control-btn';
+      inc.title = '+1 episode';
+      inc.setAttribute('aria-label', 'Increase episode');
+      inc.innerHTML = '<i class="fa-solid fa-plus"></i>';
+      inc.onclick = (e) => adjustEpisode(row, e.shiftKey ? +5 : +1);
+
+      const move = document.createElement('select');
+      move.className = 'move-select';
+      move.setAttribute('aria-label', 'Move to list');
+      move.innerHTML = STATUSES.map(s => `<option ${row.status === s ? 'selected' : ''}>${s}</option>`).join('');
+      move.onchange = async (e) => {
+        try {
+          const { error } = await supabase.from('entries').update({ status: e.target.value }).eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Moved to ' + e.target.value);
+        } catch (e) {
+          showToast('error', e.message || 'Failed');
+        }
+      };
+
+      controls.append(dec, prog, inc, move);
+
+      body.append(titleRow, chips, controls);
+
+      card.append(cover, body);
+      col.appendChild(card);
+
+      return col;
+    }
+
+    function makeCompactCard(row) {
+      const col = document.createElement('div');
+      col.className = 'col';
+
+      const card = document.createElement('div');
+      card.className = 'card row';
+
+      const cover = document.createElement('div');
+      cover.className = 'cover';
+
+      const imgUrl = row.image_url || '';
+      const img = document.createElement('img');
+      img.alt = `Thumbnail for ${row.title || 'anime'}`;
+      img.loading = 'lazy';
+      const hasImg = !!imgUrl;
+      if (hasImg) img.src = imgUrl;
+
+      const ph = document.createElement('div');
+      ph.className = 'ph';
+      ph.textContent = initials(row.title || '');
+      ph.style.display = hasImg ? 'none' : 'flex';
+      img.onerror = () => { ph.style.display = 'flex'; img.remove(); };
+
+      cover.appendChild(ph);
+      if (hasImg) cover.appendChild(img);
+
+      const body = document.createElement('div');
+      body.className = 'card-body';
+
+      const actionsTop = document.createElement('div');
+      actionsTop.className = 'card-actions-top';
+      const editBtn = document.createElement('button');
+      editBtn.className = 'icon-btn';
+      editBtn.title = 'Edit';
+      editBtn.setAttribute('aria-label', 'Edit entry');
+      editBtn.innerHTML = '<i class="fa-solid fa-gear"></i>';
+      editBtn.onclick = () => openModalFor(row);
+      const delBtn = document.createElement('button');
+      delBtn.className = 'icon-btn';
+      delBtn.title = 'Delete';
+      delBtn.setAttribute('aria-label', 'Delete entry');
+      delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+      delBtn.onclick = () => {
+        openConfirm('Delete item', `Delete "${row.title}"? This can\'t be undone.`, async () => {
+          const { error } = await supabase.from('entries').delete().eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Deleted');
+        });
+      };
+      actionsTop.append(editBtn, delBtn);
+      card.appendChild(actionsTop);
+
+      const titleRow = document.createElement('div');
+      titleRow.className = 'title-row';
+      const t = document.createElement('div');
+      t.className = 'title';
+      t.textContent = row.title;
+      titleRow.append(t);
+
+      const meta = document.createElement('div');
+      meta.className = 'chips';
+      meta.appendChild(chipEl(row.kind === 'MOVIE' ? 'Movie' : 'Series'));
+      meta.appendChild(chipEl(progressBadgeText(row)));
+
+      const controls = document.createElement('div');
+      controls.className = 'controls';
+
+      const dec = document.createElement('button');
+      dec.className = 'control-btn';
+      dec.title = '-1 episode';
+      dec.setAttribute('aria-label', 'Decrease episode');
+      dec.innerHTML = '<i class="fa-solid fa-minus"></i>';
+      dec.onclick = (e) => adjustEpisode(row, e.shiftKey ? -5 : -1);
+
+      const prog = document.createElement('div');
+      prog.className = 'progress-readout';
+      prog.innerHTML = `<i class="fa-solid fa-tv"></i> <span>${progressBadgeText(row)}</span>`;
+
+      const inc = document.createElement('button');
+      inc.className = 'control-btn';
+      inc.title = '+1 episode';
+      inc.setAttribute('aria-label', 'Increase episode');
+      inc.innerHTML = '<i class="fa-solid fa-plus"></i>';
+      inc.onclick = (e) => adjustEpisode(row, e.shiftKey ? +5 : +1);
+
+      const move = document.createElement('select');
+      move.className = 'move-select';
+      move.setAttribute('aria-label', 'Move to list');
+      move.innerHTML = STATUSES.map(s => `<option ${row.status === s ? 'selected' : ''}>${s}</option>`).join('');
+      move.onchange = async (e) => {
+        try {
+          const { error } = await supabase.from('entries').update({ status: e.target.value }).eq('id', row.id);
+          if (error) throw error;
+          showToast('success', 'Moved to ' + e.target.value);
+        } catch (e) {
+          showToast('error', e.message || 'Failed');
+        }
+      };
+
+      controls.append(dec, prog, inc, move);
+
+      card.append(cover, body);
+      body.append(titleRow, meta, controls);
+      col.appendChild(card);
+      return col;
+    }
+
+    function initials(title) {
+      const parts = String(title).trim().toUpperCase().split(/\s+/).slice(0, 2);
+      return parts.map(p => p[0]).join('');
+    }
+
+    function render() {
+      if (renderDebounce) clearTimeout(renderDebounce);
+      renderDebounce = setTimeout(() => {
+        renderTabs();
+        sectionsEl.innerHTML = '';
+        gridEl.innerHTML = '';
+
+        if (sortSelect) {
+          sortSelect.value = sortOrder;
+        }
+
+        if (!user) {
+          emptyEl.style.display = '';
+          return;
+        } else {
+          emptyEl.style.display = 'none';
+        }
+
+        const renderItem = viewMode === 'compact' ? makeCompactCard : makeGridCard;
+        const gridClass = viewMode === 'compact' ? 'grid view-compact' : 'grid view-grid';
+
+        if (activeTab === 'ALL') {
+          const groups = [
+            { id: 'WATCHING', label: 'Watching', icon: 'fa-eye' },
+            { id: 'PLAN', label: 'Plan to watch', icon: 'fa-list-check' },
+            { id: 'REWATCH', label: 'Rewatch', icon: 'fa-rotate-left' },
+            { id: 'WAITING', label: 'Waiting', icon: 'fa-hourglass-half' },
+            { id: 'COMPLETED', label: 'Completed', icon: 'fa-check-double' },
+          ];
+          let firstSection = true;
+          groups.forEach(g => {
+            let rows = data.filter(r => r.status === g.id);
+            if (q) rows = rows.filter(r => r.title.toLowerCase().includes(q));
+            if (!rows.length) return;
+
+            const section = document.createElement('div');
+            section.className = 'section';
+
+            if (!firstSection) {
+              const hr = document.createElement('hr');
+              hr.className = 'section-hr';
+              sectionsEl.appendChild(hr);
+            }
+
+            const h = document.createElement('div');
+            h.className = 'section-title';
+            h.innerHTML = `<i class="fa-solid ${g.icon}"></i> ${g.label} <span class="muted-small">(${rows.length})</span>`;
+            section.appendChild(h);
+
+            const grid = document.createElement('div');
+            grid.className = gridClass;
+            sortRows(rows).forEach(row => grid.appendChild(renderItem(row)));
+
+            section.appendChild(grid);
+            sectionsEl.appendChild(section);
+            firstSection = false;
+          });
+
+          gridEl.className = gridClass;
+        } else {
+          gridEl.className = gridClass;
+          filtered().forEach(row => gridEl.appendChild(renderItem(row)));
+        }
+
+        updateViewToggleUI();
+        updateMobileMenuUI();
+      }, 80);
+    }
+
+    async function adjustEpisode(row, delta) {
+      const patch = {};
+      if (row.absolute_episode != null) {
+        const next = Math.max(0, (row.absolute_episode || 0) + delta);
+        patch.absolute_episode = next;
+      } else {
+        const next = Math.max(0, (row.episode || 0) + delta);
+        patch.episode = next;
+      }
+      try {
+        const { error } = await supabase.from('entries').update(patch).eq('id', row.id);
+        if (error) throw error;
+        showToast('success', `${delta > 0 ? `+${delta}` : delta} EP`);
+      } catch (e) {
+        showToast('error', e.message || 'Failed to update');
+      }
+    }
+
+    function updateAuthUI() {
+      authCta.innerHTML = '';
+      if (user) {
+        const who = document.createElement('span');
+        who.className = 'muted small';
+        who.style.whiteSpace = 'nowrap';
+        const username = user.user_metadata?.username;
+        who.textContent = username || user.email || 'user';
+        const out = document.createElement('button');
+        out.className = 'btn ghost';
+        out.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Sign out';
+        out.onclick = () => openConfirm('Sign out', 'Are you sure you want to sign out?', async () => {
+          await supabase.auth.signOut();
+          location.reload();
+        });
+        authCta.append(who, out);
+      } else {
+        const btn = document.createElement('button');
+        btn.className = 'btn ghost';
+        btn.type = 'button';
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign in';
+        btn.addEventListener('click', () => {
+          showSignin();
+          resetAuthForms();
+          openModal(authModal);
+        });
+        authCta.append(btn);
+      }
+      updateMobileMenuUI();
+    }
+
+    async function load() {
+      if (!user) return;
+      showLoading(true);
+      try {
+        const { data: rows, error } = await supabase.from('entries').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        data = rows || [];
+        await autoFetchMissingCovers(data.filter(r => !r.image_url));
+        render();
+      } catch (e) {
+        console.error(e);
+        showToast('error', e.message || 'Failed to load');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function setupRealtime() {
+      if (changesChannel) supabase.removeChannel(changesChannel);
+      changesChannel = supabase.channel('entries-db').on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'entries', filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          const { eventType, new: n, old: o } = payload;
+          if (eventType === 'INSERT') {
+            data.unshift(n);
+          } else if (eventType === 'UPDATE') {
+            const i = data.findIndex(r => r.id === n.id);
+            if (i >= 0) data[i] = n;
+          } else if (eventType === 'DELETE') {
+            const i = data.findIndex(r => r.id === o.id);
+            if (i >= 0) data.splice(i, 1);
+          }
+          render();
+        }
+      ).subscribe();
+    }
+
+    function setupPresence() {
+      if (presenceChannel) supabase.removeChannel(presenceChannel);
+      presenceChannel = supabase.channel('room:lobby', { config: { presence: { key: user.id } } });
+      presenceChannel.on('presence', { event: 'sync' }, () => {
+        const state = presenceChannel.presenceState();
+        const all = new Set();
+        Object.values(state).forEach(arr => arr.forEach(v => all.add(v.presence_ref)));
+        presenceText.textContent = `${all.size} online`;
+        mPresenceText.textContent = `${all.size} online`;
+      });
+      presenceChannel.subscribe(async status => {
+        if (status === 'SUBSCRIBED') {
+          await presenceChannel.track({ at: Date.now() });
+        }
+      });
+    }
+
+    btnAdd.onclick = () => openModalFor();
+    btnCancel.onclick = () => {
+      closeModal(modal);
+    };
+    btnSave.onclick = saveModal;
+    btnDelete.onclick = removeModal;
+
+    function setFloatGroupState(group) {
+      const field = group.querySelector('input, textarea, select');
+      if (!field) return;
+      let hasValue = false;
+      if (field.tagName === 'SELECT') {
+        hasValue = field.value !== '' && field.value != null;
+      } else {
+        hasValue = String(field.value ?? '').trim() !== '';
+      }
+      group.classList.toggle('filled', hasValue);
+    }
+
+    function initFloatingLabels(scope = document) {
+      const groups = scope.querySelectorAll('.float-group');
+      groups.forEach(group => {
+        if (group.dataset.init === '1') return;
+        const field = group.querySelector('input, textarea, select');
+        if (!field) return;
+        const update = () => setFloatGroupState(group);
+        field.addEventListener('input', update);
+        field.addEventListener('change', update);
+        field.addEventListener('blur', update);
+        field.addEventListener('focus', () => group.classList.add('filled'));
+        update();
+        group.dataset.init = '1';
+      });
+    }
+
+    function openModalFor(row) {
+      editingId = row?.id || null;
+      mTitle.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${editingId ? 'Edit item' : 'Add item'}`;
+      fTitle.value = row?.title || '';
+      fKind.value = row?.kind || '';
+      fStatus.value = row?.status || '';
+      fSeason.value = row?.season ?? '';
+      fEpisode.value = row?.episode ?? '';
+      fAbs.value = row?.absolute_episode ?? '';
+      fImage.value = row?.image_url || '';
+      fNotes.value = row?.notes || '';
+      btnDelete.style.display = editingId ? '' : 'none';
+      openModal(modal);
+      fTitle.focus();
+      toggleClearButtons();
+      resetFloatGroups(modal);
+    }
+
+    function resetFloatGroups(scope) {
+      scope.querySelectorAll('.float-group').forEach(group => {
+        delete group.dataset.init;
+      });
+      initFloatingLabels(scope);
+    }
+
+    async function saveModal() {
+      if (!user) return showToast('error', 'Sign in first');
+      const title = fTitle.value.trim();
+      const kind = fKind.value;
+      const status = fStatus.value;
+      if (!title) return showToast('error', 'Title required');
+      if (!kind) return showToast('error', 'Please choose Series/Movie');
+      if (!status) return showToast('error', 'Please choose a Category');
+
+      const row = {
+        title,
+        kind,
+        status,
+        season: fSeason.value !== '' ? parseInt(fSeason.value, 10) : null,
+        episode: fEpisode.value !== '' ? parseInt(fEpisode.value, 10) : null,
+        absolute_episode: fAbs.value !== '' ? parseInt(fAbs.value, 10) : null,
+        image_url: fImage.value.trim() || null,
+        notes: fNotes.value.trim() || null,
+        user_id: user.id
+      };
+
+      try {
+        if (editingId) {
+          const { error } = await supabase.from('entries').update(row).eq('id', editingId);
+          if (error) throw error;
+          showToast('success', 'Saved');
+        } else {
+          const { error } = await supabase.from('entries').insert(row);
+          if (error) throw error;
+          showToast('success', 'Added');
+        }
+        closeModal(modal);
+      } catch (e) {
+        showToast('error', e.message || 'Failed to save');
+      }
+    }
+
+    async function removeModal() {
+      if (!editingId) return;
+      try {
+        const { error } = await supabase.from('entries').delete().eq('id', editingId);
+        if (error) throw error;
+        showToast('success', 'Deleted');
+        closeModal(modal);
+      } catch (e) {
+        showToast('error', e.message || 'Failed to delete');
+      }
+    }
+
+    let searchTimer;
+    searchEl.oninput = () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        q = searchEl.value.trim().toLowerCase();
+        updateURL();
+        render();
+      }, 120);
+    };
+
+    btnExport.onclick = doExport;
+    function doExport() {
+      const rows = data.map(({ id, user_id, created_at, updated_at, ...rest }) => rest);
+      const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'anibros-export.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('success', 'Exported');
+    }
+
+    btnImport.onclick = () => importFile.click();
+    importFile.addEventListener('change', handleImport);
+    async function handleImport() {
+      const file = importFile.files?.[0];
+      if (!file) return;
+      showLoading(true);
+      try {
+        const text = await file.text();
+        const arr = JSON.parse(text);
+        if (!Array.isArray(arr)) throw new Error('Invalid JSON: expected an array');
+        if (!user) throw new Error('Sign in first');
+
+        const rows = arr.map(normalizeImport).map(r => ({ ...r, user_id: user.id }));
+
+        const { data: ins, error } = await supabase.from('entries').insert(rows).select();
+        if (error) throw error;
+
+        await autoFetchMissingCovers((ins || []).filter(r => !r.image_url));
+
+        showToast('success', `Imported ${ins?.length || 0} items`);
+        importFile.value = '';
+      } catch (e) {
+        console.error(e);
+        showToast('error', e.message || 'Import failed');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function normalizeImport(o) {
+      const t = (o.title || '').toString().trim();
+      const kind = (o.kind || 'SERIES').toUpperCase() === 'MOVIE' ? 'MOVIE' : 'SERIES';
+      let status = (o.status || 'PLAN').toUpperCase();
+      if (!STATUSES.includes(status)) status = 'PLAN';
+      const season = isFinite(o.season) && o.season !== '' ? Number(o.season) : null;
+      const episode = isFinite(o.episode) && o.episode !== '' ? Number(o.episode) : null;
+      const absolute_episode = isFinite(o.absolute_episode) && o.absolute_episode !== '' ? Number(o.absolute_episode) : null;
+      const notes = (o.notes ?? '').toString().trim() || null;
+      const image_url = (o.image_url || '').toString().trim() || null;
+      return { title: t, kind, status, season, episode, absolute_episode, notes, image_url };
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/') {
+        e.preventDefault();
+        searchEl.focus();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      document.querySelectorAll('.modal.open').forEach(m => {
+        if (e.target === m) {
+          closeModal(m);
+          if (m === authModal) resetAuthForms();
+        }
+      });
+      if (mobileMenu.classList.contains('open')) {
+        const within = mobileMenu.contains(e.target) || menuBtn.contains(e.target);
+        if (!within) closeMenu();
+      }
+    });
+
+    document.getElementById('btn-login-head')?.addEventListener('click', () => {
+      showSignin();
+      resetAuthForms();
+      openModal(authModal);
+    });
+    mLogin.addEventListener('click', () => { closeMenu(); showSignin(); resetAuthForms(); openModal(authModal); });
+
+    function showSignin() {
+      authTitle.textContent = 'Sign in';
+      signinForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      loginSubmit.dataset.defaultHtml = '<i class="fa-solid fa-right-to-bracket"></i>Sign in';
+      loginSubmit.innerHTML = loginSubmit.dataset.defaultHtml;
+    }
+    function showSignup() {
+      authTitle.textContent = 'Create account';
+      signinForm.classList.add('hidden');
+      signupForm.classList.remove('hidden');
+    }
+    tabSignin.onclick = showSignin;
+    tabSignup.onclick = showSignup;
+
+    function resetAuthForms() {
+      signin2faRow.classList.add('hidden');
+      loginTotp.value = '';
+      loginIdentifier.value = '';
+      loginPassword.value = '';
+      loginSubmit.disabled = false;
+      loginSubmit.dataset.defaultHtml = loginSubmit.dataset.defaultHtml || '<i class="fa-solid fa-right-to-bracket"></i>Sign in';
+      loginSubmit.innerHTML = loginSubmit.dataset.defaultHtml;
+      mfaState = { factorId: null, challengeId: null };
+    }
+
+    authCancel.onclick = () => {
+      closeModal(authModal);
+      resetAuthForms();
+    };
+    authCancel2.onclick = () => {
+      closeModal(authModal);
+      resetAuthForms();
+    };
+
+    signupSubmit.dataset.defaultHtml = signupSubmit.innerHTML;
+    signupSubmit.onclick = async () => {
+      const username = signupUsername.value?.trim();
+      const email = signupEmail.value?.trim();
+      const password = signupPassword.value;
+      if (!username) return showToast('error', 'Username required');
+      if (!email) return showToast('error', 'Email required');
+      if (!password || password.length < 6) return showToast('error', 'Password must be at least 6 characters');
+      setButtonLoading(signupSubmit, true, 'Creating…');
+      try {
+        const { error } = await supabase.auth.signUp({
+          email, password,
+          options: { data: { username } }
+        });
+        if (error) throw error;
+        showToast('success', 'Account created. Check your email if confirmation is required.');
+        closeModal(authModal);
+        resetAuthForms();
+      } catch (e) {
+        showToast('error', e.message || 'Sign-up failed');
+      } finally {
+        setButtonLoading(signupSubmit, false);
+      }
+    };
+
+    async function resolveEmail(identifier) {
+      if (identifier.includes('@')) return identifier;
+      try {
+        const { data, error } = await supabase.rpc('email_for_username', { p_identifier: identifier });
+        if (error) throw error;
+        if (!data) throw new Error('Username not found');
+        return data;
+      } catch (e) {
+        throw new Error('Username not found');
+      }
+    }
+
+    function requiresMfa(error) {
+      if (!error) return false;
+      const msg = (error.message || '').toLowerCase();
+      return msg.includes('mfa') || msg.includes('2fa') || msg.includes('factor') || msg.includes('challenge');
+    }
+
+    loginSubmit.dataset.defaultHtml = loginSubmit.innerHTML;
+    loginSubmit.onclick = async () => {
+      if (mfaState.challengeId) {
+        await verifyTotp();
+        return;
+      }
+      const identifier = loginIdentifier.value?.trim();
+      const password = loginPassword.value;
+      if (!identifier) return showToast('error', 'Enter email or username');
+      if (!password) return showToast('error', 'Enter password');
+
+      setButtonLoading(loginSubmit, true, 'Signing in…');
+      try {
+        const email = await resolveEmail(identifier);
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          if (requiresMfa(error)) {
+            await prepareMfa();
+            return;
+          }
+          throw error;
+        }
+        showToast('success', 'Signed in');
+        closeModal(authModal);
+        resetAuthForms();
+      } catch (e) {
+        showToast('error', e.message || 'Sign-in failed');
+      } finally {
+        if (!mfaState.challengeId) {
+          setButtonLoading(loginSubmit, false);
+        }
+      }
+    };
+
+    loginTotp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        loginSubmit.click();
+      }
+    });
+
+    async function prepareMfa() {
+      setButtonLoading(loginSubmit, false);
+      signin2faRow.classList.remove('hidden');
+      loginSubmit.dataset.defaultHtml = '<i class="fa-solid fa-shield-halved"></i>Verify code';
+      loginSubmit.innerHTML = loginSubmit.dataset.defaultHtml;
+      loginSubmit.disabled = false;
+      loginTotp.focus();
+      try {
+        const { data: factorsList } = await supabase.auth.mfa.listFactors?.();
+        const totpFactor = factorsList?.totp?.find?.(f => f.status === 'verified') || factorsList?.all?.find?.(f => f.factor_type === 'totp');
+        if (!totpFactor) throw new Error('No TOTP factor enrolled');
+        const { data: challenge, error } = await supabase.auth.mfa.challenge({ factorId: totpFactor.id });
+        if (error) throw error;
+        mfaState = { factorId: totpFactor.id, challengeId: challenge.id };
+        showToast('info', 'Enter your 2FA code to finish signing in.');
+      } catch (e) {
+        mfaState = { factorId: null, challengeId: null };
+        showToast('error', e.message || '2FA challenge failed');
+      }
+    }
+
+    async function verifyTotp() {
+      const code = loginTotp.value?.trim();
+      if (!code) return showToast('error', 'Enter your 2FA code');
+      setButtonLoading(loginSubmit, true, 'Verifying…');
+      try {
+        const { error } = await supabase.auth.mfa.verify({
+          factorId: mfaState.factorId,
+          code,
+          challengeId: mfaState.challengeId
+        });
+        if (error) throw error;
+        showToast('success', 'Signed in');
+        closeModal(authModal);
+        resetAuthForms();
+      } catch (e) {
+        showToast('error', e.message || 'Invalid 2FA code');
+      } finally {
+        setButtonLoading(loginSubmit, false);
+      }
+    }
+
+    mfaEnableBtn.onclick = async () => {
+      if (!user) { showToast('error', 'Sign in first'); return; }
+      try {
+        const { data, error } = await supabase.auth.mfa.enroll({ factorType: 'totp' });
+        if (error) throw error;
+        const uri = data?.totp?.uri || data?.uri;
+        if (!uri) {
+          showToast('info', 'Scan the TOTP secret in your authenticator, then enter code on sign-in.');
+        } else {
+          showToast('success', 'TOTP enrolled. Scan this URI in your authenticator:\n' + uri);
+        }
+      } catch (e) {
+        showToast('error', e.message || 'Failed to enable 2FA');
+      }
+    };
+    mfaDisableBtn.onclick = async () => {
+      if (!user) { showToast('error', 'Sign in first'); return; }
+      try {
+        const { data: factors } = await supabase.auth.mfa.listFactors?.();
+        const totp = factors?.totp?.find?.(f => f.status === 'verified') || factors?.all?.find?.(f => f.factor_type === 'totp');
+        if (!totp) return showToast('info', 'No 2FA enabled');
+        const { error } = await supabase.auth.mfa.unenroll({ factorId: totp.id });
+        if (error) throw error;
+        showToast('success', '2FA disabled');
+      } catch (e) {
+        showToast('error', e.message || 'Failed to disable 2FA');
+      }
+    };
+
+    function updateURL() {
+      const params = new URLSearchParams(window.location.search);
+      params.set('tab', activeTab);
+      params.set('view', viewMode);
+      params.set('sort', sortOrder);
+      if (q) params.set('q', q);
+      else params.delete('q');
+      history.replaceState(null, '', `${location.pathname}?${params.toString()}`);
+    }
+
+    function readURL() {
+      const params = new URLSearchParams(window.location.search);
+      const t = params.get('tab');
+      const found = TABS.find(x => x.id === t);
+      activeTab = found ? found.id : 'ALL';
+      const qq = params.get('q') || '';
+      q = qq.trim().toLowerCase();
+      searchEl.value = qq;
+      const v = params.get('view');
+      const storedView = localStorage.getItem('anibros:view') || 'grid';
+      viewMode = (v === 'compact' || v === 'grid') ? v : storedView;
+      const s = params.get('sort');
+      const storedSort = localStorage.getItem('anibros:sort') || 'recent';
+      sortOrder = (['recent', 'title-asc', 'title-desc'].includes(s)) ? s : storedSort;
+      if (!['recent', 'title-asc', 'title-desc'].includes(sortOrder)) sortOrder = 'recent';
+    }
+
+    function updateViewToggleUI() {
+      if (viewMode === 'grid') {
+        viewBtnGrid.classList.add('active');
+        viewBtnGrid.setAttribute('aria-pressed', 'true');
+        viewBtnCompact.classList.remove('active');
+        viewBtnCompact.setAttribute('aria-pressed', 'false');
+      } else {
+        viewBtnCompact.classList.add('active');
+        viewBtnCompact.setAttribute('aria-pressed', 'true');
+        viewBtnGrid.classList.remove('active');
+        viewBtnGrid.setAttribute('aria-pressed', 'false');
+      }
+    }
+
+    viewBtnGrid.addEventListener('click', () => {
+      viewMode = 'grid';
+      localStorage.setItem('anibros:view', viewMode);
+      updateURL();
+      render();
+    });
+
+    viewBtnCompact.addEventListener('click', () => {
+      viewMode = 'compact';
+      localStorage.setItem('anibros:view', viewMode);
+      updateURL();
+      render();
+    });
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      menuBtn.setAttribute('aria-expanded', 'true');
+    }
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (mobileMenu.classList.contains('open')) closeMenu();
+      else openMenu();
+    });
+
+    mAdd.addEventListener('click', () => {
+      closeMenu();
+      openModalFor();
+    });
+    mViewGrid.addEventListener('click', () => {
+      viewMode = 'grid';
+      localStorage.setItem('anibros:view', viewMode);
+      updateURL();
+      closeMenu();
+      render();
+    });
+    mViewCompact.addEventListener('click', () => {
+      viewMode = 'compact';
+      localStorage.setItem('anibros:view', viewMode);
+      updateURL();
+      closeMenu();
+      render();
+    });
+
+    mLogout.addEventListener('click', () => openConfirm('Sign out', 'Are you sure you want to sign out?', async () => {
+      await supabase.auth.signOut();
+      location.reload();
+    }));
+
+    mImport.addEventListener('click', () => {
+      closeMenu();
+      importFile.click();
+    });
+    mExport.addEventListener('click', () => {
+      closeMenu();
+      doExport();
+    });
+
+    function updateMobileMenuUI() {
+      if (user) {
+        mUserEmail.textContent = user.user_metadata?.username || user.email || 'user';
+        mLogin.classList.add('hidden');
+        mLogout.classList.remove('hidden');
+      } else {
+        mUserEmail.textContent = 'Signed out';
+        mLogin.classList.remove('hidden');
+        mLogout.classList.add('hidden');
+      }
+    }
+
+    async function fetchAniListCover(title, wantKind, retry = false) {
+      const query = `
+        query ($search: String) {
+          Page(perPage: 6) {
+            media(search: $search, type: ANIME) {
+              id
+              title { romaji english native }
+              synonyms
+              format
+              popularity
+              coverImage { large extraLarge color }
+            }
+          }
+        }
+      `;
+      try {
+        const res = await fetch('https://graphql.anilist.co', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ query, variables: { search: title } })
+        });
+        if (!res.ok) throw new Error('AniList search failed');
+        const json = await res.json();
+        const items = json?.data?.Page?.media || [];
+        if (!items.length) throw new Error('No results');
+        items.forEach(m => { m._score = scoreCandidate(title, m, wantKind); });
+        items.sort((a, b) => b._score - a._score);
+        const top = items[0];
+        const image = top?.coverImage?.extraLarge || top?.coverImage?.large;
+        return { image, match: top };
+      } catch (e) {
+        if (retry) throw e;
+        return fetchAniListCover(title, wantKind, true);
+      }
+    }
+
+    async function fetchJikanCover(title, retry = false) {
+      const url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(title)}&limit=3&sfw`;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Jikan search failed');
+        const json = await res.json();
+        const list = json?.data || [];
+        if (!list.length) throw new Error('No results');
+        const pick = list[0];
+        return { image: pick?.images?.webp?.large_image_url || pick?.images?.jpg?.large_image_url || pick?.images?.webp?.image_url, match: pick };
+      } catch (e) {
+        if (retry) throw e;
+        return fetchJikanCover(title, true);
+      }
+    }
+
+    function normalizeStr(s) {
+      return String(s || '')
+        .toLowerCase()
+        .replace(/’|‘|“|”/g, '"')
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function tokenSet(str) {
+      return new Set(normalizeStr(str).split(' ').filter(Boolean).filter(w => !['the', 'a', 'an', 'and', 'of'].includes(w)));
+    }
+
+    function jaccard(aStr, bStr) {
+      const a = tokenSet(aStr), b = tokenSet(bStr);
+      if (!a.size || !b.size) return 0;
+      let inter = 0;
+      a.forEach(x => { if (b.has(x)) inter++; });
+      const union = a.size + b.size - inter;
+      return inter / union;
+    }
+
+    function scoreCandidate(query, media, wantKind) {
+      const titles = [
+        media?.title?.romaji, media?.title?.english, media?.title?.native,
+        ...(media?.synonyms || [])
+      ].filter(Boolean);
+      let bestTitleScore = 0;
+      for (const t of titles) {
+        bestTitleScore = Math.max(bestTitleScore, jaccard(query, t));
+      }
+      let typeBias = 0;
+      const type = (media?.format || '').toUpperCase();
+      if (wantKind === 'MOVIE') {
+        if (type === 'MOVIE') typeBias = 0.15;
+        else if (type === 'TV') typeBias = -0.05;
+      } else {
+        if (type === 'TV') typeBias = 0.10;
+        else if (type === 'MOVIE') typeBias = -0.05;
+      }
+      const pop = media?.popularity || 0;
+      const popBias = Math.min(0.05, (pop / 1000000) * 0.05);
+
+      return bestTitleScore + typeBias + popBias;
+    }
+
+    async function autoFetchCover(title, kind) {
+      if (!title) return null;
+      try {
+        let image = null;
+        try {
+          const { image: aImage } = await fetchAniListCover(title, kind);
+          image = aImage;
+        } catch (_) { /* ignore */ }
+        if (!image) {
+          try {
+            const { image: jImage } = await fetchJikanCover(title);
+            image = jImage;
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        return image || null;
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    }
+
+    btnAutoCover.addEventListener('click', async () => {
+      const title = fTitle.value?.trim();
+      if (!title) return showToast('error', 'Enter title first');
+      const image = await autoFetchCover(title, fKind.value || 'SERIES');
+      if (image) {
+        fImage.value = image;
+        showToast('success', 'Cover set');
+        toggleClearButtons();
+        resetFloatGroups(modal);
+      } else {
+        showToast('error', 'No cover found');
+      }
+    });
+
+    fTitle.addEventListener('blur', async () => {
+      if (!fImage.value.trim()) {
+        const title = fTitle.value?.trim();
+        if (title) {
+          const image = await autoFetchCover(title, fKind.value || 'SERIES');
+          if (image) {
+            fImage.value = image;
+            toggleClearButtons();
+            resetFloatGroups(modal);
+          }
+        }
+      }
+    });
+
+    async function autoFetchMissingCovers(rows) {
+      const missing = rows.filter(r => !r.image_url && r.title);
+      if (!missing.length) return;
+      showToast('info', `Fetching covers for ${missing.length} items...`);
+      const queue = missing.slice();
+      const maxConcurrent = Math.min(5, queue.length);
+      const workers = Array.from({ length: maxConcurrent }, async () => {
+        while (queue.length) {
+          const row = queue.shift();
+          const image = await autoFetchCover(row.title, row.kind);
+          if (image) {
+            try {
+              await supabase.from('entries').update({ image_url: image }).eq('id', row.id);
+            } catch (e) {
+              console.error(`Failed to update cover for ${row.title}:`, e);
+            }
+          }
+        }
+      });
+      await Promise.all(workers);
+    }
+
+    function toggleClearButtons() {
+      const toggle = (btn, input) => btn.classList.toggle('visible', String(input.value ?? '').trim() !== '');
+      toggle(clearTitle, fTitle);
+      toggle(clearSeason, fSeason);
+      toggle(clearEpisode, fEpisode);
+      toggle(clearAbs, fAbs);
+      toggle(clearImage, fImage);
+      toggle(clearNotes, fNotes);
+      resetFloatGroups(modal);
+    }
+    [fTitle, fSeason, fEpisode, fAbs, fImage, fNotes, fKind, fStatus].forEach(input => {
+      input.addEventListener('input', toggleClearButtons);
+      input.addEventListener('change', toggleClearButtons);
+    });
+    clearTitle.onclick = () => { fTitle.value = ''; toggleClearButtons(); fTitle.focus(); };
+    clearSeason.onclick = () => { fSeason.value = ''; toggleClearButtons(); fSeason.focus(); };
+    clearEpisode.onclick = () => { fEpisode.value = ''; toggleClearButtons(); fEpisode.focus(); };
+    clearAbs.onclick = () => { fAbs.value = ''; toggleClearButtons(); fAbs.focus(); };
+    clearImage.onclick = () => { fImage.value = ''; toggleClearButtons(); fImage.focus(); };
+    clearNotes.onclick = () => { fNotes.value = ''; toggleClearButtons(); fNotes.focus(); };
+
+    scrollToTop.onclick = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 200) scrollToTop.classList.add('visible');
+      else scrollToTop.classList.remove('visible');
+    });
+
+    if (sortSelect) {
+      sortSelect.addEventListener('change', () => {
+        sortOrder = sortSelect.value;
+        localStorage.setItem('anibros:sort', sortOrder);
+        updateURL();
+        render();
+      });
+    }
+
+    document.getElementById('btn-refresh-covers').addEventListener('click', async () => {
+      if (!user) return showToast('error', 'Sign in first');
+      await autoFetchMissingCovers(data.filter(r => !r.image_url));
+    });
+
+    function setButtonLoading(btn, loading, loadingLabel = 'Working…') {
+      if (!btn.dataset.defaultHtml) {
+        btn.dataset.defaultHtml = btn.innerHTML;
+      }
+      if (loading) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>${loadingLabel ? ' ' + escapeHtml(loadingLabel) : ''}`;
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = btn.dataset.defaultHtml;
+      }
+    }
+
+    (async function init() {
+      setRandomBanner();
+      readURL();
+      renderTabs();
+      updateViewToggleUI();
+      if (sortSelect) sortSelect.value = sortOrder;
+      const { data: { session: s} } = await supabase.auth.getSession();
+      session = s;
+      user = s?.user ?? null;
+      updateAuthUI();
+
+      if (user) {
+        await load();
+        setupRealtime();
+        setupPresence();
+      }
+      render();
+      initFloatingLabels(document);
+    })();
+
+    supabase.auth.onAuthStateChange((_evt, s) => {
+      session = s;
+      user = s?.user ?? null;
+      updateAuthUI();
+      if (user) {
+        load();
+        setupRealtime();
+        setupPresence();
+      } else {
+        data = [];
+      }
+      render();
+    });
+
+    localStorage.setItem('anibros:sort', sortOrder);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+right, so the mobile layout is fucked, use my old proj as reference for now:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>DriftThreads -- Drops & Drive</title>
+  <!-- <meta name="description" content="Streetwear meets horsepower. Limited hoodies, crisp graphics, and Joburg-made drops."> -->
+  <meta name="image" content="assets/logo.png">
+  <link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+
+
+  <meta name="description" content="Discover Drift Threads, the ultimate destination for premium streetwear inspired by car culture. Shop our exclusive collection now!">
+<link rel="canonical" href="https://driftthreads.store/">
+
+<meta property="og:title" content="Drift Threads | Premium Streetwear for Car Enthusiasts">
+<meta property="og:description" content="Explore our exclusive collection of streetwear inspired by car culture. Shop now at Drift Threads.">
+<meta property="og:image" content="https://driftthreads.store/assets/logo.png">
+<meta property="og:url" content="https://driftthreads.store/">
+<meta property="og:type" content="website">
+
+<meta name="twitter:title" content="Drift Threads | Premium Streetwear for Car Enthusiasts">
+<meta name="twitter:description" content="Shop the latest streetwear inspired by car culture at Drift Threads.">
+<meta name="twitter:image" content="https://driftthreads.store/assets/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#111111" />
+
+<!-- Apple fallback icons -->
+<meta name="mobile-web-app-capable" content="yes">
+
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/vaakash/socializer@f794acd/css/socializer.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.7.2/css/all.css">
+ 
+ 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "https://driftthreads.store",
+  "logo": "https://driftthreads.store/assets/logo.png",
+  "name": "Drift Threads"
+}
+</script>
+
+ 
+ 
+ <style>
+
+
+
+
+
+    :root {
+      --bg-1: #071025;
+      --bg-2: #0a0f1a;
+      --stroke: rgba(255,255,255,0.12);
+      --text: #e6eaf2;
+      --muted: #9aa3b2;
+      --accent-1: #6ee7ff;
+      --accent-2: #a78bfa;
+      --accent-3: #22d3ee;
+      --radius: 18px;
+      --shadow: 0 12px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+      --max: 1200px;
+    }
+    *{box-sizing:border-box;}
+    html,body{
+      margin:0;
+      font-family:'Lexend', sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 100%);
+      overflow-x:hidden;
+      scroll-behavior:smooth;
+    }
+
+    #scrollToTopBtn i { font-size:20px; }
+    #scrollToTopBtn {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #061220;
+      bottom: 30px;
+      right: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 22px;
+      z-index: 9;
+      border: 1px solid var(--stroke);
+      -webkit-tap-highlight-color: transparent;
+      transition: all .2s ease;
+      transform: translateY(8px) scale(0.95);
+      opacity: 0;
+      pointer-events: none;
+    }
+    #scrollToTopBtn.visible { pointer-events:auto; opacity:1; transform:translateY(0) scale(1); }
+    #scrollToTopBtn.visible:hover { transform:translateY(-3px) scale(1.03); box-shadow:0 3px 12px rgba(34,211,238,0.45),0 0 14px rgba(167,139,250,0.35); }
+    #scrollToTopBtn.visible:active { transform:translateY(1px) scale(.93); }
+    @media(max-width:600px){#scrollToTopBtn{height:40px;width:40px;font-size:18px;right:calc(50vw - 20px);bottom:18px;}}
+
+    a{color:inherit;text-decoration:none;transition:all .25s ease;}
+
+    .animated-bg,.animated-bg.reverse{position:fixed;inset:-30vmax;filter:blur(120px);opacity:.22;z-index:-3;mix-blend-mode:screen;pointer-events:none;}
+    .animated-bg{background:conic-gradient(from 120deg at 40% 30%, rgba(34,211,238,.18), rgba(167,139,250,.16), rgba(255,180,120,.12));animation:spin 36s linear infinite;}
+    .animated-bg.reverse{background:conic-gradient(from 320deg at 70% 65%, rgba(255,120,140,.12), rgba(100,180,255,.12), rgba(180,100,255,.12));animation:spin-rev 48s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    @keyframes spin-rev{to{transform:rotate(-360deg);}}
+    .bg-grid::before{content:"";position:fixed;inset:-200vmax;
+      background:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px) 0 0/32px 32px,
+        linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px) 0 0/32px 32px,
+        linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.6));
+      animation:pan 60s linear infinite;
+      z-index:-2;}
+    @keyframes pan{to{transform:translate3d(50px,20px,0);}}
+
+    .blob{position:fixed;filter:blur(60px);opacity:.25;z-index:-1;mix-blend-mode:screen;}
+    .blob.cyan{width:40vmax;height:40vmax;background:radial-gradient(circle at 30% 30%,#22d3ee,transparent 60%);top:-10vmax;left:-10vmax;animation:float 18s ease-in-out infinite;}
+    .blob.violet{width:45vmax;height:45vmax;background:radial-gradient(circle at 70% 60%,#a78bfa,transparent 60%);bottom:-15vmax;right:-15vmax;animation:float 22s ease-in-out infinite reverse;}
+    @keyframes float{50%{transform:translateY(-20px);} }
+
+    .wrap{max-width:var(--max);margin:0 auto;padding: clamp(16px, 3vw, 32px);}
+
+    .topbar{
+      position:fixed;
+      min-width: 95vw;
+      top:0;left:0;right:0; 
+      margin:10px;max-width:var(--max);
+      display:flex;justify-content:space-between;align-items:center;gap:16px;
+      background:rgba(10,15,26,0.8);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:10px 16px;
+      backdrop-filter:blur(12px);
+      box-shadow: var(--shadow);
+      z-index:100;
+    }
+    body{padding-top:90px;}
+
+    .brand{display:flex;align-items:center;gap:12px;}
+    .brand img{width:44px;height:44px;border-radius:10px;background:black;padding:6px;}
+    .brand h1{margin:0;font-size:clamp(20px,5vw,28px);font-family:'Orbitron',sans-serif;font-weight:900;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;}
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+    .pill,.primary{cursor:pointer;transition:transform .25s, box-shadow .25s, background .3s;}
+    .pill{padding:8px 14px;border-radius:999px;font-weight:600;font-size:14px;color:var(--text);
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--stroke);}
+    .pill:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.4);}
+    .pill:active{transform:translateY(1px) scale(.98);}
+    .primary{padding:9px 16px;border-radius:999px;font-weight:800;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220;border:0;}
+    .primary:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 2px 10px rgba(0,0,0,.55);}
+    .primary:active{transform:translateY(1px) scale(.97);}
+    .hamburger{display:none;font-size:24px;color:var(--text);cursor:pointer;z-index:110;}
+    @media(max-width:720px){.nav-actions{display:none;}.hamburger{display:block;}}
+    .nav-menu{position:fixed;top:80px;left:50%;transform:translateX(-50%);width:90%;
+      background:rgba(10,15,26,0.95);border:1px solid var(--stroke);border-radius:var(--radius);
+      backdrop-filter:blur(12px);display:none;flex-direction:column;padding:12px;gap:10px;
+      box-shadow: var(--shadow);z-index:99;}
+    .nav-menu.show{display:flex;animation:fadeIn .3s ease;}
+    @keyframes fadeIn{from{opacity:0;transform:translate(-50%,-10px);}to{opacity:1;transform:translate(-50%,0);}}
+
+    .hero{display:grid;gap:28px;margin-top:36px;align-items:center;}
+    @media(min-width:900px){.hero{grid-template-columns:1fr 420px;}}
+    .hero-card{border:1px solid var(--stroke);border-radius:var(--radius);padding:28px;
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow: var(--shadow);}
+    .kicker{display:inline-block;padding:8px 12px;font-size:13px;border-radius:999px;background:rgba(255,255,255,0.05);color:var(--muted);font-weight:700;}
+    .hero-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.6rem);
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:16px 0;}
+    .lead{color:var(--muted);margin-bottom:18px;line-height:1.6;}
+    .actions{display:flex;gap:12px;margin-top:10px;}
+
+    /* NEW: hero-aside (blog teaser) */
+    .hero-aside{
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:20px;
+      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:center;
+    }
+    .blog-kicker{display:inline-block;padding:6px 10px;font-size:12px;border-radius:999px;background:rgba(255,255,255,0.04);color:var(--muted);font-weight:700;}
+    .blog-title{font-family:'Orbitron',sans-serif;font-weight:800;font-size:clamp(18px,3vw,22px);margin:0;}
+    .blog-excerpt{color:var(--muted);font-size:14px;line-height:1.4;}
+    .blog-graphic{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent-1),var(--accent-2));color:#061220;font-size:22px;margin-left:auto;}
+    .blog-meta{display:flex;gap:10px;align-items:center;width:100%;}
+    .blog-cta{margin-top:4px;padding:10px 12px;border-radius:12px;font-weight:800;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:#061220;border:0;text-align:center;display:inline-block;}
+    @media(max-width:900px){
+      .hero-aside{order:99;} /* stack after hero-card on small screens */
+      .blog-graphic{margin-left:auto;}
+    }
+
+    section h3{font-family:'Orbitron',sans-serif;font-size:clamp(22px,2.5vw,28px);
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;
+      margin-top:40px;margin-bottom:14px;}
+    .strip{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px;}
+    .product{min-width:280px;scroll-snap-align:center;border-radius:var(--radius);border:1px solid var(--stroke);
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));padding:14px;box-shadow: var(--shadow);transition:transform .25s;}
+    .product:hover{transform:translateY(-4px) scale(1.015);}
+    .product .thumb{aspect-ratio:1/1;overflow:hidden;border-radius:12px;margin-bottom:10px;}
+    .product img{width:100%;height:100%;object-fit:cover;}
+    .product .meta{font-weight:700;}
+    .product .price{color:var(--accent-1);margin-top:4px;}
+    .split{display:grid;gap:24px;}
+    @media(min-width:800px){.split{grid-template-columns:1fr 1fr;}}
+    .person{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--stroke);border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));}
+    .person img{width:68px;height:68px;border-radius:12px;object-fit:cover;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+    .tests{display:grid;gap:12px;}
+    @media(min-width:600px){.tests{grid-template-columns:1fr 1fr;}}
+    .test{padding:16px;margin:0 10px 0 10px; border-radius:var(--radius);border:1px solid var(--stroke);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));}
+    .test-name {color: var(--accent-3);}
+    .contact{margin:32px 10px 0 10px;padding:18px;border-radius:var(--radius);border:1px solid var(--stroke);
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+    /* footer{margin:40px 20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;} */
+ footer{margin:20px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;}
+
+ footer a {
+  text-decoration: underline;
+ }
+
+    hr {
+      background: var(--muted);
+      width: 90vw;
+      border-radius: 3px;
+    }
+
+    .footer-img {
+      /* width: 32px; */
+      height: 32px;
+    }
+
+      @media (min-width: 700px){
+
+        /* footer{margin:20px 40px 40px 40px;} */
+
+    hr {
+      width: 95vw;
+    }
+  }
+
+
+
+    /* Price key (drop into your main stylesheet) */
+.price-key{
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.03);
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin: 14px 16px;
+  color: #eaf4ff;
+  box-shadow: 0 6px 20px rgba(2,6,12,0.6);
+  font-family: inherit;
+}
+
+/* Title */
+.price-key-title{
+  font-weight:700;
+  font-size:24px;
+  margin-bottom:16px;
+  color: var(--accent-2);
+  letter-spacing: 0.2px;
+}
+
+/* List */
+.price-key-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+
+/* Row */
+.pk-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  padding:8px;
+  border-radius:8px;
+  transition: background .12s ease;
+}
+.pk-row:hover{ background: rgba(255,255,255,0.01); }
+
+/* Left column (type + small description) */
+.pk-left{ flex:1; min-width:0; }
+.pk-type{ display:block; font-size:13px; color:#ffffff; }
+.pk-desc{ font-size:12px; color:#9fb6d1; margin:4px 0 8px 0; line-height:1.2; }
+
+/* Right column (price) */
+.pk-right{
+  white-space:nowrap;
+  font-weight:800;
+  font-size:13px;
+  color:#000;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  padding:6px 10px;
+  border-radius:8px;
+  min-width:82px;
+  text-align:center;
+}
+
+/* Responsive: compact on small screens */
+@media (max-width:520px){
+  .price-key{ margin:10px 12px; padding:10px; }
+  .pk-row{ flex-direction:column; align-items:flex-start; gap:6px; }
+  .pk-right{ align-self:flex-end; min-width:60px; padding:5px 8px; }
+}
+
+  </style>
+</head>
+<body class="bg-grid">
+  <div class="animated-bg"></div>
+  <div class="animated-bg reverse"></div>
+  <div class="blob cyan"></div>
+  <div class="blob violet"></div>
+
+  <!-- Scroll to Top Button -->
+  <a id="scrollToTopBtn" href="#" role="button" aria-label="Scroll to top"><i class="fas fa-angle-up"></i></a>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="DriftThreads logo">
+      <div>
+        <h1>DriftThreads</h1>
+        <div class="muted" style="font-size:12px">Streetwear • Cars • Joburg</div>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <a class="pill" href="#products">Products</a>
+      <a class="pill" href="#about">About</a>
+      <a class="pill" href="./contact">Contact</a>
+      <a class="primary" href="./home/">Shop</a>
+    </div>
+    <div class="hamburger" id="hamburger" aria-controls="navMenu" aria-expanded="false" role="button" tabindex="0">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      <span class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Toggle menu</span>
+    </div>
+    <div class="nav-menu" id="navMenu" role="menu" aria-hidden="true">
+      <a class="pill" href="#products" role="menuitem">Products</a>
+      <a class="pill" href="#about" role="menuitem">About</a>
+      <a class="pill" href="#contact" role="menuitem">Contact</a>
+      <a class="primary" href="./home/" role="menuitem">Shop</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-card">
+        <div class="kicker">Limited Drops</div>
+        <h2 class="hero-title">Drift hard. Drip hard.</h2>
+        <p class="lead">Car-themed hoodies, crisp DTF graphics, and whatever hits. Made in Joburg with proper care. The only real non-Shopify streetwear spot out here.</p>
+        <div class="actions">
+          <a class="primary" href="./home/">Shop the drop</a>
+          <a class="pill" href="#products">See bestsellers</a>
+        </div>
+      </div>
+
+      <!-- NEW: blog teaser aside (keeps layout tidy on mobile) -->
+      <aside class="hero-aside" aria-labelledby="blog-teaser-title">
+        <span class="blog-kicker">Latest — Blog</span>
+        <h3 id="blog-teaser-title" class="blog-title">Drive & Drop — Fresh Threads, Garage Stories</h3>
+        <p class="blog-excerpt">Short reads about drops, behind-the-scenes prints, and the Joburg car culture that inspires the designs. Quick, gritty, and snackable.</p>
+
+        <div class="blog-meta" aria-hidden="false">
+          <a class="blog-cta" href="./blogs" role="button" aria-label="Visit DriftThreads blog">Read the Blogs</a>
+          <div class="blog-graphic" aria-hidden="true"><i class="fa-regular fa-newspaper"></i></div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Products -->
+    <section id="products">
+      <h3>Featured -- Drop Highlights</h3>
+      <div class="strip">
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/driftthreads_hoodie.jpeg" alt="Drift Threads™ Hoodie">
+    </div>
+    <div class="meta">Drift Threads™ Hoodie</div>
+    <div class="price">R700.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/tokyo_revengers.jpeg" alt="Tokyo Revengers Hoodie">
+    </div>
+    <div class="meta">Tokyo Revengers Hoodie</div>
+    <div class="price">R650.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/911_gt3_rs.jpeg" alt="911 GT3 RS Hoodie">
+    </div>
+    <div class="meta">911 GT3 RS Hoodie</div>
+    <div class="price">R650.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/hoodies/cr7_rm.jpeg" alt="Ronaldo Real Madrid Hoodie">
+    </div>
+    <div class="meta">Ronaldo Real Madrid Hoodie</div>
+    <div class="price">R700.00</div>
+  </div>
+
+  <div class="product">
+    <div class="thumb">
+      <img src="./home/products/mugs/driftthreads_mug.jpeg" alt="Drift Threads™ Mug">
+    </div>
+    <div class="meta">Drift Threads™ Mug</div>
+    <div class="price">R150.00</div>
+  </div>
+
+  <!-- <div class="product">
+    <div class="thumb">
+      <img src="./home/products/supplements/honey_1kg.jpeg" alt="Liquid Gold™ Honey (1kg)">
+    </div>
+    <div class="meta">Liquid Gold™ Honey (1kg)</div>
+    <div class="price">R220.00</div>
+  </div> -->
+</div>
+
+    </section>
+
+
+    <!-- Printing Price Guide -->
+     <br>
+     <br>
+
+<div class="price-key" role="region" aria-label="Printing price guide">
+  <div class="price-key-title">Hoodie Price Guide (Subject to Change)</div>
+
+  <ul class="price-key-list">
+    <li class="pk-row">
+      <div class="pk-left">
+        <strong class="pk-type">Back print only</strong>
+        <div class="pk-desc">Large design on the back — great for full artwork or text.</div>
+      </div>
+      <div class="pk-right">R650</div>
+    </li>
+
+    <li class="pk-row">
+      <div class="pk-left">
+        <strong class="pk-type">Back + chest emblem</strong>
+        <div class="pk-desc">Back artwork plus a small logo/emblem on the front chest.</div>
+      </div>
+      <div class="pk-right">R700</div>
+    </li>
+
+    <li class="pk-row">
+      <div class="pk-left">
+        <strong class="pk-type">Back + sleeves</strong>
+        <div class="pk-desc">Back print with additional sleeve prints — price depends on sleeve coverage & complexity.</div>
+      </div>
+      <div class="pk-right">R750–R850</div>
+    </li>
+  </ul>
+</div>
+
+
+
+    <!-- About -->
+    <section id="about" class="split">
+      <div>
+        <h3>Who runs this?</h3>
+        <div class="person" style="margin-bottom: 10px;"><img src="assets/zaynul.png" alt="Zaynul"><div><strong>Zaynul</strong><div class="muted">Runs the grind -- handles the moves</div></div></div>
+        <div class="person"><img src="assets/saajid.png" alt="Saajid"><div><strong>Saajid</strong><div class="muted">Brains behind the look, design & web.</div></div></div>
+      </div>
+      <div>
+        <h3>Word on the street</h3>
+        <div class="tests">
+          <div class="test">"Fits mad. Got 3 hoodies and it still hits."<br><strong class="test-name">-- MiKiBB</strong></div>
+          <div class="test">"Local brand that actually cares about quality."<br><strong class="test-name">-- Anonymous</strong></div>
+          <div class="test">"Honey's solid. Hoodies tougher than my ex."<br><strong class="test-name">-- Anonymous</strong></div>
+          <div class="test">"Fast shipping and proper packaging, for once."<br><strong class="test-name">-- Anonymous</strong></div>
+        </div>
+      </div>
+    </section>
+
+
+
+    
+
+
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <div>
+        <strong>Order via WhatsApp</strong>
+        <div class="muted" style="margin-top:6px">No bots. No stress. Screenshot your cart and hit us up -- we move fast.</div>
+      </div>
+      <a class="primary" href="https://wa.me/+27713468567" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="margin-right:7px;"></i>Message us</a>
+    </section>
+
+
+    <!-- Social Links -->
+    <section class="contact" style="display: flex;">
+        
+      <div>
+      <strong>Share our Site</strong>
+        <div class="muted" style="margin-top:6px">Love what you see? Spread the drip -- share Drift Threads with your crew!</div>
+      </div>
+
+      <div class="socializer" data-features="32px,circle,opacity,icon-white,pad" data-meta-link="driftthreads.store" data-meta-title="Drift Threads" data-sites="whatsapp,telegram,instagram,facebook,shortlink"></div>
+
+      </section>
+
+      <footer>
+        <hr>
+
+      <div>
+        <img src="assets/wide_logo.png" alt="DriftThreads Logo" class="footer-img" style="border-radius: 10px;"><br>
+        © DriftThreads<br>Streetwear built to drift -- Only in Joburg.
+
+        
+        <br><br>
+         <a href="https://www.instagram.com/driftthreads.official/"><i class="fab fa-instagram" style="margin-right:5px;"></i>driftthreads.official</a>
+        <br><a href="https://www.tiktok.com/@driftthreads.official/"><i class="fab fa-tiktok" style="margin-right:5px;"></i>driftthreads.official</a>
+        
+        
+
+      </div>
+      <div class="muted">
+        <br><br>
+       <a href="..">Main</a> •
+        <a href="../blogs">Blogs</a> •  
+        <a href="../contact">Contacts</a>
+       
+        <br><br>
+        <a href="" id="terms-link">Terms & Conditions</a> •  
+        <a href="" id="privacy-link">Privacy Policy</a> •  
+        <a href="" id="shipping-link">Shipping Info</a>
+      
+        </div>
+
+
+
+    </footer>
+  </div>
+  
+
+
+
+
+<script src="https://cdn.jsdelivr.net/gh/vaakash/socializer@f794acd/js/socializer.min.js"></script>
+<script>
+(function(){
+    socializer( '.socializer' );
+}());
+</script>
+
+  <script>
+    // Elements
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    const hamburgerIcon = hamburger.querySelector('i');
+
+    // Accessibility helpers
+    function setMenuState(open) {
+      if (open) {
+        navMenu.classList.add('show');
+        navMenu.setAttribute('aria-hidden', 'false');
+        hamburger.setAttribute('aria-expanded', 'true');
+      } else {
+        navMenu.classList.remove('show');
+        navMenu.setAttribute('aria-hidden', 'true');
+        hamburger.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    function closeMenu(){
+      setMenuState(false);
+      hamburgerIcon.classList.remove('fa-xmark');
+      hamburgerIcon.classList.add('fa-bars');
+    }
+    function openMenu(){
+      setMenuState(true);
+      hamburgerIcon.classList.remove('fa-bars');
+      hamburgerIcon.classList.add('fa-xmark');
+      // Optionally move focus into first item for keyboard users
+      const firstLink = navMenu.querySelector('a');
+      if(firstLink) firstLink.focus();
+    }
+    function toggleMenu(){
+      if(navMenu.classList.contains('show')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    // Toggle on click & keyboard activation
+    hamburger.addEventListener('click', (e) => {
+      e.stopPropagation(); // prevent immediate document click listener from acting on this click
+      toggleMenu();
+    });
+    // support Enter/Space to toggle
+    hamburger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
+
+    // Close when clicking any link inside menu (existing behavior)
+    document.querySelectorAll('.nav-menu a').forEach(link=>{
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Also close when clicking anywhere outside the menu while it's open
+    document.addEventListener('click', (e) => {
+      // If menu isn't open, nothing to do
+      if(!navMenu.classList.contains('show')) return;
+      // If the click target is inside the menu or on the hamburger, ignore
+      if (navMenu.contains(e.target) || hamburger.contains(e.target)) return;
+      // Otherwise close
+      closeMenu();
+    }, { passive: true });
+
+    // Close with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMenu.classList.contains('show')) {
+        closeMenu();
+        // Return focus to hamburger for keyboard users
+        hamburger.focus();
+      }
+    });
+
+    // If you want to close on touchstart outside (more responsive on mobile), handle touchstart similarly:
+    document.addEventListener('touchstart', (e) => {
+      if(!navMenu.classList.contains('show')) return;
+      if (navMenu.contains(e.target) || hamburger.contains(e.target)) return;
+      closeMenu();
+    }, { passive: true });
+
+    // Animate cards on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.animate([
+            {opacity:0, transform:'translateY(14px) scale(.98)'},
+            {opacity:1, transform:'translateY(0) scale(1)'}
+          ], {duration:520,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:.08});
+    // include hero-aside so it animates too
+    document.querySelectorAll('.product,.person,.test,.hero-card,.hero-aside').forEach(el=>io.observe(el));
+
+    // Scroll-to-top
+    (function(){
+      const btn=document.getElementById('scrollToTopBtn');
+      if(!btn)return;
+      function updateVisibility(){
+        if(window.scrollY>240){btn.classList.add('visible');}
+        else{btn.classList.remove('visible');}
+      }
+      updateVisibility();
+      window.addEventListener('scroll',updateVisibility,{passive:true});
+      function scrollTopHandler(e){
+        e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});btn.blur();
+      }
+      btn.addEventListener('click',scrollTopHandler);
+      btn.addEventListener('keydown',(e)=>{
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();scrollTopHandler(e);}
+      });
+    })();
+
+// Stagger reveal for "hidden" elements
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      // add "show" class when in view, remove when out
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      } else {
+        entry.target.classList.remove("show");
+      }
+    });
+  })
+  
+const hiddenElements = document.querySelectorAll(".hidden");
+hiddenElements.forEach((el) => observer.observe(el));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => {
+        console.log('SW registered:', reg);
+      })
+      .catch(err => {
+        console.error('SW registration failed:', err);
+      });
+  });
+}
+
+
+
+
+  </script>
+</body>
+</html>
+
+
+
+so the username, usrs online and sign in/out should be in a hamburger menu like Driftthreads for mobile
+
+make the footer lgic the same as Driftthreads ofr anibros, the sort menu filter thingie needs to be fixed in UI, make it lookk similar to the grid.shelf view button
+
+the grid/shelf view button should just be the cons without the texts on mobile, to save space, same with sort, its should jsut be A-Z, Z-A, Recent with the filter icon
+
+the add item placing is weird, it shouldbe next tothe search title booth moible and desktop, and just a + on mobile to save space once again
+
+also, i thionk the sql is broken, it doesnt save the display,username to log in with, and also it always says shit about the image url schema cache or smth, if  u have to, mkae it refetch the urls for each new device/browser u log into,, only if needed, coz im frying my brain trying to figure it out:
+
+-- =====================================================================
+-- AniBros Supabase schema (fixed + clean version)
+-- =====================================================================
+
+create extension if not exists "pgcrypto";
+create extension if not exists "citext";
+
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'media_kind') then
+    create type public.media_kind as enum ('SERIES', 'MOVIE');
+  end if;
+
+  if not exists (select 1 from pg_type where typname = 'entry_status') then
+    create type public.entry_status as enum ('WATCHING', 'PLAN', 'REWATCH', 'WAITING', 'COMPLETED');
+  end if;
+end
+$$ language plpgsql;
+
+-- =====================================================================
+-- Updated-at trigger function
+-- =====================================================================
+create or replace function public.handle_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = timezone('utc', now());
+  return new;
+end;
+$$;
+
+-- =====================================================================
+-- Entries table
+-- =====================================================================
+create table if not exists public.entries (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  title text not null check (length(trim(title)) > 0),
+  kind public.media_kind not null,
+  status public.entry_status not null default 'PLAN',
+  season integer,
+  episode integer,
+  absolute_episode integer,
+  image_url text,
+  notes text,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now()),
+  constraint season_non_negative check (season is null or season >= 0),
+  constraint episode_non_negative check (episode is null or episode >= 0),
+  constraint abs_episode_non_negative check (absolute_episode is null or absolute_episode >= 0),
+  constraint mutually_exclusive_episode check (
+    absolute_episode is null
+    or (season is null and episode is null)
+  ),
+  constraint image_url_length check (image_url is null or length(image_url) <= 2048)
+);
+
+alter table public.entries
+  alter column user_id set default auth.uid();
+
+create trigger entries_updated_at
+before update on public.entries
+for each row execute function public.handle_updated_at();
+
+create index if not exists entries_user_id_idx on public.entries(user_id);
+create index if not exists entries_user_status_idx on public.entries(user_id, status);
+create index if not exists entries_created_at_idx on public.entries(created_at desc);
+create unique index if not exists entries_unique_title_per_user_idx
+  on public.entries (user_id, lower(title));
+
+-- =====================================================================
+-- Row-Level Security
+-- =====================================================================
+alter table public.entries enable row level security;
+
+create policy "Users can view their own entries"
+on public.entries
+for select
+using (auth.uid() = user_id);
+
+create policy "Users can insert their own entries"
+on public.entries
+for insert
+with check (auth.uid() = user_id);
+
+create policy "Users can update their own entries"
+on public.entries
+for update
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+create policy "Users can delete their own entries"
+on public.entries
+for delete
+using (auth.uid() = user_id);
+
+-- =====================================================================
+-- Profiles table
+-- =====================================================================
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  username citext not null,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now()),
+  constraint username_non_empty check (length(trim(username::text)) >= 3)
+);
+
+create unique index if not exists profiles_username_unique_idx
+  on public.profiles (username);
+
+create trigger profiles_updated_at
+before update on public.profiles
+for each row execute function public.handle_updated_at();
+
+alter table public.profiles enable row level security;
+
+create policy "Users can view their profile"
+on public.profiles
+for select
+using (auth.uid() = id);
+
+create policy "Users can insert their profile"
+on public.profiles
+for insert
+with check (auth.uid() = id);
+
+create policy "Users can update their profile"
+on public.profiles
+for update
+using (auth.uid() = id)
+with check (auth.uid() = id);
+
+-- =====================================================================
+-- Sync Profile Function (links auth.users → profiles)
+-- =====================================================================
+create or replace function public.sync_profile()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+declare
+  v_username text;
+begin
+  v_username := coalesce(nullif(trim(new.raw_user_metadata ->> 'username'), ''), split_part(new.email, '@', 1));
+  if v_username is null then
+    v_username := split_part(new.email, '@', 1);
+  end if;
+
+  insert into public.profiles (id, username)
+  values (new.id, v_username)
+  on conflict (id) do update
+    set username = excluded.username,
+        updated_at = timezone('utc', now());
+
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+drop trigger if exists on_auth_user_updated on auth.users;
+
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute function public.sync_profile();
+
+create trigger on_auth_user_updated
+after update on auth.users
+for each row execute function public.sync_profile();
+
+-- =====================================================================
+-- Email lookup by username or email
+-- =====================================================================
+drop function if exists public.email_for_username(text);
+
+create or replace function public.email_for_username(p_identifier text)
+returns text
+language sql
+security definer
+set search_path = public, auth
+as $$
+  select u.email
+  from auth.users u
+  left join public.profiles p on p.id = u.id
+  where lower(u.email) = lower(p_identifier)
+     or (p.username is not null and lower(p.username::text) = lower(p_identifier))
+  limit 1;
+$$;
+
+grant execute on function public.email_for_username(text) to authenticated, anon;
+
+-- =====================================================================
+-- Realtime publication
+-- =====================================================================
+alter publication supabase_realtime add table public.entries;
+
+-- =====================================================================
+-- End of schema
+-- =====================================================================
+
+
+
+heres my import json if u need it as ref:
+[
+  {"title":"One Piece","kind":"SERIES","status":"WATCHING","season":null,"episode":1145,"absolute_episode":1145,"notes":"","image_url":null},
+  {"title":"Fire Force","kind":"SERIES","status":"WATCHING","season":3,"episode":9,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Seven Deadly Sins","kind":"SERIES","status":"WATCHING","season":4,"episode":4,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Berserk (1997)","kind":"SERIES","status":"WATCHING","season":1,"episode":9,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Monster","kind":"SERIES","status":"WATCHING","season":null,"episode":32,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"The Promised Neverland","kind":"SERIES","status":"PLAN","season":1,"episode":null,"absolute_episode":null,"notes":"S1 only","image_url":null},
+  {"title":"Rise of the Shield Hero","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Uglymeg Epicfighter","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Witch Watch","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Scissor Seven","kind":"SERIES","status":"PLAN","season":4,"episode":null,"absolute_episode":null,"notes":"Season 4 planned","image_url":null},
+  {"title":"Rascal does not Dream","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Parasyte: The Maxim","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"The Tatami Galaxy","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Oshi no Ko","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Fairy Tail","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"My Hero Academia","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Kino's Journey","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Dragon Ball Z","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Hunter x Hunter","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Samurai Champloo","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Clannad","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Black Lagoon","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Dr. Stone","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Plastic Memories","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"To Your Eternity","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Super Crooks","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Made in Abyss","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"March Comes in Like a Lion","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Evengaleon","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"(as written)","image_url":null},
+  {"title":"Noragami","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Mushishi","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Devil May Cry","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Re: Creators","kind":"SERIES","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Weathering with You","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Only Yesterday","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Porco Rosso","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Ocean Waves","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli TV movie","image_url":null},
+  {"title":"Pom Poko","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Whisper of the Heart","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"My Neighbors the Yamadas","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"The Cat Returns","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli spin-off","image_url":null},
+  {"title":"Tales from Earthsea","kind":"MOVIE","status":"PLAN","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Yu Gi Oh","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Naruto","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Space Dandy","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Gintama","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Death Parade","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Welcome to the NHK","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Ghost Stories","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"School Rumble","kind":"SERIES","status":"REWATCH","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Tokyo Revengers","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Sakamoto Days","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"A Couple of Cuckoos","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"A Happy Couple, But not yet Married","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"(as written)","image_url":null},
+  {"title":"Love after World Domination","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"The 100 Girlfriends who Really Love You","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"There's no Freaking Way I'll be your Lover","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Bleach","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season / TYBW","image_url":null},
+  {"title":"Kaiju No. 8","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Re:Zero","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Wind Breaker","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Jujutsu Kaisen","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Chainsaw Man","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Demon Slayer","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Black Clover","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Blue Exorcist","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Cyberpunk Edge Runners","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Classroom of the Elite","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Delicious in the Dungeon","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Hell's Paradise","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Call of the Night","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"My Dress-Up Darling","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"The Fragrant Flower","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"(as written)","image_url":null},
+  {"title":"Dandadan","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Reincarnated as a Slime in Another World","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Rent a Girlfriend","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Grand Blue Dreaming","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Zom 100","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Frieren: Beyond Journey's End","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"One Punch Man","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Solo Leveling","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Vinland Saga","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Bungo Stray Dogs","kind":"SERIES","status":"WAITING","season":null,"episode":null,"absolute_episode":null,"notes":"Waiting on new season","image_url":null},
+  {"title":"Durarara!!","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Summertime Rendering","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Attack on Titan","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Steins;Gate","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Erased","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Cowboy Bebop","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Angel Beats","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Assassination Classroom","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Mob Psycho 100","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Fullmetal Alchemist","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Fullmetal Alchemist: Brotherhood","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Horimiya","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Toradora!","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Your Lie in April","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Citrus","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Death Note","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Sword Art Online","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Food Wars","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Tokyo Ghoul","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"100 Days to Marriage","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Hitman Reborn","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Code Geass","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Sing Yesterday for Me","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"ReLIFE","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Bunny Girl Senpai (Rascal Does Not Dream of...)","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"The Dreaming Boy is a Realist","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Odd Taxi","kind":"SERIES","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"A Silent Voice","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Your Name","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Makoto Shinkai vibes","image_url":null},
+  {"title":"I Want to Eat Your Pancreas","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Suzume","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null},
+  {"title":"Nausicaä of the Valley of the Wind","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Laputa: Castle in the Sky","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Grave of the Fireflies","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"My Neighbor Totoro","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Kiki’s Delivery Service","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Princess Mononoke","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Spirited Away","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Howl’s Moving Castle","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"Ponyo","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"The Secret World of Arrietty","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"From Up on Poppy Hill","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"The Wind Rises","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"The Tale of the Princess Kaguya","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"When Marnie Was There","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"Ghibli","image_url":null},
+  {"title":"The Boy and the Heron","kind":"MOVIE","status":"COMPLETED","season":null,"episode":null,"absolute_episode":null,"notes":"","image_url":null}
+]
+
+
+
+remove 2FA, keep the layout and shi simolar to how it is now, the main thing is making it moible freindly, and fixing the image url issue, dont overdo it, and just use the driftthreads as insooiration, dont copy bar for bar
+
+keep existing features in tact
+
+format the codes nicely
+
+add/improve anything else u see fit
+
+give the full html css js of Anibros, and then the fullsql with changes, keep all APIs and shi intact, and tldr wat u do before the code 

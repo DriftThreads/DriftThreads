@@ -33,9 +33,6 @@
       --bp-compact: 520px;
       --bp-small: 600px;
       --focus-ring: 0 0 0 4px rgba(124,58,237,.14);
-      --accent-1: #6ee7ff;
-      --accent-2: #a78bfa;
-      --accent-3: #22d3ee;
     }
 
     * { box-sizing: border-box; }
@@ -303,36 +300,17 @@
     .toolbar-top { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .actions-row { display: flex; gap: 10px; align-items: center; flex-wrap: nowrap; }
 
-    .search-container {
-      position: relative;
+    .search {
       flex: 1;
       min-width: 220px;
-    }
-
-    .search {
-      width: 100%;
       background: #0f1424;
       border: 1px solid rgba(255,255,255,.08);
       border-radius: 12px;
       color: #e8ecfa;
-      padding: 10px 40px 10px 12px;
+      padding: 10px 12px;
       outline: 0;
     }
     .search:focus { box-shadow: var(--focus-ring); border-color: rgba(124,58,237,.7); }
-
-    .search-clear {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 16px;
-      display: none;
-    }
-    .search-clear.visible { display: block; }
 
     .toolbar-tabs {
       display: flex;
@@ -395,7 +373,7 @@
       gap: 10px;
       margin: 8px 0 10px;
       font-family: var(--title-font);
-      font-size: 18px;
+      font-size: 15px;
       letter-spacing: .3px;
       color: #d6dbef;
     }
@@ -412,7 +390,6 @@
     @media (min-width: 1024px) { .grid.view-grid .col { grid-column: span 3; } }
     .grid.view-compact .col { grid-column: span 12; }
     @media (min-width: 900px) { .grid.view-compact .col { grid-column: span 6; } }
-    @media (min-width: 1200px) { .grid.view-compact .col { grid-column: span 4; } }
 
     .card {
       background: #12182a;
@@ -465,6 +442,9 @@
     }
     .floating-actions .icon-btn:hover { background: rgba(6,9,16,.9); }
 
+    /* Removed status badge on covers (redundant with dropdown) */
+
+    /* Progress badge bottom-right */
     .badge-bottom {
       position: absolute;
       right: 6px;
@@ -560,6 +540,7 @@
       flex: 0 1 auto;
     }
 
+    /* Custom select styling (Move + form selects) */
     .select, .move-select {
       appearance: none;
       background: #0f1424;
@@ -608,11 +589,7 @@
     .card.row .title { -webkit-line-clamp: 2; }
     .card.row .controls { margin-top: 2px; }
 
-    .card.row .floating-actions {
-      top: 6px;
-      right: 6px;
-    }
-
+    /* Modal and floating labels */
     .modal {
       position: fixed;
       inset: 0;
@@ -658,12 +635,13 @@
     }
     .input:focus, .select:focus { box-shadow: var(--focus-ring); border-color: rgba(124,58,237,.7); }
 
+    /* Floating label group */
     .float-group {
       position: relative;
       flex: 1 1 auto;
     }
     .float-group .input {
-      padding: 18px 40px 10px 12px;
+      padding: 18px 40px 10px 12px; /* leave room for label & clear */
       border-radius: 12px;
     }
     .float-group label {
@@ -687,6 +665,7 @@
       background: #10162a;
     }
 
+    /* Clear button only when value exists */
     .clear-btn {
       position: absolute;
       right: 8px;
@@ -714,11 +693,14 @@
 
     .oauth-grid {
       display: grid;
-      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
     }
+    @media (max-width: 520px) { .oauth-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     .btn.oauth { justify-content: center; font-weight: 700; }
-    .btn.oauth.email { background: #1a2138; }
+    .btn.oauth.google { background: #1a2138; }
+    .btn.oauth.apple { background: #1a1a1a; }
+    .btn.oauth.discord { background: #202553; }
 
     #toasts {
       position: fixed;
@@ -775,10 +757,6 @@
       .card.row .cover { width: 68px; flex: 0 0 68px; }
       .controls { gap: 8px; }
       .progress-readout { font-size: 12px; }
-      footer .foot-wrap {
-        flex-direction: column;
-        text-align: center;
-      }
     }
 
     #loading-spinner {
@@ -795,101 +773,39 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     #loading-spinner.active { display: block; }
 
-     #scroll-to-top i { font-size:20px; }
+    /* Scroll-to-top: brand gradient */
     #scroll-to-top {
       position: fixed;
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      color: #061220;
-      bottom: 30px;
-      right: 30px;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      color: #ffffff;
+      border: 0;
       border-radius: 50%;
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 22px;
-      z-index: 9;
-      border: 1px solid var(--stroke);
-      -webkit-tap-highlight-color: transparent;
-      transition: all .2s ease;
-      transform: translateY(8px) scale(0.95);
       opacity: 0;
-      pointer-events: none;
+      transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s, box-shadow .2s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
     }
-    #scroll-to-top.visible { pointer-events:auto; opacity:1; transform:translateY(0) scale(1); }
-    #scroll-to-top.visible:hover { transform:translateY(-3px) scale(1.03); box-shadow:0 3px 12px rgba(34,211,238,0.45),0 0 14px rgba(167,139,250,0.35); }
-    #scroll-to-top.visible:active { transform:translateY(1px) scale(.93); }
-    @media(max-width:600px){#scroll-to-top{height:40px;width:40px;font-size:18px;right:calc(50vw - 20px);bottom:18px;}}
-
-    .sort-controls {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-left: auto;
-    }
-
-    .sort-btn {
-      background: #11162a;
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 12px;
-      color: #cfe0ff;
-      padding: 8px 12px;
-      cursor: pointer;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .sort-btn.active {
-      background: linear-gradient(90deg, rgba(124,58,237,.25), rgba(34,211,238,.2));
-      color: #fff;
-    }
-
-    .section-divider {
-      border: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent);
-      margin: 24px 0;
-    }
+    #scroll-to-top.visible { opacity: 1; transform: translateY(0); }
+    #scroll-to-top:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,.45); }
 
     @media (max-width: var(--bp-mobile)) {
-      .view-toggle .seg span { display: none; }
-      .view-toggle .seg { padding: 8px; }
+      #scroll-to-top { right: auto; left: 50%; transform: translateX(-50%) translateY(20px); }
+      #scroll-to-top.visible { transform: translateX(-50%) translateY(0); }
     }
 
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; }
     }
-
-
-/* Add this to your existing CSS */
-::selection {
-  background: #ec4899; /* Pink color */
-  color: white; /* Optional: change text color for better contrast */
-}
-
-/* For Firefox support */
-::-moz-selection {
-  background: #ec4899;
-  color: white;
-}
-
-/* Optional: Different pink for specific elements */
-.highlight-pink::selection {
-  background: #f472b6; /* Lighter pink */
-  color: white;
-}
-
-/* Dark mode compatible version */
-@media (prefers-color-scheme: dark) {
-  ::selection {
-    background: #f472b6; /* Slightly lighter pink for dark backgrounds */
-    color: #1a202c; /* Dark text for contrast */
-  }
-}
-
   </style>
 </head>
 <body>
@@ -967,26 +883,16 @@
   <main class="container" id="main">
     <div class="toolbar">
       <div class="toolbar-top">
-        <div class="search-container">
-          <input class="search" id="search" placeholder="Search title…" aria-label="Search titles (press / to focus)">
-          <button class="search-clear" id="search-clear" aria-label="Clear search"><i class="fa-solid fa-xmark"></i></button>
-        </div>
+        <input class="search" id="search" placeholder="Search title…" aria-label="Search titles (press / to focus)">
         <div class="actions-row">
+          <div class="view-toggle" role="group" aria-label="View mode">
+            <button class="seg" id="view-btn-grid" aria-pressed="true"><i class="fa-solid fa-grip"></i>Grid</button>
+            <button class="seg" id="view-btn-compact" aria-pressed="false"><i class="fa-solid fa-list"></i>Shelf</button>
+          </div>
           <button class="btn brand" id="btn-add"><i class="fa-solid fa-plus"></i>Add item</button>
         </div>
       </div>
       <div class="toolbar-tabs" id="tabs"></div>
-      <div class="toolbar-top">
-        <div class="sort-controls">
-          <button class="sort-btn" id="sort-recent" data-sort="recent"><i class="fa-solid fa-clock"></i>Recent</button>
-          <button class="sort-btn" id="sort-az" data-sort="az"><i class="fa-solid fa-arrow-down-a-z"></i>A-Z</button>
-          <button class="sort-btn" id="sort-za" data-sort="za"><i class="fa-solid fa-arrow-down-z-a"></i>Z-A</button>
-        </div>
-        <div class="view-toggle" role="group" aria-label="View mode">
-          <button class="seg" id="view-btn-grid" aria-pressed="true"><i class="fa-solid fa-grip"></i><span>Grid</span></button>
-          <button class="seg" id="view-btn-compact" aria-pressed="false"><i class="fa-solid fa-list"></i><span>Shelf</span></button>
-        </div>
-      </div>
     </div>
     <div id="empty" class="muted-small" style="display:none;margin:16px 0">Sign in to start your shelf.</div>
     <div id="sections"></div>
@@ -1016,14 +922,12 @@
         <div class="row">
           <div class="input-wrapper">
             <select id="f-kind" class="select" aria-label="Kind">
-              <option value="" disabled selected>Series/Movie</option>
               <option value="SERIES">Series</option>
               <option value="MOVIE">Movie</option>
             </select>
           </div>
           <div class="input-wrapper">
             <select id="f-status" class="select" aria-label="Status">
-              <option value="" disabled selected>Category</option>
               <option>WATCHING</option>
               <option>PLAN</option>
               <option>REWATCH</option>
@@ -1084,56 +988,22 @@
       <div class="form">
         <div class="row">
           <div class="oauth-grid" aria-label="Sign in with">
-            <button class="btn oauth email" id="oauth-email" title="Email login"><i class="fa-solid fa-envelope"></i>Email</button>
+            <button class="btn oauth google" id="oauth-google" title="Sign in with Google"><i class="fa-brands fa-google"></i>Google</button>
+            <button class="btn oauth apple" id="oauth-apple" title="Sign in with Apple"><i class="fa-brands fa-apple"></i>Apple</button>
+            <button class="btn oauth discord" id="oauth-discord" title="Sign in with Discord"><i class="fa-brands fa-discord"></i>Discord</button>
+            <button class="btn oauth" id="oauth-email-link" title="Email login link"><i class="fa-solid fa-envelope"></i>Email link</button>
           </div>
         </div>
         <div class="row" id="email-login-row" style="align-items:center;display:none">
           <div class="float-group input-wrapper">
-            <input id="login-identifier" class="input" aria-label="Username or email">
-            <label for="login-identifier">Username or email</label>
+            <input id="login-email" class="input" type="email" aria-label="Your email">
+            <label for="login-email">Your email</label>
           </div>
-          <div class="float-group input-wrapper">
-            <input id="login-password" class="input" type="password" aria-label="Password">
-            <label for="login-password">Password</label>
-          </div>
-          <button class="btn brand" id="login-send"><i class="fa-solid fa-right-to-bracket"></i>Sign in</button>
+          <button class="btn brand" id="login-send"><i class="fa-solid fa-paper-plane"></i>Send link</button>
         </div>
         <div class="row" style="justify-content:space-between;align-items:center">
-          <div class="hint">Don't have an account? <span class="link" id="switch-to-signup">Sign up</span></div>
+          <div class="hint">No passwords. Use OAuth or get a magic login link to your inbox.</div>
           <button class="btn ghost" id="login-cancel"><i class="fa-solid fa-xmark"></i>Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Signup Modal -->
-  <div class="modal" id="signup-modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="sheet" role="document" style="max-width:560px">
-      <h3 style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-user-plus"></i>Sign up</h3>
-      <div class="form">
-        <div class="row">
-          <div class="float-group input-wrapper">
-            <input id="signup-username" class="input" aria-label="Username">
-            <label for="signup-username">Username</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="float-group input-wrapper">
-            <input id="signup-email" class="input" type="email" aria-label="Email">
-            <label for="signup-email">Email</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="float-group input-wrapper">
-            <input id="signup-password" class="input" type="password" aria-label="Password">
-            <label for="signup-password">Password</label>
-          </div>
-        </div>
-        <div class="row">
-          <button class="btn brand" id="signup-send"><i class="fa-solid fa-user-plus"></i>Sign up</button>
-          <button class="btn ghost" id="signup-cancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
-        </div>
-        <div class="row" style="justify-content:center">
-          <div class="hint">Already have an account? <span class="link" id="switch-to-login">Sign in</span></div>
         </div>
       </div>
     </div>
@@ -1187,7 +1057,6 @@
     let activeTab = 'ALL';
     let q = '';
     let viewMode = 'grid'; // 'grid' | 'compact'
-    let sortMode = 'recent'; // 'recent' | 'az' | 'za'
     const IMG_LOCAL_PREFIX = 'anibros_images:';
     const loadingSpinner = document.getElementById('loading-spinner');
     const btnRefreshCovers = document.getElementById('btn-refresh-covers');
@@ -1197,7 +1066,6 @@
     const gridEl = document.getElementById('grid');
     const tabsEl = document.getElementById('tabs');
     const searchEl = document.getElementById('search');
-    const searchClear = document.getElementById('search-clear');
     const btnAdd = document.getElementById('btn-add');
     const btnLogin = document.getElementById('btn-login');
     const authCta = document.getElementById('auth-cta');
@@ -1209,11 +1077,6 @@
     // View toggle
     const viewBtnGrid = document.getElementById('view-btn-grid');
     const viewBtnCompact = document.getElementById('view-btn-compact');
-
-    // Sort buttons
-    const sortRecent = document.getElementById('sort-recent');
-    const sortAZ = document.getElementById('sort-az');
-    const sortZA = document.getElementById('sort-za');
 
     // Mobile menu
     const menuBtn = document.getElementById('btn-menu');
@@ -1244,21 +1107,14 @@
     const btnAutoCover = document.getElementById('btn-autocover');
 
     const loginModal = document.getElementById('login-modal');
-    const loginIdentifier = document.getElementById('login-identifier');
-    const loginPassword = document.getElementById('login-password');
+    const loginEmail = document.getElementById('login-email');
     const loginSend = document.getElementById('login-send');
     const loginCancel = document.getElementById('login-cancel');
-    const oauthEmail = document.getElementById('oauth-email');
-    const switchToSignup = document.getElementById('switch-to-signup');
+    const oauthGoogle = document.getElementById('oauth-google');
+    const oauthApple = document.getElementById('oauth-apple');
+    const oauthDiscord = document.getElementById('oauth-discord');
+    const oauthEmailLink = document.getElementById('oauth-email-link');
     const emailLoginRow = document.getElementById('email-login-row');
-
-    const signupModal = document.getElementById('signup-modal');
-    const signupUsername = document.getElementById('signup-username');
-    const signupEmail = document.getElementById('signup-email');
-    const signupPassword = document.getElementById('signup-password');
-    const signupSend = document.getElementById('signup-send');
-    const signupCancel = document.getElementById('signup-cancel');
-    const switchToLogin = document.getElementById('switch-to-login');
 
     const confirmModal = document.getElementById('confirm-modal');
     const confirmTitle = document.getElementById('confirm-title');
@@ -1465,17 +1321,7 @@
         }
       }
       if (q) rows = rows.filter(r => r.title.toLowerCase().includes(q));
-      
-      // Apply sorting
-      if (sortMode === 'az') {
-        rows.sort((a, b) => a.title.localeCompare(b.title));
-      } else if (sortMode === 'za') {
-        rows.sort((a, b) => b.title.localeCompare(a.title));
-      } else {
-        rows.sort((a, b) => (b.created_at?.localeCompare?.(a.created_at)) || 0);
-      }
-      
-      return rows;
+      return rows.sort((a, b) => (b.created_at?.localeCompare?.(a.created_at)) || 0);
     }
 
     function progressBadgeText(row) {
@@ -1484,6 +1330,7 @@
       return 'EP 0';
     }
 
+    // Removed makeStatusBadge usage; function retained (unused) for reference
     function makeStatusBadge(text) {
       const s = document.createElement('div');
       s.className = 'status-badge';
@@ -1648,7 +1495,7 @@
       cover.appendChild(ph);
       if (hasImg) cover.appendChild(img);
 
-      // Floating actions (moved to top right of card)
+      // Floating actions
       const float = document.createElement('div');
       float.className = 'floating-actions';
       const editBtn = document.createElement('button');
@@ -1671,6 +1518,7 @@
         });
       };
       float.append(editBtn, delBtn);
+      cover.appendChild(float);
 
       // Body
       const body = document.createElement('div');
@@ -1727,7 +1575,6 @@
 
       card.append(cover, body);
       body.append(titleRow, meta, controls);
-      card.appendChild(float); // Append floating actions to card
       col.appendChild(card);
       return col;
     }
@@ -1766,16 +1613,6 @@
           groups.forEach(g => {
             let rows = data.filter(r => r.status === g.id);
             if (q) rows = rows.filter(r => r.title.toLowerCase().includes(q));
-            
-            // Apply sorting
-            if (sortMode === 'az') {
-              rows.sort((a, b) => a.title.localeCompare(b.title));
-            } else if (sortMode === 'za') {
-              rows.sort((a, b) => b.title.localeCompare(a.title));
-            } else {
-              rows.sort((a, b) => (b.created_at?.localeCompare?.(a.created_at)) || 0);
-            }
-            
             if (!rows.length) return;
 
             const section = document.createElement('div');
@@ -1788,17 +1625,11 @@
 
             const grid = document.createElement('div');
             grid.className = gridClass;
-            rows.forEach(row => grid.appendChild(renderItem(row)));
+            rows.sort((a, b) => (b.created_at?.localeCompare?.(a.created_at)) || 0)
+              .forEach(row => grid.appendChild(renderItem(row)));
 
             section.appendChild(grid);
             sectionsEl.appendChild(section);
-            
-            // Add divider after each section except the last
-            if (g !== groups[groups.length - 1]) {
-              const hr = document.createElement('hr');
-              hr.className = 'section-divider';
-              sectionsEl.appendChild(hr);
-            }
           });
         } else {
           gridEl.className = gridClass;
@@ -1807,7 +1638,6 @@
 
         updateViewToggleUI();
         updateMobileMenuUI();
-        updateSortUI();
       }, 100);
     }
 
@@ -1945,8 +1775,8 @@
       editingId = row?.id || null;
       mTitle.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> ${editingId ? 'Edit item' : 'Add item'}`;
       fTitle.value = row?.title || '';
-      fKind.value = row?.kind || '';
-      fStatus.value = row?.status || '';
+      fKind.value = row?.kind || 'SERIES';
+      fStatus.value = row?.status || 'PLAN';
       fSeason.value = row?.season ?? '';
       fEpisode.value = row?.episode ?? '';
       fAbs.value = row?.absolute_episode ?? '';
@@ -2018,13 +1848,13 @@
             const { data: ins2, error: err2 } = await supabase.from('entries').insert(retry).select().single();
             if (err2) throw err2;
             if (row.image_url && ins2?.id) setLocalImage(ins2.id, row.image_url);
-            // showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
+            showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
             return ins2;
           } else {
             const { data: upd2, error: err2 } = await supabase.from('entries').update(retry).eq('id', id).select().single();
             if (err2) throw err2;
             if (row.image_url) setLocalImage(id, row.image_url);
-            // showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
+            showToast('info', 'Tip: add a text column "image_url" to entries to sync covers across devices.');
             return upd2;
           }
         } else {
@@ -2053,22 +1883,7 @@
         q = searchEl.value.trim().toLowerCase();
         updateURL();
         render();
-        toggleSearchClear();
       }, 120);
-    };
-
-    // Search clear button
-    function toggleSearchClear() {
-      searchClear.classList.toggle('visible', searchEl.value.trim() !== '');
-    }
-
-    searchClear.onclick = () => {
-      searchEl.value = '';
-      q = '';
-      updateURL();
-      render();
-      toggleSearchClear();
-      searchEl.focus();
     };
 
     // Export
@@ -2176,104 +1991,55 @@
     document.getElementById('btn-login-2')?.addEventListener('click', () => openModal(loginModal));
 
     loginCancel.onclick = () => closeModal(loginModal);
-    signupCancel.onclick = () => closeModal(signupModal);
 
     // OAuth handlers
-    oauthEmail.onclick = () => {
+    oauthGoogle.onclick = () => signInProvider('google');
+    oauthApple.onclick = () => signInProvider('apple');
+    oauthDiscord.onclick = () => signInProvider('discord');
+    oauthEmailLink.onclick = () => {
       emailLoginRow.style.display = '';
-      loginIdentifier.focus();
+      loginEmail.focus();
       initFloatingLabels(loginModal);
     };
 
-    switchToSignup.onclick = () => {
-      closeModal(loginModal);
-      openModal(signupModal);
-    };
-
-    switchToLogin.onclick = () => {
-      closeModal(signupModal);
-      openModal(loginModal);
-    };
-
-    loginSend.onclick = async () => {
-      const identifier = loginIdentifier.value?.trim();
-      const password = loginPassword.value;
-      if (!identifier || !password) return showToast('error', 'Enter username/email and password');
-      
+    async function signInProvider(provider) {
       try {
-        // First, try to get email from identifier (could be username or email)
-        const { data: emailData, error: emailError } = await supabase.functions.invoke('email-for-username', {
-          body: { identifier }
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: { redirectTo: window.location.origin }
         });
-        
-        if (emailError) throw emailError;
-        const email = emailData?.email;
-        if (!email) throw new Error('User not found');
-        
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-        
         if (error) throw error;
-        showToast('success', 'Signed in successfully');
-        closeModal(loginModal);
       } catch (e) {
         console.error(e);
         showToast('error', e.message || 'Sign-in failed');
       }
+    }
+
+    loginSend.onclick = async () => {
+      const email = loginEmail.value?.trim();
+      if (!email) return showToast('error', 'Enter an email');
+      try {
+        const { error } = await supabase.auth.signInWithOtp({ email });
+        if (error) throw error;
+        showToast('success', 'Login link sent — check your inbox');
+        closeModal(loginModal);
+      } catch (e) {
+        showToast('error', e.message || 'Failed to send');
+      }
     };
 
-    signupSend.onclick = async () => {
-      const username = signupUsername.value?.trim();
-      const email = signupEmail.value?.trim();
-      const password = signupPassword.value;
-      
-      if (!username || !email || !password) {
-        return showToast('error', 'All fields are required');
+    loginEmail.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        loginSend.click();
       }
-      
-      if (password.length < 6) {
-        return showToast('error', 'Password must be at least 6 characters');
-      }
-      
-      try {
-        // Check if username is already taken
-        const { data: existingUser, error: userError } = await supabase
-          .from('profiles')
-          .select('id')
-          .eq('username', username)
-          .single();
-          
-        if (existingUser) {
-          return showToast('error', 'Username already taken');
-        }
-        
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              username
-            }
-          }
-        });
-        
-        if (error) throw error;
-        showToast('success', 'Account created! Please check your email to verify.');
-        closeModal(signupModal);
-      } catch (e) {
-        console.error(e);
-        showToast('error', e.message || 'Sign-up failed');
-      }
-    };
+    });
 
     // URL params sync
     function updateURL() {
       const params = new URLSearchParams(window.location.search);
       params.set('tab', activeTab);
       params.set('view', viewMode);
-      params.set('sort', sortMode);
       if (q) params.set('q', q);
       else params.delete('q');
       history.replaceState(null, '', `${location.pathname}?${params.toString()}`);
@@ -2290,8 +2056,6 @@
       const v = params.get('view');
       const stored = localStorage.getItem('anibros:view') || 'grid';
       viewMode = (v === 'compact' || v === 'grid') ? v : stored;
-      const s = params.get('sort');
-      sortMode = ['recent', 'az', 'za'].includes(s) ? s : 'recent';
     }
 
     function updateViewToggleUI() {
@@ -2308,12 +2072,6 @@
       }
     }
 
-    function updateSortUI() {
-      sortRecent.classList.toggle('active', sortMode === 'recent');
-      sortAZ.classList.toggle('active', sortMode === 'az');
-      sortZA.classList.toggle('active', sortMode === 'za');
-    }
-
     viewBtnGrid.addEventListener('click', () => {
       viewMode = 'grid';
       localStorage.setItem('anibros:view', viewMode);
@@ -2324,25 +2082,6 @@
     viewBtnCompact.addEventListener('click', () => {
       viewMode = 'compact';
       localStorage.setItem('anibros:view', viewMode);
-      updateURL();
-      render();
-    });
-
-    // Sort buttons
-    sortRecent.addEventListener('click', () => {
-      sortMode = 'recent';
-      updateURL();
-      render();
-    });
-
-    sortAZ.addEventListener('click', () => {
-      sortMode = 'az';
-      updateURL();
-      render();
-    });
-
-    sortZA.addEventListener('click', () => {
-      sortMode = 'za';
       updateURL();
       render();
     });
@@ -2613,7 +2352,6 @@
       toggle(clearAbs, fAbs);
       toggle(clearImage, fImage);
       toggle(clearNotes, fNotes);
-      toggleSearchClear();
 
       // keep floating labels in sync
       initFloatingLabels(modal);
@@ -2649,8 +2387,6 @@
       readURL();
       renderTabs();
       updateViewToggleUI();
-      updateSortUI();
-      toggleSearchClear();
 
       const { data: { session: s} } = await supabase.auth.getSession();
       session = s;
@@ -2683,3 +2419,251 @@
   </script>
 </body>
 </html>
+
+
+as for mobile ui,  the -, EP #, and + should be on one line, then the category (plan, complete, etc) should be on the next, for the grid view, the shelf is fine
+
+on mobile especially, make sure theres no horizontal scroll, there is slight rn
+
+acctually, for the shelf on mobile and desktop, the settings and delete icon should be moved to the top right of the card, since theres enough space, instead of on the cover img
+
+for the desktop shelf view, there should be 3 cards in a row, not 2 like now
+
+on mobile, the users online, username, and sign in/oout should be put into a hamburger menu, coz they just overlapping and looking fucked now
+make the usrname, sign in/out, users online, and other shit u see fit, should be in a hamburger menu on mobile
+the title should be in its own line, and then the add item and grid.shelf buttons in the other
+
+change the theme of the scroll to top btn, it should be a plain white with a black angle up icon instead, and add colour and scale wehn hovered or clicked and shi, u know the stuffs 
+
+on mobile, the scroll to top btn should be centered instead of on the right, and it should be scaled down a bit
+
+as for the title, grid/shelf view, and add item, rework them like this: 
+Title and add item on one line
+then cats on the other like now
+then the sort by A-Z, Z-A Recent (new, add this) and grid/shelf view (right side ofc) in the 3rd line, also on mobile, the grid/shelf view button should jsut be the icons, no text, desktop should keep the text tho like now, since theres enough space
+
+in the all section, there should be nicely themed (but minimilist) <hr> tags to speerate the sections/cats, and their font should be increased a bit, itsa bit small now
+
+move the google, apple and discord sigin, it should be email only, in fact, tweak it up, make a username and PW system, and also dont include any 2FA, obv ur gonna need to eidt the signup modal with all this, and the sql im gonna provide with the changes, it should be usernme, email,and password only, so the new setions in the sign up mdal will tbe a log in and and sign up, make it that u can login with both a username and email address, which should be the display name under the users section in supabase 
+
+for the footer, mkae there be 2 sides, there already is, just rework it a bit, the aninbros should be on the left, and the made with ramen blah blah on the right, and on moible, they should be under each other intead of left and right like desktop
+
+
+as for the inputs in the settings modal, the series/movie should also have a placehole/title that says "Series/Movie", and the category, that sys "Category"
+
+add a working scroll to top button, thats on the right bottom on desktop and mid bottom on mobile, and hides until u scroll
+
+format the code nicely
+
+
+add an X button in the search title input that is only there when there is texxt inside the input box, otherwise it shouldnt be there, just like the ones in the edit modal
+
+
+
+heres the sql:
+-- =====================================================================
+-- AniBros Supabase schema (fixed + clean version)
+-- =====================================================================
+
+create extension if not exists "pgcrypto";
+create extension if not exists "citext";
+
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'media_kind') then
+    create type public.media_kind as enum ('SERIES', 'MOVIE');
+  end if;
+
+  if not exists (select 1 from pg_type where typname = 'entry_status') then
+    create type public.entry_status as enum ('WATCHING', 'PLAN', 'REWATCH', 'WAITING', 'COMPLETED');
+  end if;
+end
+$$ language plpgsql;
+
+-- =====================================================================
+-- Updated-at trigger function
+-- =====================================================================
+create or replace function public.handle_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = timezone('utc', now());
+  return new;
+end;
+$$;
+
+-- =====================================================================
+-- Entries table
+-- =====================================================================
+create table if not exists public.entries (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  title text not null check (length(trim(title)) > 0),
+  kind public.media_kind not null,
+  status public.entry_status not null default 'PLAN',
+  season integer,
+  episode integer,
+  absolute_episode integer,
+  image_url text,
+  notes text,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now()),
+  constraint season_non_negative check (season is null or season >= 0),
+  constraint episode_non_negative check (episode is null or episode >= 0),
+  constraint abs_episode_non_negative check (absolute_episode is null or absolute_episode >= 0),
+  constraint mutually_exclusive_episode check (
+    absolute_episode is null
+    or (season is null and episode is null)
+  ),
+  constraint image_url_length check (image_url is null or length(image_url) <= 2048)
+);
+
+alter table public.entries
+  alter column user_id set default auth.uid();
+
+create trigger entries_updated_at
+before update on public.entries
+for each row execute function public.handle_updated_at();
+
+create index if not exists entries_user_id_idx on public.entries(user_id);
+create index if not exists entries_user_status_idx on public.entries(user_id, status);
+create index if not exists entries_created_at_idx on public.entries(created_at desc);
+create unique index if not exists entries_unique_title_per_user_idx
+  on public.entries (user_id, lower(title));
+
+-- =====================================================================
+-- Row-Level Security
+-- =====================================================================
+alter table public.entries enable row level security;
+
+create policy "Users can view their own entries"
+on public.entries
+for select
+using (auth.uid() = user_id);
+
+create policy "Users can insert their own entries"
+on public.entries
+for insert
+with check (auth.uid() = user_id);
+
+create policy "Users can update their own entries"
+on public.entries
+for update
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+create policy "Users can delete their own entries"
+on public.entries
+for delete
+using (auth.uid() = user_id);
+
+-- =====================================================================
+-- Profiles table
+-- =====================================================================
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  username citext not null,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now()),
+  constraint username_non_empty check (length(trim(username::text)) >= 3)
+);
+
+create unique index if not exists profiles_username_unique_idx
+  on public.profiles (username);
+
+create trigger profiles_updated_at
+before update on public.profiles
+for each row execute function public.handle_updated_at();
+
+alter table public.profiles enable row level security;
+
+create policy "Users can view their profile"
+on public.profiles
+for select
+using (auth.uid() = id);
+
+create policy "Users can insert their profile"
+on public.profiles
+for insert
+with check (auth.uid() = id);
+
+create policy "Users can update their profile"
+on public.profiles
+for update
+using (auth.uid() = id)
+with check (auth.uid() = id);
+
+-- =====================================================================
+-- Sync Profile Function (links auth.users → profiles)
+-- =====================================================================
+create or replace function public.sync_profile()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+declare
+  v_username text;
+begin
+  v_username := coalesce(nullif(trim(new.raw_user_metadata ->> 'username'), ''), split_part(new.email, '@', 1));
+  if v_username is null then
+    v_username := split_part(new.email, '@', 1);
+  end if;
+
+  insert into public.profiles (id, username)
+  values (new.id, v_username)
+  on conflict (id) do update
+    set username = excluded.username,
+        updated_at = timezone('utc', now());
+
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+drop trigger if exists on_auth_user_updated on auth.users;
+
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute function public.sync_profile();
+
+create trigger on_auth_user_updated
+after update on auth.users
+for each row execute function public.sync_profile();
+
+-- =====================================================================
+-- Email lookup by username or email
+-- =====================================================================
+drop function if exists public.email_for_username(text);
+
+create or replace function public.email_for_username(p_identifier text)
+returns text
+language sql
+security definer
+set search_path = public, auth
+as $$
+  select u.email
+  from auth.users u
+  left join public.profiles p on p.id = u.id
+  where lower(u.email) = lower(p_identifier)
+     or (p.username is not null and lower(p.username::text) = lower(p_identifier))
+  limit 1;
+$$;
+
+grant execute on function public.email_for_username(text) to authenticated, anon;
+
+-- =====================================================================
+-- Realtime publication
+-- =====================================================================
+alter publication supabase_realtime add table public.entries;
+
+-- =====================================================================
+-- End of schema
+-- =====================================================================
+
+
+
+add/improve anything else u see fit
+
+give the full html css js, and then sql with the changes, keep all APIs and shi intact, and tldr wat u do before the code 
