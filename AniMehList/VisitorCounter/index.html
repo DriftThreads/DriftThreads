@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="A sleek visitor counter powered by Supabase, tracking visits in real-time with a modern dark theme and gradient accents." />
+  <meta name="keywords" content="visitor counter, supabase, html5, javascript, web counter, real-time analytics" />
+  <meta name="author" content="Crusher" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Visitor Counter" />
+  <meta property="og:description" content="Track your website visits effortlessly with this Supabase-integrated counter." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://oliversmith-main.github.io/VisitorCounter" />
+  <meta property="og:image" content="logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Visitor Counter" />
+  <meta name="twitter:description" content="A simple yet powerful visitor counter using Supabase." />
+  <meta name="twitter:image" content="logo.png" />
+  <title>Visitor Counter</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Orbitron:wght@400;500;600;700;800;900&family=Righteous&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #121212;
+      --card: #1e1e1e;
+      --muted: #9aa4b2;
+      --accent: linear-gradient(90deg, #86efac, #22c55e);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(34, 197, 94, 0.06), transparent 10%), var(--bg);
+      color: #e6eef6;
+    }
+    .wrap {
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.03);
+      padding: 40px;
+      border-radius: 14px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+      text-align: center;
+    }
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    .count {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 96px;
+      font-weight: 800;
+      line-height: 1;
+      background: var(--accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 4px rgba(34,197,94,0.3);
+    }
+    .loading-icon {
+      font-size: 72px;
+      color: #22c55e;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    footer {
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      font-style: italic;
+    }
+    footer a {
+      color: #86efac;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    footer a:hover {
+      text-decoration: underline;
+      color: #22c55e;
+    }
+    footer i {
+      margin-right: 6px;
+    }
+    @media (max-width: 520px) {
+      .count { font-size: 72px; }
+      .loading-icon { font-size: 48px; }
+      .title { font-size: 28px; }
+    }
+
+
+
+
+    /* Add this to your existing CSS */
+::selection {
+  background: #7ee081; /* Light green */
+  color: #0f172a; /* Dark navy-ish text for contrast */
+}
+
+/* For Firefox support */
+::-moz-selection {
+  background: #7ee081;
+  color: #0f172a;
+}
+
+/* Optional: Different shade for specific elements */
+.highlight-green::selection {
+  background: #a3e635; /* Softer, slightly yellow-green */
+  color: #0f172a;
+}
+
+/* Dark mode compatible version */
+@media (prefers-color-scheme: dark) {
+  ::selection {
+    background: #86efac; /* Soft mint green for dark mode */
+    color: #1a202c; /* Dark text for good contrast */
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="title">Visitor Count</div>
+      <div id="count" class="count"><i class="fas fa-spinner loading-icon"></i></div>
+      <footer>
+        The most useful app to mankind.<br>
+        Check out the <a href="https://github.com/OliverSmith-Main/VisitorCounter" target="_blank"><i class="fab fa-github"></i>GitHub repo</a>.
+      </footer>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    // ----- CONFIG: replace these with your project values -----
+    const SUPABASE_URL = 'https://ywgrvubyjrjslpmdfgmn.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3Z3J2dWJ5anJqc2xwbWRmZ21uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjE2NDIsImV4cCI6MjA3NTU5NzY0Mn0.kkhQkLPY7rR0GgY_VZ3Qg_Pas0W0yHf-vjxrxJbxwes'
+    // ---------------------------------------------------------
+
+    const countEl = document.getElementById('count')
+
+    function fallbackLocalInc() {
+      const n = Number(localStorage.getItem('fake_visits') || 0) + 1
+      localStorage.setItem('fake_visits', n)
+      countEl.innerHTML = n
+    }
+
+    async function once() {
+      if (!SUPABASE_URL || SUPABASE_URL.includes('REPLACE_ME')) {
+        console.warn('Supabase keys not set, using local fallback')
+        fallbackLocalInc()
+        return
+      }
+
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+      try {
+        const { error: insertErr } = await supabase.from('visits').insert([{}])
+        if (insertErr) throw insertErr
+
+        const { count, error } = await supabase.from('visits').select('id', { count: 'exact' })
+        if (error) throw error
+
+        const total = count ?? 0
+        countEl.innerHTML = String(total)
+      } catch (err) {
+        console.error('Supabase error:', err)
+        fallbackLocalInc()
+      }
+    }
+
+    window.addEventListener('load', once)
+  </script>
+</body>
+</html>

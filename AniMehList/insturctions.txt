@@ -1,0 +1,133 @@
+
+the boxes with the actual anime also needs to get a complete new look, also make it that theres also -1 ep, not just +1, pls, with it curently shoiwng what ep u on, make it that the card it self shows all the info u need (EP, S, what list (watching, plan to watch, etc)), then theres a settings icon where u can edit it, and also have like a delete icon too, with the the -1 +1 and allat shit too
+also make it possible for their to be acover image for your anime, bto h on the dd list, and the edit list, it shouldnt be an uploadeable one, it should be url only, aint got server space lol, the images should be in a 1:1 ratio img box for the lists and shi
+
+the banner image also need to be cropped, so yeah 100vw but maybe a certain height only, espeically for pc, otherwise it can take up too much space, pick a rtio u see fit
+
+the titles use Orbitron rn, make all the other non title text use a good sans font from google fonts, one that looks good and matches
+
+the search title should also be moved to the left side of the cat bar, and the cat tags (watching, all etc) should be under it instead, also 'all' needs to be in front, and the default selected one, obv thaat section having seperatores with watching, plan to watch and allat, obv above allat sould be the nav bar and hero/banner
+
+also add the url search queary thing or wathcever, like how website.com/?q=whatever for the categoriess/cats/tags
+
+add a warning modal for the sign out option, make it work out somehow, and also it sends the email whenu press enter on pc, and also swap all these wordings of 'magic links' to 'login links' no need to be fancy
+
+when inside a modal, remove the ability to scroll the bg, and darken it out obv
+
+alr remove tht whole uploading custom banner, it should randomly pick from banner-1.png to banner-10.png on every load, footer postioning also needs to be fixed, and favicon and shi, mkae sure its completely fgone from this code pls
+
+make a favicon too pls, its favicon.png
+
+remove the footer img, just make a normal footer with normal footer stuff
+
+make sure the site is fully reposnive for mobile too
+
+use and implement fontawesome icons all over the site
+
+add/improve anything else u see fit
+
+
+remove all these unneccesry tranparcy places, they just fuck up most of the site, add it only in places where it works, and looks nice without breaking anything
+
+make sure all the Add Item is there by the cats and shi too, dont move it
+
+mkae it possible to import json files, gimme an example of one with like 10 anime, image and all
+
+give the full html css js with changes, keep all APIs and shi intact, and tldr wat u do before the code 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+the cat buttons should be in a horizontally scrollable list, not wrapped. especially for mobile
+
+remove the notes on the card, they should only be viewable in the settings
+
+add an X button in the inputs (titles, etc.) that is only there when there is texxt inside the input box, otherwise it shouldnt be there
+
+the anime that is edited should be sent to the top of the list in its cat, instead just stay in its pos at the time, otherwise it gets annoying, obv newly added ones hould go to the top
+
+
+as for the imaage grabs, only the highest qulaity should be preffered, otherwise whatever it finds
+
+the autocover should be in the same line as the img url box when in settings
+
+
+for the compact view on desktop, there should be 3 cards in a row
+
+add a working scroll to top button, thats on the right bottom on desktop and mid bottom on mobile, and hides until u scroll a bit, so its not there at the top whenits useless, obv style it to the rest of the web
+
+
+
+
+
+
+
+
+
+
+
+
+make the banner about double the height it is rn (or whatever would be right, and not too small), and add some padding above the title thats over the banner, alongside some bg shadow for both the title and slogn,sub title
+
+move the cat (plan, watching etc) thats on the card to be on the bottom left, instead of the bottom right
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------
+
+
+
+the scroll to top is broken, dunnno why, it doesnt appear
+
+the delete icon should be removed from the cards, and only on the edit modal
+
+the users online is fine, leave it
+
+make the usrname, sign in/out, should be popup, called Account, where u see ur stats, username, email, and and can logout 
+
+the grid card layout on mobile needs some adjusting, the -1 EP# and +1 shold be on the same line, now the +1 moves over to the next, fix it
+
+wheeres the settings icon on the compact view cards? add it
+
+the sort by (recent, a-z. z-a) filters should be in a dropdown, not induvidual button like now, and should be put on the left, not on the right affer the grid/shelf selector
+
+add a decently srtyle, working preloader
+
+the cards should be more consistent, where there should always be 2 lines for title, even if it doesnt take up the full 2 lines, and if its longer than 2, then it should have the elipses like now
+
+fiox the lazy loading loading icon, it should be better, and be placed in better places, depending on what its laoding ig
+
+also,add some skeleton loading cards part of preloding, ig? or whatever would be best
+
+add/improve anything else u see fit
+
+give the full html css js with changes, keep all APIs and shi intact, and tldr wat u do before the code 
+
+
+
+heres the sql if u need some reference
