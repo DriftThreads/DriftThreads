@@ -111,18 +111,12 @@
         white-space: nowrap;
       }
 
-      .nav-meta {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
       .nav-cta {
         display: flex;
         gap: 10px;
         align-items: center;
         margin-left: auto;
+        flex-wrap: nowrap;
       }
 
       .btn {
@@ -185,7 +179,6 @@
         .brand-title { font-size: 15px }
         .logo-img { width: 30px; height: 30px }
         .logo { justify-content: center; flex: none }
-        .nav-meta { display: none }
         .toolbar-top { flex-direction: column; align-items: stretch; gap: 8px }
         .actions-row { flex-direction: row; justify-content: space-between }
         .search { width: 100% }
@@ -511,7 +504,10 @@
       .progress-readout {
         display: inline-flex; gap: 4px; align-items: center; padding: 6px 10px; border-radius: 8px;
         background: #131a2f; border: 1px solid rgba(255, 255, 255, .08);
-        font-size: 12px; color: #cfe0ff; flex: 1 1 auto; min-width: 0;
+        font-size: 12px; color: #cfe0ff; 
+        flex: 0 0 auto; /* don't stretch to full width */
+        min-width: max-content; /* fit content without breaking */
+        max-width: 100%;
       }
 
       .move-select, .select {
@@ -539,18 +535,23 @@
       }
 
       @media (max-width:520px) {
-        /* Keep -1, EP, +1 on the same line; move-select drops to next line full width */
+        /* Keep -1, EP, +1 on the same line; progress shrinks to content width; move-select drops to next line full width */
         .controls {
           display: grid;
-          grid-template-columns: 32px 1fr 32px;
+          grid-template-columns: 32px max-content 32px;
           align-items: center;
           gap: 6px;
         }
         .control-btn { 
-          /* width: 32px; */
-           height: 28px;
-            padding: 0; }
-        .progress-readout { padding: 4px 8px; font-size: 12px; min-width: 0; }
+          height: 28px;
+          padding: 0;
+        }
+        .progress-readout { 
+          padding: 4px 8px; 
+          font-size: 12px; 
+          min-width: max-content; 
+          justify-self: center;
+        }
         .move-select { grid-column: 1 / -1; width: 100%; margin-left: 0; }
       }
 
@@ -652,7 +653,7 @@
         min-width: 220px; max-width: 420px; padding: 12px 14px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.45);
         color: #fff; font-weight: 700; display: flex; gap: 10px; align-items: center; transform: translateY(10px) scale(.995); opacity: 0;
       }
-      .toast .msg { font-weight: 700; font-size: 14px }
+      .toast .msg { font-weight: 700; font-size: 14px; white-space: normal; }
       .toast.info { background: #1b304a }
       .toast.success { background: linear-gradient(90deg, #16a34a, #22c55e) }
       .toast.error { background: linear-gradient(90deg, var(--danger), #ef6b6b) }
@@ -761,11 +762,8 @@
       .tab-btn { flex: 1; padding: 8px; border-radius: 8px; background: #12182a; border: 1px solid rgba(255, 255, 255, .06); color: #c6cde0; cursor: pointer }
       .tab-btn.active { background: linear-gradient(90deg, rgba(124,58,237,.25), rgba(34,211,238,.2)); color: #fff }
 
-      /* Account panel — redesigned */
-      .account-panel {
-        padding: 0;
-        overflow: hidden;
-      }
+      /* Account panel — redesigned (with online + dicebear) */
+      .account-panel { padding: 0; overflow: hidden; }
       .account-header {
         display: flex; align-items: center; gap: 12px;
         padding: 14px;
@@ -775,6 +773,7 @@
       .account-avatar {
         width: 44px; height: 44px; border-radius: 10px; background: #1a2240; display: flex; align-items: center; justify-content: center;
         font-weight: 900; font-family: var(--title-font); letter-spacing: .5px; color: #e9ecf3; border: 1px solid rgba(255,255,255,.15);
+        background-size: cover; background-position: center; overflow: hidden;
       }
       .account-id .name {
         font-family: var(--title-font); font-size: 15px; letter-spacing: .3px; color: #e9ecf3;
@@ -790,7 +789,8 @@
       .stat-value { font-size: 20px; font-weight: 800; color: #e9f0ff; margin-top: 2px }
       .stat-card.total .stat-value { color: var(--accent-2) }
       .stat-card.watch .stat-value { color: var(--accent-1) }
-      .account-actions { padding: 12px; border-top: 1px solid rgba(255,255,255,.06) }
+      .stat-card.online .stat-value { color: #86efac }
+      .account-actions { padding: 12px; border-top: 1px solid rgba(255,255,255,.06); display:flex; flex-wrap:wrap; gap:8px }
 
       /* Preloader (app-level) */
       .preloader {
@@ -813,6 +813,69 @@
         filter: drop-shadow(0 4px 12px rgba(167,139,250,.35));
       }
       .preloader-msg { color: #cbd5f7; font-size: 13px }
+
+      /* Chat modal */
+      .chat-sheet {
+        width: min(820px, 98%);
+        display: grid;
+        grid-template-rows: auto 1fr auto auto;
+        max-height: 86dvh;
+      }
+      .chat-header {
+        display: flex; align-items: center; gap: 10px; justify-content: space-between; margin-bottom: 10px;
+      }
+      .chat-title {
+        display: flex; align-items:center; gap:10px; font-family: var(--title-font); letter-spacing:.4px;
+      }
+      .chat-presence { margin-left: auto; margin-right: 8px }
+      .chat-body {
+        overflow: auto;
+        background: #0f1424;
+        border: 1px solid rgba(255,255,255,.06);
+        border-radius: 12px;
+        padding: 10px;
+      }
+      .chat-composer {
+        display: grid; grid-template-columns: 34px 1fr auto; gap: 8px; align-items: end; margin-top: 10px;
+      }
+      .chat-avatar {
+        width: 34px; height: 34px; border-radius: 8px; border:1px solid rgba(255,255,255,.12);
+        background: #101525; object-fit: cover;
+      }
+      .chat-input {
+        resize: none; min-height: 38px; max-height: 140px;
+      }
+      .msg {
+        display: grid; grid-template-columns: 32px 1fr; gap: 8px; margin: 6px 0; align-items: start;
+      }
+      .msg.mine { grid-template-columns: 1fr 32px }
+      .msg .avatar {
+        width: 32px; height: 32px; border-radius: 8px; border:1px solid rgba(255,255,255,.12); background:#101525; object-fit: cover;
+      }
+      .msg.mine .avatar { grid-column: 2 }
+      .bubble {
+        background: #12182a; border: 1px solid rgba(255,255,255,.08);
+        border-radius: 10px; padding: 8px 10px; max-width: 100%;
+      }
+      .msg.mine .bubble {
+        background: linear-gradient(90deg, rgba(124,58,237,.18), rgba(34,211,238,.12));
+        border-color: rgba(255,255,255,.1);
+      }
+      .meta { display:flex; gap:8px; align-items:center; color:#aab3cf; font-size:12px; margin-bottom: 4px }
+      .meta .user { font-weight:700; color:#dbe4ff }
+      .meta .time { color:#98a2c0; font-variant-numeric: tabular-nums }
+      .content { white-space: pre-wrap; word-break: break-word; color:#e8ecfa }
+      .content a { color: #8ab4ff; text-decoration: underline }
+
+      @media (max-width:520px) {
+        .chat-sheet { grid-template-rows: auto 1fr auto auto; }
+        .chat-body { padding: 8px }
+        .chat-composer { grid-template-columns: 28px 1fr auto }
+        .chat-avatar { width: 28px; height: 28px }
+        .msg { grid-template-columns: 28px 1fr; gap: 6px }
+        .msg.mine { grid-template-columns: 1fr 28px }
+        .msg .avatar { width: 28px; height: 28px }
+      }
     </style>
   </head>
   <body>
@@ -829,9 +892,6 @@
       <div class="container nav">
         <div class="logo">
           <img src="assets/wide_logo.png" alt="AniMehList" class="logo-img">
-          <div class="nav-meta">
-            <span class="tag" id="presence"><i class="fa-solid fa-circle" style="color:var(--ok);font-size:8px"></i><span id="presence-text">0 online</span></span>
-          </div>
         </div>
         <div class="nav-cta" id="auth-cta"></div>
         <button class="btn icon hamburger" id="btn-menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobile-menu" title="Menu"><i class="fa-solid fa-bars"></i></button>
@@ -840,20 +900,25 @@
       <!-- Mobile menu -->
       <div class="menu-panel" id="mobile-menu" role="menu" aria-label="Navigation menu">
         <div class="menu-sec">
-          <div class="menu-title">Status</div>
-          <div class="menu-row"><span class="tag"><i class="fa-solid fa-circle" style="color:var(--ok);font-size:8px"></i><span id="m-presence-text">0 online</span></span></div>
-        </div>
-        <div class="menu-sec">
           <div class="menu-title">Quick actions</div>
           <div class="menu-row"><button class="btn brand" id="m-add"><i class="fa-solid fa-plus"></i>Add item</button></div>
         </div>
+
+        <div class="menu-sec">
+          <div class="menu-title">Community</div>
+          <div class="menu-row">
+            <div class="menu-item">
+              <div class="menu-kv"><i class="fa-solid fa-comments"></i>Global Chat <span class="menu-note" id="m-chat-online">(0 online)</span></div>
+              <button class="btn ghost sm" id="m-open-chat">Open</button>
+            </div>
+          </div>
+        </div>
+
         <div class="menu-sec">
           <div class="menu-title">View</div>
           <div class="menu-row" role="group" aria-label="View toggle">
             <div class="menu-item">
-              <div class="menu-kv"><i class="fa-solid fa-grip"></i>
-              
-              </div>
+              <div class="menu-kv"><i class="fa-solid fa-grip"></i>Grid</div>
               <button class="btn ghost sm" id="m-view-grid">Use</button>
             </div>
             <div class="menu-item">
@@ -862,6 +927,7 @@
             </div>
           </div>
         </div>
+
         <div class="menu-sec">
           <div class="menu-title">Account</div>
           <div class="menu-row">
@@ -872,6 +938,7 @@
             </div>
           </div>
         </div>
+
         <div class="menu-sec">
           <div class="menu-title">Data</div>
           <div class="menu-row">
@@ -882,7 +949,7 @@
         </div>
       </div>
 
-      <!-- Account panel (redesigned) -->
+      <!-- Account panel (redesigned + online + clear list) -->
       <div class="account-panel" id="account-panel" aria-label="Account panel">
         <div class="account-header">
           <div class="account-avatar" id="account-avatar">U</div>
@@ -900,8 +967,14 @@
             <div class="stat-label"><i class="fa-solid fa-eye"></i> Watching</div>
             <div class="stat-value" id="account-watching">0</div>
           </div>
+          <div class="stat-card online">
+            <div class="stat-label"><i class="fa-solid fa-signal"></i> Online now</div>
+            <div class="stat-value" id="account-online">0</div>
+          </div>
         </div>
         <div class="account-actions">
+          <button class="btn ghost sm" id="account-export"><i class="fa-solid fa-file-export"></i>Export JSON</button>
+          <button class="btn danger sm" id="account-clear-list"><i class="fa-solid fa-bomb"></i>Clear list</button>
           <button class="btn ghost sm" id="account-logout"><i class="fa-solid fa-right-from-bracket"></i>Sign out</button>
         </div>
       </div>
@@ -1091,6 +1164,24 @@
       </div>
     </div>
 
+    <!-- Chat Modal -->
+    <div class="modal" id="chat-modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="sheet chat-sheet" role="document">
+        <div class="chat-header">
+          <div class="chat-title"><i class="fa-solid fa-comments"></i> Global Chat</div>
+          <span class="tag chat-presence" id="chat-presence"><i class="fa-solid fa-circle" style="color:var(--ok);font-size:8px"></i><span id="chat-presence-text">0 online</span></span>
+          <button class="btn ghost sm" id="chat-close"><i class="fa-solid fa-xmark"></i>Close</button>
+        </div>
+        <div id="chat-messages" class="chat-body" role="log" aria-live="polite"></div>
+        <div class="chat-composer">
+          <img id="chat-self-avatar" class="chat-avatar" alt="">
+          <textarea id="chat-input" class="input chat-input" placeholder="Type a message…" rows="1"></textarea>
+          <button id="chat-send" class="btn brand" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="muted-small" style="margin-top: 10px;">Messages are cleared every 3 days.</div>
+      </div>
+    </div>
+
     <div id="toasts" aria-live="polite"></div>
     <div id="loading-spinner" aria-label="Loading"><i class="fa-solid fa-spinner"></i></div>
     <button id="scroll-to-top" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
@@ -1131,6 +1222,7 @@
       let viewMode = 'grid';     // 'grid' | 'compact'
       let sortMode = 'recent';   // 'recent' | 'az' | 'za'
       const IMG_LOCAL_PREFIX = 'anibros_images:';
+      let presenceCount = 0;
 
       // Elements
       const sectionsEl = document.getElementById('sections');
@@ -1141,8 +1233,6 @@
       const btnAdd = document.getElementById('btn-add');
       const authCta = document.getElementById('auth-cta');
       const bannerImage = document.getElementById('banner-image');
-      const presenceText = document.getElementById('presence-text');
-      const mPresenceText = document.getElementById('m-presence-text');
       const emptyEl = document.getElementById('empty');
       const loadingSpinner = document.getElementById('loading-spinner');
       const btnRefreshCovers = document.getElementById('btn-refresh-covers');
@@ -1163,6 +1253,8 @@
       const mUserEmail = document.getElementById('m-user-email');
       const mImport = document.getElementById('m-import');
       const mExport = document.getElementById('m-export');
+      const mOpenChat = document.getElementById('m-open-chat');
+      const mChatOnline = document.getElementById('m-chat-online');
 
       // Account panel
       const accountPanel = document.getElementById('account-panel');
@@ -1172,6 +1264,9 @@
       const accountWatching = document.getElementById('account-watching');
       const accountLogout = document.getElementById('account-logout');
       const accountAvatar = document.getElementById('account-avatar');
+      const accountOnline = document.getElementById('account-online');
+      const accountExport = document.getElementById('account-export');
+      const accountClearList = document.getElementById('account-clear-list');
 
       // Add/Edit modal
       const modal = document.getElementById('modal');
@@ -1211,6 +1306,15 @@
       const confirmOk = document.getElementById('confirm-ok');
       const confirmCancel = document.getElementById('confirm-cancel');
 
+      // Chat modal
+      const chatModal = document.getElementById('chat-modal');
+      const chatMessagesEl = document.getElementById('chat-messages');
+      const chatInput = document.getElementById('chat-input');
+      const chatSend = document.getElementById('chat-send');
+      const chatClose = document.getElementById('chat-close');
+      const chatPresenceText = document.getElementById('chat-presence-text');
+      const chatSelfAvatar = document.getElementById('chat-self-avatar');
+
       const toasts = document.getElementById('toasts');
 
       // Import/Export
@@ -1236,6 +1340,7 @@
       let editingId = null;
       let changesChannel = null;
       let presenceChannel = null;
+      let chatChannel = null;
 
       // --- Helpers ---
       function showToast(type, msg, ms = 4200) {
@@ -1252,8 +1357,20 @@
       function escapeHtml(s) {
         return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
       }
+      function linkify(text) {
+        const safe = escapeHtml(text);
+        return safe.replace(/(https?:\/\/[^\s<]+)/g, (m) => `<a href="${m}" target="_blank" rel="noopener noreferrer">${m}</a>`);
+      }
       function showLoading(show = true) {
         loadingSpinner.classList.toggle('active', show);
+      }
+      const pad2 = (n) => String(n).padStart(2, '0');
+      function fmtTime(ts) {
+        const d = new Date(ts);
+        return `${pad2(d.getHours())}:${pad2(d.getMinutes())} ${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
+      }
+      function diceAvatar(username) {
+        return `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${encodeURIComponent(username || 'bro')}`;
       }
 
       // Preloader control
@@ -1626,6 +1743,7 @@
 
           if (!user) {
             emptyEl.style.display = '';
+            updateAccountUI();
             return;
           } else {
             emptyEl.style.display = 'none';
@@ -1703,9 +1821,17 @@
         }
       }
 
-      // Auth UI
+      // Auth UI + Desktop nav buttons (Chat + Account)
       function updateAuthUI() {
         authCta.innerHTML = '';
+        // Chat button is available regardless of auth (will prompt sign-in if needed on open)
+        const chatBtn = document.createElement('button');
+        chatBtn.className = 'btn ghost';
+        chatBtn.id = 'btn-chat';
+        chatBtn.innerHTML = '<i class="fa-solid fa-comments"></i> Chat';
+        chatBtn.onclick = () => openChat();
+        authCta.append(chatBtn);
+
         if (user) {
           const btn = document.createElement('button');
           btn.className = 'btn ghost';
@@ -1734,7 +1860,9 @@
           accountEmail.textContent = user.email || 'Unknown';
           accountTotal.textContent = data.length;
           accountWatching.textContent = data.filter(d => d.status === 'WATCHING').length;
-          accountAvatar.textContent = (name?.[0] || 'U').toString().toUpperCase();
+          accountOnline.textContent = presenceCount;
+          accountAvatar.textContent = '';
+          accountAvatar.style.backgroundImage = `url('${diceAvatar(name)}')`;
         }
       }
 
@@ -1762,6 +1890,7 @@
       // Realtime
       function setupRealtime() {
         if (changesChannel) supabase.removeChannel(changesChannel);
+        if (!user) return;
         changesChannel = supabase.channel('entries-db').on(
           'postgres_changes',
           { event: '*', schema: 'public', table: 'entries', filter: `user_id=eq.${user.id}` },
@@ -1783,16 +1912,19 @@
         ).subscribe();
       }
 
-      // Presence
+      // Presence (used by chat + account)
       function setupPresence() {
         if (presenceChannel) supabase.removeChannel(presenceChannel);
-        presenceChannel = supabase.channel('room:lobby', { config: { presence: { key: user.id } } });
+        const key = user?.id || `anon_${Math.random().toString(36).slice(2)}`;
+        presenceChannel = supabase.channel('room:lobby', { config: { presence: { key } } });
         presenceChannel.on('presence', { event: 'sync' }, () => {
           const state = presenceChannel.presenceState();
           const all = new Set();
           Object.values(state).forEach(arr => arr.forEach(v => all.add(v.presence_ref)));
-          presenceText.textContent = `${all.size} online`;
-          mPresenceText.textContent = `${all.size} online`;
+          presenceCount = all.size;
+          chatPresenceText.textContent = `${presenceCount} online`;
+          mChatOnline.textContent = `(${presenceCount} online)`;
+          updateAccountUI();
         });
         presenceChannel.subscribe(async status => {
           if (status === 'SUBSCRIBED') { await presenceChannel.track({ at: Date.now() }); }
@@ -1954,6 +2086,7 @@
         URL.revokeObjectURL(url);
         showToast('success', 'Exported');
       }
+      accountExport.onclick = () => doExport();
 
       // Import
       btnImport.onclick = () => importFile.click();
@@ -2128,6 +2261,27 @@
         location.reload();
       });
 
+      // TRIPLE confirm clear list
+      accountClearList.onclick = () => {
+        if (!user) return showToast('error', 'Sign in first');
+        openConfirm('Clear your entire list', 'Highly recommended: Export JSON first (Account → Export, or footer). Continue?', async () => {
+          openConfirm('Double-check', 'This will permanently delete ALL items in your shelf. Proceed?', async () => {
+            openConfirm('Last chance', 'No undo. Delete everything now?', async () => {
+              try {
+                showLoading(true);
+                const { error } = await supabase.from('entries').delete().eq('user_id', user.id);
+                if (error) throw error;
+                showToast('success', 'Your list was cleared');
+              } catch (e) {
+                showToast('error', e.message || 'Failed to clear list');
+              } finally {
+                showLoading(false);
+              }
+            });
+          });
+        });
+      };
+
       // URL params sync
       function updateURL() {
         const params = new URLSearchParams(window.location.search);
@@ -2219,6 +2373,7 @@
       }));
       mImport.addEventListener('click', () => { closeMenu(); importFile.click(); });
       mExport.addEventListener('click', () => { closeMenu(); doExport(); });
+      mOpenChat.addEventListener('click', () => { closeMenu(); openChat(); });
 
       function updateMobileMenuUI() {
         if (user) {
@@ -2230,6 +2385,7 @@
           mLogin.classList.remove('hidden');
           mLogout.classList.add('hidden');
         }
+        mChatOnline.textContent = `(${presenceCount} online)`;
       }
 
       // Auto cover: AniList first, fallback to Jikan
@@ -2432,6 +2588,118 @@
         else scrollToTop.classList.remove('visible');
       }, { passive: true });
 
+      // Chat logic
+      async function loadChatHistory(limit = 200) {
+        try {
+          const { data: rows, error } = await supabase
+            .from('chat_messages')
+            .select('id,user_id,username,content,created_at')
+            .order('created_at', { ascending: true })
+            .limit(limit);
+          if (error) throw error;
+          chatMessagesEl.innerHTML = '';
+          (rows || []).forEach(renderChatMessage);
+          scrollChatToBottom(true);
+        } catch (e) {
+          console.error(e);
+          showToast('error', e.message || 'Failed to load chat');
+        }
+      }
+      function renderChatMessage(msg) {
+        const mine = msg.user_id === user?.id;
+        const wrap = document.createElement('div');
+        wrap.className = 'msg' + (mine ? ' mine' : '');
+        const avatar = document.createElement('img');
+        avatar.className = 'avatar';
+        avatar.alt = '';
+        avatar.src = diceAvatar(msg.username || 'bro');
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const userEl = document.createElement('span');
+        userEl.className = 'user';
+        userEl.textContent = msg.username || 'bro';
+        const timeEl = document.createElement('span');
+        timeEl.className = 'time';
+        timeEl.textContent = fmtTime(msg.created_at);
+        meta.append(userEl, timeEl);
+        const content = document.createElement('div');
+        content.className = 'content';
+        content.innerHTML = linkify(msg.content || '');
+        bubble.append(meta, content);
+        wrap.append(mine ? bubble : avatar, mine ? avatar : bubble);
+        chatMessagesEl.appendChild(wrap);
+      }
+      function scrollChatToBottom(force = false) {
+        const nearBottom = chatMessagesEl.scrollHeight - chatMessagesEl.scrollTop - chatMessagesEl.clientHeight < 120;
+        if (force || nearBottom) {
+          chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+        }
+      }
+      function setupChatRealtime() {
+        if (chatChannel) supabase.removeChannel(chatChannel);
+        chatChannel = supabase.channel('realtime:public:chat_messages')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
+            renderChatMessage(payload.new);
+            scrollChatToBottom();
+          })
+          .subscribe();
+      }
+      function updateSelfAvatar() {
+        const name = user?.user_metadata?.username || 'bro';
+        chatSelfAvatar.src = diceAvatar(name);
+      }
+      async function sendChat() {
+        const text = (chatInput.value || '').trim();
+        if (!user) {
+          showToast('error', 'Sign in to chat');
+          return openModal(authModal);
+        }
+        if (!text) return;
+        if (text.length > 600) return showToast('error', 'Message too long (max 600 chars)');
+        try {
+          chatSend.classList.add('loading');
+          chatSend.innerHTML = '';
+          const username = user.user_metadata?.username || (user.email?.split('@')[0]) || 'bro';
+          const { error } = await supabase.from('chat_messages').insert({ content: text, username, user_id: user.id });
+          if (error) throw error;
+          chatInput.value = '';
+          autoResizeChatInput();
+        } catch (e) {
+          console.error(e);
+          showToast('error', e.message || 'Failed to send');
+        } finally {
+          chatSend.classList.remove('loading');
+          chatSend.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
+        }
+      }
+      function autoResizeChatInput() {
+        chatInput.style.height = 'auto';
+        chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px';
+      }
+      chatInput.addEventListener('input', autoResizeChatInput);
+      chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendChat();
+        }
+      });
+      chatSend.addEventListener('click', sendChat);
+      chatClose.addEventListener('click', () => closeModal(chatModal));
+
+      function openChat() {
+        if (!user) {
+          showToast('info', 'Sign in to join the chat');
+          openModal(authModal);
+          return;
+        }
+        openModal(chatModal);
+        updateSelfAvatar();
+        loadChatHistory().then(() => scrollChatToBottom(true));
+        setupChatRealtime();
+      }
+
       // Initialize
       (async function init() {
         showPreloader('Loading AniMehList…');
@@ -2450,12 +2718,12 @@
         if (user) {
           await load();
           setupRealtime();
-          setupPresence();
         } else {
           hidePreloader();
           render(); // tabs/empty
         }
 
+        setupPresence();
         initFloatingLabels(document);
       })();
 
@@ -2464,10 +2732,11 @@
         session = s;
         user = s?.user ?? null;
         updateAuthUI();
+        setupPresence();
         if (user) {
+          updateSelfAvatar();
           load();
           setupRealtime();
-          setupPresence();
         }
         render();
       });

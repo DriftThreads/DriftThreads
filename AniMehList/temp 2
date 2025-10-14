@@ -1,0 +1,3496 @@
+right, so heres my apps json file (example for format):
+[
+  {
+    "title": "Rascal Does Not Dream of Santa Claus",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx171046-9leqLiNuOqNu.png"
+  },
+  {
+    "title": "Rascal Does Not Dream of a Knapsack Kid",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx161474-ZDfmmlJQQngN.jpg"
+  },
+  {
+    "title": "Rascal Does Not Dream of a Sister Venturing Out",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx154967-W9cIm0qlz6fj.jpg"
+  },
+  {
+    "title": "Rascal Does Not Dream of a Dreaming Girl",
+    "kind": "MOVIE",
+    "status": "REWATCH",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx104157-rk99XI56PaIC.jpg"
+  },
+  {
+    "title": "Pokémon",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b527-FSbEjTEOSQQ5.png"
+  },
+  {
+    "title": "Scissor Seven S4",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 4,
+    "episode": 2,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113290-zsH3Ni7M7STm.jpg"
+  },
+  {
+    "title": "xxxHolic",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx861-rbZNhIXwS4JE.png"
+  },
+  {
+    "title": "Cardcaptors",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx232-ERyKCNNPJJeh.png"
+  },
+  {
+    "title": "Natsume's Book of Friends",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 1,
+    "episode": 9,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97983-Uqn04SR6hVW9.jpg"
+  },
+  {
+    "title": "Highschool DxD S2",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": "Season 2",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20745-HzWTPFv0P13I.jpg"
+  },
+  {
+    "title": "Dragon Ball",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx223-scE5uJfXqqj8.png"
+  },
+  {
+    "title": "Fruits Basket",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx120-Z5i1sw1xboQP.jpg"
+  },
+  {
+    "title": "Bocchi the Rock!",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 1,
+    "episode": 9,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx130003-HTDmeL4RGeJ4.png"
+  },
+  {
+    "title": "Naruto Shippuden",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": null,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1735-kGfVm0YqCPcu.png"
+  },
+  {
+    "title": "Spy X Family",
+    "kind": "SERIES",
+    "status": "WATCHING",
+    "season": 3,
+    "episode": 1,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx140960-Kb6R5nYQfjmP.jpg"
+  },
+  {
+    "title": "Witch Watch",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx180367-GlRuB2lG7Kaa.jpg"
+  },
+  {
+    "title": "Dr. Stone",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx105333-GybuoSoOZfpH.jpg"
+  },
+  {
+    "title": "Ocean Waves",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli TV movie",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx743-xbLqrRYuiKUJ.png"
+  },
+  {
+    "title": "Mushishi",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/2/73862l.webp"
+  },
+  {
+    "title": "Tales from Earthsea",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1829-DqhBRfDU7n6D.jpg"
+  },
+  {
+    "title": "Porco Rosso",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx416-oO8Tts2dQtuv.jpg"
+  },
+  {
+    "title": "Dragon Ball Z",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx813-ZhnFNOeCU5dQ.png"
+  },
+  {
+    "title": "Tokyo Revengers",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx120120-cWDmnmeEntSe.jpg"
+  },
+  {
+    "title": "The Cat Returns",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli spin-off",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx597-Prw5pUyYwcFO.png"
+  },
+  {
+    "title": "Parasyte: The Maxim",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20623-dUARfggnNDOe.jpg"
+  },
+  {
+    "title": "Fairy Tail",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b6702-KI4qgSMyI8Pm.png"
+  },
+  {
+    "title": "Samurai Champloo",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx205-7tHVFu6dPBm9.png"
+  },
+  {
+    "title": "Pom Poko",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1030-epXaUwnycmQE.jpg"
+  },
+  {
+    "title": "A Happy Couple, But not yet Married",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "(as written)",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1774/115624l.webp"
+  },
+  {
+    "title": "Super Crooks",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx109946-S05QNnNplFV2.jpg"
+  },
+  {
+    "title": "Sakamoto Days",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx177709-e5Qx6RlsBgD5.png"
+  },
+  {
+    "title": "Takopi's Original Sin.",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1182/149879l.webp"
+  },
+  {
+    "title": "My Neighbors the Yamadas",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/6/64545l.webp"
+  },
+  {
+    "title": "Made in Abyss",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/6/86733l.webp"
+  },
+  {
+    "title": "Oshi no Ko",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1812/134736l.webp"
+  },
+  {
+    "title": "Whisper of the Heart",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1764/138714l.webp"
+  },
+  {
+    "title": "Kino's Journey",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1763/95397l.webp"
+  },
+  {
+    "title": "The Promised Neverland S1",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 1,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "S1 only",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101759-8UR7r9MNVpz2.jpg"
+  },
+  {
+    "title": "Gintama",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/4/50361l.webp"
+  },
+  {
+    "title": "Uglymeg Epicfighter",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1454/150515l.webp"
+  },
+  {
+    "title": "Space Dandy",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/4/56611l.webp"
+  },
+  {
+    "title": "Welcome to the NHK",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/3/52675l.webp"
+  },
+  {
+    "title": "Noragami",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1886/128266l.webp"
+  },
+  {
+    "title": "Black Lagoon",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx889-4S7N2ciq2cwA.png"
+  },
+  {
+    "title": "Clannad",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx2167-pSDBcyc0vjej.jpg"
+  },
+  {
+    "title": "Call of the Night",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx141391-M3ZgUKTPENUk.jpg"
+  },
+  {
+    "title": "To Your Eternity",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1880/118484l.webp"
+  },
+  {
+    "title": "Neon Genesis Evengaleon",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "(as written)",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1993/113122l.webp"
+  },
+  {
+    "title": "School Rumble",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1465/142014l.webp"
+  },
+  {
+    "title": "Naruto",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20-dE6UHbFFg1A5.jpg"
+  },
+  {
+    "title": "Ghost Stories",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1281-1D6fuMnHwor0.png"
+  },
+  {
+    "title": "Love after World Domination",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx132010-s0o3Rg0XvDXl.jpg"
+  },
+  {
+    "title": "March Comes in Like a Lion",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/3/82899l.webp"
+  },
+  {
+    "title": "Plastic Memories",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20872-j5PBzzVtrYDM.jpg"
+  },
+  {
+    "title": "Berserk (1997)",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 1,
+    "episode": 9,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx33-PSwfE5B0gejI.jpg"
+  },
+  {
+    "title": "Seven Deadly Sins - Imperial Wrath of the Gods",
+    "kind": "SERIES",
+    "status": "WATCHING",
+    "season": 4,
+    "episode": 12,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx108928-DuyUzi0JyPIr.jpg"
+  },
+  {
+    "title": "Yu Gi Oh",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/4/47487l.webp"
+  },
+  {
+    "title": "Death Parade",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx20931-bktYqOcxPERi.jpg"
+  },
+  {
+    "title": "The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx162694-QFBei5pbjSh8.png"
+  },
+  {
+    "title": "The Tatami Galaxy",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1633/123689l.webp"
+  },
+  {
+    "title": "Re: Creators",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97980-9NQwPW0igSMk.jpg"
+  },
+  {
+    "title": "Devil May Cry",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1726-IrpH32PVADiO.jpg"
+  },
+  {
+    "title": "Cyberpunk Edge Runners",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1818/126435l.webp"
+  },
+  {
+    "title": "Attack on Titan Finale",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20958-HuFJyr54Mmir.jpg"
+  },
+  {
+    "title": "Grand Blue Dreaming",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1302/94882l.webp"
+  },
+  {
+    "title": "Death Note",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1079/138100l.webp"
+  },
+  {
+    "title": "The Dreaming Boy is a Realist",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1239/134810l.webp"
+  },
+  {
+    "title": "My Dress-Up Darling",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1179/119897l.webp"
+  },
+  {
+    "title": "Hitman Reborn",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1531/142751l.webp"
+  },
+  {
+    "title": "Hunter x Hunter",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1305/132237l.webp"
+  },
+  {
+    "title": "Toradora!",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/13/22128l.webp"
+  },
+  {
+    "title": "Jujutsu Kaisen",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1171/109222l.webp"
+  },
+  {
+    "title": "Classroom of the Elite",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/5/86830l.webp"
+  },
+  {
+    "title": "Ponyo",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1331/138727l.webp"
+  },
+  {
+    "title": "ReLIFE",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/3/82149l.webp"
+  },
+  {
+    "title": "Angel Beats",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1244/111115l.webp"
+  },
+  {
+    "title": "Dandadan",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1584/143719l.webp"
+  },
+  {
+    "title": "The Fragrant Flower",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "(as written)",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1744/150433l.webp"
+  },
+  {
+    "title": "Code Geass",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1032/135088l.webp"
+  },
+  {
+    "title": "Hell's Paradise",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1075/131925l.webp"
+  },
+  {
+    "title": "Durarara!!",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/10/71772l.webp"
+  },
+  {
+    "title": "Princess Mononoke",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1355/147277l.webp"
+  },
+  {
+    "title": "Blue Exorcist",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/10/75195l.webp"
+  },
+  {
+    "title": "Summertime Rendering",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1120/120796l.webp"
+  },
+  {
+    "title": "Black Clover",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/2/88336l.webp"
+  },
+  {
+    "title": "Horimiya",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1695/111486l.webp"
+  },
+  {
+    "title": "Tokyo Ghoul",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1498/134443l.webp"
+  },
+  {
+    "title": "Mob Psycho 100",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/8/80356l.webp"
+  },
+  {
+    "title": "Fullmetal Alchemist",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/10/75815l.webp"
+  },
+  {
+    "title": "100 Days to Marriage",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1985/127901l.webp"
+  },
+  {
+    "title": "Reincarnated as a Slime in Another World",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1033/118296l.webp"
+  },
+  {
+    "title": "Howl’s Moving Castle",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1470/138723l.webp"
+  },
+  {
+    "title": "Your Lie in April",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1405/143284l.webp"
+  },
+  {
+    "title": "Bungo Stray Dogs",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/3/79409l.webp"
+  },
+  {
+    "title": "Rascal Does Not Dream of Bunny Girl Senpai",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1301/93586l.webp"
+  },
+  {
+    "title": "Steins;Gate",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9253-tIUXF2gfU8Sg.jpg"
+  },
+  {
+    "title": "Delicious in the Dungeon",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx153518-IVXPDY5ph3kO.jpg"
+  },
+  {
+    "title": "Sword Art Online S1",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Season 1 only",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1630/103417l.webp"
+  },
+  {
+    "title": "Vinland Saga",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1500/103005l.webp"
+  },
+  {
+    "title": "Cowboy Bebop",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1-GCsPm7waJ4kS.png"
+  },
+  {
+    "title": "Frieren: Beyond Journey's End",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1015/138006l.webp"
+  },
+  {
+    "title": "Solo Leveling",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1801/142390l.webp"
+  },
+  {
+    "title": "I Want to Eat Your Pancreas",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1768/93291l.webp"
+  },
+  {
+    "title": "Food Wars",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1444/148976l.webp"
+  },
+  {
+    "title": "Laputa: Castle in the Sky",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/5/37799l.webp"
+  },
+  {
+    "title": "Assassination Classroom",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/5/75639l.webp"
+  },
+  {
+    "title": "Rent a Girlfriend",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1902/128382l.webp"
+  },
+  {
+    "title": "Sing Yesterday for Me",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1553/107721l.webp"
+  },
+  {
+    "title": "Odd Taxi",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1981/113348l.webp"
+  },
+  {
+    "title": "Chainsaw Man",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx127230-DdP4vAdssLoz.png"
+  },
+  {
+    "title": "My Neighbor Totoro",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1110/147278l.webp"
+  },
+  {
+    "title": "Fullmetal Alchemist: Brotherhood",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1208/94745l.webp"
+  },
+  {
+    "title": "Re:Zero",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21355-wRVUrGxpvIQQ.jpg"
+  },
+  {
+    "title": "There's no Freaking Way I'll be your Lover",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx184591-jRXZ29bN61Zc.jpg"
+  },
+  {
+    "title": "Erased",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21234-XmqW39aQ9o7O.jpg"
+  },
+  {
+    "title": "Only Yesterday",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx1029-Ch9LIVLFnssA.jpg"
+  },
+  {
+    "title": "My Hero Academia",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21459-nYh85uj2Fuwr.jpg"
+  },
+  {
+    "title": "Monster",
+    "kind": "SERIES",
+    "status": "REWATCH",
+    "season": 0,
+    "episode": 32,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx19-gtMC64182sm4.jpg"
+  },
+  {
+    "title": "Kaiju No. 8",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1370/140362l.webp"
+  },
+  {
+    "title": "Weathering with You",
+    "kind": "MOVIE",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx106286-5COcpd0J9VbL.png"
+  },
+  {
+    "title": "A Silent Voice",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1122/96435l.webp"
+  },
+  {
+    "title": "Citrus",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx97832-uMSoHPCn5BnJ.png"
+  },
+  {
+    "title": "Fire Force",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 3,
+    "episode": null,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx105310-2PKUvoaA6fTn.jpg"
+  },
+  {
+    "title": "Zom 100",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx159831-cJUNqCqzuApc.png"
+  },
+  {
+    "title": "From Up on Poppy Hill",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/8/32547l.webp"
+  },
+  {
+    "title": "Golden Time",
+    "kind": "SERIES",
+    "status": "COMPLETED",
+    "season": 1,
+    "episode": 20,
+    "absolute_episode": null,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/12/52091l.webp"
+  },
+  {
+    "title": "The Tale of the Princess Kaguya",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1935/93606l.webp"
+  },
+  {
+    "title": "Your Name",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Makoto Shinkai vibes",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/5/87048l.webp"
+  },
+  {
+    "title": "One Piece",
+    "kind": "SERIES",
+    "status": "WATCHING",
+    "season": 0,
+    "episode": 1145,
+    "absolute_episode": 1145,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1405/149053l.webp"
+  },
+  {
+    "title": "Kiki’s Delivery Service",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1579/140483l.webp"
+  },
+  {
+    "title": "The Wind Rises",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/8/52353l.webp"
+  },
+  {
+    "title": "One Punch Man",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/12/76049l.webp"
+  },
+  {
+    "title": "Nausicaä of the Valley of the Wind",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/10/75914l.webp"
+  },
+  {
+    "title": "Rise of the Shield Hero",
+    "kind": "SERIES",
+    "status": "PLAN",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1100/109044l.webp"
+  },
+  {
+    "title": "The Secret World of Arrietty",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1974/116417l.webp"
+  },
+  {
+    "title": "Suzume",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1598/128450l.webp"
+  },
+  {
+    "title": "Bleach",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season / TYBW",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx269-d2GmRkJbMopq.png"
+  },
+  {
+    "title": "Wind Breaker",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1438/141816l.webp"
+  },
+  {
+    "title": "The Boy and the Heron",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": null,
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1126/139654l.webp"
+  },
+  {
+    "title": "Spirited Away",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/6/79597l.webp"
+  },
+  {
+    "title": "Grave of the Fireflies",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1485/141208l.webp"
+  },
+  {
+    "title": "A Couple of Cuckoos",
+    "kind": "SERIES",
+    "status": "WAITING",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Waiting on new season",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/1285/120529l.webp"
+  },
+  {
+    "title": "When Marnie Was There",
+    "kind": "MOVIE",
+    "status": "COMPLETED",
+    "season": 0,
+    "episode": 0,
+    "absolute_episode": 0,
+    "notes": "Ghibli",
+    "tags": [],
+    "rating": null,
+    "cover_url": null,
+    "banner_key": null,
+    "image_url": "https://cdn.myanimelist.net/images/anime/7/64293l.webp"
+  }
+]
+
+
+give me a python script that will convert my bros MAL xml list into my json format:
+
+<?xml version="1.0" encoding="UTF-8" ?>
+		<!--
+		 Created by XML Export feature at MyAnimeList.net
+		 Version 1.1.0
+		-->
+		
+		<myanimelist>
+		
+			<myinfo>
+				<user_id>17635656</user_id>
+				<user_name>Destr-0yer</user_name>
+				<user_export_type>1</user_export_type>
+				<user_total_anime>365</user_total_anime>
+				<user_total_watching>10</user_total_watching>
+				<user_total_completed>355</user_total_completed>
+				<user_total_onhold>0</user_total_onhold>
+				<user_total_dropped>0</user_total_dropped>
+				<user_total_plantowatch>0</user_total_plantowatch>
+			</myinfo>
+		
+		
+			
+				<anime>
+					<series_animedb_id>40221</series_animedb_id>
+					<series_title><![CDATA[Kami no Tou]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-06-28</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>59989</series_animedb_id>
+					<series_title><![CDATA[Kami no Tou: Koubou-sen]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>2024-10-06</my_start_date>
+					<my_finish_date>2024-12-29</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>52635</series_animedb_id>
+					<series_title><![CDATA[Kami no Tou: Ouji no Kikan]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>2024-07-07</my_start_date>
+					<my_finish_date>2024-09-29</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>50869</series_animedb_id>
+					<series_title><![CDATA[Kami wa Game ni Ueteiru.]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>2024-04-01</my_start_date>
+					<my_finish_date>2024-06-24</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>41312</series_animedb_id>
+					<series_title><![CDATA[Kami-tachi ni Hirowareta Otoko]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>49109</series_animedb_id>
+					<series_title><![CDATA[Kami-tachi ni Hirowareta Otoko 2nd Season]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>53879</series_animedb_id>
+					<series_title><![CDATA[Kamonohashi Ron no Kindan Suiri]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>57635</series_animedb_id>
+					<series_title><![CDATA[Kamonohashi Ron no Kindan Suiri 2nd Season]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>2024-10-07</my_start_date>
+					<my_finish_date>2024-12-30</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>59845</series_animedb_id>
+					<series_title><![CDATA[Kaoru Hana wa Rin to Saku]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>2025-07-07</my_start_date>
+					<my_finish_date>2025-09-27</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>59452</series_animedb_id>
+					<series_title><![CDATA[Katainaka no Ossan, Kensei ni Naru]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2025-04-05</my_start_date>
+					<my_finish_date>2025-06-21</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+		
+			
+				<anime>
+					<series_animedb_id>57524</series_animedb_id>
+					<series_title><![CDATA[Make Heroine ga Oosugiru!]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-07-13</my_start_date>
+					<my_finish_date>2024-09-28</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>48417</series_animedb_id>
+					<series_title><![CDATA[Maou Gakuin no Futekigousha II: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>48418</series_animedb_id>
+					<series_title><![CDATA[Maou Gakuin no Futekigousha II: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou Part 2]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-04-12</my_start_date>
+					<my_finish_date>2024-07-24</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>40496</series_animedb_id>
+					<series_title><![CDATA[Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>53434</series_animedb_id>
+					<series_title><![CDATA[Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga, Dou Medereba Ii?]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-04-04</my_start_date>
+					<my_finish_date>2024-06-13</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>57876</series_animedb_id>
+					<series_title><![CDATA[Maougun Saikyou no Majutsushi wa Ningen datta]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-07-03</my_start_date>
+					<my_finish_date>2024-09-11</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>33487</series_animedb_id>
+					<series_title><![CDATA[Masamune-kun no Revenge]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>51498</series_animedb_id>
+					<series_title><![CDATA[Masamune-kun no Revenge R]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>52211</series_animedb_id>
+					<series_title><![CDATA[Mashle]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>55813</series_animedb_id>
+					<series_title><![CDATA[Mashle: Shinkakusha Kouho Senbatsu Shiken-hen]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-03-16</my_start_date>
+					<my_finish_date>2024-03-30</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>50392</series_animedb_id>
+					<series_title><![CDATA[Mato Seihei no Slave]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-03-16</my_start_date>
+					<my_finish_date>2024-03-16</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>59207</series_animedb_id>
+					<series_title><![CDATA[Mikadono Sanshimai wa Angai, Choroi.]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2025-07-09</my_start_date>
+					<my_finish_date>2025-09-17</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>60732</series_animedb_id>
+					<series_title><![CDATA[Mizu Zokusei no Mahoutsukai]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2025-07-03</my_start_date>
+					<my_finish_date>2025-09-25</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>32182</series_animedb_id>
+					<series_title><![CDATA[Mob Psycho 100]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>37510</series_animedb_id>
+					<series_title><![CDATA[Mob Psycho 100 II]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>50172</series_animedb_id>
+					<series_title><![CDATA[Mob Psycho 100 III]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>19</series_animedb_id>
+					<series_title><![CDATA[Monster]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>74</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>74</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>51179</series_animedb_id>
+					<series_title><![CDATA[Mushoku Tensei II: Isekai Ittara Honki Dasu]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>55818</series_animedb_id>
+					<series_title><![CDATA[Mushoku Tensei II: Isekai Ittara Honki Dasu - Shugo Jutsushi Fitz]]></series_title>
+					<series_type>TV Special</series_type>
+					<series_episodes>1</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>1</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>55888</series_animedb_id>
+					<series_title><![CDATA[Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-04-07</my_start_date>
+					<my_finish_date>2024-06-30</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>39535</series_animedb_id>
+					<series_title><![CDATA[Mushoku Tensei: Isekai Ittara Honki Dasu]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>11</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>11</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>45576</series_animedb_id>
+					<series_title><![CDATA[Mushoku Tensei: Isekai Ittara Honki Dasu Part 2]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>16067</series_animedb_id>
+					<series_title><![CDATA[Nagi no Asu kara]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>26</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>26</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>41168</series_animedb_id>
+					<series_title><![CDATA[Nakitai Watashi wa Neko wo Kaburu]]></series_title>
+					<series_type>ONA</series_type>
+					<series_episodes>1</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>1</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-27</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>50582</series_animedb_id>
+					<series_title><![CDATA[Nanatsu no Maken ga Shihai suru]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>15</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>15</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>50593</series_animedb_id>
+					<series_title><![CDATA[Natsu e no Tunnel, Sayonara no Deguchi]]></series_title>
+					<series_type>Movie</series_type>
+					<series_episodes>1</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>1</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-21</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>56062</series_animedb_id>
+					<series_title><![CDATA[Naze Boku no Sekai wo Daremo Oboeteinai no ka?]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-07-13</my_start_date>
+					<my_finish_date>2024-09-28</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>10165</series_animedb_id>
+					<series_title><![CDATA[Nichijou]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>26</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>26</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>57648</series_animedb_id>
+					<series_title><![CDATA[Nihon e Youkoso Elf-san.]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2025-01-10</my_start_date>
+					<my_finish_date>2025-03-28</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>56285</series_animedb_id>
+					<series_title><![CDATA[Ninja Kamui]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>2024-04-05</my_start_date>
+					<my_finish_date>2024-05-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>19815</series_animedb_id>
+					<series_title><![CDATA[No Game No Life]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-06</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>24991</series_animedb_id>
+					<series_title><![CDATA[No Game No Life Specials]]></series_title>
+					<series_type>Special</series_type>
+					<series_episodes>6</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>6</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-06</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>33674</series_animedb_id>
+					<series_title><![CDATA[No Game No Life: Zero]]></series_title>
+					<series_type>Movie</series_type>
+					<series_episodes>1</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>1</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-06</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>51648</series_animedb_id>
+					<series_title><![CDATA[Nozomanu Fushi no Boukensha]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-03-16</my_start_date>
+					<my_finish_date>2024-03-16</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>46102</series_animedb_id>
+					<series_title><![CDATA[Odd Taxi]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-05</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>30276</series_animedb_id>
+					<series_title><![CDATA[One Punch Man]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-06-18</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>34134</series_animedb_id>
+					<series_title><![CDATA[One Punch Man 2nd Season]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-06-18</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>39705</series_animedb_id>
+					<series_title><![CDATA[One Punch Man 2nd Season Specials]]></series_title>
+					<series_type>Special</series_type>
+					<series_episodes>6</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>6</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-04-23</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>52807</series_animedb_id>
+					<series_title><![CDATA[One Punch Man 3]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>0</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>1</my_watched_episodes>
+					<my_start_date>2025-10-12</my_start_date>
+					<my_finish_date>0000-00-00</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Watching</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>31772</series_animedb_id>
+					<series_title><![CDATA[One Punch Man Specials]]></series_title>
+					<series_type>Special</series_type>
+					<series_episodes>6</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>6</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-06-18</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>31704</series_animedb_id>
+					<series_title><![CDATA[One Punch Man: Road to Hero]]></series_title>
+					<series_type>OVA</series_type>
+					<series_episodes>1</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>1</my_watched_episodes>
+					<my_start_date>0000-00-00</my_start_date>
+					<my_finish_date>2024-06-18</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>56838</series_animedb_id>
+					<series_title><![CDATA[One Room, Hiatari Futsuu, Tenshi-tsuki.]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-03-30</my_start_date>
+					<my_finish_date>2024-06-15</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>51122</series_animedb_id>
+					<series_title><![CDATA[Ookami to Koushinryou: Merchant Meets the Wise Wolf]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>25</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>25</my_watched_episodes>
+					<my_start_date>2024-04-02</my_start_date>
+					<my_finish_date>2024-09-23</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>52299</series_animedb_id>
+					<series_title><![CDATA[Ore dake Level Up na Ken]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-03-16</my_start_date>
+					<my_finish_date>2024-03-16</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>58567</series_animedb_id>
+					<series_title><![CDATA[Ore dake Level Up na Ken Season 2: Arise from the Shadow]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>13</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>13</my_watched_episodes>
+					<my_start_date>2025-01-04</my_start_date>
+					<my_finish_date>2025-03-29</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+			
+				<anime>
+					<series_animedb_id>55129</series_animedb_id>
+					<series_title><![CDATA[Oroka na Tenshi wa Akuma to Odoru]]></series_title>
+					<series_type>TV</series_type>
+					<series_episodes>12</series_episodes>
+					<my_id>0</my_id>
+					<my_watched_episodes>12</my_watched_episodes>
+					<my_start_date>2024-03-16</my_start_date>
+					<my_finish_date>2024-03-26</my_finish_date>
+					<my_rated></my_rated>
+					<my_score>0</my_score>
+					<my_storage></my_storage>
+					<my_storage_value>0.00</my_storage_value>
+					<my_status>Completed</my_status>
+					<my_comments><![CDATA[]]></my_comments>
+					<my_times_watched>0</my_times_watched>
+					<my_rewatch_value></my_rewatch_value>
+					<my_priority>LOW</my_priority>
+					<my_tags><![CDATA[]]></my_tags>
+					<my_rewatching>0</my_rewatching>
+					<my_rewatching_ep>0</my_rewatching_ep>
+					<my_discuss>1</my_discuss>
+					<my_sns>default</my_sns>
+					<update_on_import>0</update_on_import>
+				</anime>
+
+			
+			</myanimelist>
+			
+
+
+
+
+obv i cut out 90% of the items on his list so the prompt doesnt get too big, but u should be able to create my conversoin script with this hopefully
