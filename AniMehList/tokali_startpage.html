@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Startpage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    body {
+        margin: 0;
+        background: #111722;
+        font-family: "Pixelify Sans", monospace;
+        font-weight: 700;
+        color: #e5e5e5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        height: 100vh;
+        padding-top: 80px;
+    }
+
+    #clock {
+        font-size: 96px;
+        margin-bottom: 40px;
+        letter-spacing: 4px;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        background: #1a202c;
+        padding: 12px 20px;
+        border-radius: 6px;
+        width: 420px;
+    }
+
+    .search-container input {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        font-family: "Pixelify Sans", monospace;
+        font-weight: 700;
+        color: #fff;
+        font-size: 14px;
+    }
+
+    .search-container button {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .cards {
+        display: flex;
+        gap: 40px;
+        margin-top: 60px;
+    }
+
+    .card {
+        background: #1a202c;
+        padding: 30px;
+        border-radius: 8px;
+        width: 240px;
+    }
+
+    .card h2 {
+        margin-bottom: 20px;
+        font-size: 28px;
+    }
+
+    .card a {
+        display: block;
+        color: #cfcfcf;
+        text-decoration: none;
+        margin: 10px 0;
+        font-size: 20px;
+    }
+
+    .card a i {
+        padding-right: 8px;
+        width: 20px;    
+    }
+
+    .card a:hover {
+        color: white;
+    }
+</style>
+</head>
+<body>
+
+<div id="clock">00:00</div>
+
+<div class="search-container">
+    <input id="search" placeholder="" />
+    <button onclick="searchGoogle()"><i class="fa-brands fa-google"></i></button>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <h2>Entertainment</h2>
+        <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube"></i>Youtube</a>
+        <a href="https://music.youtube.com" target="_blank"><i class="fa-solid fa-music"></i>YT Music</a>
+        <a href="https://animepahe.si" target="_blank"><i class="fa-solid fa-play"></i>AnimePahe</a>
+        <a href="https://hurawatchzz.tv/" target="_blank"><i class="fa-solid fa-clapperboard"></i>Hurawatch</a>
+    </div>
+
+    <div class="card">
+        <h2>Creative</h2>
+        <a href="https://freepik.com" target="_blank"><i class="fa-solid fa-image"></i>Freepik</a>
+        <a href="https://unsplash.com" target="_blank"><i class="fa-brands fa-unsplash"></i>Unsplash</a>
+        <a href="https://themeforest.net" target="_blank">Themeforest</a>
+        <a href="https://dafont.com" target="_blank">Dafont</a>
+    </div>
+
+    <div class="card">
+        <h2>Misc</h2>
+        <a href="https://chat.openai.com" target="_blank"><i class="fa-brands fa-openai"></i>ChatGPT</a>
+        <a href="https://poe.com" target="_blank"><i class="fa-brands fa-quora"></i>Poe</a>
+        <a href="https://github.com" target="_blank"><i class="fa-brands fa-github"></i>Github</a>
+    </div>
+</div>
+
+<script>
+    function updateClock() {
+        const now = new Date();
+        let h = String(now.getHours()).padStart(2, '0');
+        let m = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById("clock").textContent = `${h}:${m}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function searchGoogle() {
+        const q = document.getElementById("search").value.trim();
+        if (q.length > 0) {
+            window.open = "https://www.google.com/search?q=" + encodeURIComponent(q);
+        }
+    }
+
+    document.getElementById("search").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") searchGoogle();
+    });
+</script>
+
+</body>
+</html>
